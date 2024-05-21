@@ -28,7 +28,7 @@ const HeroSection = () => {
             },
           }}>
             <div className="img-container " style={{ display: "flex", position: "relative" }}>
-              <img style={{ minWidth: "100%", maxWidth: "100%" }} src="src/images/banner-17.jpg" alt="banner-img" />
+              <img style={{ minWidth: "100%", maxWidth: "100%" }} src="./images/banner-17.jpg" alt="banner-img" />
               <Typography className='sub-banner-text '
                 sx={{
 
@@ -51,7 +51,7 @@ const HeroSection = () => {
               </Typography>
             </div>
             <div className="img-container " style={{ display: "flex", position: "relative" }}>
-              <img style={{ minWidth: "100%", maxWidth: "100%" }} src="src/images/banner-16.jpg" alt="banner-img" />
+              <img style={{ minWidth: "100%", maxWidth: "100%" }} src="./images/banner-16.jpg" alt="banner-img" />
               <Typography className='sub-banner-text '
                 sx={{
 

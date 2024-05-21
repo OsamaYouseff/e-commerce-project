@@ -122,12 +122,15 @@ function SimpleListMenu() {
                     onClick={handleClickListItem}
                     sx={{
                         padding: "0px 5px",
+                        color: "white !important",
                     }}
                 >
                     <ListItemText
-
-                        style={{ color: "white" }}
-                        sx={{ ".css-1ijlrmj-MuiTypography-root": { color: "white !important", height: "18px" }, ".css-83ijpv-MuiTypography-root": { color: "white !important", height: "24px" } }}
+                        sx={{
+                            ".css-mbfek": { color: "white !important", height: "18px" },
+                            ".css-1ijlrmj-MuiTypography-root": { color: "white !important", height: "18px" },
+                            ".css-83ijpv-MuiTypography-root": { color: "white !important", height: "18px" }
+                        }}
                         secondary={options[selectedIndex]}
                     />
                     <ExpandMoreIcon sx={{ color: "white", fontSize: "24px" }} />

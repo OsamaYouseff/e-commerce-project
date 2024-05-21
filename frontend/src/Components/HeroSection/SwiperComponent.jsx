@@ -9,10 +9,10 @@ import { useTheme } from '@emotion/react';
 import './Swiper.css';
 
 const bannerImagesData = [
-	{ gender: "men", discount: "30", src: "src/images/banner-15.jpg" },
-	{ gender: "women", discount: "50", src: "src/images/banner-25.jpg" },
-	{ gender: "men", discount: "30", src: "src/images/banner-15.jpg" },
-	{ gender: "women", discount: "50", src: "src/images/banner-25.jpg" }
+	{ gender: "men", discount: "30", src: "./images/banner-15.jpg" },
+	{ gender: "women", discount: "50", src: "./images/banner-25.jpg" },
+	{ gender: "men", discount: "30", src: "./images/banner-15.jpg" },
+	{ gender: "women", discount: "50", src: "./images/banner-25.jpg" }
 ]
 
 const SwiperComponent = () => {
