@@ -110,7 +110,9 @@ function SimpleListMenu() {
             <List
                 component="nav"
                 aria-label="Device settings"
-                sx={{ padding: 0 }}
+                sx={{
+                    padding: 0,
+                }}
             >
                 <ListItemButton
                     id="lock-button"
@@ -118,12 +120,14 @@ function SimpleListMenu() {
                     aria-controls="lock-menu"
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleClickListItem}
-                    sx={{ padding: "0px 5px" }}
-
+                    sx={{
+                        padding: "0px 5px",
+                    }}
                 >
                     <ListItemText
+
                         style={{ color: "white" }}
-                        sx={{ ".css-1ijlrmj-MuiTypography-root": { color: "white !important", height: "24px" }, ".css-83ijpv-MuiTypography-root": { color: "white !important", height: "24px" } }}
+                        sx={{ ".css-1ijlrmj-MuiTypography-root": { color: "white !important", height: "18px" }, ".css-83ijpv-MuiTypography-root": { color: "white !important", height: "24px" } }}
                         secondary={options[selectedIndex]}
                     />
                     <ExpandMoreIcon sx={{ color: "white", fontSize: "24px" }} />

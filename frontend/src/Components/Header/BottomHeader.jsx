@@ -85,7 +85,6 @@ const categoryData = [
     }
 ];
 
-
 //// components
 
 const BottomHeader = function () {
@@ -228,9 +227,9 @@ function Drawer() {
 
 function AccordionComponents() {
     return (
-        LinksData.map((item, index) => {
+        LinksData.map((item) => {
             return (
-                <Accordion key={index} sx={{ maxWidth: "380px", minWidth: "95% !important", m: 0 }}>
+                <Accordion key={item.id} sx={{ maxWidth: "380px", minWidth: "95% !important", m: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1-content"
@@ -240,9 +239,9 @@ function AccordionComponents() {
                         {item.title}
                     </AccordionSummary>
                     <AccordionDetails>
-                        {item.links.map((link, index) => {
+                        {item.links.map((link) => {
                             return (
-                                <Typography sx={LinksStyles} key={index}>{link}</Typography>
+                                <Typography sx={LinksStyles} key={item.id}>{link}</Typography>
                             )
                         })}
                     </AccordionDetails>

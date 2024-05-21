@@ -186,7 +186,6 @@ function SimpleListMenu() {
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleClickListItem}
                     sx={{ maxHeight: "40px", border: "1px solid #777", }}
-
                 >
                     <ListItemText
                         secondary={options[selectedIndex]}
@@ -210,7 +209,7 @@ function SimpleListMenu() {
             >
                 {options.map((option, index) => (
                     <MenuItem
-                        key={option}
+                        key={index}
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}
                         sx={{ fontSize: "16px", minWidth: "145px", ".css-6hp17o-MuiList-root-MuiMenu-list": { py: 0 } }}

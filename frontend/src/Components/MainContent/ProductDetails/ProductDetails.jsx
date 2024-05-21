@@ -1,12 +1,19 @@
+/* eslint-disable react/prop-types */
 import { Box, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useState } from "react";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+
 /// Icons
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+
+
+//// styless
 const CloseBtnStyles = {
   position: "absolute",
   top: { xs: "5px", md: "15px" },
@@ -36,11 +43,20 @@ const modalStyles = {
   p: 4,
   flexDirection: { xs: "column", sm: "row" },
 };
-// eslint-disable-next-line react/prop-types
-const ProductDetails = ({ handleCloseModal, open }) => {
-  const theme = useTheme(ColorModeContext);
-  const [previewImgUrl, setPreviewImgUrl] = useState('src/images/1.jpg');
 
+
+// eslint-disable-next-line react/prop-types
+const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
+  const theme = useTheme(ColorModeContext);
+  const imagesObjsArr = PreviewedProduct.attributes.productImages.data;
+  const [previewImgUrl, setPreviewImgUrl] = useState(`${imagesObjsArr[0].attributes.url}`);
+  const [selectedImg, setSelectedImg] = useState(0);
+
+  const handelSelectedImg = (event, newValue) => {
+    if (newValue !== null) {
+      setSelectedImg(newValue);
+    }
+  }
   return (
     <div>
       <Modal
@@ -89,7 +105,7 @@ const ProductDetails = ({ handleCloseModal, open }) => {
             }}
           >
             <Typography variant="h5">
-              WOMEN<span>&apos;</span>S FASHION
+              {PreviewedProduct.attributes.productTitle}
             </Typography>
             <Typography
               my={0.4}
@@ -97,14 +113,11 @@ const ProductDetails = ({ handleCloseModal, open }) => {
               color={"crimson"}
               variant="h6"
             >
-              $12.99
+              ${PreviewedProduct.attributes.productPrice}
             </Typography>
             <Typography sx={{ fontSize: "16px" }}>
-              Lizards are a widespread group of squamate reptiles,
-              with over 6,000 species, ranging across all
-              continents except Antarctica
+              {PreviewedProduct.attributes.productDescription}
             </Typography>
-
             <Stack
               sx={{
                 justifyContent: { xs: "center", sm: "left" },
@@ -113,38 +126,57 @@ const ProductDetails = ({ handleCloseModal, open }) => {
               gap={1}
               my={2}
             >
-              {["src/images/1.jpg", "src/images/2.jpg"].map(
-                (item) => {
-                  return (
-                    <Box
-                      key={item}
-                      sx={{
-                        display: "flex",
-                        p: 0,
-                        border: "1px solid transparent",
-                        "&:hover": {
-                          borderColor: "#ff6e6e",
-                        },
-                        borderRadius: 1,
-                        cursor: "pointer",
-                        transition: "0.35s",
-                        overflow: "hidden",
-                      }}
-                    >
-                      <img
-                        height={100}
-                        width={90}
-                        src={item}
-                        alt="product-preview-img"
-                        onClick={() => setPreviewImgUrl(item)}
-                      />
+              <ToggleButtonGroup
+                value={selectedImg}
+                exclusive
+                onChange={handelSelectedImg}
+                sx={{
+                  ".Mui-selected": {
+                    opacity: "1",
+                    border: "1px solid #ff6e6e",
+                    background: "initial",
+                    borderRadius: "5px !important",
+                    overflowX: "auto",
+                  },
+                }}
+              >
+                {imagesObjsArr.map(
+                  (item, index) => {
+                    return (
+                      <ToggleButton value={index}
+                        key={item.id}
+                        sx={{
+                          display: "flex",
+                          p: 0,
+                          border: "1px solid transparent",
+                          "&:hover": { borderColor: "#ff6e6e", },
+                          borderRadius: 1,
+                          cursor: "pointer",
+                          transition: "0.35s",
+                          overflow: "hidden",
+                          margin: "0 2px",
+                          opacity: 0.5,
+                          marginX: "5px",
+                        }}>
+                        < img
+                          height={100}
+                          width={90}
+                          src={item.attributes.url}
+                          alt="product-preview-img"
+                          onClick={() => {
+                            setPreviewImgUrl(item.attributes.url);
+                            setSelectedImg(index);
+                          }
 
-                    </Box>
-                  );
-                }
-              )}
+                          }
+                        />
+                      </ToggleButton>
+                    );
+                  }
+                )}
+
+              </ToggleButtonGroup>
             </Stack>
-
             <Button
               sx={{
                 mb: { xs: 1, sm: 0 },
@@ -152,8 +184,7 @@ const ProductDetails = ({ handleCloseModal, open }) => {
                 p: "5px 15px !important",
                 bgcolor: "#ff6e6e",
               }}
-              variant="contained"
-            >
+              variant="contained" >
               <AddShoppingCartOutlinedIcon
                 sx={{ mr: 1 }}
                 fontSize="small"
@@ -162,8 +193,8 @@ const ProductDetails = ({ handleCloseModal, open }) => {
             </Button>
           </Box>
         </Stack>
-      </Modal>
-    </div>
+      </Modal >
+    </div >
   );
 };
 

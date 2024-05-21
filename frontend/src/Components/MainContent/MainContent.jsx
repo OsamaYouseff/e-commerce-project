@@ -5,15 +5,11 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
-import Rating from '@mui/material/Rating';
 import { useGetProductByNameQuery } from "../../redux/product";
+import CardComponent from "./CardComponent/CardComponent";
 
 /// Icons
-import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 import ProductDetails from "./ProductDetails/ProductDetails";
 import SkeletonFeedback from "../SkeletonFeedback/SkeletonFeedback";
 
@@ -23,7 +19,6 @@ const MainContent = () => {
     const womenProducts = 'products?populate=*&filters[productCategory][$eq]=women';
 
     const [productCategory, setProductCategory] = useState(allProducts);
-
     const { data, error, isLoading } = useGetProductByNameQuery(productCategory);
 
     const theme = useTheme(ColorModeContext);
@@ -35,10 +30,15 @@ const MainContent = () => {
         color: theme.palette.text.primary,
         flexGrow: "1",
     }
-    const handleAlignment = (event, newValue) => {
+    const handleProductCategory = (event, newValue) => {
         if (newValue !== null) {
             setProductCategory(newValue);
         }
+    };
+
+    const handleSetPreviewedProduct = (newValue) => {
+        setPreviewedProduct(newValue);
+
     };
     // const [value, setValue] = useState(2);
 
@@ -46,6 +46,12 @@ const MainContent = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [PreviewedProduct, setPreviewedProduct] = useState(
+        {
+            "id": 2,
+            "attributes": {}
+        }
+    );
 
     if (data) {
         return (
@@ -59,7 +65,7 @@ const MainContent = () => {
                         <ToggleButtonGroup
                             value={productCategory}
                             exclusive
-                            onChange={handleAlignment}
+                            onChange={handleProductCategory}
                             aria-label="text alignment"
                             sx={{
                                 gap: "10px !important",
@@ -85,33 +91,43 @@ const MainContent = () => {
                 </Stack>
                 <Stack className="products" sx={{ mt: "15px", py: "15px", gap: "25px 10px" }} direction={"row"} flexWrap={"wrap"} justifyContent={"space-between"}>
                     {
-                        data.data.map((product, index) => (
-                            <CardComponent key={index} productData={product} handelOpenModal={handleOpen} />
+                        data.data.map((product) => (
+                            <CardComponent key={product.id} productData={product} handelOpenModal={handleOpen} handleSetPreviewedProduct={handleSetPreviewedProduct} />
                         ))
                     }
                 </Stack>
-                <ProductDetails handleCloseModal={handleClose} open={open} />
-                <ProductDetails handleCloseModal={handleClose} open={open} />
+                {
+                    // toggle modal appearance
+                    open && <ProductDetails PreviewedProduct={PreviewedProduct} handleCloseModal={handleClose} open={open} />
+                }
             </Container >
         );
     }
     else if (error) {
         return (
-            <Typography sx={{
+            <Box sx={{
+                marginTop: "25px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                flexDirection: "column",
                 width: "100%",
                 minHeight: "100px",
                 fontSize: "clamp(16px,calc(18px + (30 - 14) * (100vw - 1000px) / (1920 - 1000)),35px) !important",
                 fontWeight: "bold",
                 WebkitTextStroke: ".1px purple",
+            }}>
+                <Typography variant="h6"
+                    color={theme.palette.error.main}>
+                    {error.error} Data😔
+                </Typography>
 
-
-            }} variant="h6"
-                color={theme.palette.error.main}
-            >
-                {error.error} Data😔</Typography>
+                <Button onClick={() => window.location.reload()} sx={{
+                    border: `1px solid ${theme.palette.primary.main} !important`,
+                    marginY: "25px",
+                    padding: "10px 15px",
+                }}>Reload the page</Button>
+            </Box>
         )
     }
     else if (isLoading) {
@@ -121,64 +137,8 @@ const MainContent = () => {
             </Container>
         </>)
     }
-    // eslint-disable-next-line react/prop-types
-    function CardComponent({ productData, handelOpenModal }) {
-        // const product = productData.attributes;
-        // const baseURL = import.meta.env.VITE_BASE_URL;
-        return (
-            <Card sx={{
-                flexGrow: 1,
-                maxWidth: { xs: "100%", sm: "48%", md: "32%", lg: "24%", xl: 300 },
-                cursor: "pointer",
-                boxShadow: 3,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-            }}>
-                <CardMedia
-                    className="card-img"
-                    component="img"
-                    alt="green iguana"
-                    height="245"
-
-                    image={`${productData.attributes.productImages.data[0].attributes.url}`}
-                    sx={{
-                        boxShadow: 3, cursor: "pointer", flexGrow: 1, transition: "transform 0.35s ease-in-out",
-                        "&:hover": {
-                            transform: "scale(1.05) rotate(2deg)",
-                        },
-                        maxHeight: "245px"
-                    }}
-                />
-                <CardContent sx={{
-                    position: "relative", zIndex: "100 !important", bgcolor: "inherit", flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                }}>
-                    <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                        <Typography gutterBottom fontSize={"20px"} component="div">
-                            {productData.attributes.productTitle}
-                        </Typography>
-                        <Typography gutterBottom fontSize={"16px"} component="div">
-                            ${productData.attributes.productPrice}
-                        </Typography>
-                    </Stack>
-                    <Typography fontSize={"16px"} color="text.secondary">
-                        {productData.attributes.productDescription.slice(0, 120)}..
-                    </Typography>
-                </CardContent>
-                <Stack sx={{ p: 1.4, bgcolor: "inherit" }} direction={"row"} justifyContent={"space-between"} alignItems={"center"} >
-                    <Button size="small" sx={{ fontSize: "14px" }} onClick={handelOpenModal} >
-                        <AddShoppingCartOutlinedIcon sx={{ marginRight: "5px", fontSize: "20px" }} />
-                        Add To Cart
-                    </Button>
-                    <Rating name="read-only" value={productData.attributes.productRating} readOnly size="small" precision={0.5} />
-                </Stack>
-            </Card>
-        );
-    }
 }
+
 
 export default MainContent;
 

@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 
-
 //// vars
 const HomeMenuData = [
     { titleName: "Dashboard" },
@@ -17,7 +16,6 @@ const HomeMenuData = [
         titleName: "Products",
         listClassName: "Products-List",
         subMenu: (<SubMenu listClassName={"Products-List"}
-
             subMenuLinks={
                 [
                     { titleName: "All Products" },
@@ -166,8 +164,6 @@ const LinksMenus = () => {
             <BaseMenu titleName={"Pages"} subMenu={PagesMenuData} />
             <BaseMenu titleName={"User account"} subMenu={UserMenuData} />
             <BaseMenu titleName={"Vendor account"} subMenu={VendorMenuData} />
-
-
         </Stack >
 
     );
@@ -215,9 +211,9 @@ function BaseMenu({ titleName, subMenu }) {
                     }}>
 
                     {
-                        [...subMenu].map((item, index) => {
+                        [...subMenu].map((item) => {
                             return (
-                                <ListItem key={index}
+                                <ListItem key={item.id}
                                     sx={{
                                         borderRadius: "4px",
                                         ".MuiListItemButton-root.MuiListItemButton-gutters": { padding: "5px 4px 5px 15px  " },
@@ -253,25 +249,25 @@ function BaseMenu({ titleName, subMenu }) {
 function SubMenu({ listClassName, subMenuLinks }) {
     const theme = useTheme(ColorModeContext);
     return (
-        <Box className={listClassName} sx={{
-            minWidth: "180px",
-            position: "absolute",
-            top: "0%",
-            right: `-100%`,
-            backgroundColor: "transparent",
-            Padding: '4px',
-            display: "none"
+        <Box className={listClassName}
+            sx={{
+                minWidth: "180px",
+                position: "absolute",
+                top: "0%",
+                left: `-100%`,
+                backgroundColor: "transparent",
+                Padding: '4px',
+                display: "none"
 
-        }}>
+            }}>
             {/* List Menu */}
             <Paper
                 sx={{
                     width: "100%",
+                    bgcolor: theme.palette.categoryColor.main
                 }}>
                 {
-                    [
-                        ...subMenuLinks
-                    ]
+                    [...subMenuLinks]
                         .map((item, index) => {
                             return (
                                 <ListItem key={index} sx={{
@@ -285,7 +281,7 @@ function SubMenu({ listClassName, subMenuLinks }) {
                         })}
             </Paper>
             {/* List Menu */}
-        </Box>
+        </Box >
     )
 }
 
