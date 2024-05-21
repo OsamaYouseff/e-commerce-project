@@ -1,6 +1,3 @@
-import { useRef } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -8,17 +5,12 @@ import 'swiper/css/navigation';
 import { useTheme } from '@emotion/react';
 import './Swiper.css';
 import { ColorModeContext } from "../../Theme/theme";
+import SwiperComponent from './SwiperComponent';
 
+/// icons
 import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import Features from './Features';
 
-
-const bannerImagesData = [
-  { gender: "men", discount: "30", src: "src/images/banner-15.jpg" },
-  { gender: "women", discount: "50", src: "src/images/banner-25.jpg" },
-  { gender: "men", discount: "30", src: "src/images/banner-15.jpg" },
-  { gender: "women", discount: "50", src: "src/images/banner-25.jpg" }
-]
 
 const HeroSection = () => {
   const theme = useTheme(ColorModeContext);
@@ -83,110 +75,5 @@ const HeroSection = () => {
     </Box >
   );
 };
-
-function SwiperComponent() {
-  const progressCircle = useRef(null);
-  const progressContent = useRef(null);
-  const onAutoplayTimeLeft = (s, time, progress) => {
-    progressCircle.current.style.setProperty('--progress', 1 - progress);
-    progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
-  };
-  const theme = useTheme();
-
-  return (
-    <Swiper
-      slidesPerView={1}
-      centeredSlides={true}
-      spaceBetween={30}
-      loop={true}
-      pagination={{
-        clickable: true,
-      }}
-      autoplay={{
-        delay: 4500,
-        disableOnInteraction: false,
-      }}
-      navigation={true}
-      modules={[Autoplay, Pagination, Navigation]}
-      onAutoplayTimeLeft={onAutoplayTimeLeft}
-      className="mySwiper"
-    >
-      {
-        bannerImagesData.map((item, index) => {
-          return (
-            <SwiperSlide key={index} sx={{ position: "relative" }}>
-              <img className='banner-img' src={item.src} alt="banner-img" />
-              <Stack className='banner-text' direction={"column"}
-                sx={{
-                  position: "absolute",
-                  top: "0%",
-                  left: "9%",
-                  color: "#222",
-                  textAlign: "left",
-                  textTransform: "capitalize",
-                  fontSize: "18px",
-                  minHeight: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  gap: "10px",
-                  [theme.breakpoints.up('sm')]: {
-                    gap: "20px",
-                  },
-                }}>
-                <Typography sx={{
-                  display: "flex", flexDirection: "column",
-                  [theme.breakpoints.up('sm')]: {
-                    gap: "15px",
-                  },
-                }}>
-                  < Typography sx={{ textTransform: "uppercase", fontSize: "35px", fontWeight: "bold" }}> Life style collection</Typography>
-                  <Typography sx={{ textTransform: "uppercase", fontSize: "50px" }}> {item.gender}</Typography>
-                  <Typography
-                    sx={{
-                      display: "flex", alignItems: "center", gap: "10px", textTransform: "uppercase", fontSize: "35px", fontWeight: "bold",
-                      [theme.breakpoints.down('sm')]: {
-                        justifyContent: "center !important",
-                      },
-                    }}>
-                    sale up to
-                    <Typography
-                      sx={{ textTransform: "uppercase", fontSize: "40px", marginLeft: "10px", fontWeight: "bold", color: "#cf4e56" }}>
-                      {item.discount}% off
-                    </Typography>
-
-                  </Typography>
-                  get free shipping on orders over $99.99
-                </Typography>
-                <Button color='secondary'
-                  sx={{
-                    width: "60%",
-                    mt: "25px",
-                    color: theme.palette.bgColor.main,
-                    bgcolor: theme.palette.bgColor2.main,
-                    border: "1px solid",
-                    "&: hover": {
-                      color: theme.palette.bgColor2.main,
-                      borderColor: theme.palette.bgColor2.main,
-                      bgcolor: theme.palette.bgColor.main,
-                    }
-                  }}
-                >Shop now
-                </Button>
-              </Stack >
-            </SwiperSlide >
-          )
-        })
-      }
-
-      < div className="autoplay-progress" style={{ display: "none" }
-      } slot="container-end" >
-        <svg viewBox="0 0 48 48" ref={progressCircle}>
-          <circle cx="24" cy="24" r="20"></circle>
-        </svg>
-        <span ref={progressContent}></span>
-      </div >
-    </Swiper >
-  )
-}
 
 export default HeroSection;

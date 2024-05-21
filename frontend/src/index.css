@@ -39,21 +39,25 @@
 .border {
     border: 1px solid lime;
 }
+
 .border2 {
     border: 3px solid red;
 }
+
 .flex-between {
     display: flex;
     flex-direction: row !important;
     justify-content: space-between;
     align-items: center;
 }
+
 .flex-between-column {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
+
 .flex-center {
     display: flex;
     flex-direction: row !important;
@@ -67,6 +71,7 @@
     justify-content: center;
     align-items: center;
 }
+
 .flex-start {
     display: flex;
     flex-direction: column !important;
@@ -75,11 +80,9 @@
 }
 
 .clamp14-20 {
-    font-size: clamp(
-        12px,
-        calc(12px + (20 - 14) * (100vw - 1000px) / (1920 - 1000)),
-        20px
-    ) !important;
+    font-size: clamp(12px,
+            calc(12px + (20 - 14) * (100vw - 1000px) / (1920 - 1000)),
+            20px) !important;
 }
 
 .main-content {
@@ -103,38 +106,30 @@ img {
     -webkit-user-drag: none;
     -webkit-user-select: none;
 }
-/* 
+
 @media (max-width: 690px) {
     .banner-img {
         scale: 0;
     }
+
     .banner-text {
+        width: 100% !important;
         position: relative;
-        top: 3% !important;
-        left: 10% !important;
-        scale: 0.8 !important;
-        text-align: center !important;
+        top: 0% !important;
+        left: 0% !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 100%
     }
 }
 
 @media (max-width: 600px) {
-    .banner-text {
-        scale: 0.6 !important;
-        top: -10% !important;
-        left: -25% !important;
-        min-width: 600px;
+    .banner-text-child {
+        text-align: center;
     }
 }
 
-@media (max-width: 390px) {
-    .banner-text {
-        position: absolute;
-        scale: 0.6 !important;
-        min-width: 150%;
-        top: -25% !important;
-        left: -25% !important;
-    }
-} */
 
 .MuiToggleButtonGroup-grouped.Mui-selected {
     color: #ef2323cb !important;
