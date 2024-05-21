@@ -27,7 +27,6 @@ const HeroSection = () => {
       <Container maxWidth="xl" >
         <Stack direction={"row"} gap={1} sx={{ borderRadius: "10px", overflow: "hidden", boxShadow: 4 }} >
           <SwiperComponent />
-          {/* xl: {  } */}
           <Box className="parent-box" minWidth="26.8%" sx={{
             [theme.breakpoints.up('md')]: {
               display: "flex", justifyContent: "space-between", flexDirection: "column"
@@ -117,9 +116,23 @@ function SwiperComponent() {
           return (
             <SwiperSlide key={index} sx={{ position: "relative" }}>
               <img className='banner-img' src={item.src} alt="banner-img" />
-              <Stack className='banner-text ' direction={"column"} sx={{
-                position: "absolute", top: "15%", left: "9%", color: "#222", textAlign: "left", textTransform: "capitalize", fontSize: "18px",
-              }}>
+              <Stack className='banner-text' direction={"column"}
+                sx={{
+                  position: "absolute",
+                  top: "0%",
+                  left: "9%",
+                  color: "#222",
+                  textAlign: "left",
+                  textTransform: "capitalize",
+                  fontSize: "18px",
+                  minHeight: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  gap: "10px",
+                  [theme.breakpoints.up('sm')]: {
+                    gap: "20px",
+                  },
+                }}>
                 <Typography sx={{
                   display: "flex", flexDirection: "column",
                   [theme.breakpoints.up('sm')]: {
@@ -146,6 +159,7 @@ function SwiperComponent() {
                 </Typography>
                 <Button color='secondary'
                   sx={{
+                    width: "60%",
                     mt: "25px",
                     color: theme.palette.bgColor.main,
                     bgcolor: theme.palette.bgColor2.main,
@@ -155,7 +169,9 @@ function SwiperComponent() {
                       borderColor: theme.palette.bgColor2.main,
                       bgcolor: theme.palette.bgColor.main,
                     }
-                  }}>Shop now</Button>
+                  }}
+                >Shop now
+                </Button>
               </Stack >
             </SwiperSlide >
           )

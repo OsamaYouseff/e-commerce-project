@@ -103,7 +103,7 @@ img {
     -webkit-user-drag: none;
     -webkit-user-select: none;
 }
-
+/* 
 @media (max-width: 690px) {
     .banner-img {
         scale: 0;
@@ -134,7 +134,7 @@ img {
         top: -25% !important;
         left: -25% !important;
     }
-}
+} */
 
 .MuiToggleButtonGroup-grouped.Mui-selected {
     color: #ef2323cb !important;
