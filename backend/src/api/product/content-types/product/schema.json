@@ -15,18 +15,6 @@
       "type": "string",
       "required": true
     },
-    "productPrice": {
-      "type": "decimal",
-      "required": true
-    },
-    "productCategory": {
-      "type": "enumeration",
-      "enum": [
-        "men",
-        "women"
-      ],
-      "required": true
-    },
     "productImages": {
       "allowedTypes": [
         "images",
@@ -38,8 +26,20 @@
       "multiple": true,
       "required": true
     },
+    "productPrice": {
+      "type": "decimal",
+      "required": true
+    },
     "productDescription": {
       "type": "text",
+      "required": true
+    },
+    "productCategory": {
+      "type": "enumeration",
+      "enum": [
+        "men",
+        "women"
+      ],
       "required": true
     },
     "productRating": {

@@ -374,11 +374,15 @@ export interface ApiProductProduct extends Schema.CollectionType {
   };
   attributes: {
     productTitle: Attribute.String & Attribute.Required;
+    productImages: Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    > &
+      Attribute.Required;
     productPrice: Attribute.Decimal & Attribute.Required;
+    productDescription: Attribute.Text & Attribute.Required;
     productCategory: Attribute.Enumeration<['men', 'women']> &
       Attribute.Required;
-    productImages: Attribute.Media & Attribute.Required;
-    productDescription: Attribute.Text & Attribute.Required;
     productRating: Attribute.Decimal & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
