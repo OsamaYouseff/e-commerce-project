@@ -8,6 +8,7 @@ import ScrollToTop from "./Components/ScrollToTop/ScrollToTop";
 /// Theme
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./Theme/theme";
+// import TestComponent from "./testComponents/TestComponent";
 
 
 
@@ -26,6 +27,7 @@ function App() {
                 </div>
             </ThemeProvider>
         </ColorModeContext.Provider>
+
     );
 }
 export default App;

@@ -14,7 +14,7 @@ const SkeletonFeedback = () => {
             sx={{ width: "100% !important", flexWrap: "wrap", gap: " 15px 10px" }}
             alignItems={"space-between"} justifyContent={"center"} >
             {
-                [...Array(8)].map((item, index) => (
+                [...Array(10)].map((item, index) => (
                     <Skeleton key={index} variant="rectangular" height={360} sx={SkeletonStyles} />
                 ))
             }
