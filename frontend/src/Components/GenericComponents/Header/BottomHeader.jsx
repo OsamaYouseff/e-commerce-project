@@ -4,7 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Fragment, useState } from "react";
 import Box from '@mui/material/Box';
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from '@mui/material/styles';
 import { Container } from "@mui/material";
 import SwipeableDrawer from '@mui/material/Drawer';
@@ -200,7 +200,6 @@ function Drawer() {
                     height: "1000px",
                     border: "1px solid #777",
                     bgcolor: theme.palette.categoryColor.main,
-
                 }}>
                     <Box className="accordions-container flex-column-center " sx={{ width: "100%", minWidth: "350px", gap: "10px", p: 1, borderRadius: "5px" }}>
                         <Button sx={{ color: theme.palette.text.primary, marginTop: "15px", }} onClick={toggleDrawer(openingLocation, false)}>

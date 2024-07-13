@@ -2,7 +2,7 @@
 import { IconButton, Stack, Typography, useTheme } from "@mui/material";
 import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
 import { useContext } from "react";
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';

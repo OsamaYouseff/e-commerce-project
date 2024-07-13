@@ -5,9 +5,7 @@ import { styled, alpha, useTheme } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import PersonIcon from '@mui/icons-material/Person';
-import Badge from '@mui/material/Badge';
 import IconButton from '@mui/material/IconButton';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useState } from "react";
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -15,7 +13,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
+import CartDrawer from "../../CartDrawer/CartDrawer";
 
 const transitionDuration = '350ms';
 
@@ -60,14 +59,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-    '& .MuiBadge-badge': {
-        right: -3,
-        top: 13,
-        border: `2px solid ${theme.palette.background.paper}`,
-        padding: '0 4px',
-    },
-}));
 
 const options = [
     'All Category',
@@ -129,15 +120,13 @@ const MidHeader = function () {
                     <IconButton aria-label="cart" sx={{ transition: transitionDuration, "& :hover": { cursor: "pointer" } }}>
                         <PersonIcon sx={{ borderRadius: "7px" }} />
                     </IconButton>
-                    <IconButton aria-label="cart" >
-                        <StyledBadge badgeContent={4} color="primary"  >
-                            <ShoppingCartIcon sx={{ transition: transitionDuration }} />
-                        </StyledBadge>
-
+                    <IconButton aria-label="cart" sx={{ p: 0.2, aspectRatio: "1" }} >
+                        <CartDrawer />
                     </IconButton>
                 </Stack>
                 {/*== Icons ==*/}
             </Stack>
+
         </Container >
     );
 }

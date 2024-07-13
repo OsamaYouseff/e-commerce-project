@@ -121,7 +121,6 @@ const SwiperComponent = () => {
 					)
 				})
 			}
-
 			< div className="autoplay-progress" style={{ display: "none" }
 			} slot="container-end" >
 				<svg viewBox="0 0 48 48" ref={progressCircle}>

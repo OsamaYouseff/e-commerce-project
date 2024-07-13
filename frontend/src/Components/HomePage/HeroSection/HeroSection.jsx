@@ -4,7 +4,7 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import { useTheme } from '@emotion/react';
 import './Swiper.css';
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 import SwiperComponent from './SwiperComponent';
 
 /// icons
@@ -31,7 +31,6 @@ const HeroSection = () => {
               <img style={{ minWidth: "100%", maxWidth: "100%" }} src="./images/banner-17.jpg" alt="banner-img" />
               <Typography className='sub-banner-text '
                 sx={{
-
                   position: "absolute", top: "25%", left: "9%", color: "#222", textAlign: "left", textTransform: "capitalize",
                 }}>
                 < Typography sx={{ textTransform: "uppercase", fontSize: "18px", fontWeight: "bold" }}> new arrivals</Typography>
@@ -54,7 +53,6 @@ const HeroSection = () => {
               <img style={{ minWidth: "100%", maxWidth: "100%" }} src="./images/banner-16.jpg" alt="banner-img" />
               <Typography className='sub-banner-text '
                 sx={{
-
                   position: "absolute", top: "25%", left: "9%", color: "#222", textAlign: "left", textTransform: "capitalize",
                 }}>
                 < Typography sx={{ textTransform: "uppercase", fontSize: "22px", fontWeight: "bold" }}> Gaming 4k</Typography>

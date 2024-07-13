@@ -6,7 +6,7 @@ import { Box, Stack, Typography } from "@mui/material";
 import Divider from '@mui/material/Divider';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import useTheme from '@mui/material/styles/useTheme';
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 
 
 const Features = () => {

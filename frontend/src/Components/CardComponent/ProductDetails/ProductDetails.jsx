@@ -42,6 +42,8 @@ const modalStyles = {
   boxShadow: 24,
   p: 4,
   flexDirection: { xs: "column", sm: "row" },
+  gap: { xs: 1, sm: 4 },
+  justifyContent: { sx: "center", sm: "space-between" }
 };
 
 
@@ -66,8 +68,9 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         aria-describedby="modal-modal-description"
         sx={{
           ".MuiStack-root": {
-            width: { xs: "94%", md: "850px" },
-            minWidth: "390px",
+            width: { xs: "95%", sm: "80%", md: "850px" },
+            maxHeight: { xs: "98%", sm: "550px", md: "600px" },
+            // minWidth: "380px",
             borderRadius: "10px",
             border: "none",
             bgcolor: theme.palette.categoryColor.main,
@@ -78,17 +81,24 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
           sx={modalStyles}
           direction={"row"}
           alignItems={"center"}
-          justifyContent={"space-between"}
-          gap={3}
         >
           <CloseRoundedIcon
             color={theme.palette.text.primary}
             sx={CloseBtnStyles}
             onClick={handleCloseModal}
           />
-          <Box>
+          <Box sx={{
+            padding: "0", maxWidth: { xs: 200, lg: "350px" },
+            minWidth: { xs: 200, lg: "320px" },
+            maxHeight: { xs: 200, lg: "320px" },
+            minHeight: { xs: 200, lg: "320px" },
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",            
+          }}
+          >
             <img
-              style={{ maxWidth: 300, minWidth: 300, borderRadius: "10px", maxHeight: "350px", minHeight: "350px" }}
+              style={{ maxWidth: "90%", borderRadius: "10px" }}
               src={previewImgUrl}
               alt="product-img"
             />
@@ -104,23 +114,29 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
               overflow: "hidden",
             }}
           >
-            <Typography variant="h5">
-              {PreviewedProduct.attributes.productTitle}
-            </Typography>
-            <Typography
-              my={0.4}
-              fontSize={"22px"}
-              color={"crimson"}
-              variant="h6"
-            >
-              ${PreviewedProduct.attributes.productPrice}
-            </Typography>
-            <Typography sx={{ fontSize: "16px" }}>
+            <Stack sx={{ fontSize: { xs: "18px", lg: "18px" }, flexDirection: { xs: "row", sm: "column" }, alignItems: { xs: "center", sm: "start" }, justifyContent: "center", gap: { xs: 1, sm: 0 } }}>
+              <Typography variant="h6" >
+                {PreviewedProduct.attributes.productTitle}
+              </Typography>
+              <Typography
+                my={0.4}
+                fontSize={"22px"}
+                color={"crimson"}
+                variant="h6"
+              >
+                ${PreviewedProduct.attributes.productPrice}
+              </Typography>
+            </Stack>
+
+            <Typography sx={{ fontSize: { xs: "14px", lg: "18px" }, maxWidth: { xs: "100%", lg: "100%" } }}>
               {PreviewedProduct.attributes.productDescription}
             </Typography>
             <Stack
+
               sx={{
                 justifyContent: { xs: "center", sm: "left" },
+                overflow: "auto",
+                minWidth: { xs: "100%", sm: "100%" },
               }}
               direction={"row"}
               gap={1}
@@ -136,7 +152,6 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     border: "1px solid #ff6e6e",
                     background: "initial",
                     borderRadius: "5px !important",
-                    overflowX: "auto",
                   },
                 }}
               >
@@ -183,6 +198,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 textTransform: "capitalize",
                 p: "5px 15px !important",
                 bgcolor: "#ff6e6e",
+                fontWeight: "bold",
+
               }}
               variant="contained" >
               <AddShoppingCartOutlinedIcon
@@ -190,6 +207,23 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 fontSize="small"
               />
               Buy now
+            </Button>
+            <span style={{ display: "inline-block", width: "10px" }}> </span>
+            <Button
+              sx={{
+                mb: { xs: 1, sm: 0 },
+                textTransform: "capitalize",
+                p: "5px 15px !important",
+                fontWeight: "bold",
+              }}
+              color="secondary"
+              variant="contained" >
+              <AddShoppingCartOutlinedIcon
+                sx={{ mr: 1 }}
+
+                fontSize="small"
+              />
+              Add To Cart
             </Button>
           </Box>
         </Stack>

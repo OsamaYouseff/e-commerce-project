@@ -96,7 +96,6 @@
     /* height: 100px; */
     width: 100%;
     background: blue;
-    margin-top: 15px;
 }
 
 img {
@@ -134,4 +133,14 @@ img {
 .MuiToggleButtonGroup-grouped.Mui-selected {
     color: #ef2323cb !important;
     border-color: #ef2323cb !important;
+}
+
+
+@media (max-width: 500px) {
+
+    .swiper-button-prev,
+    .swiper-button-next,
+    .swiper-pagination {
+        display: none !important;
+    }
 }

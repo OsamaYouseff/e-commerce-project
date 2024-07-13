@@ -4,14 +4,14 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { useState } from "react";
 import { useTheme } from "@mui/material/styles";
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 import Button from '@mui/material/Button';
-import { useGetProductByNameQuery } from "../../redux/product";
-import CardComponent from "./CardComponent/CardComponent";
+import { useGetProductByNameQuery } from "../../../redux/product";
+import CardComponent from "../../CardComponent/CardComponent";
 
 /// Icons
-import ProductDetails from "./ProductDetails/ProductDetails";
-import SkeletonFeedback from "../SkeletonFeedback/SkeletonFeedback";
+import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
+import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 const MainContent = () => {
     const allProducts = 'products?populate=*';

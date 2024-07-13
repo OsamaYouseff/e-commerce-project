@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 const Footer = () => {
   const theme = useTheme(ColorModeContext);
   return (
@@ -8,10 +8,9 @@ const Footer = () => {
       width: "100%",
       background: `linear-gradient(90deg, #1d273b, #2e4a56, #1d273b)`,
       borderTop: `1px solid ${theme.palette.divider}`,
-      marginTop: "15px",
       borderTopLeftRadius: "4px",
       borderTopRightRadius: "4px",
-      fontSize: "20px",
+      fontSize: { xs: "17px", md: "20px" },
       p: 1,
       color: "#f7f7f7",
       fontWeight: "bold"

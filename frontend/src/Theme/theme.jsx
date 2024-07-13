@@ -43,7 +43,7 @@ export const getDesignTokens = (mode) => ({
           main: "#252b32",
         },
         bgColor: {
-          main: "#000",
+          main: "#121212",
         },
         bgColor2: {
           main: "#fff",
