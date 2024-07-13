@@ -11,11 +11,12 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Footer from './Components/GenericComponents/Footer/Footer.jsx'
 import ScrollToTop from './Components/GenericComponents/ScrollToTop/ScrollToTop.jsx'
 import CartPage from './Components/CartPage/CartPage.jsx'
+import TopHeader from './Components/GenericComponents/Header/TopHeader.jsx'
+import ErrorPage from './Components/ErrorPage/ErrorPage.jsx'
 
 /// Theme
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./Theme/theme";
-import TopHeader from './Components/GenericComponents/Header/TopHeader.jsx'
 
 
 const routeElement = (currentComponent) => {
@@ -32,16 +33,20 @@ const routeElement = (currentComponent) => {
 const router = createBrowserRouter([
     {
         path: "/",
-        element: routeElement(<App />)
+        element: routeElement(<App />),
     },
     {
         path: "/home",
-        element: routeElement(<App />)
+        element: routeElement(<App />),
     }
     ,
     {
         path: "/cart",
-        element: routeElement(<CartPage />)
+        element: routeElement(<CartPage />),
+    }
+    , {
+        path: "/*",
+        element: routeElement(<ErrorPage />),
     }
 ]);
 

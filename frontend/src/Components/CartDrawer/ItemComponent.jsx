@@ -1,4 +1,4 @@
-import { Stack, Box, Typography, Button } from "@mui/material";
+import { Stack, Box, Typography } from "@mui/material";
 import { useState } from "react";
 import { ColorModeContext } from "../../Theme/theme";
 import { useTheme } from "@mui/material/styles";
@@ -24,10 +24,11 @@ const ItemComponent = () => {
     }
     return (
         <Stack Stack direction="row" gap={2} justifyContent={"space-between"} sx={{
-            p: 1.2, mb: 1, 
+            p: 1.2, mb: 1,
             borderRadius: "5px",
             bgcolor: theme.palette.sectionBgColor.main,
-            border: ` 1px solid #ddd`,
+            borderBottom: ` 1px solid ${theme.palette.footerBgColor.primary} `,
+            boxShadow: 1
         }} >
             <img style={{ maxWidth: "100px", borderRadius: "5px" }} src="./images/banner-17.jpg" alt="cart-item" />
             <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }} justifyContent={"space-between"}>

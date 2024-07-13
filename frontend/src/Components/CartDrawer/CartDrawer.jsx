@@ -39,13 +39,15 @@ export default function AnchorTemporaryDrawer() {
                 width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 390,
                 p: { xs: 2, sm: 1 }, pr: 1,
                 bgcolor: theme.palette.categoryColor.main,
+                maxHeight: "100vh",
+                overflow: "auto",
             }}
             role="presentation"
         // onClick={toggleDrawer(anchor, false)}
         // onKeyDown={toggleDrawer(anchor, false)}
         >
             <Button sx={{
-                position: "absolute", right: 8, top: -10, color: theme.palette.text.primary, marginTop: "15px",
+                position: "absolute", right: 8, top: -10, color: theme.palette.text.primary, marginTop: "15px", zIndex: 1,
                 "&:hover": { bgcolor: "transparent" }
             }} onClick={toggleDrawer("right", false)}>
                 <CloseRoundedIcon sx={{
@@ -54,9 +56,9 @@ export default function AnchorTemporaryDrawer() {
                     height: "35px",
                     cursor: "pointer",
                     borderRadius: "50%",
-                    p: 1,
+                    p: 0.2,
                     color: theme.palette.text.primary,
-                    border: `1px solid ${theme.palette.text.primary}`,
+                    border: `2px solid ${theme.palette.text.primary}`,
                     "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e" },
                     transition: "0.35s"
                 }} onClick={toggleDrawer("right", false)} />
@@ -68,6 +70,7 @@ export default function AnchorTemporaryDrawer() {
                 <ItemComponent />
                 <ItemComponent />
                 <ItemComponent />
+
             </Box>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 1, my: 2, marginLeft: "10px", fontSize: "17px" }}>
                 <Typography variant="h6" >Got a coupon?</Typography>

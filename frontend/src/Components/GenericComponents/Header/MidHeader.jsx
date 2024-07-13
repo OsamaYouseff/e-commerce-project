@@ -4,7 +4,6 @@ import LocalGroceryStoreOutlinedIcon from '@mui/icons-material/LocalGroceryStore
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
-import PersonIcon from '@mui/icons-material/Person';
 import IconButton from '@mui/material/IconButton';
 import { useState } from "react";
 import List from '@mui/material/List';
@@ -15,7 +14,7 @@ import Menu from '@mui/material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ColorModeContext } from "../../../Theme/theme";
 import CartDrawer from "../../CartDrawer/CartDrawer";
-import { Link } from "react-router-dom";
+import CustomerMenu from "./CustomerMenu";
 
 const transitionDuration = '350ms';
 
@@ -83,16 +82,18 @@ const MidHeader = function () {
                 gap: "10px",
             }}>
                 {/* Logo */}
-                <Link to="/">
+                <a href="/" style={{ textDecoration: "none" }} >
                     <Stack alignItems={"center"} sx={{
                         order: { md: -1 },
                         textDecoration: "none",
-                        color: "white",
+                        color: theme.palette.text.primary,
                     }} >
                         <LocalGroceryStoreOutlinedIcon sx={{ fontSize: "28px", }} />
-                        <Typography variant="body" sx={{ fontSize: fontSizeClamp, fontWeight: "bolder", textDecoration: "none" }}>E-Commerce</Typography>
+                        <Typography variant="body" sx={{ border: "none", fontSize: fontSizeClamp, fontWeight: "bolder", textDecoration: "none" }}>
+                            E-Commerce
+                        </Typography>
                     </Stack>
-                </Link>
+                </a>
                 {/*== Logo ==*/}
 
                 {/* Search */}
@@ -123,7 +124,8 @@ const MidHeader = function () {
                     }
                 }}>
                     <IconButton aria-label="cart" sx={{ transition: transitionDuration, "& :hover": { cursor: "pointer" } }}>
-                        <PersonIcon sx={{ borderRadius: "7px" }} />
+                        {/* <PersonIcon sx={{ borderRadius: "7px" }} /> */}
+                        <CustomerMenu />
                     </IconButton>
                     <IconButton aria-label="cart" sx={{ p: 0.2, aspectRatio: "1" }} >
                         <CartDrawer />
