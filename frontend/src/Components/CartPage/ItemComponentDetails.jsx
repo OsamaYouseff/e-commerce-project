@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
 
-const ItemComponent = () => {
+const ItemComponentDetails = () => {
     const [quantity, setQuantity] = useState(1);
     const theme = useTheme(ColorModeContext);
 
@@ -23,19 +23,20 @@ const ItemComponent = () => {
         }
     }
     return (
-        <Stack Stack direction="row" gap={1} justifyContent={"space-between"} sx={{
+        <Stack direction="row" justifyContent={"space-between"} alignItems={"center"} sx={{
             p: 1.2, mb: 1,
             borderRadius: "5px",
             // bgcolor: theme.palette.sectionBgColor.main,
             // border: ` 1px solid #ddd`,
             boxShadow: 1,
+            gap: { xs: 2, sm: 1 },
         }} >
-            <img style={{ maxWidth: "100px", borderRadius: "5px" }} src="./images/banner-17.jpg" alt="cart-item" />
+            <img style={{ maxWidth: "100px", maxHeight: "100px", borderRadius: "5px" }} src="./images/banner-17.jpg" alt="cart-item" />
             <Box sx={{ display: "flex", flex: 1, flexDirection: "column" }} justifyContent={"space-between"}>
-                <Stack direction="row" justifyContent={"space-between"} alignItems={"center"} sx={{ height: "100%" }}>
-                    <Typography sx={{ fontSize: "18px", width: "25%" }}>Cart item name </Typography>
-                    <Typography sx={{ width: "10%" }}>$19.99 </Typography>
-                    <Stack direction="row" gap={.8} alignItems={"flex-end"} sx={{ width: "25%" }}>
+                <Stack direction="row" justifyContent={"space-evenly"} alignItems={"center"} gap={1} sx={{ height: "100%", flexWrap: "wrap" }}>
+                    <Typography sx={{ fontSize: "18px", width: { xs: "100%", sm: "20%" } }}>Cart item name </Typography>
+                    <Typography sx={{ width: { xs: "100%", sm: "12%" } }}>$19.99 </Typography>
+                    <Stack direction="row" gap={.8} alignItems={"flex-end"} sx={{ width: { xs: "100%", sm: "35%" } }}>
                         <IconButton color="primary" sx={{
                             width: "40px", height: "25px",
                             border: ` 1px solid ${theme.palette.primary.main} `,
@@ -60,7 +61,10 @@ const ItemComponent = () => {
                             <AddIcon size="small" />
                         </IconButton>
                     </Stack>
-                    <Typography sx={{ fontSize: "18px", fontWeight: "bolder", width: "15%", color: "#ff4450" }}>$19.99 </Typography>
+                    <Stack direction="row" sx={{ fontSize: "18px", fontWeight: "bolder", width: { xs: "75%", sm: "13%" }, color: "#ff4450" }}>
+                        <Typography sx={{ display: { xs: "block", sm: "none" }, width: "40%", fontWeight: "bolder", fontSize: "inherit" }}>Total : </Typography>
+                        $19.99
+                    </Stack>
                     <IconButton sx={{
                         border: `1px solid  ${theme.palette.text.primary}`,
                         aspectRatio: "1 / 1",
@@ -73,4 +77,4 @@ const ItemComponent = () => {
         </Stack >
     );
 };
-export default ItemComponent;   
+export default ItemComponentDetails;   

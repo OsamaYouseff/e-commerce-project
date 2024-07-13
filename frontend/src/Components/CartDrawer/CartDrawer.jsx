@@ -9,7 +9,7 @@ import { useTheme, styled, } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
-
+import { Link } from "react-router-dom";
 
 
 export default function AnchorTemporaryDrawer() {
@@ -41,7 +41,7 @@ export default function AnchorTemporaryDrawer() {
                 bgcolor: theme.palette.categoryColor.main,
             }}
             role="presentation"
-            // onClick={toggleDrawer(anchor, false)}
+        // onClick={toggleDrawer(anchor, false)}
         // onKeyDown={toggleDrawer(anchor, false)}
         >
             <Button sx={{
@@ -81,10 +81,10 @@ export default function AnchorTemporaryDrawer() {
                     <Typography sx={{ fontSize: "20px" }}>Subtotal </Typography>
                     <Typography sx={{ fontWeight: "bolder", color: "#ff4450", fontSize: "20px" }}>$19.99 </Typography>
                 </Stack>
-                <Button variant='contained' sx={{ fontWeight: "bolder" }}>Checkout</Button>
+                <Link to="/cart" xs={{ width: "100%" }}>
+                    <Button variant='contained' sx={{ fontWeight: "bolder", width: "100%" }}>Checkout</Button>
+                </Link>
             </Box>
-
-
         </Box >
     );
 

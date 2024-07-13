@@ -15,6 +15,7 @@ import Menu from '@mui/material/Menu';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ColorModeContext } from "../../../Theme/theme";
 import CartDrawer from "../../CartDrawer/CartDrawer";
+import { Link } from "react-router-dom";
 
 const transitionDuration = '350ms';
 
@@ -82,12 +83,16 @@ const MidHeader = function () {
                 gap: "10px",
             }}>
                 {/* Logo */}
-                <Stack alignItems={"center"} sx={{
-                    order: { md: -1 },
-                }} >
-                    <LocalGroceryStoreOutlinedIcon sx={{ fontSize: "28px" }} />
-                    <Typography variant="body" sx={{ fontSize: fontSizeClamp, fontWeight: "bolder" }}>E-Commerce</Typography>
-                </Stack>
+                <Link to="/">
+                    <Stack alignItems={"center"} sx={{
+                        order: { md: -1 },
+                        textDecoration: "none",
+                        color: "white",
+                    }} >
+                        <LocalGroceryStoreOutlinedIcon sx={{ fontSize: "28px", }} />
+                        <Typography variant="body" sx={{ fontSize: fontSizeClamp, fontWeight: "bolder", textDecoration: "none" }}>E-Commerce</Typography>
+                    </Stack>
+                </Link>
                 {/*== Logo ==*/}
 
                 {/* Search */}

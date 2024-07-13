@@ -2,7 +2,7 @@ import { Button, Container, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
-import ItemComponent from "./ItemComponentDetails";
+import ItemComponentDetails from "./ItemComponentDetails";
 import { Fragment } from "react";
 
 import { useState } from "react";
@@ -30,9 +30,15 @@ const CartPage = () => {
     return (
         <Fragment>
             <MidHeader />
-            <Container maxWidth="xl" sx={{ minHeight: "40vh", bgcolor: theme.palette.sectionBgColor.main, py: 2, mt: 2 }}>
-                <Stack direction="row" gap={2} justifyContent={"space-between"} sx={{ mb: 2 }}>
-                    <Box sx={{ width: " 70%", maxHeight: "104vh", overflow: "auto" }}>
+            <Container maxWidth="xl" sx={{ 
+                bgcolor: theme.palette.sectionBgColor.main, py: 2, mt: 2, minHeight: "88vh"
+            }}>
+                <Stack direction="row" gap={2} justifyContent={"space-between"} sx={{
+                    mb: 2, [theme.breakpoints.down("md")]: {
+                        flexDirection: "column",
+                    }
+                }}>
+                    <Box sx={{ width: { xs: "100%", md: "70%" }, maxHeight: { xs: "auto", sm: "auto" }, overflow: "auto" }}>
                         <Typography variant="h1" fontSize={"20px"} sx={{ mb: 1 }}>Shopping Bag</Typography>
                         <Typography variant="h2" fontSize={"20px"} sx={{ display: "flex", alignItems: "center", gap: "6px" }}>
                             <span style={{ color: theme.palette.primary.main, fontWeight: "bolder" }}>2</span>
@@ -43,19 +49,20 @@ const CartPage = () => {
                             my: 2, boxShadow: 1, bgcolor: theme.palette.bgColor.main, py: 1, px: 2, borderRadius: "6px",
 
                         }}>
-                            <Stack direction="row" p={1} gap={2} mb={2} mt={1} sx={{ boxShadow: 1, borderRadius: "6px" }}>
-                                <span style={{ fontSize: "19px", width: "38%", fontWeight: "bold" }}>Product</span>
-                                <span style={{ fontSize: "19px", width: "10%", fontWeight: "bold" }}>Price</span>
+                            <Stack direction="row" p={1} gap={2} mb={2} mt={1} sx={{ boxShadow: 1, borderRadius: "6px", display: { xs: "none", sm: "flex" } }}>
+                                <span style={{ fontSize: "19px", width: "33%", fontWeight: "bold" }}>Product</span>
+                                <span style={{ fontSize: "19px", width: "9%", fontWeight: "bold" }}>Price</span>
                                 <span style={{ fontSize: "19px", width: "20%", fontWeight: "bold", textAlign: "center" }}>Quantity</span>
-                                <span style={{ fontSize: "19px", width: "22%", fontWeight: "bold", textAlign: "center" }}>Total Price</span>
+                                <span style={{ fontSize: "19px", width: "32%", fontWeight: "bold", textAlign: "center" }}>Total Price</span>
                             </Stack>
-                            <ItemComponent />
-                            <ItemComponent />
-                            <ItemComponent />
-                            <ItemComponent />
+                            <ItemComponentDetails />
+                            <ItemComponentDetails />
+                            <ItemComponentDetails />
+                            <ItemComponentDetails />
+                            <ItemComponentDetails />
                         </Box>
                     </Box>
-                    <Box sx={{ width: " 30%", borderRadius: "15px", p: 2, boxShadow: 2, border: `1px solid ${theme.palette.footerBgColor.background}`, bgcolor: theme.palette.bgColor.main }}>
+                    <Box sx={{ width: { xs: "100%", md: "30%" }, borderRadius: "15px", p: 2, boxShadow: 2, border: `1px solid ${theme.palette.footerBgColor.background}`, bgcolor: theme.palette.bgColor.main }}>
                         <Typography variant="h1" fontSize={"20px"} sx={{ mb: 2, fontWeight: "bolder" }}>Calculated Shipping</Typography>
                         <FormControl sx={{ mb: 2, minWidth: 120, width: "100%" }} size="small">
                             <InputLabel id="demo-select-small-label">Country</InputLabel>
@@ -100,7 +107,7 @@ const CartPage = () => {
                                 sx={{ ".MuiOutlinedInput-root": { borderRadius: "25px" }, width: "50%" }}
                             />
                         </Stack>
-                        <Button variant="contained" sx={{ width: " 100%", borderRadius: "15px", fontWeight: "bolder", mb: 3 }}>Update</Button>
+                        <Button variant="contained" sx={{ width: " 100%", borderRadius: "25px", fontWeight: "bolder", mb: 3 }}>Update</Button>
                         <Divider sx={{ mb: 3 }} />
                         <Typography variant="h1" fontSize={"20px"} sx={{ mb: 2, fontWeight: "bolder" }}>Coupon Code</Typography>
                         <Typography variant="h6" fontSize={"13px"} sx={{ mb: 2, fontWeight: "bolder" }}>
@@ -112,7 +119,7 @@ const CartPage = () => {
                             size="small"
                             sx={{ ".MuiOutlinedInput-root": { borderRadius: "25px" }, width: "100%", mb: 2 }}
                         />
-                        <Button variant="contained" sx={{ width: " 100%", borderRadius: "15px", fontWeight: "bolder", mb: 3 }}>Apply</Button>
+                        <Button variant="contained" sx={{ width: " 100%", borderRadius: "25px", fontWeight: "bolder", mb: 3 }}>Apply</Button>
                         <Box sx={{ borderRadius: "15px", boxShadow: 1, bgcolor: theme.palette.footerBgColor.accent, p: 2 }}>
                             <Typography variant="h1" fontSize={"20px"} sx={{ mb: 2, fontWeight: "bolder" }}>Total Cart Price</Typography>
                             <Stack sx={{ fontWeight: "bolder" }}>
@@ -126,7 +133,7 @@ const CartPage = () => {
                                 </Typography>
                                 <Typography variant="h6" fontSize={"14px"} sx={{ mb: 1, display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: "inherit" }}>
                                     Discount
-                                    <span style={{ fontSize: "15px" }}>$12.99</span>
+                                    <span style={{ fontSize: "15px" }}>- $12.99</span>
                                 </Typography>
                                 <Typography variant="h6" fontSize={"14px"} sx={{ mb: 1, display: "flex", justifyContent: "space-between", alignItems: "center", fontWeight: "inherit" }}>
                                     Cart Total price
@@ -137,7 +144,7 @@ const CartPage = () => {
                     </Box>
                 </Stack>
             </Container>
-        </Fragment>
+        </Fragment >
     );
 };
 export default CartPage;
