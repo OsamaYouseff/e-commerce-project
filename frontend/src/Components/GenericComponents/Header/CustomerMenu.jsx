@@ -1,7 +1,3 @@
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Divider from '@mui/material/Divider';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -27,7 +23,7 @@ const CustomerMenu = () => {
 
     const CustomerListItems = [
         {
-            title: "Order", icon: <LocalShippingIcon fontSize="small" />,
+            title: "Orders", icon: <LocalShippingIcon fontSize="small" />,
             link: `\\cart`
         },
         {

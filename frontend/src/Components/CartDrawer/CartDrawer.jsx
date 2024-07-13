@@ -35,12 +35,14 @@ export default function AnchorTemporaryDrawer() {
 
     const list = (anchor) => (
         <Box
+            className="flex-between-column"
             sx={{
                 width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 390,
-                p: { xs: 2, sm: 1 }, pr: 1,
+                p: { xs: 2, sm: 2 }, pr: 1,
                 bgcolor: theme.palette.categoryColor.main,
-                maxHeight: "100vh",
+                height: "100vh",
                 overflow: "auto",
+
             }}
             role="presentation"
         // onClick={toggleDrawer(anchor, false)}
@@ -63,8 +65,8 @@ export default function AnchorTemporaryDrawer() {
                     transition: "0.35s"
                 }} onClick={toggleDrawer("right", false)} />
             </Button>
-            <Typography variant="h6" style={{ marginBottom: "20px", marginLeft: "10px", fontWeight: "bold" }}> View Your Cart</Typography>
-            <Box sx={{ overflow: "auto", height: { xs: "58vh", sm: "auto" }, px: 1 }}>
+            <Typography variant="h5" style={{ marginLeft: "10px", fontWeight: "bold", width: "95%", textAlign: "left" }}> View Your Cart</Typography>
+            <Box sx={{ overflow: "auto", height: { xs: "58vh", sm: "auto" }, px: 1, width: "100%" }}>
                 <ItemComponent />
                 <ItemComponent />
                 <ItemComponent />
@@ -72,22 +74,25 @@ export default function AnchorTemporaryDrawer() {
                 <ItemComponent />
 
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, my: 2, marginLeft: "10px", fontSize: "17px" }}>
-                <Typography variant="h6" >Got a coupon?</Typography>
-                <Stack direction="row" gap={1}>
-                    <input type="text" placeholder="Enter your coupon code" style={{ width: "70%", height: "40px", borderRadius: "5px", border: `1px solid ${theme.palette.text.primary}`, padding: "10px", fontWeight: "bolder" }} />
-                    <Button variant='contained' sx={{ width: "30%", height: "40px", borderRadius: "5px", border: `1px solid ${theme.palette.primary.main}`, cursor: "pointer", fontWeight: "bolder" }}>Apply</Button>
-                </Stack>
-            </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1, marginLeft: "10px", fontSize: "17px" }}>
-                <Stack direction="row" justifyContent="space-between" >
-                    <Typography sx={{ fontSize: "20px" }}>Subtotal </Typography>
-                    <Typography sx={{ fontWeight: "bolder", color: "#ff4450", fontSize: "20px" }}>$19.99 </Typography>
-                </Stack>
-                <Link to="/cart" xs={{ width: "100%" }}>
-                    <Button variant='contained' sx={{ fontWeight: "bolder", width: "100%" }}>Checkout</Button>
-                </Link>
-            </Box>
+
+            <Stack sx={{ width: "100%" }}>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1, my: 2, marginLeft: "10px", fontSize: "17px" }}>
+                    <Typography variant="h6" >Got a coupon?</Typography>
+                    <Stack direction="row" gap={1}>
+                        <input type="text" placeholder="Enter your coupon code" style={{ width: "70%", height: "40px", borderRadius: "5px", border: `1px solid ${theme.palette.text.primary}`, padding: "10px", fontWeight: "bolder" }} />
+                        <Button variant='contained' sx={{ width: "30%", height: "40px", borderRadius: "5px", border: `1px solid ${theme.palette.primary.main}`, cursor: "pointer", fontWeight: "bolder" }}>Apply</Button>
+                    </Stack>
+                </Box>
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1, marginLeft: "10px", fontSize: "17px" }}>
+                    <Stack direction="row" justifyContent="space-between" >
+                        <Typography sx={{ fontSize: "20px" }}>Subtotal </Typography>
+                        <Typography sx={{ fontWeight: "bolder", color: "#ff4450", fontSize: "20px" }}>$19.99 </Typography>
+                    </Stack>
+                    <Link to="/cart" xs={{ width: "100%" }}>
+                        <Button variant='contained' sx={{ fontWeight: "bolder", width: "100%" }}>Checkout</Button>
+                    </Link>
+                </Box>
+            </Stack>
         </Box >
     );
 

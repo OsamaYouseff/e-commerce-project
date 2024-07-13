@@ -30,8 +30,9 @@ const CartPage = () => {
     return (
         <Fragment>
             <MidHeader />
-            <Container maxWidth="xl" sx={{ 
-                bgcolor: theme.palette.sectionBgColor.main, py: 2, mt: 2, minHeight: "88vh"
+            <Container maxWidth="xl" sx={{
+                bgcolor: theme.palette.sectionBgColor.main, py: 2, mt: 2, minHeight: "88vh",
+                borderRadius: "8px",
             }}>
                 <Stack direction="row" gap={2} justifyContent={"space-between"} sx={{
                     mb: 2, [theme.breakpoints.down("md")]: {
