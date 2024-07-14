@@ -881,7 +881,6 @@ export interface ApiCustomerCustomer extends Schema.CollectionType {
         };
       }>;
     Gender: Attribute.Enumeration<['Male', 'Female']> &
-      Attribute.Required &
       Attribute.SetPluginOptions<{
         i18n: {
           localized: true;

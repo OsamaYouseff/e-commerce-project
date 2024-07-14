@@ -13,19 +13,22 @@ export const getCustomer = async (customerId) => {
         console.error('Error fetching customers:', error);
     }
 };
+// {
+// FirstName: "Hassan",
+// LastName: "Mostafa",
+// Email: "Hassan@gmail.com",
+// Password: '1234',
+// Gender: "Male",
+// PhoneNumber: "01011534486",
+// Address: "street 1 at city in country "
+// }
+export const createCustomerAccount = async (customerFromData) => {
 
-export const createCustomerAccount = async () => {
+    console.log("from Function ", customerFromData);
+
     const url = 'http://localhost:1337/api/customers';
     const customerData = {
-        data: {
-            FirstName: "Hassan",
-            LastName: "Mostafa",
-            Email: "Hassan@gmail.com",
-            Password: '1234',
-            Gender: "Male",
-            PhoneNumber: "01011534486",
-            Address: "street 1 at city in country "
-        }
+        data: customerFromData,
     };
 
     const config = {

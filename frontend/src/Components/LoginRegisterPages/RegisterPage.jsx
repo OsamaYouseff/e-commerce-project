@@ -8,12 +8,37 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import { useState } from 'react';
 
+
+//// Reducers
+import ConnectWithApi from "../../Reducers/ApiReducer";
+
+
+function isPasswordsMatch(password, confirmPassword) {
+    return password.trim() === confirmPassword.trim();
+}
 
 
 export default function RegisterPage() {
+
+
+
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [formData, setFormData] = useState({
+        FirstName: '',
+        LastName: '',
+        Email: '',
+        Password: '',
+        PhoneNumber: '',
+    })
+
     const handleSubmit = (event) => {
         event.preventDefault();
+
+        //// check if passwords match
+        if (!isPasswordsMatch(formData.password, confirmPassword)) return alert('Passwords do not match');
+
         // const data = new FormData(event.currentTarget);
         // console.log({
         //     firstName: data.get('firstName'),
@@ -21,11 +46,28 @@ export default function RegisterPage() {
         //     email: data.get('email'),
         //     password: data.get('password'),
         //     phone: data.get('phone-number'),
-        //     // password: data.get('password'),
         // });
+
+        // console.log(formData);
+
+        //// Send data to API
+        ConnectWithApi("RegisterCustomer", formData);
+
+        //// get token from API
+
+
+        ///// store token in local storage
+
+
+        ///// redirect to home page
+
+
     };
 
-    // height: { xs: 'auto', xl: '86.6vh' },
+
+    //// Todo : add validation using React Hook Form library
+    //// Todo : add modal for messages
+
 
     return (
 
@@ -57,6 +99,9 @@ export default function RegisterPage() {
                                 id="firstName"
                                 label="First Name"
                                 autoFocus
+                                value={formData.FirstName}
+                                onChange={(e) => setFormData({ ...formData, FirstName: e.target.value.trim() })}
+                                size='small'
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -67,6 +112,10 @@ export default function RegisterPage() {
                                 label="Last Name"
                                 name="lastName"
                                 autoComplete="family-name"
+                                value={formData.LastName}
+                                onChange={(e) => setFormData({ ...formData, LastName: e.target.value.trim() })}
+                                size='small'
+
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -76,10 +125,14 @@ export default function RegisterPage() {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                type='email'
                                 autoComplete="email"
+                                value={formData.Email}
+                                onChange={(e) => setFormData({ ...formData, Email: e.target.value.trim() })}
+                                size='small'
+
                             />
                         </Grid>
-
                         <Grid item xs={12}>
                             <TextField
                                 required
@@ -88,6 +141,10 @@ export default function RegisterPage() {
                                 label="Password"
                                 name="password"
                                 autoComplete="new-password"
+                                value={formData.Password}
+                                onChange={(e) => setFormData({ ...formData, Password: e.target.value.trim() })}
+                                size='small'
+
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -98,6 +155,9 @@ export default function RegisterPage() {
                                 label="Confirm Password"
                                 name="password"
                                 autoComplete="confirm-password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value.trim())}
+                                size='small'
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -109,10 +169,12 @@ export default function RegisterPage() {
                                 type="phone number"
                                 id="phone-number"
                                 autoComplete="phone-number"
+                                value={formData.PhoneNumber}
+                                onChange={(e) => setFormData({ ...formData, PhoneNumber: e.target.value.trim() })}
+                                size='small'
+
                             />
                         </Grid>
-
-
                     </Grid>
                     <Button
                         type="submit"
