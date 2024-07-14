@@ -71,7 +71,7 @@ export default function RegisterPage() {
 
     return (
 
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm" sx={{ boxShadow: 6, borderRadius: 3, p: 1, my:1 }}>
             <CssBaseline />
             <Box
                 sx={{

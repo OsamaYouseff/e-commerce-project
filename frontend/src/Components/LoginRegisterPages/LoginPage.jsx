@@ -23,7 +23,7 @@ export default function LoginPage() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm" sx={{ boxShadow: 6, borderRadius: 3, p: 4 }}>
             <CssBaseline />
             <Box
                 sx={{
@@ -49,6 +49,7 @@ export default function LoginPage() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        size='small'
                     />
                     <TextField
                         margin="normal"
@@ -59,6 +60,7 @@ export default function LoginPage() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        size='small'
                     />
                     <FormControlLabel
                         control={<Checkbox value="remember" color="primary" />}
