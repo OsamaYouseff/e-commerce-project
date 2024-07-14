@@ -5,16 +5,13 @@ import { styled, alpha, useTheme } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
-import { useState } from "react";
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
-import Menu from '@mui/material/Menu';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ColorModeContext } from "../../../Theme/theme";
 import CartDrawer from "../../CartDrawer/CartDrawer";
-import CustomerMenu from "./CustomerMenu";
+import CustomerMenu, { checkLoginStatus } from "./CustomerMenu";
+import SimpleListMenu from "./SimpleListMenu";
+import { getCustomer } from "../../../API/APIFunctions";
+import { Button } from '@mui/material';
+import { Link } from "react-router-dom";
 
 const transitionDuration = '350ms';
 
@@ -60,20 +57,42 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const options = [
-    'All Category',
-    'Clothes',
-    'Electronics',
-    'Furniture',
-];
+
+// async function getCustomerInfo(customerId) {
+//     const data = await getCustomer(customerId).then((data) => data);
+//     personalInfo = data;
+//     console.log(personalInfo);
+//     return data;
+// }
+
+function ToggleCustomerAvatar() {
+    return checkLoginStatus()
+        ?
+        <IconButton aria-label="cart" sx={{ transition: transitionDuration, "& :hover": { cursor: "pointer" } }}>
+            <CustomerMenu />
+        </IconButton>
+        :
+        (
+            <Stack className='flex-between' sx={{ flexDirection: "row", gap: "5px", alignItems: "center" }}>
+                <Link to="/login">
+                    <Button sx={{ fontWeight: "bold" }} >Login</Button>
+                </Link>
+                <span style={{ fontSize: "16px" }}>/</span>
+                <Link to="/register">
+                    <Button sx={{ fontWeight: "bold" }} >Register</Button>
+                </Link>
+            </Stack>
+        )
+}
+
+
 
 const MidHeader = function () {
     const theme = useTheme(ColorModeContext.theme);
     const fontSizeClamp = "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
+
     return (
-        <Container maxWidth="xl" sx={{
-            marginTop: "15px"
-        }}>
+        <Container maxWidth="xl" sx={{ marginTop: "15px" }}>
             <Stack className="" sx={{
                 display: "flex",
                 flexDirection: { xs: "row-reverse", md: "row" },
@@ -107,7 +126,6 @@ const MidHeader = function () {
                             <SearchIcon sx={{ color: "#777" }} />
                         </SearchIconWrapper>
                         <StyledInputBase
-                            // className="border"
                             placeholder="Search…"
                             inputProps={{ 'aria-label': 'search' }}
                             sx={{ flex: 1 }}
@@ -118,15 +136,8 @@ const MidHeader = function () {
                 {/*== Search ==*/}
 
                 {/* Icons */}
-                <Stack alignItems={"center"} direction={"row"} sx={{
-                    [theme.breakpoints.down("md")]: {
-                        order: -1
-                    }
-                }}>
-                    <IconButton aria-label="cart" sx={{ transition: transitionDuration, "& :hover": { cursor: "pointer" } }}>
-                        {/* <PersonIcon sx={{ borderRadius: "7px" }} /> */}
-                        <CustomerMenu />
-                    </IconButton>
+                <Stack alignItems={"center"} direction={"row"} sx={{ [theme.breakpoints.down("md")]: { order: -1 } }}>
+                    {ToggleCustomerAvatar()}
                     <IconButton aria-label="cart" sx={{ p: 0.2, aspectRatio: "1" }} >
                         <CartDrawer />
                     </IconButton>
@@ -138,85 +149,6 @@ const MidHeader = function () {
     );
 }
 
-function SimpleListMenu() {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [selectedIndex, setSelectedIndex] = useState(0);
-    const open = Boolean(anchorEl);
-    const handleClickListItem = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuItemClick = (event, index) => {
-        setSelectedIndex(index);
-        setAnchorEl(null);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const theme = useTheme(ColorModeContext.theme);
-
-    return (
-        <div style={{
-            display: "flex", justifyContent: "center", alignItems: "center",
-            maxHeight: "40px",
-
-        }} >
-            <List
-                component="nav"
-                aria-label="Device settings"
-                sx={{
-                    p: 0, minWidth: "160px", borderTopRightRadius: "25px",
-                    borderBottomRightRadius: "25px",
-                    overflow: "hidden", bgcolor: theme.palette.categoryColor.main,
-                    borderLeft: "1px solid #777",
-
-                }}
-            >
-                <ListItemButton
-                    id="lock-button"
-                    aria-haspopup="listbox"
-                    aria-controls="lock-menu"
-                    aria-label="when device is locked"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClickListItem}
-                    sx={{ maxHeight: "40px", border: "1px solid #777", }}
-                >
-                    <ListItemText
-                        secondary={options[selectedIndex]}
-                        sx={{ textAlign: "center" }}
-                    />
-                    <ExpandMoreIcon sx={{ fontSize: "24px", color: "#777" }} />
-
-                </ListItemButton>
-            </List>
-            <Menu
-                id="lock-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                    'aria-labelledby': 'lock-button',
-                    role: 'listbox',
-                }}
-                sx={{ transform: "translateY(3px)" }}
-
-            >
-                {options.map((option, index) => (
-                    <MenuItem
-                        key={index}
-                        selected={index === selectedIndex}
-                        onClick={(event) => handleMenuItemClick(event, index)}
-                        sx={{ fontSize: "16px", minWidth: "145px", ".css-6hp17o-MuiList-root-MuiMenu-list": { py: 0 } }}
-                    >
-                        {option}
-                    </MenuItem>
-                ))}
-            </Menu>
-        </div >
-    );
-}
 
 
 export default MidHeader;

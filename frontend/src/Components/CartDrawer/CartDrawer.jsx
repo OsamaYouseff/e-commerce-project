@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
@@ -10,10 +9,11 @@ import { ColorModeContext } from "../../Theme/theme";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import Badge from '@mui/material/Badge';
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 
 export default function AnchorTemporaryDrawer() {
-    const [state, setState] = React.useState({ right: false });
+    const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
 
     const transitionDuration = '350ms';
@@ -65,7 +65,7 @@ export default function AnchorTemporaryDrawer() {
                     transition: "0.35s"
                 }} onClick={toggleDrawer("right", false)} />
             </Button>
-            <Typography variant="h5" style={{ marginLeft: "10px", fontWeight: "bold", width: "95%", textAlign: "left" }}> View Your Cart</Typography>
+            <Typography variant="h5" style={{ marginBottom: "10px", marginLeft: "10px", fontWeight: "bold", width: "95%", textAlign: "left" }}> View Your Cart</Typography>
             <Box sx={{ overflow: "auto", height: { xs: "58vh", sm: "auto" }, px: 1, width: "100%" }}>
                 <ItemComponent />
                 <ItemComponent />

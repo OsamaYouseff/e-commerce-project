@@ -11,7 +11,30 @@ import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PaymentIcon from '@mui/icons-material/Payment';
+import { useContext } from "react";
+import { CustomerContext } from "../../../Components/Contexts/CustomerContext";
+import { Avatar, Button } from '@mui/material';
+import { Stack } from "@mui/material";
+
+
+let personalInfo = null;
+
+
+export function checkLoginStatus() {
+    return (personalInfo !== null);
+}
+
+function ToggleCustomerAvatar() {
+    return checkLoginStatus() ? <Avatar sx={{ width: 28, height: 28 }}>{personalInfo.FirstName[0].toUpperCase()}</Avatar> : <PersonIcon />;
+}
+
+
+
 const CustomerMenu = () => {
+
+    personalInfo = useContext(CustomerContext).personalInfo;
+
+
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -51,9 +74,11 @@ const CustomerMenu = () => {
             link: `\\home`
         }
     ]
+
+
     return (
         <Fragment>
-            <Tooltip title="Account settings">
+            <Tooltip title="User Account">
                 <IconButton
                     onClick={handleClick}
                     size="small"
@@ -61,9 +86,7 @@ const CustomerMenu = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                 >
-
-                    <PersonIcon />
-                    {/* <Avatar sx={{ width: 32, height: 32 }}>M</Avatar> */}
+                    {ToggleCustomerAvatar()}
                 </IconButton>
             </Tooltip>
             <Menu
@@ -116,5 +139,6 @@ const CustomerMenu = () => {
         </Fragment>
     );
 }
+
 
 export default CustomerMenu;

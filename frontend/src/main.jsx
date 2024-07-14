@@ -1,4 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
+
+//// Hooks
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
@@ -6,6 +8,7 @@ import './index.css'
 import { Provider } from 'react-redux'
 import { store } from './redux/store.js'
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { useContext } from 'react'
 
 ///// Components
 import Footer from './Components/GenericComponents/Footer/Footer.jsx'
@@ -15,18 +18,23 @@ import TopHeader from './Components/GenericComponents/Header/TopHeader.jsx'
 import ErrorPage from './Components/ErrorPage/ErrorPage.jsx'
 
 /// Theme
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import { CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./Theme/theme";
 
 
+/// Contexts
+import { CustomerContext } from "./Components/Contexts/CustomerContext";
+import LoginPage from './Components/LoginRegisterPages/LoginPage.jsx'
+import RegisterPage from './Components/LoginRegisterPages/RegisterPage.jsx'
+
 const routeElement = (currentComponent) => {
     return (
-        <>
+        <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh" }}>
             <TopHeader />
             {currentComponent}
             <Footer />
             <ScrollToTop />
-        </>
+        </Stack>
     )
 }
 
@@ -38,13 +46,20 @@ const router = createBrowserRouter([
     {
         path: "/home",
         element: routeElement(<App />),
-    }
-    ,
+    },
     {
         path: "/cart",
         element: routeElement(<CartPage />),
-    }
-    , {
+    },
+    {
+        path: "/login",
+        element: routeElement(<LoginPage />),
+    },
+    {
+        path: "/register",
+        element: routeElement(<RegisterPage />),
+    },
+    {
         path: "/*",
         element: routeElement(<ErrorPage />),
     }
@@ -53,19 +68,30 @@ const router = createBrowserRouter([
 
 function MainComponent() {
     const [theme, colorMode] = useMode();
-
+    const customerContext = useContext(CustomerContext);
     return (
         <ColorModeContext.Provider value={colorMode} >
+
             <ThemeProvider theme={theme}>
+
                 <CssBaseline />
+
                 <Provider store={store}>
-                    <RouterProvider router={router}>
-                        <>
+
+                    <CustomerContext.Provider value={customerContext}>
+
+                        <RouterProvider router={router}>
+
                             <App />
-                        </>
-                    </RouterProvider>
+
+                        </RouterProvider>
+
+                    </CustomerContext.Provider>
+
                 </Provider>
+
             </ThemeProvider>
+
         </ColorModeContext.Provider >
     )
 }
