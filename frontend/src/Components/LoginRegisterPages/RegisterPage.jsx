@@ -40,13 +40,6 @@ export default function RegisterPage() {
         if (!isPasswordsMatch(formData.password, confirmPassword)) return alert('Passwords do not match');
 
         // const data = new FormData(event.currentTarget);
-        // console.log({
-        //     firstName: data.get('firstName'),
-        //     lastName: data.get('lastName'),
-        //     email: data.get('email'),
-        //     password: data.get('password'),
-        //     phone: data.get('phone-number'),
-        // });
 
         // console.log(formData);
 
@@ -71,7 +64,7 @@ export default function RegisterPage() {
 
     return (
 
-        <Container component="main" maxWidth="sm" sx={{ boxShadow: 6, borderRadius: 3, p: 1, my:1 }}>
+        <Container component="main" maxWidth="sm" sx={{ boxShadow: 6, borderRadius: 3, p: 1, my: 1 }}>
             <CssBaseline />
             <Box
                 sx={{
