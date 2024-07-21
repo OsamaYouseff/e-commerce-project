@@ -1,6 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 
 //// Hooks
+import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
@@ -84,7 +85,7 @@ function MainComponent() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    // <React.StrictMode>
-    // </React.StrictMode>
-    <MainComponent />
+    <React.StrictMode>
+        <MainComponent />
+    </React.StrictMode>
 );

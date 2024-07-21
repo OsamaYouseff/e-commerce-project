@@ -1,11 +1,12 @@
 const CartActionsReducer = (CurrentCart, action) => {
     const targetID = action.payload.id;
-    let updatedCartItem = [], updatedTotalCartPrice = 0;
+    let updatedCartItem = [], updatedTotalCartPrice = 0, newItem = {};
 
     switch (action.type) {
         case "ADD_TO_CART":
-            return
+            newItem = action.payload;
 
+            return { ...CurrentCart, cartItems: [...CurrentCart.cartItems, newItem] }
 
         case "REMOVE_FROM_CART":
             CurrentCart.cartItems.forEach(item => {
@@ -67,6 +68,13 @@ const CartActionsReducer = (CurrentCart, action) => {
         default:
             return CurrentCart;
     }
+
+
+
+    //// Call API to Update Cart Data
+
+
+
 }
 
 export default CartActionsReducer;

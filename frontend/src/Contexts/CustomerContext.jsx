@@ -14,39 +14,11 @@ export const CustomerProvider = ({ children }) => {
                 imageURL:
                     "https://resource.logitech.com/w_1600,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/headsets/zone-300/gallery/zone-300-offwhite-1.png?v=1",
                 title: "Fancy Headset",
-                price: 20,
-                quantity: 5,
-            },
-            {
-                id: 2,
-                imageURL: "./images/banner-17.jpg",
-                title: "Product 2",
-                price: 30,
-                quantity: 2,
-            },
-            {
-                id: 3,
-                imageURL: "./images/banner-17.jpg",
-                title: "Product 3",
-                price: 40,
-                quantity: 1,
-            },
-            {
-                id: 4,
-                imageURL: "./images/banner-17.jpg",
-                title: "Product 4",
-                price: 50,
-                quantity: 4,
-            },
-            {
-                id: 5,
-                imageURL: "./images/banner-17.jpg",
-                title: "Product 5",
-                price: 100,
+                price: 130,
                 quantity: 2,
             },
         ],
-        totalCartPrice: 600,
+        totalCartPrice: 260,
     });
 
     const [customerData, setCustomerData] = useState({

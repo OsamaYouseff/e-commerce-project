@@ -14,8 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PaymentIcon from "@mui/icons-material/Payment";
 import { useContext } from "react";
 import { CustomerContext } from "../../../Contexts/CustomerContext";
-import { Avatar, Button } from "@mui/material";
-import { Stack } from "@mui/material";
+import { Avatar } from "@mui/material";
 
 // export function checkLoginStatus() {
 //     return (personalInfo !== null);
@@ -73,7 +72,9 @@ const CustomerMenu = () => {
 
     return (
         <Fragment>
-            <Tooltip title="User Account">
+            <Tooltip
+                title={customerData.FirstName + " " + customerData.LastName}
+            >
                 <IconButton
                     onClick={handleClick}
                     size="small"
