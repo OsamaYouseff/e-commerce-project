@@ -1,39 +1,28 @@
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import { Fragment, useState } from 'react';
-import PersonIcon from '@mui/icons-material/Person';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PaymentIcon from '@mui/icons-material/Payment';
+/* eslint-disable react/prop-types */
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
+import { Fragment, useState } from "react";
+import PersonIcon from "@mui/icons-material/Person";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PaymentIcon from "@mui/icons-material/Payment";
 import { useContext } from "react";
-import { CustomerContext } from "../../../Components/Contexts/CustomerContext";
-import { Avatar, Button } from '@mui/material';
+import { CustomerContext } from "../../../Contexts/CustomerContext";
+import { Avatar, Button } from "@mui/material";
 import { Stack } from "@mui/material";
 
-
-let personalInfo = null;
-
-
-export function checkLoginStatus() {
-    return (personalInfo !== null);
-}
-
-function ToggleCustomerAvatar() {
-    return checkLoginStatus() ? <Avatar sx={{ width: 28, height: 28 }}>{personalInfo.FirstName[0].toUpperCase()}</Avatar> : <PersonIcon />;
-}
-
-
+// export function checkLoginStatus() {
+//     return (personalInfo !== null);
+// }
 
 const CustomerMenu = () => {
-
-    personalInfo = useContext(CustomerContext).personalInfo;
-
+    const { customerData } = useContext(CustomerContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -46,35 +35,41 @@ const CustomerMenu = () => {
 
     const CustomerListItems = [
         {
-            title: "Orders", icon: <LocalShippingIcon fontSize="small" />,
-            link: `\\cart`
+            title: "Orders",
+            icon: <LocalShippingIcon fontSize="small" />,
+            link: `\\cart`,
         },
         {
-            title: "Profile", icon: <PersonIcon fontSize="small" />,
-            link: `\\profile`
+            title: "Profile",
+            icon: <PersonIcon fontSize="small" />,
+            link: `\\profile`,
         },
         {
-            title: "Address", icon: <LocationOnIcon fontSize="small" />,
-            link: `\\address`
+            title: "Address",
+            icon: <LocationOnIcon fontSize="small" />,
+            link: `\\address`,
         },
         {
-            title: "Wishlist", icon: <FavoriteIcon fontSize="small" />,
-            link: `\\wishlist`
+            title: "Wishlist",
+            icon: <FavoriteIcon fontSize="small" />,
+            link: `\\wishlist`,
         },
         {
-            title: "Payments", icon: <PaymentIcon fontSize="small" />,
-            link: `\\payments`
+            title: "Payments",
+            icon: <PaymentIcon fontSize="small" />,
+            link: `\\payments`,
         },
         {
-            title: "Settings", icon: <Settings fontSize="small" />,
-            link: `\\settings`
+            title: "Settings",
+            icon: <Settings fontSize="small" />,
+            link: `\\settings`,
         },
         {
-            title: "Logout", icon: <Logout fontSize="small" />,
-            link: `\\home`
-        }
-    ]
-
+            title: "Logout",
+            icon: <Logout fontSize="small" />,
+            link: `\\home`,
+        },
+    ];
 
     return (
         <Fragment>
@@ -82,11 +77,13 @@ const CustomerMenu = () => {
                 <IconButton
                     onClick={handleClick}
                     size="small"
-                    aria-controls={open ? 'account-menu' : undefined}
+                    aria-controls={open ? "account-menu" : undefined}
                     aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
+                    aria-expanded={open ? "true" : undefined}
                 >
-                    {ToggleCustomerAvatar()}
+                    <Avatar sx={{ width: 28, height: 28 }}>
+                        {customerData.FirstName[0].toUpperCase()}
+                    </Avatar>
                 </IconButton>
             </Tooltip>
             <Menu
@@ -98,47 +95,54 @@ const CustomerMenu = () => {
                 PaperProps={{
                     elevation: 0,
                     sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
                         mt: 1.5,
-                        '& .MuiAvatar-root': {
+                        "& .MuiAvatar-root": {
                             width: 32,
                             height: 32,
                             ml: -0.5,
                             mr: 1,
                         },
-                        '&::before': {
+                        "&::before": {
                             content: '""',
-                            display: 'block',
-                            position: 'absolute',
+                            display: "block",
+                            position: "absolute",
                             top: 0,
                             right: 14,
                             width: 10,
                             height: 10,
-                            bgcolor: 'background.paper',
-                            transform: 'translateY(-50%) rotate(45deg)',
+                            bgcolor: "background.paper",
+                            transform: "translateY(-50%) rotate(45deg)",
                             zIndex: 0,
                         },
                     },
                 }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
                 {CustomerListItems.map((item, index) => (
-                    <a key={index} href={item.link} style={{ textDecoration: "none", color: "inherit" }}>
-                        <MenuItem onClick={handleClose} sx={{ minWidth: { xs: "380px", sm: "260px" }, py: 1, color: "inherit" }}>
-                            <ListItemIcon>
-                                {item.icon}
-                            </ListItemIcon>
+                    <a
+                        key={index}
+                        href={item.link}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                        <MenuItem
+                            onClick={handleClose}
+                            sx={{
+                                minWidth: { xs: "380px", sm: "260px" },
+                                py: 1,
+                                color: "inherit",
+                            }}
+                        >
+                            <ListItemIcon>{item.icon}</ListItemIcon>
                             {item.title}
                         </MenuItem>
                     </a>
                 ))}
-
             </Menu>
         </Fragment>
     );
-}
-
+};
 
 export default CustomerMenu;

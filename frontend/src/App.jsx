@@ -3,7 +3,7 @@
 import { useEffect, useContext } from "react";
 import HomePage from "./Components/HomePage/HomePage";
 import { getCustomer } from "./API/APIFunctions";
-import { CustomerContext } from "./Components/Contexts/CustomerContext";
+import { CustomerContext } from "./Contexts/CustomerContext";
 
 
 let personalInfo = {};
@@ -17,7 +17,7 @@ async function getCustomerInfo(customerId) {
 
 
 function App() {
-    // personalInfo = useContext(CustomerContext).personalInfo;
+    // personalInfo = useContext(CustomerContext);
 
     // useEffect(() => {
     //     getCustomerInfo(4);

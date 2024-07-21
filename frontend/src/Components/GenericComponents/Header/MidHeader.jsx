@@ -1,30 +1,32 @@
 import { Box, Stack, Typography } from "@mui/material";
-import Container from '@mui/material/Container';
-import LocalGroceryStoreOutlinedIcon from '@mui/icons-material/LocalGroceryStoreOutlined';
-import { styled, alpha, useTheme } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
+import Container from "@mui/material/Container";
+import LocalGroceryStoreOutlinedIcon from "@mui/icons-material/LocalGroceryStoreOutlined";
+import { styled, alpha, useTheme } from "@mui/material/styles";
+import SearchIcon from "@mui/icons-material/Search";
+import InputBase from "@mui/material/InputBase";
+import IconButton from "@mui/material/IconButton";
 import { ColorModeContext } from "../../../Theme/theme";
 import CartDrawer from "../../CartDrawer/CartDrawer";
-import CustomerMenu, { checkLoginStatus } from "./CustomerMenu";
 import SimpleListMenu from "./SimpleListMenu";
 import { getCustomer } from "../../../API/APIFunctions";
-import { Button } from '@mui/material';
+import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import CustomerMenu from "./CustomerMenu";
+import { CustomerContext } from "../../../Contexts/CustomerContext";
 
-const transitionDuration = '350ms';
+const transitionDuration = "350ms";
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
+const Search = styled("div")(({ theme }) => ({
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: "auto",
     },
     display: "flex",
     justifyContent: "space-between",
@@ -32,31 +34,29 @@ const Search = styled('div')(({ theme }) => ({
     border: "1px solid #777",
 }));
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
+const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
+    color: "inherit",
+    "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
         // vertical padding + font size from searchIcon
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
+        transition: theme.transitions.create("width"),
+        width: "100%",
+        [theme.breakpoints.up("md")]: {
+            width: "20ch",
         },
     },
 }));
-
-
 
 // async function getCustomerInfo(customerId) {
 //     const data = await getCustomer(customerId).then((data) => data);
@@ -65,50 +65,80 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 //     return data;
 // }
 
-function ToggleCustomerAvatar() {
-    return checkLoginStatus()
-        ?
-        <IconButton aria-label="cart" sx={{ transition: transitionDuration, "& :hover": { cursor: "pointer" } }}>
-            <CustomerMenu />
-        </IconButton>
-        :
-        (
-            <Stack className='flex-between' sx={{ flexDirection: "row", gap: "5px", alignItems: "center" }}>
-                <Link to="/login">
-                    <Button sx={{ fontWeight: "bold" }} >Login</Button>
-                </Link>
-                <span style={{ fontSize: "16px" }}>/</span>
-                <Link to="/register">
-                    <Button sx={{ fontWeight: "bold" }} >Register</Button>
-                </Link>
-            </Stack>
-        )
+let personalInfo = null;
+
+function checkLoginStatus() {
+    return personalInfo !== null;
 }
 
-
+function ToggleCustomerAvatar() {
+    return checkLoginStatus() ? (
+        <IconButton
+            aria-label="cart"
+            sx={{
+                transition: transitionDuration,
+                "& :hover": { cursor: "pointer" },
+            }}
+        >
+            <CustomerMenu />
+        </IconButton>
+    ) : (
+        <Stack
+            className="flex-between"
+            sx={{ flexDirection: "row", gap: "5px", alignItems: "center" }}
+        >
+            <Link to="/login">
+                <Button sx={{ fontWeight: "bold" }}>Login</Button>
+            </Link>
+            <span style={{ fontSize: "16px" }}>/</span>
+            <Link to="/register">
+                <Button sx={{ fontWeight: "bold" }}>Register</Button>
+            </Link>
+        </Stack>
+    );
+}
 
 const MidHeader = function () {
     const theme = useTheme(ColorModeContext.theme);
-    const fontSizeClamp = "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
+    const fontSizeClamp =
+        "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
+    personalInfo = useContext(CustomerContext);
 
     return (
         <Container maxWidth="xl" sx={{ marginTop: "15px" }}>
-            <Stack className="" sx={{
-                display: "flex",
-                flexDirection: { xs: "row-reverse", md: "row" },
-                flexWrap: "wrap",
-                justifyContent: "space-between", alignItems: "center",
-                gap: "10px",
-            }}>
+            <Stack
+                className=""
+                sx={{
+                    display: "flex",
+                    flexDirection: { xs: "row-reverse", md: "row" },
+                    flexWrap: "wrap",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "10px",
+                }}
+            >
                 {/* Logo */}
-                <a href="/" style={{ textDecoration: "none" }} >
-                    <Stack alignItems={"center"} sx={{
-                        order: { md: -1 },
-                        textDecoration: "none",
-                        color: theme.palette.text.primary,
-                    }} >
-                        <LocalGroceryStoreOutlinedIcon sx={{ fontSize: "28px", }} />
-                        <Typography variant="body" sx={{ border: "none", fontSize: fontSizeClamp, fontWeight: "bolder", textDecoration: "none" }}>
+                <a href="/" style={{ textDecoration: "none" }}>
+                    <Stack
+                        alignItems={"center"}
+                        sx={{
+                            order: { md: -1 },
+                            textDecoration: "none",
+                            color: theme.palette.text.primary,
+                        }}
+                    >
+                        <LocalGroceryStoreOutlinedIcon
+                            sx={{ fontSize: "28px" }}
+                        />
+                        <Typography
+                            variant="body"
+                            sx={{
+                                border: "none",
+                                fontSize: fontSizeClamp,
+                                fontWeight: "bolder",
+                                textDecoration: "none",
+                            }}
+                        >
                             E-Commerce
                         </Typography>
                     </Stack>
@@ -116,18 +146,26 @@ const MidHeader = function () {
                 {/*== Logo ==*/}
 
                 {/* Search */}
-                <Box flexGrow={0.6} sx={{ p: 0, minWidth: { xs: "100%", md: "150px" } }}>
-                    <Search sx={{
-                        p: 0, borderRadius: "25px", bgcolor: theme.palette.bgColor.main,
-                        maxHeight: "40px !important", minWidth: "100%",
-                        margin: "0 !important"
-                    }}>
-                        <SearchIconWrapper >
+                <Box
+                    flexGrow={0.6}
+                    sx={{ p: 0, minWidth: { xs: "100%", md: "150px" } }}
+                >
+                    <Search
+                        sx={{
+                            p: 0,
+                            borderRadius: "25px",
+                            bgcolor: theme.palette.bgColor.main,
+                            maxHeight: "40px !important",
+                            minWidth: "100%",
+                            margin: "0 !important",
+                        }}
+                    >
+                        <SearchIconWrapper>
                             <SearchIcon sx={{ color: "#777" }} />
                         </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="Search…"
-                            inputProps={{ 'aria-label': 'search' }}
+                            inputProps={{ "aria-label": "search" }}
                             sx={{ flex: 1 }}
                         />
                         <SimpleListMenu />
@@ -136,19 +174,23 @@ const MidHeader = function () {
                 {/*== Search ==*/}
 
                 {/* Icons */}
-                <Stack alignItems={"center"} direction={"row"} sx={{ [theme.breakpoints.down("md")]: { order: -1 } }}>
+                <Stack
+                    alignItems={"center"}
+                    direction={"row"}
+                    sx={{ [theme.breakpoints.down("md")]: { order: -1 } }}
+                >
                     {ToggleCustomerAvatar()}
-                    <IconButton aria-label="cart" sx={{ p: 0.2, aspectRatio: "1" }} >
+                    <IconButton
+                        aria-label="cart"
+                        sx={{ p: 0.2, aspectRatio: "1" }}
+                    >
                         <CartDrawer />
                     </IconButton>
                 </Stack>
                 {/*== Icons ==*/}
             </Stack>
-
-        </Container >
+        </Container>
     );
-}
-
-
+};
 
 export default MidHeader;

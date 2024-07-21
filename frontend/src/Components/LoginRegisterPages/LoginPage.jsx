@@ -44,10 +44,10 @@ export default function LoginPage() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
+                        id="email-username"
+                        label="Username Or Email Address"
+                        name="email-username"
+                        autoComplete="email-username"
                         autoFocus
                         size='small'
                     />

@@ -11,79 +11,79 @@ import { motion, AnimatePresence } from "framer-motion"
 import AddShoppingCartOutlinedIcon from '@mui/icons-material/AddShoppingCartOutlined';
 
 const CardComponent = ({ productData, handelOpenModal, handleSetPreviewedProduct }) => {
-    // const product = productData.attributes;
-    // const baseURL = import.meta.env.VITE_BASE_URL;
-    return (
-        <AnimatePresence>
-            <Card
-                component={motion.section}
-                layout
-                initial={{ transform: "scale(0)" }}
-                animate={{ transform: "scale(1)" }}
-                exit={{ transform: "scale(0)" }}
-                transition={{
-                    duration: 0.5, type: "spring", stiffness: 100,
-                }}
-                onClick={() => {
-                    handleSetPreviewedProduct(productData)
-                    handelOpenModal()
-                }}
-                sx={{
-                    flexGrow: 1,
-                    maxWidth: { xs: "100%", sm: "48%", md: "32%", lg: "24%", xl: 300 },
-                    cursor: "pointer",
-                    boxShadow: 3,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                }}>
-                <CardMedia
-                    className="card-img"
-                    component="img"
-                    alt="green iguana"
-                    height="245"
-                    image={`${productData.attributes.productImages.data[0].attributes.url}`}
-                    sx={{
-                        boxShadow: 3, cursor: "pointer", flexGrow: 1, transition: "transform 0.35s ease-in-out",
-                        "&:hover": {
-                            transform: "scale(1.05) rotate(2deg)",
-                        },
-                        maxHeight: "245px"
-                    }}
-                />
-                <CardContent sx={{
-                    position: "relative", zIndex: "100 !important", bgcolor: "inherit", flexGrow: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                }}>
-                    <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
-                        <Typography gutterBottom fontSize={"20px"} component="div">
-                            {productData.attributes.productTitle}
-                        </Typography>
-                        <Typography gutterBottom fontSize={"16px"} component="div">
-                            ${productData.attributes.productPrice}
-                        </Typography>
-                    </Stack>
-                    <Typography fontSize={"16px"} color="text.secondary">
-                        {productData.attributes.productDescription.slice(0, 120)}..
-                    </Typography>
-                </CardContent>
-                <Stack sx={{ p: 1.4, bgcolor: "inherit" }} direction={"row"} justifyContent={"space-between"} alignItems={"center"} >
-                    <Button size="small" sx={{ fontSize: "14px" }}
-                        onClick={() => {
-                            handleSetPreviewedProduct(productData)
-                            handelOpenModal()
-                        }}
-                    >
-                        <AddShoppingCartOutlinedIcon sx={{ marginRight: "5px", fontSize: "20px" }} />
-                        Add To Cart
-                    </Button>
-                    <Rating name="read-only" value={productData.attributes.productRating} readOnly size="small" precision={0.5} />
-                </Stack>
-            </Card>
-        </AnimatePresence>
-    );
+  // const product = productData.attributes;
+  // const baseURL = import.meta.env.VITE_BASE_URL;
+  return (
+    <AnimatePresence>
+      <Card
+        component={motion.section}
+        layout
+        initial={{ transform: "scale(0)" }}
+        animate={{ transform: "scale(1)" }}
+        exit={{ transform: "scale(0)" }}
+        transition={{
+          duration: 0.5, type: "spring", stiffness: 100,
+        }}
+        onClick={() => {
+          handleSetPreviewedProduct(productData)
+          handelOpenModal()
+        }}
+        sx={{
+          flexGrow: 1,
+          maxWidth: { xs: "100%", sm: "48%", md: "32%", lg: "24%", xl: 300 },
+          cursor: "pointer",
+          boxShadow: 3,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}>
+        <CardMedia
+          className="card-img"
+          component="img"
+          alt="green iguana"
+          height="245"
+          image={`${productData.attributes.productImages.data[0].attributes.url}`}
+          sx={{
+            boxShadow: 3, cursor: "pointer", flexGrow: 1, transition: "transform 0.35s ease-in-out",
+            "&:hover": {
+              transform: "scale(1.05) rotate(2deg)",
+            },
+            maxHeight: "245px"
+          }}
+        />
+        <CardContent sx={{
+          position: "relative", zIndex: "100 !important", bgcolor: "inherit", flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}>
+          <Stack direction={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <Typography gutterBottom fontSize={"20px"} component="div">
+              {productData.attributes.productTitle}
+            </Typography>
+            <Typography gutterBottom fontSize={"16px"} component="div">
+              ${productData.attributes.productPrice}
+            </Typography>
+          </Stack>
+          <Typography fontSize={"16px"} color="text.secondary">
+            {productData.attributes.productDescription.slice(0, 120)}..
+          </Typography>
+        </CardContent>
+        <Stack sx={{ p: 1.4, bgcolor: "inherit" }} direction={"row"} justifyContent={"space-between"} alignItems={"center"} >
+          <Button size="small" sx={{ fontSize: "14px" }}
+            onClick={() => {
+              handleSetPreviewedProduct(productData)
+              handelOpenModal()
+            }}
+          >
+            <AddShoppingCartOutlinedIcon sx={{ marginRight: "5px", fontSize: "20px" }} />
+            Add To Cart
+          </Button>
+          <Rating name="read-only" value={productData.attributes.productRating} readOnly size="small" precision={0.5} />
+        </Stack>
+      </Card>
+    </AnimatePresence>
+  );
 }
 
 
