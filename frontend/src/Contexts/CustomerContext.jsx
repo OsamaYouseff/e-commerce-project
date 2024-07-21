@@ -11,35 +11,36 @@ export const CustomerProvider = ({ children }) => {
         cartItems: [
             {
                 id: 1,
-                image: "./images/banner-17.jpg",
-                title: "Product 1",
+                imageURL:
+                    "https://resource.logitech.com/w_1600,c_limit,q_auto,f_auto,dpr_1.0/d_transparent.gif/content/dam/logitech/en/products/headsets/zone-300/gallery/zone-300-offwhite-1.png?v=1",
+                title: "Fancy Headset",
                 price: 20,
                 quantity: 5,
             },
             {
                 id: 2,
-                image: "./images/banner-17.jpg",
+                imageURL: "./images/banner-17.jpg",
                 title: "Product 2",
                 price: 30,
                 quantity: 2,
             },
             {
                 id: 3,
-                image: "./images/banner-17.jpg",
+                imageURL: "./images/banner-17.jpg",
                 title: "Product 3",
                 price: 40,
                 quantity: 1,
             },
             {
                 id: 4,
-                image: "./images/banner-17.jpg",
+                imageURL: "./images/banner-17.jpg",
                 title: "Product 4",
                 price: 50,
                 quantity: 4,
             },
             {
                 id: 5,
-                image: "./images/banner-17.jpg",
+                imageURL: "./images/banner-17.jpg",
                 title: "Product 5",
                 price: 100,
                 quantity: 2,
@@ -101,35 +102,35 @@ export const CustomerProvider = ({ children }) => {
 //     cartData: [
 //         {
 //             id: 1,
-//             image: "./images/banner-17.jpg",
+//             imageURL: "./images/banner-17.jpg",
 //             title: "Product 1",
 //             price: 80,
 //             quantity: 5
 //         },
 //         {
 //             id: 2,
-//             image: "./images/banner-17.jpg",
+//             imageURL: "./images/banner-17.jpg",
 //             title: "Product 1",
 //             price: 110,
 //             quantity: 2
 //         },
 //         {
 //             id: 3,
-//             image: "./images/banner-17.jpg",
+//             imageURL: "./images/banner-17.jpg",
 //             title: "Product 1",
 //             price: 430,
 //             quantity: 1
 //         },
 //         {
 //             id: 4,
-//             image: "./images/banner-17.jpg",
+//             imageURL: "./images/banner-17.jpg",
 //             title: "Product 1",
 //             price: 200,
 //             quantity: 3
 //         },
 //         {
 //             id: 5,
-//             image: "./images/banner-17.jpg",
+//             imageURL: "./images/banner-17.jpg",
 //             title: "Product 1",
 //             price: 190,
 //             quantity: 2

@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Stack, Box, Typography } from "@mui/material";
-import { useContext, useState } from "react";
 import { ColorModeContext } from "../../Theme/theme";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -42,7 +41,7 @@ const ItemComponentDetails = ({ key, item, cartDataDispatch }) => {
                     maxHeight: "100px",
                     borderRadius: "5px",
                 }}
-                src="./images/banner-17.jpg"
+                src={item.imageURL}
                 alt="cart-item"
             />
             <Box
@@ -103,8 +102,6 @@ const ItemComponentDetails = ({ key, item, cartDataDispatch }) => {
                             value={item.quantity}
                             onChange={(e) => {
                                 let value = e.target.value;
-
-                                console.log(value);
                                 if (value <= 0) value = 1;
 
                                 handleClickIncreaseDecrease(
