@@ -16,12 +16,8 @@ import { useContext } from "react";
 import { CustomerContext } from "../../../Contexts/CustomerContext";
 import { Avatar } from "@mui/material";
 
-// export function checkLoginStatus() {
-//     return (personalInfo !== null);
-// }
-
 const CustomerMenu = () => {
-    const { customerData } = useContext(CustomerContext);
+    const { customerData, customerDataDispatch } = useContext(CustomerContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -30,6 +26,10 @@ const CustomerMenu = () => {
     };
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogout = () => {
+        customerDataDispatch({ type: "LOGOUT" });
     };
 
     const CustomerListItems = [
@@ -73,7 +73,11 @@ const CustomerMenu = () => {
     return (
         <Fragment>
             <Tooltip
-                title={customerData.FirstName + " " + customerData.LastName}
+                title={
+                    customerData.FirstName.trim() !== ""
+                        ? customerData.FirstName + " " + customerData.LastName
+                        : "User Account"
+                }
             >
                 <IconButton
                     onClick={handleClick}
@@ -83,7 +87,7 @@ const CustomerMenu = () => {
                     aria-expanded={open ? "true" : undefined}
                 >
                     <Avatar sx={{ width: 28, height: 28 }}>
-                        {customerData.FirstName[0].toUpperCase()}
+                        {customerData.FirstName[0]}
                     </Avatar>
                 </IconButton>
             </Tooltip>
@@ -127,6 +131,7 @@ const CustomerMenu = () => {
                         key={index}
                         href={item.link}
                         style={{ textDecoration: "none", color: "inherit" }}
+                        onClick={handleLogout}
                     >
                         <MenuItem
                             onClick={handleClose}

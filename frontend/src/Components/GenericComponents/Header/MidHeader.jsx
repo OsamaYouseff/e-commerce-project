@@ -8,10 +8,9 @@ import IconButton from "@mui/material/IconButton";
 import { ColorModeContext } from "../../../Theme/theme";
 import CartDrawer from "../../CartDrawer/CartDrawer";
 import SimpleListMenu from "./SimpleListMenu";
-import { getCustomer } from "../../../API/APIFunctions";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import CustomerMenu from "./CustomerMenu";
 import { CustomerContext } from "../../../Contexts/CustomerContext";
 
@@ -58,21 +57,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-// async function getCustomerInfo(customerId) {
-//     const data = await getCustomer(customerId).then((data) => data);
-//     personalInfo = data;
-//     console.log(personalInfo);
-//     return data;
-// }
-
-let personalInfo = null;
-
-function checkLoginStatus() {
-    return personalInfo !== null;
-}
-
-function ToggleCustomerAvatar() {
-    return checkLoginStatus() ? (
+function ToggleCustomerAvatar(customerData) {
+    return customerData.id !== null ? (
         <IconButton
             aria-label="cart"
             sx={{
@@ -102,7 +88,14 @@ const MidHeader = function () {
     const theme = useTheme(ColorModeContext.theme);
     const fontSizeClamp =
         "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
-    personalInfo = useContext(CustomerContext);
+
+    const { customerData } = useContext(CustomerContext);
+
+    // const customerData = JSON.parse(localStorage.getItem("customerInfo"));
+
+    // console.log(JSON.parse(localStorage.getItem("customerInfo")).id);
+
+    useEffect(() => {}, [customerData]);
 
     return (
         <Container maxWidth="xl" sx={{ marginTop: "15px" }}>
@@ -179,7 +172,7 @@ const MidHeader = function () {
                     direction={"row"}
                     sx={{ [theme.breakpoints.down("md")]: { order: -1 } }}
                 >
-                    {ToggleCustomerAvatar()}
+                    {ToggleCustomerAvatar(customerData)}
                     <IconButton
                         aria-label="cart"
                         sx={{ p: 0.2, aspectRatio: "1" }}

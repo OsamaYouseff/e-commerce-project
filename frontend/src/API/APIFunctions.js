@@ -1,52 +1,75 @@
 import axios from "axios";
 
-export const getCustomer = async (customerId) => {
-    const url = `http://localhost:1337/api/customers/${customerId}`;
-    try {
-        const response = await axios.get(url).then((response) => {
-            return response.data
-        });
-
-        // console.log('Customers fetched successfully:', response.data.attributes);
-        return response.data.attributes;
-    } catch (error) {
-        console.error('Error fetching customers:', error);
-    }
-};
-// {
-// FirstName: "Hassan",
-// LastName: "Mostafa",
-// Email: "Hassan@gmail.com",
-// Password: '1234',
-// Gender: "Male",
-// PhoneNumber: "01011534486",
-// Address: "street 1 at city in country "
-// }
-export const createCustomerAccount = async (customerFromData) => {
-
-    console.log("from Function ", customerFromData);
-
-    const url = 'http://localhost:1337/api/customers';
-    const customerData = {
-        data: customerFromData,
-    };
-
+export const customerLogin = async (customerData, rememberMe) => {
     const config = {
         method: 'post',
-        url: url,
+        maxBodyLength: Infinity,
+        url: 'http://localhost:1337/api/auth/local',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        data: customerData,
+        data: customerData
     };
 
     try {
         const response = await axios.request(config);
-        console.log('Customer created successfully:', response.data);
-        // Handle success, update UI, etc.
+
+        if (rememberMe) {
+            //// store token in local storage
+            localStorage.setItem('token', response.data.jwt);
+
+            // ///// store customer Info in local storage
+            localStorage.setItem('customerInfo', JSON.stringify(response.data.user));
+
+        } else {
+            //// store token in session Storage
+            sessionStorage.setItem('token', response.data.jwt);
+
+            ///// store customer Info in session Storage
+            sessionStorage.setItem('customerInfo', JSON.stringify(response.data.user));
+        }
+
+
+        // alert(`Customers fetched successfully: ${customer.email}`);
+
+
+
+        return true;
+    } catch (error) {
+        console.error('Error fetching customers:', error);
+        throw error;
+    }
+};
+export const createCustomerAccount = async (customerFromData) => {
+    const url = 'http://localhost:1337/api/auth/local/register';
+
+    const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: url,
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        data: customerFromData
+    };
+
+
+    try {
+        const response = await axios.request(config);
+        alert('Customer created successfully:', response.data);
+
+        //// store token in local storage
+        localStorage.setItem('token', response.data.jwt);
+
+        // ///// store customer Info in local storage
+        localStorage.setItem('customerInfo', JSON.stringify(response.data.user));
+
+
+        return true;
+
     } catch (error) {
         console.error('Error creating customer:', error);
-        // Handle error, show error message, etc.
+        return false;
     }
 };
 

@@ -906,6 +906,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    Address: Attribute.Text;
+    Gender: Attribute.Enumeration<['man', 'woman']>;
+    PhoneNumber: Attribute.String & Attribute.Required;
+    FirstName: Attribute.String & Attribute.Required;
+    LastName: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

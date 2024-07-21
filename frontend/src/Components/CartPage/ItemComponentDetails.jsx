@@ -35,15 +35,23 @@ const ItemComponentDetails = ({ key, item, cartDataDispatch }) => {
                 gap: { xs: 2, sm: 1 },
             }}
         >
-            <img
-                style={{
-                    maxWidth: "100px",
+            <Box
+                className="flex-center"
+                sx={{
+                    width: "100px",
                     maxHeight: "100px",
-                    borderRadius: "5px",
                 }}
-                src={item.imageURL}
-                alt="cart-item"
-            />
+            >
+                <img
+                    style={{
+                        maxWidth: "100px",
+                        maxHeight: "100px",
+                        borderRadius: "5px",
+                    }}
+                    src={item.imageURL}
+                    alt="cart-item"
+                />
+            </Box>
             <Box
                 sx={{ display: "flex", flex: 1, flexDirection: "column" }}
                 justifyContent={"space-between"}

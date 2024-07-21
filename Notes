@@ -1,7 +1,17 @@
 E-commerece Notes
 
 
-1 - add button to add product to favourite items
+1 - add button to add product to favourite items.
 
-2 - 
+2 - add some toast component when user log in and register.
+
+3 - Make code clean as possible before writing more code.
+
+4 - learn how to create a cart info related to customer info and how to make a request to get it.
+
+5 - make page for customer info and make request to edit his info.
+
+6 - make loader to the page to make the website looks better.
+
+7 - prevent user from going to [login / register]  pages if he's already logged in
 

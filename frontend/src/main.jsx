@@ -71,7 +71,6 @@ function MainComponent() {
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-
                 <Provider store={store}>
                     <CustomerProvider>
                         <RouterProvider router={router}>

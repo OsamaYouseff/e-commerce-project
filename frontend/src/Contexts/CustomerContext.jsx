@@ -1,10 +1,12 @@
 /* eslint-disable react/prop-types */
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 export const CustomerContext = createContext({});
 export const CartContext = createContext({});
 
 //// Reducers
 import CartActionsReducer from "../Reducers/CartActionsReducer";
+import ConnectWithApiReducer from "../Reducers/ApiReducer";
+let customerInfo;
 
 export const CustomerProvider = ({ children }) => {
     const [cartData, cartDataDispatch] = useReducer(CartActionsReducer, {
@@ -21,22 +23,37 @@ export const CustomerProvider = ({ children }) => {
         totalCartPrice: 260,
     });
 
-    const [customerData, setCustomerData] = useState({
-        Address: "Street 2 on the the city4 ",
-        Email: "Osama@gmail.com",
-        FirstName: "Osama",
-        Gender: "Male",
-        LastName: "Yousef",
-        PhoneNumber: "01234567843",
-        createdAt: "2024-07-11T11:33:34.877Z",
-        locale: "en",
-        publishedAt: "2024-07-11T11:33:34.171Z",
-        updatedAt: "2024-07-11T11:33:34.877Z",
-        personalInfo: {},
-    });
+    if (localStorage.getItem("customerInfo"))
+        customerInfo = JSON.parse(localStorage.getItem("customerInfo"));
+    else if (sessionStorage.getItem("customerInfo"))
+        customerInfo = JSON.parse(sessionStorage.getItem("customerInfo"));
+    else {
+        customerInfo = {
+            id: null,
+            username: "",
+            email: "",
+            FirstName: "",
+            LastName: "",
+            Address: "",
+            Gender: "",
+            PhoneNumber: "",
+            provider: "",
+            confirmed: true,
+            blocked: false,
+            createdAt: "",
+            updatedAt: "",
+        };
+    }
+
+    const [customerData, customerDataDispatch] = useReducer(
+        ConnectWithApiReducer,
+        customerInfo
+    );
 
     return (
-        <CustomerContext.Provider value={{ customerData, setCustomerData }}>
+        <CustomerContext.Provider
+            value={{ customerData, customerDataDispatch }}
+        >
             <CartContext.Provider value={{ cartData, cartDataDispatch }}>
                 {children}
             </CartContext.Provider>
@@ -44,17 +61,19 @@ export const CustomerProvider = ({ children }) => {
     );
 };
 
-// Address: "Street 2 on the the city4 ",
-// Email: "Osama@gmail.com",
-// FirstName: "Osama",
-// Gender: "Male",
-// LastName: "Yousef",
-// PhoneNumber: "01234567843",
-// createdAt: "2024-07-11T11:33:34.877Z",
-// locale: "en",
-// publishedAt: "2024-07-11T11:33:34.171Z",
-// updatedAt: "2024-07-11T11:33:34.877Z",
-
+// id: 2,
+// username: "osamayousef",
+// email: "osamayousef@gmail.com",
+// provider: "local",
+// confirmed: true,
+// blocked: false,
+// createdAt: "2024-07-16T17:52:47.827Z",
+// updatedAt: "2024-07-21T15:55:46.098Z",
+// Address: null,
+// Gender: null,
+// PhoneNumber: null,
+// FirstName: null,
+// LastName: null
 // export const CustomerContext = createContext({
 //     // personalInfo: null,
 
