@@ -187,7 +187,7 @@ function Drawer() {
     const openingLocation = "top";
 
     return (
-        <Fragment >
+        <Fragment>
             <MenuIcon onClick={toggleDrawer(openingLocation, true)} sx={{ color: theme.palette.text.primary, cursor: "pointer" }} />
 
             <SwipeableDrawer SwipeableDrawer
@@ -197,9 +197,11 @@ function Drawer() {
                 onOpen={toggleDrawer(openingLocation, true)}
             >
                 <Box className="flex-start" sx={{
-                    height: "1000px",
+                    minHeight: "100vh",
+                    overflowY: "auto",
                     border: "1px solid #777",
                     bgcolor: theme.palette.categoryColor.main,
+                    pb: 4
                 }}>
                     <Box className="accordions-container flex-column-center " sx={{ width: "100%", minWidth: "350px", gap: "10px", p: 1, borderRadius: "5px" }}>
                         <Button sx={{ color: theme.palette.text.primary, marginTop: "15px", }} onClick={toggleDrawer(openingLocation, false)}>

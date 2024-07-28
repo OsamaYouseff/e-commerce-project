@@ -158,12 +158,12 @@ const ListItemButtonStyles = {
 const LinksMenus = () => {
     return (
         <Stack flexGrow={1} className="flex-center" sx={{ zIndex: "100 !important" }}>
-            <BaseMenu titleName={"Home"} subMenu={HomeMenuData} />
-            <BaseMenu titleName={"Mega Menu"} subMenu={MegaMenuData} />
-            <BaseMenu titleName={"Full screen menu"} subMenu={FullScreenMenuData} />
-            <BaseMenu titleName={"Pages"} subMenu={PagesMenuData} />
-            <BaseMenu titleName={"User account"} subMenu={UserMenuData} />
-            <BaseMenu titleName={"Vendor account"} subMenu={VendorMenuData} />
+            <BaseMenu key={1} titleName={"Home"} subMenu={HomeMenuData} />
+            <BaseMenu key={2} titleName={"Mega Menu"} subMenu={MegaMenuData} />
+            <BaseMenu key={3} titleName={"Full screen menu"} subMenu={FullScreenMenuData} />
+            <BaseMenu key={4} titleName={"Pages"} subMenu={PagesMenuData} />
+            <BaseMenu key={5} titleName={"User account"} subMenu={UserMenuData} />
+            <BaseMenu key={6} titleName={"Vendor account"} subMenu={VendorMenuData} />
         </Stack >
 
     );

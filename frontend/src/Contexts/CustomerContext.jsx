@@ -5,7 +5,7 @@ export const CartContext = createContext({});
 
 //// Reducers
 import CartActionsReducer from "../Reducers/CartActionsReducer";
-import ConnectWithApiReducer from "../Reducers/ApiReducer";
+import customerApiReducer from "../Reducers/ApiReducer";
 let customerInfo;
 
 export const CustomerProvider = ({ children }) => {
@@ -30,23 +30,20 @@ export const CustomerProvider = ({ children }) => {
     else {
         customerInfo = {
             id: null,
+            firstname: "",
+            lastname: "",
             username: "",
             email: "",
-            FirstName: "",
-            LastName: "",
-            Address: "",
-            Gender: "",
-            PhoneNumber: "",
-            provider: "",
-            confirmed: true,
-            blocked: false,
+            address: "",
+            gender: "",
+            phone: "",
             createdAt: "",
             updatedAt: "",
         };
     }
 
     const [customerData, customerDataDispatch] = useReducer(
-        ConnectWithApiReducer,
+        customerApiReducer,
         customerInfo
     );
 

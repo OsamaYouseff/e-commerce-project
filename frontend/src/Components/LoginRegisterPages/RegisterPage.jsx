@@ -11,6 +11,7 @@ import Container from "@mui/material/Container";
 import { useContext, useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
 
 //// Reducers
 import { CustomerContext } from "../../Contexts/CustomerContext";
@@ -53,12 +54,18 @@ export default function RegisterPage() {
 
     const [formData, setFormData] = useState({
         username: "ahmedsayed",
-        FirstName: "Ahmed",
-        LastName: "Sayed",
         email: "AhmedSayed@gmail.com",
         password: "password1234",
-        PhoneNumber: "+0201234567890",
+        phone: "+0201234567890",
     });
+
+    const handelFormData = (key, value) => {
+        const updatedFormData = {
+            ...formData,
+            [key]: value,
+        };
+        setFormData(updatedFormData);
+    };
 
     const { customerDataDispatch } = useContext(CustomerContext);
 
@@ -118,20 +125,20 @@ export default function RegisterPage() {
                     sx={{ mt: 3 }}
                 >
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        {/* <Grid item xs={12} sm={6}>
                             <TextField
                                 autoComplete="given-name"
-                                name="firstName"
+                                name="firstname"
                                 required
                                 fullWidth
-                                id="firstName"
+                                id="firstname"
                                 label="First Name"
                                 autoFocus
-                                value={formData.FirstName}
+                                value={formData.firstname}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        FirstName: e.target.value.trim(),
+                                        firstname: e.target.value.trim(),
                                     })
                                 }
                                 size="small"
@@ -141,39 +148,41 @@ export default function RegisterPage() {
                             <TextField
                                 required
                                 fullWidth
-                                id="lastName"
+                                id="lastname"
                                 label="Last Name"
-                                name="lastName"
+                                name="lastname"
                                 autoComplete="family-name"
-                                value={formData.LastName}
+                                value={formData.lastname}
                                 onChange={(e) =>
                                     setFormData({
                                         ...formData,
-                                        LastName: e.target.value.trim(),
+                                        lastname: e.target.value.trim(),
                                     })
                                 }
                                 size="small"
                             />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="email"
-                                label="email Address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                value={formData.email}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        email: e.target.value.trim(),
-                                    })
-                                }
-                                size="small"
-                            />
-                        </Grid>
+                        </Grid> */}
+
+                        <TextFieldComponent
+                            value={formData.username}
+                            setFormData={handelFormData}
+                            label="Username"
+                            id="username"
+                            type="text"
+                            colWidth={12}
+                            keyName="username"
+                            mb={1}
+                        />
+                        <TextFieldComponent
+                            value={formData.email}
+                            setFormData={handelFormData}
+                            label="Email Address"
+                            id="email"
+                            type="email"
+                            colWidth={12}
+                            keyName="email"
+                            mb={1}
+                        />
                         <Grid item xs={12} sx={{ position: "relative" }}>
                             <TextField
                                 required
@@ -217,44 +226,16 @@ export default function RegisterPage() {
                                 setShowPassword
                             )}
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="username"
-                                label="username"
-                                name="username"
-                                type="username"
-                                autoComplete="username"
-                                value={formData.username}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        username: e.target.value.trim(),
-                                    })
-                                }
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                fullWidth
-                                name="phone-number"
-                                label="phone number"
-                                type="phone number"
-                                id="phone-number"
-                                autoComplete="phone-number"
-                                value={formData.PhoneNumber}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        PhoneNumber: e.target.value.trim(),
-                                    })
-                                }
-                                size="small"
-                            />
-                        </Grid>
+                        <TextFieldComponent
+                            value={formData.phone}
+                            setFormData={handelFormData}
+                            label="Phone Number"
+                            id="phone-number"
+                            type="Phone Number"
+                            colWidth={12}
+                            keyName="phone"
+                            mb={1}
+                        />
                     </Grid>
                     <Button
                         type="submit"

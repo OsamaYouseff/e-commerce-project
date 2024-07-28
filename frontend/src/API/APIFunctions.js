@@ -1,10 +1,11 @@
+/* eslint-disable no-useless-catch */
 import axios from "axios";
 
 export const customerLogin = async (customerData, rememberMe) => {
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:1337/api/auth/local',
+        url: 'http://localhost:5000/api/auth/login',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -15,33 +16,22 @@ export const customerLogin = async (customerData, rememberMe) => {
         const response = await axios.request(config);
 
         if (rememberMe) {
-            //// store token in local storage
-            localStorage.setItem('token', response.data.jwt);
-
-            // ///// store customer Info in local storage
-            localStorage.setItem('customerInfo', JSON.stringify(response.data.user));
-
+            localStorage.setItem('token', response.data.accessToken);
+            localStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
         } else {
-            //// store token in session Storage
-            sessionStorage.setItem('token', response.data.jwt);
-
-            ///// store customer Info in session Storage
-            sessionStorage.setItem('customerInfo', JSON.stringify(response.data.user));
+            sessionStorage.setItem('token', response.data.accessToken);
+            sessionStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
         }
-
-
-        // alert(`Customers fetched successfully: ${customer.email}`);
-
-
+        // alert(`Customers fetched successfully: ${customerData.username}`);
 
         return true;
     } catch (error) {
-        console.error('Error fetching customers:', error);
+        // console.error('Error fetching customers:', error);
         throw error;
     }
 };
-export const createCustomerAccount = async (customerFromData) => {
-    const url = 'http://localhost:1337/api/auth/local/register';
+export const registerACustomer = async (customerFromData) => {
+    const url = 'http://localhost:5000/api/auth/register';
 
     const config = {
         method: 'post',
@@ -56,55 +46,65 @@ export const createCustomerAccount = async (customerFromData) => {
 
     try {
         const response = await axios.request(config);
+
         alert('Customer created successfully:', response.data);
 
         //// store token in local storage
-        localStorage.setItem('token', response.data.jwt);
+        localStorage.setItem('token', response.data.accessToken);
 
         // ///// store customer Info in local storage
-        localStorage.setItem('customerInfo', JSON.stringify(response.data.user));
+        localStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
 
 
         return true;
 
     } catch (error) {
-        console.error('Error creating customer:', error);
+        console.error('Error creating customer:', error.response.data.message);
+        alert("Error " + error.response.data.message);
         return false;
     }
 };
 
-export const editCustomerAccount = async () => {
-    const customerId = 1;
-    const url = `http://localhost:1337/api/customers/${customerId}`;
+export const updateCustomerAccount = async (customerFromData) => {
 
-    const updatedData = {
-        data: {
-            FirstName: "Hassan",
-            LastName: "Mostafa",
-            Email: "Hassan@gmail.com",
-            Gender: "Male",
-            PhoneNumber: "01011534486",
-            Address: "street 1 at city in country "
-        }
-    };
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+
+    if (!customerData || !accessToken) {
+        alert("Please login first");
+        return;
+    }
+    const customerId = JSON.parse(customerData)["_id"];
 
     const config = {
-        method: 'put', // Use 'put' for update requests
-        url: url,
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `http://localhost:5000/api/users/${customerId}`,
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
         },
-        data: updatedData,
+        data: customerFromData
     };
 
     try {
         const response = await axios.request(config);
         console.log('Customer updated successfully:', response.data);
-        // Handle success, update UI, etc.
+
+
+        if (localStorage.getItem('customerInfo')) {
+            localStorage.setItem('customerInfo', JSON.stringify(response.data));
+        } else {
+            sessionStorage.setItem('customerInfo', JSON.stringify(response.data));
+        }
+
+        return response.data;
+
     } catch (error) {
         console.error('Error updating customer:', error);
-        // Handle error, show error message, etc.
     }
+
 };
 
 export const deleteCustomerAccount = async () => {

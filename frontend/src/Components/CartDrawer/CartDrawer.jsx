@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { useContext, useState } from "react";
 import { CartContext } from "../../Contexts/CustomerContext";
 
-export default function AnchorTemporaryDrawer() {
+export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
     const { cartData, cartDataDispatch } = useContext(CartContext);
@@ -42,7 +42,7 @@ export default function AnchorTemporaryDrawer() {
         <Box
             className="flex-between-column"
             sx={{
-                width: anchor === "top" || anchor === "bottom" ? "auto" : 390,
+                width: { xs: "100vw", sm: "390px" },
                 p: { xs: 2, sm: 2 },
                 pr: 1,
                 bgcolor: theme.palette.categoryColor.main,
@@ -204,7 +204,13 @@ export default function AnchorTemporaryDrawer() {
     );
 
     return (
-        <div style={{ width: "40px" }}>
+        <div
+            style={{
+                width: "48px",
+                height: "38px",
+                color: theme.palette.text.primary,
+            }}
+        >
             <StyledBadge
                 onClick={toggleDrawer("right", true)}
                 badgeContent={cartData.cartItems.length}

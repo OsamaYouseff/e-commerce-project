@@ -1,5 +1,6 @@
 E-commerece Notes
 
+ ********** Most important thing i have to solve argent is to fix the reducer problem in my project  **********
 
 1 - add button to add product to favourite items.
 
@@ -14,4 +15,5 @@ E-commerece Notes
 6 - make loader to the page to make the website looks better.
 
 7 - prevent user from going to [login / register]  pages if he's already logged in
+
 

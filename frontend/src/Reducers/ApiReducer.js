@@ -1,35 +1,40 @@
-import { createCustomerAccount } from "../API/APIFunctions";
-import { customerLogin } from "../API/APIFunctions";
+/* eslint-disable no-case-declarations */
+import { registerACustomer, customerLogin, updateCustomerAccount } from "../API/APIFunctions";
 
 function GoHome() {
     document.querySelector(".go-home").click();
 }
 
-const ConnectWithApiReducer = async (currentCustomerInfo, action) => {
+const customerApiReducer = async (currentCustomerInfo, action) => {
 
-    let RegistrationSuccess = null;
+    let actionSuccess = null;
+
     switch (action.type) {
         case "REGISTER":
-            RegistrationSuccess = await createCustomerAccount(action.formData);
+            actionSuccess = await registerACustomer(action.formData);
 
-            if (RegistrationSuccess) GoHome();
-            return;
+            if (actionSuccess) GoHome();
+            break;
 
         case "LOGIN":
-            RegistrationSuccess = await customerLogin(action.payload.loginData, action.payload.rememberMe);
-
-            if (RegistrationSuccess) GoHome();
-            return;
+            actionSuccess = await customerLogin(action.payload.loginData, action.payload.rememberMe);
+            if (actionSuccess) GoHome();
+            break;
         case "LOGOUT":
             localStorage.removeItem("customerInfo");
             localStorage.removeItem("token");
             sessionStorage.removeItem("customerInfo");
             sessionStorage.removeItem("token");
-            return;
+            break;
+
+        case "UPDATE_USER_DATA":
+            await updateCustomerAccount(action.payload);
+
+            break;
         default:
             alert("No case found");
-            return;
+            break;
     }
 }
 
-export default ConnectWithApiReducer;
+export default customerApiReducer;

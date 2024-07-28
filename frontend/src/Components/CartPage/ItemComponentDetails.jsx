@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const ItemComponentDetails = ({ key, item, cartDataDispatch }) => {
+const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
     const theme = useTheme(ColorModeContext);
 
     function handleClickIncreaseDecrease(type, oldQuantity = item.quantity) {
@@ -23,7 +23,7 @@ const ItemComponentDetails = ({ key, item, cartDataDispatch }) => {
 
     return (
         <Stack
-            key={key}
+            key={ItemKey}
             direction="row"
             justifyContent={"space-between"}
             alignItems={"center"}

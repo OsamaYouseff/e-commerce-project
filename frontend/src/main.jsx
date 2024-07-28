@@ -26,11 +26,14 @@ import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
 
 //// Custom Hooks
 import { CustomerProvider } from "./Contexts/CustomerContext";
+import ProfileComponent from "./Components/ProfileComponent/ProfileComponent.jsx";
+import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
 
-const routeElement = (currentComponent) => {
+const routeElement = (currentComponent, showMidHeader = false) => {
     return (
         <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh" }}>
             <TopHeader />
+            {showMidHeader && <MidHeader />}
             {currentComponent}
             <Footer />
             <ScrollToTop />
@@ -60,6 +63,10 @@ const router = createBrowserRouter([
         element: routeElement(<RegisterPage />),
     },
     {
+        path: "/profile",
+        element: routeElement(<ProfileComponent />, true),
+    },
+    {
         path: "/*",
         element: routeElement(<ErrorPage />),
     },
@@ -84,7 +91,7 @@ function MainComponent() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <MainComponent />
-    </React.StrictMode>
+    // <React.StrictMode>
+    // </React.StrictMode>
+    <MainComponent />
 );

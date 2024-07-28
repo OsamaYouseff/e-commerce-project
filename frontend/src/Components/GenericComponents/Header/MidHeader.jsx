@@ -95,7 +95,7 @@ const MidHeader = function () {
 
     // console.log(JSON.parse(localStorage.getItem("customerInfo")).id);
 
-    useEffect(() => {}, [customerData]);
+    useEffect(() => { }, [customerData]);
 
     return (
         <Container maxWidth="xl" sx={{ marginTop: "15px" }}>

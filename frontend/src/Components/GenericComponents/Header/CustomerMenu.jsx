@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import { Fragment, useState } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -6,7 +7,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { Fragment, useState } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
@@ -15,9 +15,15 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import { useContext } from "react";
 import { CustomerContext } from "../../../Contexts/CustomerContext";
 import { Avatar } from "@mui/material";
+import { ColorModeContext } from "../../../Theme/theme";
+import { useTheme } from "@emotion/react";
 
 const CustomerMenu = () => {
     const { customerData, customerDataDispatch } = useContext(CustomerContext);
+
+    const userName = customerData.username || "";
+
+    const theme = useTheme(ColorModeContext);
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -32,50 +38,58 @@ const CustomerMenu = () => {
         customerDataDispatch({ type: "LOGOUT" });
     };
 
-    const CustomerListItems = [
+    const CustomerMenuItems = [
         {
             title: "Orders",
             icon: <LocalShippingIcon fontSize="small" />,
-            link: `\\cart`,
+            url: `\\cart`,
+            action: null,
         },
         {
             title: "Profile",
             icon: <PersonIcon fontSize="small" />,
-            link: `\\profile`,
+            url: `\\profile`,
+            action: null,
         },
         {
             title: "Address",
             icon: <LocationOnIcon fontSize="small" />,
-            link: `\\address`,
+            url: `\\address`,
+            action: null,
         },
         {
             title: "Wishlist",
             icon: <FavoriteIcon fontSize="small" />,
-            link: `\\wishlist`,
+            url: `\\wishlist`,
+            action: null,
         },
         {
             title: "Payments",
             icon: <PaymentIcon fontSize="small" />,
-            link: `\\payments`,
+            url: `\\payments`,
+            action: null,
         },
         {
             title: "Settings",
             icon: <Settings fontSize="small" />,
-            link: `\\settings`,
+            url: `\\settings`,
+            action: null,
         },
         {
             title: "Logout",
             icon: <Logout fontSize="small" />,
-            link: `\\home`,
+            url: `\\home`,
+            action: handleLogout,
         },
     ];
 
     return (
         <Fragment>
             <Tooltip
+                sx={{ textDecoration: "capitalize" }}
                 title={
-                    customerData.FirstName.trim() !== ""
-                        ? customerData.FirstName + " " + customerData.LastName
+                    customerData.username !== ""
+                        ? userName.toUpperCase()
                         : "User Account"
                 }
             >
@@ -86,8 +100,12 @@ const CustomerMenu = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                 >
-                    <Avatar sx={{ width: 28, height: 28 }}>
-                        {customerData.FirstName[0]}
+                    <Avatar sx={{
+                        width: 28, height: 28,
+                        color: theme.palette.sectionBgColor.main,
+                        bgcolor: theme.palette.text.primary
+                    }}>
+                        {userName.toUpperCase()[0]}
                     </Avatar>
                 </IconButton>
             </Tooltip>
@@ -126,12 +144,12 @@ const CustomerMenu = () => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-                {CustomerListItems.map((item, index) => (
+                {CustomerMenuItems.map((item, index) => (
                     <a
                         key={index}
-                        href={item.link}
+                        href={item.url}
                         style={{ textDecoration: "none", color: "inherit" }}
-                        onClick={handleLogout}
+                        onClick={item.action}
                     >
                         <MenuItem
                             onClick={handleClose}

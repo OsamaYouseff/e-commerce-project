@@ -155,6 +155,7 @@ const CartPage = () => {
                             {cartData.cartItems.map((item) => (
                                 <ItemComponentDetails
                                     key={item.id}
+                                    ItemKey={item.id}
                                     item={item}
                                     cartDataDispatch={cartDataDispatch}
                                 />

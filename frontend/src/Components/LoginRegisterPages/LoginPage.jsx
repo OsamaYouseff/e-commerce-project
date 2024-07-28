@@ -16,15 +16,16 @@ import { CustomerContext } from "../../Contexts/CustomerContext";
 export default function LoginPage() {
     const { customerDataDispatch } = useContext(CustomerContext);
     const [formData, setFormData] = useState({
-        usernameOrEmail: "ahmedsayed@gmail.com",
-        password: "password1234",
+        // username: "ahmedsayed@gmail.com",
+        username: "sama",
+        password: "123456",
         rememberMe: false,
     });
 
     const handleSubmit = (event) => {
         event.preventDefault();
         if (
-            formData.usernameOrEmail.trim() === "" ||
+            formData.username.trim() === "" ||
             formData.password.trim() === ""
         )
             return alert("Please enter both username and password");
@@ -33,7 +34,7 @@ export default function LoginPage() {
             type: "LOGIN",
             payload: {
                 loginData: {
-                    identifier: formData.usernameOrEmail.trim(),
+                    username: formData.username.trim(),
                     password: formData.password.trim(),
                 },
                 rememberMe: formData.rememberMe,
@@ -72,17 +73,17 @@ export default function LoginPage() {
                         margin="normal"
                         required
                         fullWidth
-                        id="email-username"
-                        label="Username Or Email Address"
-                        name="email-username"
-                        autoComplete="email-username"
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
                         autoFocus
                         size="small"
-                        value={formData.usernameOrEmail}
+                        value={formData.username}
                         onChange={(e) =>
                             setFormData({
                                 ...formData,
-                                usernameOrEmail: e.target.value.trim(),
+                                username: e.target.value.trim(),
                             })
                         }
                     />
