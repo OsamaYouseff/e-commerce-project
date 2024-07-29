@@ -3,7 +3,7 @@ import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
 import ItemComponentDetails from "./ItemComponentDetails";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -11,14 +11,11 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
 import MidHeader from "../GenericComponents/Header/MidHeader";
-import { CartContext } from "../../Contexts/CustomerContext";
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
     const [country, setCountry] = useState("");
     const [stateCity, setStateCity] = useState("");
-
-    const { cartData, cartDataDispatch } = useContext(CartContext);
 
     const handleChangeCountry = (event) => {
         setCountry(event.target.value);
@@ -85,7 +82,7 @@ const CartPage = () => {
                                     borderRadius: "6px",
                                 }}
                             >
-                                {cartData.cartItems.length}
+                                {/* {cartData.cartItems.length} */}
                             </span>
                             Items in your shopping bag
                         </Typography>
@@ -152,14 +149,14 @@ const CartPage = () => {
                                 </span>
                             </Stack>
 
-                            {cartData.cartItems.map((item) => (
+                            {/* {cartData.cartItems.map((item) => (
                                 <ItemComponentDetails
                                     key={item.id}
                                     ItemKey={item.id}
                                     item={item}
                                     cartDataDispatch={cartDataDispatch}
                                 />
-                            ))}
+                            ))} */}
                         </Box>
                     </Box>
                     <Box

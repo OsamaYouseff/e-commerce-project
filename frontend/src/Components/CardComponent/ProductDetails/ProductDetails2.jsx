@@ -11,7 +11,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 /// Icons
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
-import { CartContext } from "../../../Contexts/CustomerContext";
 
 //// styles
 const CloseBtnStyles = {
