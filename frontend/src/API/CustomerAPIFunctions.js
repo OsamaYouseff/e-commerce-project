@@ -1,9 +1,8 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
+import { ResetLocalStorage, StoreDataAtLocalStorage } from "../redux/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
-
-
 
 export const customerLogin = async (customerData, rememberMe) => {
     const config = {
@@ -16,21 +15,20 @@ export const customerLogin = async (customerData, rememberMe) => {
         data: customerData
     };
 
+    ResetLocalStorage();
+
     try {
         const response = await axios.request(config);
 
-        if (rememberMe) {
-            localStorage.setItem('token', response.data.accessToken);
-            localStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
-        } else {
-            sessionStorage.setItem('token', response.data.accessToken);
-            sessionStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
-        }
-        // alert(`Customers fetched successfully: ${customerData.username}`);
+        if (rememberMe)
+            StoreDataAtLocalStorage('localStorage', response.data);
+        else
+            StoreDataAtLocalStorage('sessionStorage', response.data);
 
-        return true;
+        return response.data.userInfo;
+
     } catch (error) {
-        // console.error('Error fetching customers:', error);
+        console.error('Error fetching customers:', error);
         throw error;
     }
 };
@@ -47,18 +45,14 @@ export const registerACustomer = async (customerFromData) => {
         data: customerFromData
     };
 
+    ResetLocalStorage();
 
     try {
         const response = await axios.request(config);
 
         alert('Customer created successfully:', response.data);
 
-        //// store token in local storage
-        localStorage.setItem('token', response.data.accessToken);
-
-        // ///// store customer Info in local storage
-        localStorage.setItem('customerInfo', JSON.stringify(response.data.userInfo));
-
+        StoreDataAtLocalStorage('localStorage', response.data);
 
         return true;
 
@@ -111,9 +105,9 @@ export const updateCustomerAccount = async (customerFromData) => {
 
 };
 
-export const deleteCustomerAccount = async () => {
-    const customerId = 6;
-    const url = `{baseURL}/api/customers/${customerId}`;
+///// TODO: refactor delete customer
+export const deleteCustomerAccount = async (customerId) => {
+    const url = `${baseURL}/api/customers/${customerId}`;
 
     try {
         const response = await axios.delete(url, {

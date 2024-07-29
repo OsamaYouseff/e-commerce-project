@@ -16,6 +16,7 @@ import { useState } from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import XIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
+import { Link } from "react-router-dom";
 
 const options = ["AR", "EN"];
 
@@ -118,6 +119,7 @@ const TopHeader = function () {
                     {/*==theme icon==*/}
                 </Stack>
             </Container>
+            <Link className="go-home" to="/"></Link>
         </Box>
     );
 };

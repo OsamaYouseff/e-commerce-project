@@ -10,9 +10,15 @@ import CartDrawer from "../../CartDrawer/CartDrawer";
 import SimpleListMenu from "./SimpleListMenu";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+
+///// custom components
 import CustomerMenu from "./CustomerMenu";
-import { CustomerContext } from "../../../Contexts/CustomerContext";
+
+//// hooks
+import { useEffect } from "react";
+
+//// general functions
+import { GetUserInfo } from "../../../redux/GeneralFunctions";
 
 const transitionDuration = "350ms";
 
@@ -89,13 +95,9 @@ const MidHeader = function () {
     const fontSizeClamp =
         "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
 
-    const { customerData } = useContext(CustomerContext);
+    let customerData = GetUserInfo();
 
-    // const customerData = JSON.parse(localStorage.getItem("customerInfo"));
-
-    // console.log(JSON.parse(localStorage.getItem("customerInfo")).id);
-
-    useEffect(() => { }, [customerData]);
+    useEffect(() => {}, [customerData]);
 
     return (
         <Container maxWidth="xl" sx={{ marginTop: "15px" }}>
@@ -124,6 +126,7 @@ const MidHeader = function () {
                             sx={{ fontSize: "28px" }}
                         />
                         <Typography
+                            className="go-home"
                             variant="body"
                             sx={{
                                 border: "none",

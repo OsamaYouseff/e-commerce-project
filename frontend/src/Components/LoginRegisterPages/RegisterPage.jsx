@@ -8,13 +8,14 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
 
-//// Reducers
-import { CustomerContext } from "../../Contexts/CustomerContext";
+//// Redux
+import { useDispatch } from "react-redux";
+import { registerACustomerReducer } from "../../redux/ApiCustomerSlice";
 
 //// functions
 function isPasswordsMatch(password = "", confirmPassword = "") {
@@ -52,6 +53,9 @@ export default function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = useState("password1234");
     const [showPassword, setShowPassword] = useState(false);
 
+    const dispatch = useDispatch();
+
+    ///// TODO: clear these fields after finishing development
     const [formData, setFormData] = useState({
         username: "ahmedsayed",
         email: "AhmedSayed@gmail.com",
@@ -66,8 +70,6 @@ export default function RegisterPage() {
         };
         setFormData(updatedFormData);
     };
-
-    const { customerDataDispatch } = useContext(CustomerContext);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -85,12 +87,7 @@ export default function RegisterPage() {
 
         // const data = new FormData(event.currentTarget);
         //// Send data to API
-        customerDataDispatch({
-            type: "REGISTER",
-            formData: formData,
-        });
-
-        ///// redirect to home page
+        dispatch(registerACustomerReducer(formData));
     };
 
     //// Todo : add validation using React Hook Form library

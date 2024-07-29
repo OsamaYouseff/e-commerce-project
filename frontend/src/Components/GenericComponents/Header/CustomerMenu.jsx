@@ -12,15 +12,17 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PaymentIcon from "@mui/icons-material/Payment";
-import { useContext } from "react";
-import { CustomerContext } from "../../../Contexts/CustomerContext";
 import { Avatar } from "@mui/material";
 import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@emotion/react";
 
-const CustomerMenu = () => {
-    const { customerData, customerDataDispatch } = useContext(CustomerContext);
+import { useDispatch } from "react-redux";
+import { GetUserInfo } from "../../../redux/GeneralFunctions";
+import { logoutCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
 
+const CustomerMenu = () => {
+    const dispatch = useDispatch();
+    const customerData = GetUserInfo();
     const userName = customerData.username || "";
 
     const theme = useTheme(ColorModeContext);
@@ -35,7 +37,7 @@ const CustomerMenu = () => {
     };
 
     const handleLogout = () => {
-        customerDataDispatch({ type: "LOGOUT" });
+        dispatch(logoutCustomerAccountReducer());
     };
 
     const CustomerMenuItems = [
@@ -100,11 +102,14 @@ const CustomerMenu = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                 >
-                    <Avatar sx={{
-                        width: 28, height: 28,
-                        color: theme.palette.sectionBgColor.main,
-                        bgcolor: theme.palette.text.primary
-                    }}>
+                    <Avatar
+                        sx={{
+                            width: 28,
+                            height: 28,
+                            color: theme.palette.sectionBgColor.main,
+                            bgcolor: theme.palette.text.primary,
+                        }}
+                    >
                         {userName.toUpperCase()[0]}
                     </Avatar>
                 </IconButton>

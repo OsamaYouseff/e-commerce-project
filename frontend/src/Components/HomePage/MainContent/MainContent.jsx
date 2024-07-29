@@ -2,16 +2,19 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
-import Button from "@mui/material/Button";
-import { useGetProductByNameQuery } from "../../../redux/product";
-import CardComponent from "../../CardComponent/CardComponent";
+
+import CardComponent from "../../CardComponent/CardComponent2";
 
 /// Icons
-import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
+import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails2";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
+
+///// Redux Actions
+import { getAllProducts } from "../../../redux/ApiProductSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const MainContent = () => {
     const allProducts = "products?populate=*";
@@ -20,8 +23,12 @@ const MainContent = () => {
         "products?populate=*&filters[productCategory][$eq]=women";
 
     const [productCategory, setProductCategory] = useState(allProducts);
-    const { data, error, isLoading } =
-        useGetProductByNameQuery(productCategory);
+
+    const dispatch = useDispatch();
+    const products = useSelector((state) => state.ProductsApiRequest.response);
+
+    // const { data, error, isLoading } =
+    //     useGetProductByNameQuery(productCategory);
 
     const theme = useTheme(ColorModeContext);
     const ToggleButtonStyles = {
@@ -38,11 +45,9 @@ const MainContent = () => {
             setProductCategory(newValue);
         }
     };
-
     const handleSetPreviewedProduct = (newValue) => {
         setPreviewedProduct(newValue);
     };
-    // const [value, setValue] = useState(2);
 
     //// Modal vars
     const [open, setOpen] = useState(false);
@@ -53,7 +58,13 @@ const MainContent = () => {
         attributes: {},
     });
 
-    if (data) {
+    useEffect(() => {
+        (async function fetchData() {
+            await dispatch(getAllProducts());
+        })();
+    }, []);
+
+    if (products) {
         return (
             <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
                 <Stack
@@ -127,7 +138,7 @@ const MainContent = () => {
                     flexWrap={"wrap"}
                     justifyContent={"space-between"}
                 >
-                    {/* {data.data.map((product) => (
+                    {products?.map((product) => (
                         <CardComponent
                             key={product.id}
                             productData={product}
@@ -136,7 +147,7 @@ const MainContent = () => {
                                 handleSetPreviewedProduct
                             }
                         />
-                    ))} */}
+                    ))}
                 </Stack>
                 {
                     // toggle modal appearance
@@ -150,40 +161,9 @@ const MainContent = () => {
                 }
             </Container>
         );
-    } else if (error) {
-        return (
-            <Box
-                sx={{
-                    marginTop: "25px",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    width: "100%",
-                    minHeight: "100px",
-                    fontSize:
-                        "clamp(16px,calc(18px + (30 - 14) * (100vw - 1000px) / (1920 - 1000)),35px) !important",
-                    fontWeight: "bold",
-                    WebkitTextStroke: ".1px purple",
-                }}
-            >
-                <Typography variant="h6" color={theme.palette.error.main}>
-                    {error.error} Data😔
-                </Typography>
-
-                <Button
-                    onClick={() => window.location.reload()}
-                    sx={{
-                        border: `1px solid ${theme.palette.primary.main} !important`,
-                        marginY: "25px",
-                        padding: "10px 15px",
-                    }}
-                >
-                    Reload the page
-                </Button>
-            </Box>
-        );
-    } else if (isLoading) {
+    } else if (products === null) {
+        return <SkeletonFeedback />;
+    } else {
         return (
             <>
                 <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>

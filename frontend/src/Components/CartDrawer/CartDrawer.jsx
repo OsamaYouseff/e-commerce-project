@@ -9,13 +9,11 @@ import { ColorModeContext } from "../../Theme/theme";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
-import { useContext, useState } from "react";
-import { CartContext } from "../../Contexts/CustomerContext";
+import { useState } from "react";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
-    const { cartData, cartDataDispatch } = useContext(CartContext);
 
     const toggleDrawer = (anchor, open) => (event) => {
         if (
@@ -103,6 +101,7 @@ export default function CartDrawer() {
             {/* Cart Items */}
             <Box
                 sx={{
+                    flexGrow: 1,
                     overflow: "auto",
                     height: { xs: "58vh", sm: "auto" },
                     minHeight: "58vh",
@@ -114,13 +113,13 @@ export default function CartDrawer() {
                     },
                 }}
             >
-                {cartData.cartItems.map((item) => (
+                {/* {cartData.cartItems.map((item) => (
                     <ItemComponent
                         key={item.id}
                         item={item}
                         cartDataDispatch={cartDataDispatch}
                     />
-                ))}
+                ))} */}
             </Box>
             {/*== Cart Items ==*/}
 
@@ -185,7 +184,7 @@ export default function CartDrawer() {
                                 fontSize: "20px",
                             }}
                         >
-                            ${cartData.totalCartPrice}
+                            {/* ${cartData.totalCartPrice} */}
                         </Typography>
                     </Stack>
                     <Link to="/cart" xs={{ width: "100%" }}>
@@ -213,7 +212,7 @@ export default function CartDrawer() {
         >
             <StyledBadge
                 onClick={toggleDrawer("right", true)}
-                badgeContent={cartData.cartItems.length}
+                // badgeContent={cartData.cartItems.length || 1}
                 color="primary"
             >
                 <ShoppingCartIcon

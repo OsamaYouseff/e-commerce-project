@@ -1,3 +1,4 @@
+///// MUI Components
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -10,11 +11,19 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { useContext, useState } from "react";
-import { CustomerContext } from "../../Contexts/CustomerContext";
+
+///// Custom Hooks
+import { useState } from "react";
+
+///// Redux
+import { useDispatch } from "react-redux";
+
+///// Redux Actions
+import { customerLoginReducer } from "../../redux/ApiCustomerSlice";
 
 export default function LoginPage() {
-    const { customerDataDispatch } = useContext(CustomerContext);
+    const dispatch = useDispatch();
+
     const [formData, setFormData] = useState({
         // username: "ahmedsayed@gmail.com",
         username: "sama",
@@ -24,22 +33,11 @@ export default function LoginPage() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (
-            formData.username.trim() === "" ||
-            formData.password.trim() === ""
-        )
+
+        if (formData.username.trim() === "" || formData.password.trim() === "")
             return alert("Please enter both username and password");
 
-        customerDataDispatch({
-            type: "LOGIN",
-            payload: {
-                loginData: {
-                    username: formData.username.trim(),
-                    password: formData.password.trim(),
-                },
-                rememberMe: formData.rememberMe,
-            },
-        });
+        dispatch(customerLoginReducer(formData));
     };
 
     return (

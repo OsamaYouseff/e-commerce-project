@@ -20,12 +20,9 @@ import ErrorPage from "./Components/ErrorPage/ErrorPage.jsx";
 import { CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./Theme/theme";
 
-/// Contexts
+/// custom component
 import LoginPage from "./Components/LoginRegisterPages/LoginPage.jsx";
 import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
-
-//// Custom Hooks
-import { CustomerProvider } from "./Contexts/CustomerContext";
 import ProfileComponent from "./Components/ProfileComponent/ProfileComponent.jsx";
 import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
 
@@ -79,11 +76,9 @@ function MainComponent() {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Provider store={store}>
-                    <CustomerProvider>
-                        <RouterProvider router={router}>
-                            <App />
-                        </RouterProvider>
-                    </CustomerProvider>
+                    <RouterProvider router={router}>
+                        <App />
+                    </RouterProvider>
                 </Provider>
             </ThemeProvider>
         </ColorModeContext.Provider>
@@ -91,7 +86,7 @@ function MainComponent() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    // <React.StrictMode>
-    // </React.StrictMode>
-    <MainComponent />
+    <React.StrictMode>
+        <MainComponent />
+    </React.StrictMode>
 );

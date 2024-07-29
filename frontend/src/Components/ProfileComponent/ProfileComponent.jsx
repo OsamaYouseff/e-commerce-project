@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useTheme } from "@emotion/react";
 import { Container, Stack, Typography, Box } from "@mui/material";
-import { ColorModeContext } from "../../Theme/theme";
 import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -12,10 +10,7 @@ import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PaymentIcon from "@mui/icons-material/Payment";
-import { useContext } from "react";
-import { CustomerContext } from "../../Contexts/CustomerContext";
 import Grid from "@mui/material/Grid";
-import { useState } from "react";
 import { Button } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
@@ -23,9 +18,26 @@ import Man2RoundedIcon from "@mui/icons-material/Man2Rounded";
 import Woman2RoundedIcon from "@mui/icons-material/Woman2Rounded";
 import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
 
+/// context
+import { ColorModeContext } from "../../Theme/theme";
+
+///// hooks
+import { useTheme } from "@emotion/react";
+import { useState, useEffect } from "react";
+
+/// redux
+import { GetUserInfo } from "../../redux/GeneralFunctions";
+import {
+    updateCustomerAccountReducer,
+    logoutCustomerAccountReducer,
+} from "../../redux/ApiCustomerSlice";
+import { useDispatch } from "react-redux";
+
 const ProfileComponent = () => {
+    const dispatch = useDispatch();
+
     const handleLogout = () => {
-        customerDataDispatch({ type: "LOGOUT" });
+        dispatch(logoutCustomerAccountReducer());
     };
 
     const CustomerMenuItems = [
@@ -65,6 +77,7 @@ const ProfileComponent = () => {
             url: `\\settings`,
             action: null,
         },
+
         {
             title: "Logout",
             icon: <Logout fontSize="small" />,
@@ -74,14 +87,14 @@ const ProfileComponent = () => {
     ];
 
     const theme = useTheme(ColorModeContext);
-    const { customerData, customerDataDispatch } = useContext(CustomerContext);
+
+    let customerData = GetUserInfo();
 
     const [formData, setFormData] = useState({
         firstname: customerData.firstname,
         lastname: customerData.lastname,
         username: customerData.username,
         email: customerData.email,
-        password: customerData.password,
         phone: customerData.phone,
         gender: customerData.gender,
     });
@@ -106,21 +119,18 @@ const ProfileComponent = () => {
     };
 
     ///// handlers
-    const handleUpdateData = (e) => {
+    const handleUpdateData = async (e) => {
         e.preventDefault();
 
-        const { password, ...rest } = formData;
+        await dispatch(updateCustomerAccountReducer(formData));
 
-        customerDataDispatch({
-            type: "UPDATE_USER_DATA",
-            payload: rest,
-        });
+        setIsDataChanged(false);
+
+        customerData = GetUserInfo();
     };
 
     const handelGender = (event, newValue) => {
         if (newValue !== null) {
-            // setFormData({ ...formData, gender: newValue });
-
             const updatedFormData = {
                 ...formData,
                 gender: newValue,
@@ -139,6 +149,8 @@ const ProfileComponent = () => {
         setFormData(updatedFormData);
         checkDataChanged(updatedFormData);
     };
+
+    useEffect(() => {}, [isDataChanged]);
 
     return (
         <Box className="flex-center" sx={{ flexGrow: 1, pt: 1 }}>
