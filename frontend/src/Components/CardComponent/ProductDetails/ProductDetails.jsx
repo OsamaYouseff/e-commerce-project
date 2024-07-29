@@ -76,7 +76,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         }
     };
     return (
-        <div>
+        <Box>
             <Modal
                 open={open}
                 onClose={handleCloseModal}
@@ -262,7 +262,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     </Box>
                 </Stack>
             </Modal>
-        </div>
+        </Box>
     );
 };
 

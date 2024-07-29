@@ -73,7 +73,7 @@ export default function CustomerMenuDrawer() {
     );
 
     return (
-        <div
+        <Box
             style={{
                 width: "48px",
                 height: "38px",
@@ -91,6 +91,6 @@ export default function CustomerMenuDrawer() {
             <Button onClick={toggleDrawer("left", true)} color="primary">
                 User
             </Button>
-        </div>
+        </Box>
     );
 }

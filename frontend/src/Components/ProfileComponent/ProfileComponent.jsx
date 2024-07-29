@@ -141,232 +141,245 @@ const ProfileComponent = () => {
     };
 
     return (
-        <Container
-            maxWidth="xl"
-            sx={{
-                width: { xs: "95%", md: "auto" },
-                marginTop: "10px",
-                bgcolor: theme.palette.categoryColor.main,
-                borderRadius: "6px",
-                px: "5px ",
-                py: "8px",
-                boxShadow: 3,
-                mb: 2,
-            }}
-        >
-            <Stack
+        <Box className="flex-center" sx={{ flexGrow: 1, pt: 1 }}>
+            <Container
+                maxWidth="xl"
                 sx={{
-                    display: "flex",
-                    gap: "20px",
-                    flexDirection: { xs: "column", md: "row" },
-                    width: "100%",
-                    height: "100%",
-                    p: 0,
+                    width: { xs: "95%", md: "auto" },
+                    marginTop: "10px",
+                    bgcolor: theme.palette.categoryColor.main,
+                    borderRadius: "6px",
+                    px: "5px ",
+                    py: "8px",
+                    boxShadow: 3,
+                    mb: 2,
+                    alignItems: "space-between",
                 }}
             >
                 <Stack
                     sx={{
-                        width: "20%",
-                        minWidth: { xs: "100%", md: "300px" },
+                        display: "flex",
+                        gap: "20px",
+                        flexDirection: { xs: "column", md: "row" },
+                        width: "100%",
                         height: "100%",
-                        p: 3,
-                        borderRadius: "6px",
-                        // borderRight: `1px solid #bdbec7`,
-                        px: 1,
-                        display: { xs: "none", md: "block" },
+                        p: 0,
                     }}
                 >
-                    <Typography
-                        sx={{ fontSize: "18px", px: 2, fontWeight: "bolder" }}
-                        variant="body"
+                    <Stack
+                        sx={{
+                            width: "20%",
+                            minWidth: { xs: "100%", md: "300px" },
+                            height: "100%",
+                            p: 3,
+                            borderRadius: "6px",
+                            // borderRight: `1px solid #bdbec7`,
+                            px: 1,
+                            display: { xs: "none", md: "block" },
+                        }}
                     >
-                        Hello <span> {customerData.username} ✋</span>
-                    </Typography>
-                    <Typography sx={{ fontSize: "16px", px: 2 }} variant="body">
-                        {customerData.email}
-                    </Typography>
-                    <Divider sx={{ m: "10px", width: "90%" }} />
-                    <Box>
-                        {CustomerMenuItems.map((item, index) => (
-                            <a
-                                key={index}
-                                href={item.url}
-                                style={{
-                                    textDecoration: "none",
-                                    color: "inherit",
-                                }}
-                                onClick={item.action}
-                            >
-                                <MenuItem
-                                    // onClick={handleClose}
-                                    sx={{
-                                        minWidth: { xs: "380px", sm: "100%" },
-                                        py: 2,
-                                        border: `1px solid ${
-                                            item.title == "Profile"
-                                                ? theme.palette.neutral.main
-                                                : "inherit"
-                                        }`,
-                                        borderRadius: "6px",
+                        <Typography
+                            sx={{
+                                fontSize: "18px",
+                                px: 2,
+                                fontWeight: "bolder",
+                            }}
+                            variant="body"
+                        >
+                            Hello <span> {customerData.username} ✋</span>
+                        </Typography>
+                        <Typography
+                            sx={{ fontSize: "16px", px: 2 }}
+                            variant="body"
+                        >
+                            {customerData.email}
+                        </Typography>
+                        <Divider sx={{ m: "10px", width: "90%" }} />
+                        <Box>
+                            {CustomerMenuItems.map((item, index) => (
+                                <a
+                                    key={index}
+                                    href={item.url}
+                                    style={{
+                                        textDecoration: "none",
+                                        color: "inherit",
                                     }}
+                                    onClick={item.action}
                                 >
-                                    <ListItemIcon>{item.icon}</ListItemIcon>
-                                    {item.title}
-                                </MenuItem>
-                            </a>
-                        ))}
-                    </Box>
-                </Stack>
-                <Divider
-                    orientation="vertical"
-                    flexItem
-                    sx={{ display: { xs: "none", md: "block" } }}
-                />
-
-                <Stack
-                    sx={{
-                        width: { xs: "100%", md: "80%" },
-                        p: 5,
-                        // bgcolor: "black",
-                        flexGrow: 1,
-                        borderRadius: "6px",
-                    }}
-                >
-                    <Typography variant="h5">Profile Info</Typography>
-                    <Box
-                        component="form"
-                        noValidate
-                        // onSubmit={handleSubmit}
-                        sx={{ mt: 3 }}
-                    >
-                        <Grid container spacing={2}>
-                            <TextFieldComponent
-                                value={formData.firstname}
-                                setFormData={handelFormData}
-                                label="First Name"
-                                id="firstname"
-                                type="text"
-                                colWidth={6}
-                                keyName="firstname"
-                            />
-                            <TextFieldComponent
-                                value={formData.lastname}
-                                setFormData={handelFormData}
-                                label="Last Name"
-                                id="lastname"
-                                type="text"
-                                colWidth={6}
-                                keyName="lastname"
-                            />
-                            <TextFieldComponent
-                                value={formData.username}
-                                setFormData={handelFormData}
-                                label="Username"
-                                id="username"
-                                type="text"
-                                colWidth={6}
-                                keyName="username"
-                            />
-                            <TextFieldComponent
-                                value={formData.email}
-                                setFormData={handelFormData}
-                                label="Email Address"
-                                id="email"
-                                type="email"
-                                colWidth={6}
-                                keyName="email"
-                            />
-
-                            <TextFieldComponent
-                                value={formData.phone}
-                                setFormData={handelFormData}
-                                label="Phone Number"
-                                id="phone-number"
-                                type="Phone Number"
-                                colWidth={6}
-                                keyName="phone"
-                            />
-
-                            {/* Gender */}
-                            <Grid item xs={12} sm={6} mb={3}>
-                                <Box
-                                    sx={{
-                                        gap: 3,
-                                        width: "100%",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: {
-                                            xs: "space-between",
-                                            md: "flex-start",
-                                        },
-                                    }}
-                                >
-                                    <label style={{ fontWeight: "bolder" }}>
-                                        Gender
-                                    </label>
-
-                                    <ToggleButtonGroup
-                                        value={formData.gender}
-                                        exclusive
-                                        onChange={handelGender}
-                                        aria-label="gender"
-                                        size="small"
+                                    <MenuItem
+                                        // onClick={handleClose}
                                         sx={{
-                                            ".MuiToggleButtonGroup-grouped.Mui-selected":
-                                                {
-                                                    color: `${theme.palette.primary.main} !important`,
-                                                    borderColor: `${theme.palette.primary.main} !important`,
-                                                },
+                                            minWidth: {
+                                                xs: "380px",
+                                                sm: "100%",
+                                            },
+                                            py: 2,
+                                            border: `1px solid ${
+                                                item.title == "Profile"
+                                                    ? theme.palette.neutral.main
+                                                    : "inherit"
+                                            }`,
+                                            borderRadius: "6px",
                                         }}
                                     >
-                                        <ToggleButton
-                                            value="male"
-                                            aria-label="male-gender"
-                                        >
-                                            <Stack
-                                                direction="row"
-                                                alignItems={"center"}
-                                            >
-                                                <Man2RoundedIcon />
-                                                Male
-                                            </Stack>
-                                        </ToggleButton>
-                                        <ToggleButton
-                                            value="female"
-                                            aria-label="female-gender"
-                                        >
-                                            <Stack
-                                                direction="row"
-                                                alignItems={"center"}
-                                            >
-                                                <Woman2RoundedIcon />
-                                                Female
-                                            </Stack>
-                                        </ToggleButton>
-                                    </ToggleButtonGroup>
-                                </Box>
-                            </Grid>
-                            {/*== Gender ==*/}
-                        </Grid>
-                        <Button
-                            onClick={handleUpdateData}
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            disabled={!isDataChanged}
-                            sx={{
-                                mt: 3,
-                                mb: 2,
-                                fontWeight: "bolder",
-                                width: { xs: "100%", md: "200px" },
-                            }}
+                                        <ListItemIcon>{item.icon}</ListItemIcon>
+                                        {item.title}
+                                    </MenuItem>
+                                </a>
+                            ))}
+                        </Box>
+                    </Stack>
+                    <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ display: { xs: "none", md: "block" } }}
+                    />
+
+                    <Stack
+                        sx={{
+                            width: { xs: "100%", md: "80%" },
+                            p: 5,
+                            // bgcolor: "black",
+                            flexGrow: 1,
+                            borderRadius: "6px",
+                        }}
+                    >
+                        <Typography variant="h5">Profile Info</Typography>
+                        <Box
+                            component="form"
+                            noValidate
+                            // onSubmit={handleSubmit}
+                            sx={{ mt: 3 }}
                         >
-                            Update Profile
-                        </Button>
-                    </Box>
+                            <Grid container spacing={2}>
+                                <TextFieldComponent
+                                    value={formData.firstname}
+                                    setFormData={handelFormData}
+                                    label="First Name"
+                                    id="firstname"
+                                    type="text"
+                                    colWidth={6}
+                                    keyName="firstname"
+                                />
+                                <TextFieldComponent
+                                    value={formData.lastname}
+                                    setFormData={handelFormData}
+                                    label="Last Name"
+                                    id="lastname"
+                                    type="text"
+                                    colWidth={6}
+                                    keyName="lastname"
+                                />
+                                <TextFieldComponent
+                                    value={formData.username}
+                                    setFormData={handelFormData}
+                                    label="Username"
+                                    id="username"
+                                    type="text"
+                                    colWidth={6}
+                                    keyName="username"
+                                />
+                                <TextFieldComponent
+                                    value={formData.email}
+                                    setFormData={handelFormData}
+                                    label="Email Address"
+                                    id="email"
+                                    type="email"
+                                    colWidth={6}
+                                    keyName="email"
+                                />
+
+                                <TextFieldComponent
+                                    value={formData.phone}
+                                    setFormData={handelFormData}
+                                    label="Phone Number"
+                                    id="phone-number"
+                                    type="Phone Number"
+                                    colWidth={6}
+                                    keyName="phone"
+                                />
+
+                                {/* Gender */}
+                                <Grid item xs={12} sm={6} mb={3}>
+                                    <Box
+                                        sx={{
+                                            gap: 3,
+                                            width: "100%",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: {
+                                                xs: "space-between",
+                                                md: "flex-start",
+                                            },
+                                        }}
+                                    >
+                                        <label style={{ fontWeight: "bolder" }}>
+                                            Gender
+                                        </label>
+
+                                        <ToggleButtonGroup
+                                            value={formData.gender}
+                                            exclusive
+                                            onChange={handelGender}
+                                            aria-label="gender"
+                                            size="small"
+                                            sx={{
+                                                ".MuiToggleButtonGroup-grouped.Mui-selected":
+                                                    {
+                                                        color: `${theme.palette.primary.main} !important`,
+                                                        borderColor: `${theme.palette.primary.main} !important`,
+                                                    },
+                                            }}
+                                        >
+                                            <ToggleButton
+                                                value="male"
+                                                aria-label="male-gender"
+                                            >
+                                                <Stack
+                                                    direction="row"
+                                                    alignItems={"center"}
+                                                >
+                                                    <Man2RoundedIcon />
+                                                    Male
+                                                </Stack>
+                                            </ToggleButton>
+                                            <ToggleButton
+                                                value="female"
+                                                aria-label="female-gender"
+                                            >
+                                                <Stack
+                                                    direction="row"
+                                                    alignItems={"center"}
+                                                >
+                                                    <Woman2RoundedIcon />
+                                                    Female
+                                                </Stack>
+                                            </ToggleButton>
+                                        </ToggleButtonGroup>
+                                    </Box>
+                                </Grid>
+                                {/*== Gender ==*/}
+                            </Grid>
+                            <Button
+                                onClick={handleUpdateData}
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                disabled={!isDataChanged}
+                                sx={{
+                                    mt: 3,
+                                    mb: 2,
+                                    fontWeight: "bolder",
+                                    width: { xs: "100%", md: "200px" },
+                                }}
+                            >
+                                Update Profile
+                            </Button>
+                        </Box>
+                    </Stack>
                 </Stack>
-            </Stack>
-        </Container>
+            </Container>
+        </Box>
     );
 };
 

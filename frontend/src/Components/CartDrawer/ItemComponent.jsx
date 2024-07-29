@@ -23,7 +23,6 @@ const ItemComponent = ({ item, cartDataDispatch }) => {
     return (
         <Stack
             key={item.id}
-            Stack
             direction="row"
             gap={2}
             justifyContent={"space-between"}

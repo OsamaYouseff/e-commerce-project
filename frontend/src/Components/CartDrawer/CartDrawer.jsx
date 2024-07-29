@@ -204,7 +204,7 @@ export default function CartDrawer() {
     );
 
     return (
-        <div
+        <Box
             style={{
                 width: "48px",
                 height: "38px",
@@ -227,6 +227,6 @@ export default function CartDrawer() {
             >
                 {list("right")}
             </Drawer>
-        </div>
+        </Box>
     );
 }
