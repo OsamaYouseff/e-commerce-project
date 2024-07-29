@@ -6,6 +6,7 @@ export const CartContext = createContext({});
 //// Reducers
 import CartActionsReducer from "../Reducers/CartActionsReducer";
 import customerApiReducer from "../Reducers/ApiReducer";
+
 let customerInfo;
 
 export const CustomerProvider = ({ children }) => {

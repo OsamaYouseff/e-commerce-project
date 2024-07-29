@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { registerACustomer, customerLogin, updateCustomerAccount } from "../API/APIFunctions";
+import { registerACustomer, customerLogin, updateCustomerAccount } from "../API/CutomerAPIFunctions";
 
 function GoHome() {
     document.querySelector(".go-home").click();
