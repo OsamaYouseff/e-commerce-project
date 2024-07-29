@@ -127,7 +127,7 @@ const MainContent = () => {
                     flexWrap={"wrap"}
                     justifyContent={"space-between"}
                 >
-                    {data.data.map((product) => (
+                    {/* {data.data.map((product) => (
                         <CardComponent
                             key={product.id}
                             productData={product}
@@ -136,7 +136,7 @@ const MainContent = () => {
                                 handleSetPreviewedProduct
                             }
                         />
-                    ))}
+                    ))} */}
                 </Stack>
                 {
                     // toggle modal appearance

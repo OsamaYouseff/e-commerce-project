@@ -22,7 +22,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Man2RoundedIcon from "@mui/icons-material/Man2Rounded";
 import Woman2RoundedIcon from "@mui/icons-material/Woman2Rounded";
 import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
-import CustomerMenuDrawer from "./CustomerMenuDrawer";
 
 const ProfileComponent = () => {
     const handleLogout = () => {

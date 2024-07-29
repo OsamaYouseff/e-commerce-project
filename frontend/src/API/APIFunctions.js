@@ -1,11 +1,15 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_BASE_URL;
+
+
+
 export const customerLogin = async (customerData, rememberMe) => {
     const config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://localhost:5000/api/auth/login',
+        url: `${baseURL}/api/auth/login`,
         headers: {
             'Content-Type': 'application/json'
         },
@@ -31,7 +35,7 @@ export const customerLogin = async (customerData, rememberMe) => {
     }
 };
 export const registerACustomer = async (customerFromData) => {
-    const url = 'http://localhost:5000/api/auth/register';
+    const url = `${baseURL}/api/auth/register`;
 
     const config = {
         method: 'post',
@@ -80,7 +84,7 @@ export const updateCustomerAccount = async (customerFromData) => {
     const config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `http://localhost:5000/api/users/${customerId}`,
+        url: `${baseURL}/api/users/${customerId}`,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
@@ -109,7 +113,7 @@ export const updateCustomerAccount = async (customerFromData) => {
 
 export const deleteCustomerAccount = async () => {
     const customerId = 6;
-    const url = `http://localhost:1337/api/customers/${customerId}`;
+    const url = `{baseURL}/api/customers/${customerId}`;
 
     try {
         const response = await axios.delete(url, {
