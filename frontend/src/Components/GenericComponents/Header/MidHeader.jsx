@@ -18,7 +18,7 @@ import CustomerMenu from "./CustomerMenu";
 import { useEffect } from "react";
 
 //// general functions
-import { GetUserInfo } from "../../../redux/GeneralFunctions";
+import { GetUserInfo } from "../../../General/GeneralFunctions";
 
 const transitionDuration = "350ms";
 

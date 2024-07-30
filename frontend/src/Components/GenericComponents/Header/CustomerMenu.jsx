@@ -5,22 +5,21 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import Settings from "@mui/icons-material/Settings";
-import Logout from "@mui/icons-material/Logout";
-import PersonIcon from "@mui/icons-material/Person";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PaymentIcon from "@mui/icons-material/Payment";
 import { Avatar } from "@mui/material";
 import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@emotion/react";
 
+///// redux
 import { useDispatch } from "react-redux";
-import { GetUserInfo } from "../../../redux/GeneralFunctions";
+import { GetUserInfo } from "../../../General/GeneralFunctions";
 import { logoutCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
 
+//// General Vars & Functions
+import { CustomerMenuItemsVar } from "../../../General/GeneralVariables";
+
 const CustomerMenu = () => {
+    const CustomerMenuItems = CustomerMenuItemsVar;
+
     const dispatch = useDispatch();
     const customerData = GetUserInfo();
     const userName = customerData.username || "";
@@ -40,50 +39,8 @@ const CustomerMenu = () => {
         dispatch(logoutCustomerAccountReducer());
     };
 
-    const CustomerMenuItems = [
-        {
-            title: "Orders",
-            icon: <LocalShippingIcon fontSize="small" />,
-            url: `\\cart`,
-            action: null,
-        },
-        {
-            title: "Profile",
-            icon: <PersonIcon fontSize="small" />,
-            url: `\\profile`,
-            action: null,
-        },
-        {
-            title: "Address",
-            icon: <LocationOnIcon fontSize="small" />,
-            url: `\\address`,
-            action: null,
-        },
-        {
-            title: "Wishlist",
-            icon: <FavoriteIcon fontSize="small" />,
-            url: `\\wishlist`,
-            action: null,
-        },
-        {
-            title: "Payments",
-            icon: <PaymentIcon fontSize="small" />,
-            url: `\\payments`,
-            action: null,
-        },
-        {
-            title: "Settings",
-            icon: <Settings fontSize="small" />,
-            url: `\\settings`,
-            action: null,
-        },
-        {
-            title: "Logout",
-            icon: <Logout fontSize="small" />,
-            url: `\\home`,
-            action: handleLogout,
-        },
-    ];
+    //// adding logout function
+    CustomerMenuItems.at(-1).action = handleLogout;
 
     return (
         <Fragment>

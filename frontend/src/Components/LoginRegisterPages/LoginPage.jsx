@@ -40,123 +40,136 @@ export default function LoginPage() {
         dispatch(customerLoginReducer(formData));
     };
 
-    return (
-        <Container
-            component="main"
-            maxWidth="sm"
-            sx={{ boxShadow: 6, borderRadius: 3, p: 4 }}
-        >
-            <CssBaseline />
-            <Box
-                sx={{
-                    marginTop: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                }}
+    if (
+        localStorage.getItem("customerInfo") ||
+        sessionStorage.getItem("customerInfo")
+    ) {
+        window.location.href = "/";
+    } else {
+        return (
+            <Container
+                component="main"
+                maxWidth="sm"
+                sx={{ boxShadow: 6, borderRadius: 3, p: 4 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
+                <CssBaseline />
                 <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}
+                    sx={{
+                        marginTop: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
                 >
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
-                        autoFocus
-                        size="small"
-                        value={formData.username}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                username: e.target.value.trim(),
-                            })
-                        }
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        size="small"
-                        value={formData.password}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                password: e.target.value.trim(),
-                            })
-                        }
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                        checked={formData.rememberMe}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                rememberMe: e.target.checked,
-                            })
-                        }
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
+                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1 }}
                     >
-                        Sign In
-                    </Button>
-                    <Link
-                        href="/"
-                        className="flex-center go-home"
-                        sx={{ width: "100%", textDecoration: "none", mb: 3 }}
-                    >
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            autoFocus
+                            size="small"
+                            value={formData.username}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    username: e.target.value.trim(),
+                                })
+                            }
+                        />
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="password"
+                            label="Password"
+                            type="password"
+                            id="password"
+                            autoComplete="current-password"
+                            size="small"
+                            value={formData.password}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    password: e.target.value.trim(),
+                                })
+                            }
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox value="remember" color="primary" />
+                            }
+                            label="Remember me"
+                            checked={formData.rememberMe}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    rememberMe: e.target.checked,
+                                })
+                            }
+                        />
                         <Button
+                            type="submit"
+                            fullWidth
                             variant="contained"
-                            color="secondary"
-                            sx={{ width: "100%", fontWeight: "bolder" }}
+                            sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
                         >
-                            Back To Shopping
+                            Sign In
                         </Button>
-                    </Link>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link
-                                href="#"
-                                variant="body2"
-                                sx={{ fontWeight: "bolder" }}
+                        <Link
+                            href="/"
+                            className="flex-center go-home"
+                            sx={{
+                                width: "100%",
+                                textDecoration: "none",
+                                mb: 3,
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                sx={{ width: "100%", fontWeight: "bolder" }}
                             >
-                                Forgot password?
-                            </Link>
+                                Back To Shopping
+                            </Button>
+                        </Link>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link
+                                    href="#"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bolder" }}
+                                >
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link
+                                    href="/register"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bolder" }}
+                                >
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item>
-                            <Link
-                                href="/register"
-                                variant="body2"
-                                sx={{ fontWeight: "bolder" }}
-                            >
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
-            </Box>
-        </Container>
-    );
+            </Container>
+        );
+    }
 }

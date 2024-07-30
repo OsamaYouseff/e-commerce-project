@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { customerLogin, registerACustomer, updateCustomerAccount } from '../API/CustomerAPIFunctions';
-import { GoHome, ResetLocalStorage } from '../redux/GeneralFunctions';
+import { GoHome, ResetLocalStorage } from '../General/GeneralFunctions';
 
 export const customerLoginReducer = createAsyncThunk("customerLoginAPI/sendRequest", async (data) => {
 

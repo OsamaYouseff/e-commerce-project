@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-import { ResetLocalStorage, StoreDataAtLocalStorage } from "../redux/GeneralFunctions";
+import { ResetLocalStorage, StoreDataAtLocalStorage } from "../General/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 

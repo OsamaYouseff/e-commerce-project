@@ -52,19 +52,19 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const [previewImgUrl, setPreviewImgUrl] = useState(`${productImg}`);
     const [selectedImg, setSelectedImg] = useState(0);
 
-    const { cartDataDispatch } = useContext(CartContext);
+    // const { cartDataDispatch } = useContext(CartContext);
 
     const handleClickAddToCart = () => {
-        cartDataDispatch({
-            type: "ADD_TO_CART",
-            payload: {
-                id: PreviewedProduct.id,
-                title: PreviewedProduct.title,
-                quantity: 1,
-                price: PreviewedProduct.price,
-                imageURL: productImg,
-            },
-        });
+        // cartDataDispatch({
+        //     type: "ADD_TO_CART",
+        //     payload: {
+        //         id: PreviewedProduct.id,
+        //         title: PreviewedProduct.title,
+        //         quantity: 1,
+        //         price: PreviewedProduct.price,
+        //         imageURL: productImg,
+        //     },
+        // });
     };
 
     const handelSelectedImg = (event, newValue) => {

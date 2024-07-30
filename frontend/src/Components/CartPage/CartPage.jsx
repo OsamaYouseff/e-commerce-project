@@ -320,7 +320,7 @@ const CartPage = () => {
                                 >
                                     Cart Subtotal
                                     <span style={{ fontSize: "15px" }}>
-                                        ${cartData.totalCartPrice}
+                                        {/* ${cartData.totalCartPrice} */}
                                     </span>
                                 </Typography>
                                 <Typography
@@ -373,7 +373,7 @@ const CartPage = () => {
                                             fontSize: "20px",
                                         }}
                                     >
-                                        ${cartData.totalCartPrice - 12.99}
+                                        {/* ${cartData.totalCartPrice - 12.99} */}
                                     </span>
                                 </Typography>
                             </Stack>
