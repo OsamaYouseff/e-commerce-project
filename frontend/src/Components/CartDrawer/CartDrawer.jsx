@@ -9,21 +9,18 @@ import { ColorModeContext } from "../../Theme/theme";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+//// redux
+import { useSelector, useDispatch } from "react-redux";
+import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
+    const dispatch = useDispatch();
 
-    const toggleDrawer = (anchor, open) => (event) => {
-        if (
-            event.type === "keydown" &&
-            (event.key === "Tab" || event.key === "Shift")
-        ) {
-            return;
-        }
-        setState({ ...state, [anchor]: open });
-    };
+    const customerCart = useSelector((state) => state.CartApiRequest.response);
 
     /// styles
     const transitionDuration = "350ms";
@@ -35,6 +32,21 @@ export default function CartDrawer() {
             padding: "0 4px",
         },
     }));
+
+    //// handlers
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (
+            event.type === "keydown" &&
+            (event.key === "Tab" || event.key === "Shift")
+        ) {
+            return;
+        }
+        setState({ ...state, [anchor]: open });
+    };
+
+    useEffect(() => {
+        dispatch(getCustomerCartReducer());
+    }, []);
 
     const list = (anchor) => (
         <Box
@@ -113,18 +125,20 @@ export default function CartDrawer() {
                     },
                 }}
             >
-                {/* {cartData.cartItems.map((item) => (
-                    <ItemComponent
-                        key={item.id}
-                        item={item}
-                        cartDataDispatch={cartDataDispatch}
-                    />
-                ))} */}
+                <div style={{ width: "100%", height: "300px", bgcolor: "red" }}>
+                    {customerCart.products.map((item) => (
+                        <ItemComponent
+                            key={item.productId}
+                            quantity={item.quantity}
+                            item={item.productDetails}
+                        />
+                    ))}
+                </div>
             </Box>
             {/*== Cart Items ==*/}
 
-            {/* Apply Coupon */}
             <Stack sx={{ width: "100%" }}>
+                {/* Apply Coupon */}
                 <Box
                     sx={{
                         display: "flex",
@@ -164,6 +178,9 @@ export default function CartDrawer() {
                         </Button>
                     </Stack>
                 </Box>
+                {/*== Apply Coupon ==*/}
+
+                {/* Checkout Button */}
                 <Box
                     sx={{
                         display: "flex",
@@ -184,7 +201,7 @@ export default function CartDrawer() {
                                 fontSize: "20px",
                             }}
                         >
-                            {/* ${cartData.totalCartPrice} */}
+                            ${customerCart.totalPrice["$numberDecimal"]}
                         </Typography>
                     </Stack>
                     <Link to="/cart" xs={{ width: "100%" }}>
@@ -197,8 +214,8 @@ export default function CartDrawer() {
                         </Button>
                     </Link>
                 </Box>
+                {/*== Checkout Button ==*/}
             </Stack>
-            {/*== Apply Coupon ==*/}
         </Box>
     );
 
@@ -212,7 +229,7 @@ export default function CartDrawer() {
         >
             <StyledBadge
                 onClick={toggleDrawer("right", true)}
-                // badgeContent={cartData.cartItems.length || 1}
+                badgeContent={customerCart.products.length || 0}
                 color="primary"
             >
                 <ShoppingCartIcon

@@ -7,22 +7,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const ItemComponent = ({ item, cartDataDispatch }) => {
+const ItemComponent = ({ item, quantity }) => {
     const theme = useTheme(ColorModeContext);
 
     function handleClickIncreaseDecrease(type, oldQuantity = item.quantity) {
-        cartDataDispatch({
-            type: type,
-            payload: {
-                id: item.id,
-                quantity: oldQuantity,
-                price: item.price,
-            },
-        });
+        // cartDataDispatch({
+        //     type: type,
+        //     payload: {
+        //         id: item._id,
+        //         quantity: oldQuantity,
+        //         price: item.price,
+        //     },
+        // });
     }
     return (
         <Stack
-            key={item.id}
+            key={item._id}
             direction="row"
             gap={2}
             justifyContent={"space-between"}
@@ -37,7 +37,7 @@ const ItemComponent = ({ item, cartDataDispatch }) => {
         >
             <img
                 style={{ maxWidth: "100px", borderRadius: "5px" }}
-                src={item.imageURL}
+                src={item.img}
                 alt="cart-item"
             />
             <Box
@@ -76,7 +76,7 @@ const ItemComponent = ({ item, cartDataDispatch }) => {
 
                         <input
                             type="text"
-                            value={item.quantity}
+                            value={quantity}
                             onChange={(e) => {
                                 let value = e.target.value;
                                 if (value <= 0) value = 1;
@@ -121,12 +121,12 @@ const ItemComponent = ({ item, cartDataDispatch }) => {
                     </Stack>
 
                     <IconButton
-                        onClick={() =>
-                            cartDataDispatch({
-                                type: "REMOVE_FROM_CART",
-                                payload: { id: item.id },
-                            })
-                        }
+                        // onClick={() =>
+                        //     cartDataDispatch({
+                        //         type: "REMOVE_FROM_CART",
+                        //         payload: { id: item._id },
+                        //     })
+                        // }
                         sx={{
                             border: `1px solid  ${theme.palette.text.primary}`,
                             aspectRatio: "1 / 1",
