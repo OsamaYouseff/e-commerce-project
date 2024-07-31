@@ -1,8 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import { getAllProducts } from '../API/ProductAPIFunctions';
+// import axios from 'axios'
 
-export const getAllProducts = createAsyncThunk("getProductsAPI/sendRequest", async () => {
-    const response = await axios.get("https://fakestoreapi.com/products");
+export const getAllProductsReducer = createAsyncThunk("getProductsAPI/sendRequest", async () => {
+
+    // const response = await axios.get("https://fakestoreapi.com/products");
+
+    const response = await getAllProducts();
 
     return response.data;
 
@@ -10,7 +14,7 @@ export const getAllProducts = createAsyncThunk("getProductsAPI/sendRequest", asy
 
 ///// state
 const initialState = {
-    response: null,           ///////////////////////////// make sure to make it an object to avoid Error ////////////////////////////
+    response: [],           ///////////////////////////// make sure to make it an object to avoid Error ////////////////////////////
     isLoading: false,
 }
 
@@ -21,12 +25,12 @@ export const ProductsApiSlice = createSlice({
     reducers: {},
 
     extraReducers(builder) {
-        builder.addCase(getAllProducts.pending, (state, action) => {
+        builder.addCase(getAllProductsReducer.pending, (state, action) => {
             state.isLoading = true;
-        }).addCase(getAllProducts.fulfilled, (state, action) => {
+        }).addCase(getAllProductsReducer.fulfilled, (state, action) => {
             state.isLoading = false;
             state.response = action.payload;
-        }).addCase(getAllProducts.rejected, (state, action) => {
+        }).addCase(getAllProductsReducer.rejected, (state, action) => {
             state.isLoading = false;
         })
     }

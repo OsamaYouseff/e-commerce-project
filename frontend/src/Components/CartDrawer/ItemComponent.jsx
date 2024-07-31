@@ -7,19 +7,50 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
+///// redux
+import { useDispatch } from "react-redux";
+import {
+    addUpdateProductInCartReducer,
+    removeProductFromCartReducer,
+} from "../../redux/ApiCartSlice.js";
+import { useState } from "react";
+
 const ItemComponent = ({ item, quantity }) => {
     const theme = useTheme(ColorModeContext);
 
-    function handleClickIncreaseDecrease(type, oldQuantity = item.quantity) {
-        // cartDataDispatch({
-        //     type: type,
-        //     payload: {
-        //         id: item._id,
-        //         quantity: oldQuantity,
-        //         price: item.price,
-        //     },
-        // });
+    const [currQuantity, setCurrQuantity] = useState(quantity);
+
+    const dispatch = useDispatch();
+
+    function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
+        let targetProduct = {
+            productId: item._id,
+            quantity: targetQuantity,
+            price: item.price,
+        };
+        if (type === "INCREASE_QUANTITY") {
+            targetProduct.quantity += 1;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        } else if (type === "CHANGE_QUANTITY") {
+            targetProduct.quantity = targetQuantity;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        } else {
+            if (targetQuantity === 1) return;
+            targetProduct.quantity -= 1;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        }
+        setCurrQuantity(targetQuantity);
     }
+
+    function handleClickDelete() {
+        dispatch(
+            removeProductFromCartReducer({
+                productId: item._id,
+                price: item.price,
+            })
+        );
+    }
+
     return (
         <Stack
             key={item._id}
@@ -35,18 +66,30 @@ const ItemComponent = ({ item, quantity }) => {
                 boxShadow: 1,
             }}
         >
-            <img
-                style={{ maxWidth: "100px", borderRadius: "5px" }}
-                src={item.img}
-                alt="cart-item"
-            />
+            <Box
+                className="flex-center"
+                sx={{
+                    width: "100px",
+                    maxHeight: "100%",
+                }}
+            >
+                <img
+                    style={{
+                        maxWidth: "100%",
+                        maxHeight: "90px",
+                        borderRadius: "5px",
+                    }}
+                    src={item.img}
+                    alt="cart-item"
+                />
+            </Box>
             <Box
                 sx={{ display: "flex", flex: 1, flexDirection: "column" }}
                 justifyContent={"space-between"}
             >
                 <Stack direction="row" justifyContent={"space-between"}>
                     <Typography sx={{ fontSize: "18px" }}>
-                        {item.title}
+                        {item.title.slice(0, 20)}
                     </Typography>
                     <Typography sx={{ fontWeight: "bolder", color: "#ff4450" }}>
                         ${item.price}
@@ -76,11 +119,13 @@ const ItemComponent = ({ item, quantity }) => {
 
                         <input
                             type="text"
-                            value={quantity}
+                            value={currQuantity}
                             onChange={(e) => {
+                                setCurrQuantity(e.target.value);
+                            }}
+                            onBlur={(e) => {
                                 let value = e.target.value;
                                 if (value <= 0) value = 1;
-
                                 handleClickIncreaseDecrease(
                                     "CHANGE_QUANTITY",
                                     value
@@ -121,12 +166,7 @@ const ItemComponent = ({ item, quantity }) => {
                     </Stack>
 
                     <IconButton
-                        // onClick={() =>
-                        //     cartDataDispatch({
-                        //         type: "REMOVE_FROM_CART",
-                        //         payload: { id: item._id },
-                        //     })
-                        // }
+                        onClick={() => handleClickDelete()}
                         sx={{
                             border: `1px solid  ${theme.palette.text.primary}`,
                             aspectRatio: "1 / 1",

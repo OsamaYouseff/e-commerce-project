@@ -7,7 +7,6 @@ export const getCustomerCart = async () => {
     const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
     const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
 
-
     if (!customerData || !accessToken) {
         alert("Please login first");
         return;
@@ -27,14 +26,85 @@ export const getCustomerCart = async () => {
     try {
         const response = await axios.request(config);
 
-        // console.log(" XXXXXX : ", response.data[0])
+        // console.log("XXXXXXXXXXXXX : ", response.data)
 
-        if (response.data.length === 0) return response.data;
-        else return response.data[0];
-
+        if (response.data.products.length == 0) return response.data; //// cart is empty
+        else return response.data;
 
     } catch (error) {
         console.error('Error Fetching Cart Data : ', error);
         throw error;
     }
 };
+
+export const addUpdateProductInCart = async (addedProduct) => {
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
+
+    if (!customerData || !accessToken) {
+        alert("Please login first");
+        return;
+    }
+
+    const customerId = JSON.parse(customerData)["_id"];
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/carts/add_update-product/${customerId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: addedProduct
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error Updating Product To Cart : ', error);
+        throw error;
+    }
+
+
+}
+
+export const removeProductToCart = async (removeProduct) => {
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
+
+    if (!customerData || !accessToken) {
+        alert("Please login first");
+        return;
+    }
+
+    const customerId = JSON.parse(customerData)["_id"];
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/carts/remove-product/${customerId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: removeProduct
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log(" XXXXXX : ", response.data)
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error Removing Product From Cart : ', error);
+        throw error;
+    }
+
+
+}

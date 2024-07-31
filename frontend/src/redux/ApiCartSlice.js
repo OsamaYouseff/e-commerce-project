@@ -1,12 +1,25 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCustomerCart } from '../API/CartAPIFunctions';
-
+import { addUpdateProductInCart, getCustomerCart, removeProductToCart } from '../API/CartAPIFunctions';
 export const getCustomerCartReducer = createAsyncThunk("getCartsAPI/sendRequest", async () => {
     const response = await getCustomerCart();
-
     // console.log("response.data : ", response);
     return response;
 })
+
+export const addUpdateProductInCartReducer = async (addedProduct) => {
+    const response = await addUpdateProductInCart(addedProduct);
+
+    return response;
+}
+
+export const removeProductFromCartReducer = async (removedProduct) => {
+
+    const response = await removeProductToCart(removedProduct);
+
+    return response;
+}
+
+
 
 ///// state
 const initialState = {
@@ -14,16 +27,10 @@ const initialState = {
         _id: "",
         userId: "",
         products: [],
-        totalPrice: {
-            "$numberDecimal": 0
-        }
+        totalPrice: 0
     },
     isLoading: false,
 }
-
-
-
-
 
 export const CartApiSlice = createSlice({
     name: "CartsApiRequest",

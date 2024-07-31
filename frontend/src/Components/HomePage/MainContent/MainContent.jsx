@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Box, Container, Stack, Typography } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -6,14 +7,14 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 
-import CardComponent from "../../CardComponent/CardComponent2";
+import CardComponent from "../../CardComponent/CardComponent";
 
 /// Icons
-import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails2";
+import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getAllProducts } from "../../../redux/ApiProductSlice";
+import { getAllProductsReducer } from "../../../redux/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MainContent = () => {
@@ -60,7 +61,7 @@ const MainContent = () => {
 
     useEffect(() => {
         (async function fetchData() {
-            await dispatch(getAllProducts());
+            await dispatch(getAllProductsReducer());
         })();
     }, []);
 
@@ -140,7 +141,7 @@ const MainContent = () => {
                 >
                     {products?.map((product) => (
                         <CardComponent
-                            key={product.id}
+                            key={product._id}
                             productData={product}
                             handelOpenModal={handleOpen}
                             handleSetPreviewedProduct={

@@ -22,6 +22,8 @@ export default function CartDrawer() {
 
     const customerCart = useSelector((state) => state.CartApiRequest.response);
 
+    const productCount = customerCart?.products?.length || 0;
+
     /// styles
     const transitionDuration = "350ms";
     const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -201,7 +203,7 @@ export default function CartDrawer() {
                                 fontSize: "20px",
                             }}
                         >
-                            ${customerCart.totalPrice["$numberDecimal"]}
+                            ${customerCart.totalPrice.toFixed(2)}
                         </Typography>
                     </Stack>
                     <Link to="/cart" xs={{ width: "100%" }}>
@@ -229,7 +231,7 @@ export default function CartDrawer() {
         >
             <StyledBadge
                 onClick={toggleDrawer("right", true)}
-                badgeContent={customerCart.products.length || 0}
+                badgeContent={productCount}
                 color="primary"
             >
                 <ShoppingCartIcon
