@@ -1,39 +1,28 @@
 /* eslint-disable react/prop-types */
 import { Container, Stack, Typography, Box } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 import Grid from "@mui/material/Grid";
 import { Button } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Man2RoundedIcon from "@mui/icons-material/Man2Rounded";
 import Woman2RoundedIcon from "@mui/icons-material/Woman2Rounded";
-import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
+import TextFieldComponent from "../../GenericComponents/TextFieldComponent/TextFieldComponent";
 
 /// context
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../../../Theme/theme";
 
 ///// hooks
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 
 /// redux
-import { GetUserInfo } from "../../General/GeneralFunctions";
-import {
-    updateCustomerAccountReducer,
-    logoutCustomerAccountReducer,
-} from "../../redux/ApiCustomerSlice";
+import { GetUserInfo } from "../../../General/GeneralFunctions";
+import { updateCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
-//// General Vars & Functions
-import { CustomerMenuItemsVar } from "../../General/GeneralVariables";
-
-const ProfileComponent = () => {
+const ProfileComponent = ({ customerData }) => {
     const dispatch = useDispatch();
-    const CustomerMenuItems = CustomerMenuItemsVar;
     const theme = useTheme(ColorModeContext);
-    let customerData = GetUserInfo();
 
     //// states
     const [formData, setFormData] = useState({
@@ -63,11 +52,6 @@ const ProfileComponent = () => {
             setIsDataChanged(true);
         }
     };
-    const handleLogout = () => {
-        dispatch(logoutCustomerAccountReducer());
-    };
-    //// adding logout function
-    CustomerMenuItems.at(-1).action = handleLogout;
 
     const handleUpdateData = async (e) => {
         e.preventDefault();
@@ -101,7 +85,10 @@ const ProfileComponent = () => {
     };
 
     return (
-        <Box className="flex-center" sx={{ flexGrow: 1, pt: 1 }}>
+        <Box
+            className="flex-center"
+            sx={{ flexGrow: 1, pt: 1, minHeight: "77vh" }}
+        >
             <Container
                 maxWidth="xl"
                 sx={{
@@ -126,75 +113,6 @@ const ProfileComponent = () => {
                         p: 0,
                     }}
                 >
-                    <Stack
-                        sx={{
-                            width: "20%",
-                            minWidth: { xs: "100%", md: "300px" },
-                            height: "100%",
-                            p: 3,
-                            borderRadius: "6px",
-                            // borderRight: `1px solid #bdbec7`,
-                            px: 1,
-                            display: { xs: "none", md: "block" },
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                fontSize: "18px",
-                                px: 2,
-                                fontWeight: "bolder",
-                            }}
-                            variant="body"
-                        >
-                            Hello <span> {customerData.username} ✋</span>
-                        </Typography>
-                        <Typography
-                            sx={{ fontSize: "16px", px: 2 }}
-                            variant="body"
-                        >
-                            {customerData.email}
-                        </Typography>
-                        <Divider sx={{ m: "10px", width: "90%" }} />
-                        <Box>
-                            {CustomerMenuItems.map((item, index) => (
-                                <a
-                                    key={index}
-                                    href={item.url}
-                                    style={{
-                                        textDecoration: "none",
-                                        color: "inherit",
-                                    }}
-                                    onClick={item.action}
-                                >
-                                    <MenuItem
-                                        // onClick={handleClose}
-                                        sx={{
-                                            minWidth: {
-                                                xs: "380px",
-                                                sm: "100%",
-                                            },
-                                            py: 2,
-                                            border: `1px solid ${
-                                                item.title == "Profile"
-                                                    ? theme.palette.neutral.main
-                                                    : "inherit"
-                                            }`,
-                                            borderRadius: "6px",
-                                        }}
-                                    >
-                                        <ListItemIcon>{item.icon}</ListItemIcon>
-                                        {item.title}
-                                    </MenuItem>
-                                </a>
-                            ))}
-                        </Box>
-                    </Stack>
-                    <Divider
-                        orientation="vertical"
-                        flexItem
-                        sx={{ display: { xs: "none", md: "block" } }}
-                    />
-
                     <Stack
                         sx={{
                             width: { xs: "100%", md: "80%" },

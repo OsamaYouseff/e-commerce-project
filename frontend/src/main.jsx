@@ -23,8 +23,9 @@ import { ColorModeContext, useMode } from "./Theme/theme";
 /// custom component
 import LoginPage from "./Components/LoginRegisterPages/LoginPage.jsx";
 import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
-import ProfileComponent from "./Components/ProfileComponent/ProfileComponent.jsx";
 import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
+import UserInfoPage from "./Components/UserInfoPage/UserInfoPage.jsx";
+import ProfileComponent from "./Components/UserInfoPage/ProfileComponent/ProfileComponent.jsx";
 
 const routeElement = (currentComponent, showMidHeader = false) => {
     return (
@@ -60,8 +61,8 @@ const router = createBrowserRouter([
         element: routeElement(<RegisterPage />),
     },
     {
-        path: "/profile",
-        element: routeElement(<ProfileComponent />, true),
+        path: "/userInfo/:section",
+        element: routeElement(<UserInfoPage />, true),
     },
     {
         path: "/*",

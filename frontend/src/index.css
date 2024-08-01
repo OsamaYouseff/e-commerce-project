@@ -79,19 +79,27 @@
     align-items: center;
 }
 
-.flex-start {
+.flex-start-col {
     display: flex;
     flex-direction: column !important;
-    justify-content: start;
-    align-items: center;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 .flex-start-row {
     display: flex;
     flex-direction: row !important;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
 }
+
+.flex-row-start {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: start;
+}
+
 .clamp14-20 {
     font-size: clamp(
         12px,
