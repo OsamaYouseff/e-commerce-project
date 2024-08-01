@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 /// Icons
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 
-const CardComponent = ({
+const ProductCardComponent = ({
     productData,
     handelOpenModal,
     handleSetPreviewedProduct,
@@ -48,12 +48,13 @@ const CardComponent = ({
                     justifyContent: "space-between",
                 }}
             >
-                <CardMedia
+                {/* <CardMedia
                     className="card-img"
                     component="img"
                     alt="green iguana"
                     height="245"
                     image={`${productData.img}`}
+                    loading="lazy"
                     sx={{
                         boxShadow: 3,
                         cursor: "pointer",
@@ -64,7 +65,18 @@ const CardComponent = ({
                         },
                         maxHeight: "245px",
                     }}
-                />
+                /> */}
+
+                <Box
+                    sx={{
+                        backgroundImage: `url(${productData.img})`,
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                        backgroundSize: "contain",
+                        height: "245px",
+                        width: "100%",
+                    }}
+                ></Box>
                 <CardContent
                     sx={{
                         position: "relative",
@@ -133,4 +145,4 @@ const CardComponent = ({
     );
 };
 
-export default CardComponent;
+export default ProductCardComponent;

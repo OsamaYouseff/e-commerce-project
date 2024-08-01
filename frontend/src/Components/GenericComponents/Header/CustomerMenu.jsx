@@ -110,7 +110,10 @@ const CustomerMenu = () => {
                     <a
                         key={index}
                         href={item.url}
-                        style={{ textDecoration: "none", color: "inherit" }}
+                        style={{
+                            textDecoration: "none",
+                            color: theme.palette.text.primary,
+                        }}
                         onClick={item.action}
                     >
                         <MenuItem
@@ -121,7 +124,9 @@ const CustomerMenu = () => {
                                 color: "inherit",
                             }}
                         >
-                            <ListItemIcon>{item.icon}</ListItemIcon>
+                            <ListItemIcon sx={{ color: "inherit" }}>
+                                {item.icon}
+                            </ListItemIcon>
                             {item.title}
                         </MenuItem>
                     </a>

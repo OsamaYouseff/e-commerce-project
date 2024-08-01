@@ -97,7 +97,7 @@ export const removeProductToCart = async (removeProduct) => {
     try {
         const response = await axios.request(config);
 
-        console.log(" XXXXXX : ", response.data)
+        // console.log(" XXXXXX : ", response.data)
 
         return response.data;
 

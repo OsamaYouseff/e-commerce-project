@@ -7,18 +7,44 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
-const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
+///// redux
+import { useDispatch } from "react-redux";
+import {
+    addUpdateProductInCartReducer,
+    removeProductFromCartReducer,
+} from "../../redux/ApiCartSlice.js";
+
+const ItemComponentDetails = ({ ItemKey, item, quantity }) => {
     const theme = useTheme(ColorModeContext);
 
-    function handleClickIncreaseDecrease(type, oldQuantity = item.quantity) {
-        cartDataDispatch({
-            type: type,
-            payload: {
-                id: item.id,
-                quantity: oldQuantity,
+    const dispatch = useDispatch();
+
+    function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
+        let targetProduct = {
+            productId: item._id,
+            quantity: targetQuantity,
+            price: item.price,
+        };
+        if (type === "INCREASE_QUANTITY") {
+            targetProduct.quantity += 1;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        } else if (type === "CHANGE_QUANTITY") {
+            targetProduct.quantity = targetQuantity;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        } else {
+            if (targetQuantity === 1) return;
+            targetProduct.quantity -= 1;
+            dispatch(addUpdateProductInCartReducer(targetProduct));
+        }
+    }
+
+    function handleClickDelete() {
+        dispatch(
+            removeProductFromCartReducer({
+                productId: item._id,
                 price: item.price,
-            },
-        });
+            })
+        );
     }
 
     return (
@@ -48,7 +74,7 @@ const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
                         maxHeight: "100px",
                         borderRadius: "5px",
                     }}
-                    src={item.imageURL}
+                    src={item.img}
                     alt="cart-item"
                 />
             </Box>
@@ -98,20 +124,22 @@ const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
                                 fontWeight: "bolder",
                             }}
                             variant="contained"
-                            onClick={() =>
-                                handleClickIncreaseDecrease("DECREASE_QUANTITY")
-                            }
+                            onClick={() => {
+                                if (quantity <= 1) return;
+                                handleClickIncreaseDecrease(
+                                    "DECREASE_QUANTITY"
+                                );
+                            }}
                         >
                             <RemoveIcon size="small" />
                         </IconButton>
 
                         <input
                             type="text"
-                            value={item.quantity}
-                            onChange={(e) => {
+                            value={quantity}
+                            onBlur={(e) => {
                                 let value = e.target.value;
                                 if (value <= 0) value = 1;
-
                                 handleClickIncreaseDecrease(
                                     "CHANGE_QUANTITY",
                                     value
@@ -143,9 +171,11 @@ const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
                                 fontWeight: "bolder",
                             }}
                             variant="contained"
-                            onClick={() =>
-                                handleClickIncreaseDecrease("INCREASE_QUANTITY")
-                            }
+                            onClick={() => {
+                                handleClickIncreaseDecrease(
+                                    "INCREASE_QUANTITY"
+                                );
+                            }}
                         >
                             <AddIcon size="small" />
                         </IconButton>
@@ -169,15 +199,10 @@ const ItemComponentDetails = ({ ItemKey, item, cartDataDispatch }) => {
                         >
                             Total :{" "}
                         </Typography>
-                        ${item.quantity * item.price}
+                        ${(quantity * item.price).toFixed(2)}
                     </Stack>
                     <IconButton
-                        onClick={() =>
-                            cartDataDispatch({
-                                type: "REMOVE_FROM_CART",
-                                payload: { id: item.id },
-                            })
-                        }
+                        onClick={() => handleClickDelete()}
                         sx={{
                             border: `1px solid  ${theme.palette.text.primary}`,
                             aspectRatio: "1 / 1",

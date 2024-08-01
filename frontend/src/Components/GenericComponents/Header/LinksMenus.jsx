@@ -295,6 +295,7 @@ function SubMenu({ listClassName, subMenuLinks }) {
     const theme = useTheme(ColorModeContext);
     return (
         <Box
+            // className="border"
             className={listClassName}
             sx={{
                 minWidth: "180px",
@@ -303,6 +304,7 @@ function SubMenu({ listClassName, subMenuLinks }) {
                 left: `-100%`,
                 backgroundColor: "transparent",
                 Padding: "4px",
+                paddingRight: "8px",
                 display: "none",
             }}
         >

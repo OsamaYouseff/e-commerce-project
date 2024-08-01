@@ -8,7 +8,7 @@ E-commerece Notes
 
 3 - Make code clean as possible before writing more code.
 
-4 - learn how to create a cart info related to customer info and how to make a request to get it.
+4 - learn how to create a cart info related to customer info and how to make a request to get it. ×××××××××××××××××××××××
 
 5 - make page for customer info and make request to edit his info. (done) ×××××××××××××××××××××××
 
@@ -17,4 +17,6 @@ E-commerece Notes
 7 - prevent user from going to [login / register]  pages if he's already logged in (done) ×××××××××××××××××××××××
 
 8 - don't forget to change all px to rem after finishing development.
+
+9 - do something to make user experience good when he trying to add to increase number of item or remove item (probably you need to use state)
 

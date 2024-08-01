@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 
-import CardComponent from "../../CardComponent/CardComponent";
+import ProductCardComponent from "../../CardComponent/ProductCardComponent";
 
 /// Icons
 import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
@@ -140,7 +140,7 @@ const MainContent = () => {
                     justifyContent={"space-between"}
                 >
                     {products?.map((product) => (
-                        <CardComponent
+                        <ProductCardComponent
                             key={product._id}
                             productData={product}
                             handelOpenModal={handleOpen}

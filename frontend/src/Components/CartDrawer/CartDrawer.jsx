@@ -18,11 +18,13 @@ import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
+
+    //// redux
     const dispatch = useDispatch();
-
     const customerCart = useSelector((state) => state.CartApiRequest.response);
+    const actionType = useSelector((state) => state.CartApiRequest.actionType);
 
-    const productCount = customerCart?.products?.length || 0;
+    const productsCount = customerCart?.products?.length || "0";
 
     /// styles
     const transitionDuration = "350ms";
@@ -48,7 +50,7 @@ export default function CartDrawer() {
 
     useEffect(() => {
         dispatch(getCustomerCartReducer());
-    }, []);
+    }, [actionType]);
 
     const list = (anchor) => (
         <Box
@@ -224,15 +226,23 @@ export default function CartDrawer() {
     return (
         <Box
             style={{
-                width: "48px",
+                width: "38px",
                 height: "38px",
                 color: theme.palette.text.primary,
             }}
         >
             <StyledBadge
+                className="flex-center "
                 onClick={toggleDrawer("right", true)}
-                badgeContent={productCount}
+                badgeContent={productsCount}
                 color="primary"
+                sx={{
+                    width: "100%",
+                    height: "100%",
+                    ".MuiBadge-badge.MuiBadge-standard": {
+                        transform: "translate(2px, -10px)",
+                    },
+                }}
             >
                 <ShoppingCartIcon
                     sx={{ transition: transitionDuration, height: "30px" }}

@@ -3,19 +3,41 @@ import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
 import ItemComponentDetails from "./ItemComponentDetails";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
+
+//// custom components
 import MidHeader from "../GenericComponents/Header/MidHeader";
+
+//// redux
+import { useDispatch, useSelector } from "react-redux";
+import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
     const [country, setCountry] = useState("");
     const [stateCity, setStateCity] = useState("");
+
+    //// redux
+    const dispatch = useDispatch();
+    const customerCart = useSelector((state) => state.CartApiRequest.response);
+    const actionType = useSelector((state) => state.CartApiRequest.actionType);
+
+    const productsCount = customerCart?.products?.length || 0;
+    const totalPrice = customerCart?.totalPrice || 0;
+    const discount =
+        totalPrice >= 100 ? Number((totalPrice * 0.1).toFixed(2)) : 0;
+    const shippingCalc = totalPrice !== 0 ? (totalPrice >= 50 ? 0 : 20) : 0;
+    const shippingCost = shippingCalc === 0 ? "Free" : "$20";
+    const finalPrice =
+        totalPrice !== 0
+            ? (totalPrice - discount + shippingCalc).toFixed(2)
+            : 0;
 
     const handleChangeCountry = (event) => {
         setCountry(event.target.value);
@@ -24,6 +46,13 @@ const CartPage = () => {
     const handleChangeState = (event) => {
         setStateCity(event.target.value);
     };
+
+    useEffect(() => {
+        dispatch(getCustomerCartReducer());
+    }, [actionType]);
+
+    // alert("Rerendering");
+
     return (
         <Fragment>
             <MidHeader />
@@ -82,7 +111,7 @@ const CartPage = () => {
                                     borderRadius: "6px",
                                 }}
                             >
-                                {/* {cartData.cartItems.length} */}
+                                {productsCount}
                             </span>
                             Items in your shopping bag
                         </Typography>
@@ -149,14 +178,14 @@ const CartPage = () => {
                                 </span>
                             </Stack>
 
-                            {/* {cartData.cartItems.map((item) => (
+                            {customerCart.products.map((item) => (
                                 <ItemComponentDetails
                                     key={item.id}
                                     ItemKey={item.id}
-                                    item={item}
-                                    cartDataDispatch={cartDataDispatch}
+                                    item={item.productDetails}
+                                    quantity={item.quantity}
                                 />
-                            ))} */}
+                            ))}
                         </Box>
                     </Box>
                     <Box
@@ -320,7 +349,7 @@ const CartPage = () => {
                                 >
                                     Cart Subtotal
                                     <span style={{ fontSize: "15px" }}>
-                                        {/* ${cartData.totalCartPrice} */}
+                                        ${totalPrice.toFixed(2)}
                                     </span>
                                 </Typography>
                                 <Typography
@@ -336,7 +365,7 @@ const CartPage = () => {
                                 >
                                     Shipping
                                     <span style={{ fontSize: "15px" }}>
-                                        Free
+                                        {shippingCost}
                                     </span>
                                 </Typography>
                                 <Typography
@@ -352,7 +381,7 @@ const CartPage = () => {
                                 >
                                     Discount
                                     <span style={{ fontSize: "15px" }}>
-                                        - $12.99
+                                        - ${discount}
                                     </span>
                                 </Typography>
                                 <Typography
@@ -373,7 +402,7 @@ const CartPage = () => {
                                             fontSize: "20px",
                                         }}
                                     >
-                                        {/* ${cartData.totalCartPrice - 12.99} */}
+                                        {finalPrice}
                                     </span>
                                 </Typography>
                             </Stack>
