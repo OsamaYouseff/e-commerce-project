@@ -27,8 +27,21 @@ const SettingsComponent = () => {
     //// handlers
     const handleChangePassword = async (e) => {
         e.preventDefault();
+
+        //// check if the new password is the same as the repeat new password
+        if (formData.newPassword.trim() !== formData.repeatNewPassword.trim()) {
+            alert("new Password and repeat New Password Fields do not match");
+            return;
+        }
+
+        ///// min length
+        if (formData.newPassword.trim().length < 8) {
+            alert("New password must be at least 8 characters long");
+            return;
+        }
+
         alert("password changed successfully");
-        // await dispatch(updateCustomerAccountReducer(formData));
+        // await dispatch(changePasswordReducer(formData));
     };
 
     const handelFormData = (key, value) => {

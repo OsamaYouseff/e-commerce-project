@@ -43,7 +43,6 @@ export const logoutCustomerAccountReducer = createAsyncThunk("logoutCustomerAcco
 })
 
 
-
 ///// state
 const initialState = {
     response: null,     ///////////////////////////// make sure to make it an object to avoid Error ////////////////////////////
@@ -64,6 +63,26 @@ export const CustomerApiSlice = createSlice({
             state.response = action.payload;
             GoHome();
         }).addCase(customerLoginReducer.rejected, (state, action) => {
+            state.isLoading = false;
+        })
+
+        //// register a customer
+        builder.addCase(registerACustomerReducer.pending, (state, action) => {
+            state.isLoading = true;
+        }).addCase(registerACustomerReducer.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.response = action.payload;
+        }).addCase(registerACustomerReducer.rejected, (state, action) => {
+            state.isLoading = false;
+        })
+
+        ///// update customer account
+        builder.addCase(updateCustomerAccountReducer.pending, (state, action) => {
+            state.isLoading = true;
+        }).addCase(updateCustomerAccountReducer.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.response = action.payload;
+        }).addCase(updateCustomerAccountReducer.rejected, (state, action) => {
             state.isLoading = false;
         })
     }
