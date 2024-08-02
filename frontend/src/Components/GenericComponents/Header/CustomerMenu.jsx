@@ -11,7 +11,7 @@ import { useTheme } from "@emotion/react";
 
 ///// redux
 import { useDispatch } from "react-redux";
-import { GetUserInfo } from "../../../General/GeneralFunctions";
+import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { logoutCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
 
 //// General Vars & Functions

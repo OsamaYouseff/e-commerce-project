@@ -20,3 +20,4 @@ E-commerece Notes
 
 9 - do something to make user experience good when he trying to add to increase number of item or remove item (probably you need to use state)
 
+10 - find some way to move GoHome function from apiCutomerSlice because it's looks like it's a side effect .

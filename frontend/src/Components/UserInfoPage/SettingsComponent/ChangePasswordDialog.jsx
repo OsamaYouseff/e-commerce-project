@@ -91,9 +91,9 @@ export function ChangePasswordDialog({
                         handleChangeField={handleChangeField}
                     />
                     <PasswordField
-                        value={formData.repeatNewPassword}
+                        value={formData.confirmNewPassword}
                         label="Repeat New Password"
-                        title="repeatNewPassword"
+                        title="confirmNewPassword"
                         handleClickShowPassword={handleClickShowPassword}
                         handleMouseDownPassword={handleMouseDownPassword}
                         showPassword={showPassword}
@@ -108,7 +108,7 @@ export function ChangePasswordDialog({
                         disabled={
                             formData.currentPassword.trim() === "" ||
                             formData.newPassword.trim() === "" ||
-                            formData.repeatNewPassword.trim() === ""
+                            formData.confirmNewPassword.trim() === ""
                         }
                         sx={{
                             fontWeight: "bolder",

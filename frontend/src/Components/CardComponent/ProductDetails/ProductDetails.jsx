@@ -15,6 +15,7 @@ import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutl
 ///// redux
 import { useDispatch } from "react-redux";
 import { addUpdateProductInCartReducer } from "../../../redux/ApiCartSlice.js";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
 
 //// styles
 const CloseBtnStyles = {
@@ -58,13 +59,18 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
 
     // const [previewImgUrl, setPreviewImgUrl] = useState(`${productImg}`);
     const handleClickAddToCart = () => {
-        dispatch(
-            addUpdateProductInCartReducer({
-                productId: PreviewedProduct._id,
-                quantity: 1,
-                price: PreviewedProduct.price,
-            })
-        );
+        if (IsUserLoggedIn()) {
+            dispatch(
+                addUpdateProductInCartReducer({
+                    productId: PreviewedProduct._id,
+                    quantity: 1,
+                    price: PreviewedProduct.price,
+                })
+            );
+        } else {
+            alert("Adding to local state soon");
+        }
+        //// else make state changing only
     };
 
     const handelSelectedImg = (event, newValue) => {

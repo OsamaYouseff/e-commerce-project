@@ -35,6 +35,8 @@ const UserInfoPage = () => {
     const theme = useTheme(ColorModeContext);
     let customerData = GetUserInfo();
 
+    //// TODO : Fix login reducer to rerender component after login
+
     const handleLogout = () => {
         dispatch(logoutCustomerAccountReducer());
     };

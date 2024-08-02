@@ -12,6 +12,8 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 
 /// redux
 import { useDispatch } from "react-redux";
+import { changePasswordReducer } from "../../../redux/ApiCustomerSlice";
+import { deleteCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
 
 const SettingsComponent = () => {
     const dispatch = useDispatch();
@@ -21,7 +23,7 @@ const SettingsComponent = () => {
     const [formData, setFormData] = useState({
         currentPassword: "",
         newPassword: "",
-        repeatNewPassword: "",
+        confirmNewPassword: "",
     });
 
     //// handlers
@@ -29,8 +31,10 @@ const SettingsComponent = () => {
         e.preventDefault();
 
         //// check if the new password is the same as the repeat new password
-        if (formData.newPassword.trim() !== formData.repeatNewPassword.trim()) {
-            alert("new Password and repeat New Password Fields do not match");
+        if (
+            formData.newPassword.trim() !== formData.confirmNewPassword.trim()
+        ) {
+            alert("New password and confirm new Password Fields do not match");
             return;
         }
 
@@ -39,9 +43,19 @@ const SettingsComponent = () => {
             alert("New password must be at least 8 characters long");
             return;
         }
+        // alert("password changed successfully");
+        await dispatch(changePasswordReducer(formData));
+    };
 
-        alert("password changed successfully");
-        // await dispatch(changePasswordReducer(formData));
+    const handleDeleteAccount = () => {
+        //  take confirmation by using dialog
+
+        const confirmation = window.confirm(
+            "Are you sure you want to delete your account?"
+        );
+        if (confirmation) {
+            dispatch(deleteCustomerAccountReducer());
+        }
     };
 
     const handelFormData = (key, value) => {
@@ -123,6 +137,7 @@ const SettingsComponent = () => {
                     Account Deletion
                 </Typography>
                 <Button
+                    onClick={() => handleDeleteAccount()}
                     color="error"
                     variant="contained"
                     sx={{

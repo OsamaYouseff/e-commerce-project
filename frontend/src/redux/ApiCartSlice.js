@@ -4,7 +4,9 @@ import { addUpdateProductInCart, getCustomerCart, removeProductToCart } from '..
 
 export const getCustomerCartReducer = createAsyncThunk("getCartsAPI/sendRequest", async () => {
     const response = await getCustomerCart();
+
     // console.log("response.data : ", response);
+
     return response;
 })
 
@@ -61,6 +63,7 @@ export const CartApiSlice = createSlice({
                 currentState.error = action.error.message;
             })
 
+
             // addUpdateProductInCartReducer cases
             .addCase(addUpdateProductInCartReducer.pending, (currentState) => {
                 currentState.isLoading = true;
@@ -75,6 +78,7 @@ export const CartApiSlice = createSlice({
                 currentState.isLoading = false;
                 currentState.error = action.error.message;
             })
+
 
             // removeProductFromCartReducer cases
             .addCase(removeProductFromCartReducer.pending, (currentState) => {

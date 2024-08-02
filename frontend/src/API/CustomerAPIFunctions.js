@@ -20,16 +20,14 @@ export const customerLogin = async (customerData, rememberMe) => {
     try {
         const response = await axios.request(config);
 
-        if (rememberMe)
-            StoreDataAtLocalStorage('localStorage', response.data);
-        else
-            StoreDataAtLocalStorage('sessionStorage', response.data);
+        if (rememberMe) StoreDataAtLocalStorage('localStorage', response.data);
+        else StoreDataAtLocalStorage('sessionStorage', response.data);
 
-        return response.data.userInfo;
+        return { state: true, message: "Logged In Successfully" };
 
     } catch (error) {
-        console.error('Error fetching customers:', error);
-        throw error;
+        console.log('Error fetching customers:', error.response.data.message);
+        return { state: false, message: error.response.data.message };
     }
 };
 export const registerACustomer = async (customerFromData) => {
@@ -50,16 +48,15 @@ export const registerACustomer = async (customerFromData) => {
     try {
         const response = await axios.request(config);
 
-        alert('Customer created successfully:', response.data);
+        console.log('Customer created successfully:', response.data);
 
         StoreDataAtLocalStorage('localStorage', response.data);
 
-        return true;
+        return { state: true, message: "Signed Up Successfully" };
 
     } catch (error) {
-        console.error('Error creating customer:', error.response.data.message);
-        alert("Error " + error.response.data.message);
-        return false;
+        console.log('Error creating customer : ', error.response.data);
+        return { state: false, message: error.response.data };
     }
 };
 
@@ -88,8 +85,8 @@ export const updateCustomerAccount = async (customerFromData) => {
 
     try {
         const response = await axios.request(config);
-        console.log('Customer updated successfully:', response.data);
 
+        // console.log('Customer updated successfully:', response.data);
 
         if (localStorage.getItem('customerInfo')) {
             localStorage.setItem('customerInfo', JSON.stringify(response.data));
@@ -97,30 +94,84 @@ export const updateCustomerAccount = async (customerFromData) => {
             sessionStorage.setItem('customerInfo', JSON.stringify(response.data));
         }
 
-        return response.data;
+        // console.log('Customer updated successfully : ', response.data);
+
+        return { state: true, message: "Customer updated successfully" };
 
     } catch (error) {
-        console.error('Error updating customer:', error);
+        console.log('Error updating customer : ', error);
+        return { state: false, message: error.response.data };
+
     }
 
 };
 
-///// TODO: refactor delete customer
-export const deleteCustomerAccount = async (customerId) => {
-    const url = `${baseURL}/api/customers/${customerId}`;
+export const changeCustomerPassword = async (customerFromData) => {
+
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+    if (!customerData || !accessToken) {
+        alert("Please login first");
+        return;
+    }
+    const customerId = JSON.parse(customerData)["_id"];
+
+
+    const config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/users/change-password/${customerId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: customerFromData
+    };
 
     try {
-        const response = await axios.delete(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                // Add any necessary authentication token here if required
-                // 'Authorization': `Bearer ${token}`
-            },
-        });
-        console.log('Customer deleted successfully:', response.data);
-        // Handle success, update UI, etc.
+        const response = await axios.request(config);
+        // console.log('password changed successfully : ', response.data.message);
+        return { state: true, message: response.data.message };
+
     } catch (error) {
-        console.error('Error deleting customer:', error);
-        // Handle error, show error message, etc.
+
+        // console.log('Error : ', error.response.data.message);
+        // console.error('Error changing password : ', error);
+        return { state: false, message: error.response.data.message }
+    }
+
+};
+
+export const deleteCustomerAccount = async () => {
+
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+    if (!customerData || !accessToken) {
+        alert("Please login first");
+        return;
+    }
+    const customerId = JSON.parse(customerData)["_id"];
+
+    let config = {
+        method: 'delete',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/users/${customerId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+    };
+
+    try {
+        const response = await axios.request(config);
+        // console.log('Customer deleted successfully:', response.data);
+        return { state: true, message: response.data };
+
+    } catch (error) {
+        // console.log('Error deleting customer:', error.response.data.error);
+        return { state: true, message: error.response.data.error };
+
     }
 };

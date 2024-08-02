@@ -14,9 +14,6 @@ import { Link } from "react-router-dom";
 ///// custom components
 import CustomerMenu from "./CustomerMenu";
 
-//// hooks
-import { useEffect } from "react";
-
 //// general functions
 import { GetUserInfo } from "../../../General/GeneralFunctions";
 
@@ -64,7 +61,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function ToggleCustomerAvatar(customerData) {
-    return customerData.id !== null ? (
+    return customerData._id !== null ? (
         <IconButton
             aria-label="cart"
             sx={{
@@ -96,8 +93,6 @@ const MidHeader = function () {
         "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
 
     let customerData = GetUserInfo();
-
-    useEffect(() => {}, [customerData]);
 
     return (
         <Container maxWidth="xl" sx={{ marginTop: "15px" }}>

@@ -50,7 +50,7 @@ const eyeStyles = {
 };
 
 export default function RegisterPage() {
-    const [confirmPassword, setConfirmPassword] = useState("password1234");
+    const [confirmPassword, setConfirmPassword] = useState("Os123@.seto");
     const [showPassword, setShowPassword] = useState(false);
 
     const dispatch = useDispatch();
@@ -59,7 +59,7 @@ export default function RegisterPage() {
     const [formData, setFormData] = useState({
         username: "ahmedsayed",
         email: "AhmedSayed@gmail.com",
-        password: "password1234",
+        password: "Os123@.seto",
         phone: "+0201234567890",
     });
 

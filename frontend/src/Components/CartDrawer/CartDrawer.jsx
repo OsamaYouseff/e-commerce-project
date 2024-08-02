@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
+import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
@@ -29,6 +30,7 @@ export default function CartDrawer() {
     const actionType = useSelector((state) => state.CartApiRequest.actionType);
 
     const productsCount = customerCart?.products?.length || "0";
+    const totalPrice = customerCart?.totalPrice || 0;
 
     /// styles
     const transitionDuration = "350ms";
@@ -52,9 +54,23 @@ export default function CartDrawer() {
         setState({ ...state, [anchor]: open });
     };
 
+    const handelShowCartProduct = () => {
+        if (customerCart == undefined || customerCart == null) {
+            return <></>;
+        } else {
+            return customerCart.products.map((item) => (
+                <ItemComponent
+                    key={item.productId}
+                    quantity={item.quantity}
+                    item={item.productDetails}
+                />
+            ));
+        }
+    };
+
     useEffect(() => {
-        dispatch(getCustomerCartReducer());
-    }, [actionType]);
+        if (IsUserLoggedIn()) dispatch(getCustomerCartReducer());
+    }, []);
 
     const list = (anchor) => (
         <Box
@@ -134,13 +150,7 @@ export default function CartDrawer() {
                 }}
             >
                 <div style={{ width: "100%", height: "300px", bgcolor: "red" }}>
-                    {customerCart.products.map((item) => (
-                        <ItemComponent
-                            key={item.productId}
-                            quantity={item.quantity}
-                            item={item.productDetails}
-                        />
-                    ))}
+                    {handelShowCartProduct()}
                 </div>
             </Box>
             {/*== Cart Items ==*/}
@@ -209,7 +219,7 @@ export default function CartDrawer() {
                                 fontSize: "20px",
                             }}
                         >
-                            ${customerCart.totalPrice.toFixed(2)}
+                            ${totalPrice.toFixed(2)}
                         </Typography>
                     </Stack>
                     <Link to="/cart" xs={{ width: "100%" }}>

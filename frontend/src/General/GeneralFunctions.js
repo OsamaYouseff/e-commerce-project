@@ -9,7 +9,7 @@ export function GetUserInfo() {
         return JSON.parse(sessionStorage.getItem("customerInfo"));
 
     return {
-        id: null,
+        _id: null,
         firstname: "",
         lastname: "",
         username: "",
@@ -42,5 +42,13 @@ export function StoreDataAtLocalStorage(Type = "localStorage", data) {
 
 }
 
+export function IsUserLoggedIn() {
+
+    if ((localStorage.getItem("customerInfo") && localStorage.getItem("token"))
+        || (sessionStorage.getItem("customerInfo") && sessionStorage.getItem("token")))
+        return true;
+    else
+        return false;
+}
 
 

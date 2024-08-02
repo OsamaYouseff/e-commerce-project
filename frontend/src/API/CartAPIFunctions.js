@@ -4,7 +4,7 @@ import axios from "axios";
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const getCustomerCart = async () => {
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
     const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
 
     if (!customerData || !accessToken) {
@@ -32,14 +32,14 @@ export const getCustomerCart = async () => {
         else return response.data;
 
     } catch (error) {
-        console.error('Error Fetching Cart Data : ', error);
-        throw error;
+        console.console.log('Error Fetching Cart Data : ', error);
+        // throw error;
     }
 };
 
 export const addUpdateProductInCart = async (addedProduct) => {
     const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
 
     if (!customerData || !accessToken) {
         alert("Please login first");
@@ -74,7 +74,7 @@ export const addUpdateProductInCart = async (addedProduct) => {
 
 export const removeProductToCart = async (removeProduct) => {
     const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo')._id;
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
 
     if (!customerData || !accessToken) {
         alert("Please login first");

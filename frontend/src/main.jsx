@@ -25,7 +25,6 @@ import LoginPage from "./Components/LoginRegisterPages/LoginPage.jsx";
 import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
 import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
 import UserInfoPage from "./Components/UserInfoPage/UserInfoPage.jsx";
-import ProfileComponent from "./Components/UserInfoPage/ProfileComponent/ProfileComponent.jsx";
 
 const routeElement = (currentComponent, showMidHeader = false) => {
     return (
@@ -87,7 +86,7 @@ function MainComponent() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <MainComponent />
-    </React.StrictMode>
+    // <React.StrictMode>
+    // </React.StrictMode>
+    <MainComponent />
 );

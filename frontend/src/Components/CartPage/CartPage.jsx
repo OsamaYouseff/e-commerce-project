@@ -17,6 +17,7 @@ import MidHeader from "../GenericComponents/Header/MidHeader";
 //// redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
+import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
@@ -47,11 +48,24 @@ const CartPage = () => {
         setStateCity(event.target.value);
     };
 
-    useEffect(() => {
-        dispatch(getCustomerCartReducer());
-    }, [actionType]);
+    const handelShowCartProduct = () => {
+        if (customerCart == undefined || customerCart == null) {
+            return <></>;
+        } else {
+            return customerCart.products.map((item) => (
+                <ItemComponentDetails
+                    key={item.id}
+                    ItemKey={item.id}
+                    item={item.productDetails}
+                    quantity={item.quantity}
+                />
+            ));
+        }
+    };
 
-    // alert("Rerendering");
+    useEffect(() => {
+        if (IsUserLoggedIn()) dispatch(getCustomerCartReducer());
+    }, []);
 
     return (
         <Fragment>
@@ -178,14 +192,7 @@ const CartPage = () => {
                                 </span>
                             </Stack>
 
-                            {customerCart.products.map((item) => (
-                                <ItemComponentDetails
-                                    key={item.id}
-                                    ItemKey={item.id}
-                                    item={item.productDetails}
-                                    quantity={item.quantity}
-                                />
-                            ))}
+                            {handelShowCartProduct()}
                         </Box>
                     </Box>
                     <Box
@@ -222,8 +229,8 @@ const CartPage = () => {
                             >
                                 <MenuItem value={2}>Egypt</MenuItem>
                                 <MenuItem value={3}>KSA</MenuItem>
-                                <MenuItem value={3}>UAE</MenuItem>
-                                <MenuItem value={3}>UK</MenuItem>
+                                <MenuItem value={4}>UAE</MenuItem>
+                                <MenuItem value={8}>UK</MenuItem>
                                 <MenuItem value={1}>USA</MenuItem>
                             </Select>
                         </FormControl>
@@ -252,8 +259,8 @@ const CartPage = () => {
                                     <MenuItem value={1}>New York</MenuItem>
                                     <MenuItem value={2}>Cairo</MenuItem>
                                     <MenuItem value={3}>Riyadh</MenuItem>
-                                    <MenuItem value={3}>London</MenuItem>
-                                    <MenuItem value={3}>Abu Dhabi</MenuItem>
+                                    <MenuItem value={4}>London</MenuItem>
+                                    <MenuItem value={5}>Abu Dhabi</MenuItem>
                                 </Select>
                             </FormControl>
 

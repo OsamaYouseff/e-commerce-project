@@ -13,6 +13,7 @@ import {
     addUpdateProductInCartReducer,
     removeProductFromCartReducer,
 } from "../../redux/ApiCartSlice.js";
+import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
 
 const ItemComponent = ({ item, quantity }) => {
     const theme = useTheme(ColorModeContext);
@@ -20,6 +21,11 @@ const ItemComponent = ({ item, quantity }) => {
     const dispatch = useDispatch();
 
     function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
+        if (!IsUserLoggedIn()) {
+            alert("Adding to local state soon");
+            return;
+        }
+
         let targetProduct = {
             productId: item._id,
             quantity: targetQuantity,
@@ -39,12 +45,17 @@ const ItemComponent = ({ item, quantity }) => {
     }
 
     function handleClickDelete() {
-        dispatch(
-            removeProductFromCartReducer({
-                productId: item._id,
-                price: item.price,
-            })
-        );
+        if (!IsUserLoggedIn()) {
+            alert("Adding to local state soon");
+            return;
+        } else {
+            dispatch(
+                removeProductFromCartReducer({
+                    productId: item._id,
+                    price: item.price,
+                })
+            );
+        }
     }
 
     if (item == undefined) {

@@ -27,7 +27,7 @@ export default function LoginPage() {
     const [formData, setFormData] = useState({
         // username: "ahmedsayed@gmail.com",
         username: "sama",
-        password: "123456",
+        password: "Os123@.seto",
         rememberMe: false,
     });
 
