@@ -86,7 +86,7 @@ function MainComponent() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    // <React.StrictMode>
-    // </React.StrictMode>
-    <MainComponent />
+    <React.StrictMode>
+        <MainComponent />
+    </React.StrictMode>
 );

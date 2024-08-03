@@ -28,6 +28,7 @@ export default function CartDrawer() {
     const dispatch = useDispatch();
     const customerCart = useSelector((state) => state.CartApiRequest.response);
     const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
+    const error = useSelector((state) => state.CartApiRequest.error);
 
     const productsCount = customerCart?.products?.length || "0";
     const totalPrice = customerCart?.totalPrice || 0;
@@ -55,7 +56,25 @@ export default function CartDrawer() {
     };
 
     const handelShowCartProduct = () => {
-        if (customerCart.products.length === 0) {
+        if (error) {
+            return (
+                <Box
+                    className="flex-column-center"
+                    sx={{ minHeight: "50vh", gap: "15px" }}
+                >
+                    <Typography variant="h6">
+                        There is something wrong 😢
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => window.location.reload()}
+                        sx={{ fontWeight: "bold" }}
+                    >
+                        Reload Page
+                    </Button>
+                </Box>
+            );
+        } else if (customerCart.products.length === 0) {
             return (
                 <Box
                     className="flex-center"

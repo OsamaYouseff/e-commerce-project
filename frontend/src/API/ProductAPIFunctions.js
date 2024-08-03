@@ -3,13 +3,11 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-export const getAllProducts = async () => {
-
-
+export const getFilteredProducts = async (filter) => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${baseURL}/api/products`,
+        url: `${baseURL}/api/products?${filter}`,
         headers: {}
     };
 
@@ -23,3 +21,5 @@ export const getAllProducts = async () => {
         throw error;
     }
 };
+
+

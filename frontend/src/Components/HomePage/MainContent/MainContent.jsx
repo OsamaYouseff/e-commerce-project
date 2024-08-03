@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { Box, Container, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography, Button } from "@mui/material";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useEffect, useState } from "react";
@@ -14,22 +14,22 @@ import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getAllProductsReducer } from "../../../redux/ApiProductSlice";
+import { getFilteredProductsReducer } from "../../../redux/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MainContent = () => {
-    const allProducts = "products?populate=*";
-    const menProducts = "products?populate=*&filters[productCategory][$eq]=men";
-    const womenProducts =
-        "products?populate=*&filters[productCategory][$eq]=women";
+    const allProducts = "";
+    const menProducts = "men";
+    const womenProducts = "women";
 
     const [productCategory, setProductCategory] = useState(allProducts);
 
     const dispatch = useDispatch();
     const products = useSelector((state) => state.ProductsApiRequest.response);
-
-    // const { data, error, isLoading } =
-    //     useGetProductByNameQuery(productCategory);
+    const error = useSelector((state) => state.ProductsApiRequest.error);
+    const isLoading = useSelector(
+        (state) => state.ProductsApiRequest.isLoading
+    );
 
     const theme = useTheme(ColorModeContext);
     const ToggleButtonStyles = {
@@ -42,8 +42,12 @@ const MainContent = () => {
         flexGrow: "1",
     };
     const handleProductCategory = (event, newValue) => {
-        if (newValue !== null) {
+        if (newValue) {
             setProductCategory(newValue);
+            dispatch(getFilteredProductsReducer(`categories=${newValue}`));
+        } else {
+            dispatch(getFilteredProductsReducer(""));
+            setProductCategory(allProducts);
         }
     };
     const handleSetPreviewedProduct = (newValue) => {
@@ -61,7 +65,7 @@ const MainContent = () => {
 
     useEffect(() => {
         (async function fetchData() {
-            await dispatch(getAllProductsReducer());
+            await dispatch(getFilteredProductsReducer());
         })();
     }, []);
 
@@ -162,15 +166,33 @@ const MainContent = () => {
                 }
             </Container>
         );
-    } else if (products === null) {
-        return <SkeletonFeedback />;
-    } else {
+    } else if (isLoading) {
         return (
-            <>
-                <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
+            <Container>
+                <Box sx={{ marginY: "15px" }}>
                     <SkeletonFeedback />
-                </Container>
-            </>
+                </Box>
+            </Container>
+        );
+    } else if (error || !products) {
+        return (
+            <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
+                <Box
+                    className="flex-column-center"
+                    sx={{ minHeight: "50vh", gap: "15px" }}
+                >
+                    <Typography variant="h5">
+                        There is something wrong 😢
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => window.location.reload()}
+                        sx={{ fontWeight: "bold" }}
+                    >
+                        Reload Page
+                    </Button>
+                </Box>
+            </Container>
         );
     }
 };
