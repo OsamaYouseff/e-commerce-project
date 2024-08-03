@@ -2,19 +2,33 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
+// import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Rating from "@mui/material/Rating";
 import { motion, AnimatePresence } from "framer-motion";
 
 /// Icons
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import { useDispatch } from "react-redux";
+import { addUpdateProductInCartReducer } from "../../redux/ApiCartSlice";
 
 const ProductCardComponent = ({
     productData,
     handelOpenModal,
     handleSetPreviewedProduct,
 }) => {
+    const dispatch = useDispatch();
+
+    const handelAddToCart = () => {
+        dispatch(
+            addUpdateProductInCartReducer({
+                productId: productData._id,
+                quantity: 1,
+                price: productData.price,
+            })
+        );
+    };
+
     return (
         <AnimatePresence>
             <Card
@@ -28,10 +42,6 @@ const ProductCardComponent = ({
                     type: "spring",
                     stiffness: 100,
                 }}
-                onClick={() => {
-                    handleSetPreviewedProduct(productData);
-                    handelOpenModal();
-                }}
                 sx={{
                     flexGrow: 1,
                     maxWidth: {
@@ -41,7 +51,6 @@ const ProductCardComponent = ({
                         lg: "24%",
                         xl: 300,
                     },
-                    cursor: "pointer",
                     boxShadow: 3,
                     display: "flex",
                     flexDirection: "column",
@@ -68,6 +77,10 @@ const ProductCardComponent = ({
                 /> */}
 
                 <Box
+                    onClick={() => {
+                        handleSetPreviewedProduct(productData);
+                        handelOpenModal();
+                    }}
                     sx={{
                         backgroundImage: `url(${productData.img})`,
                         backgroundRepeat: "no-repeat",
@@ -75,6 +88,9 @@ const ProductCardComponent = ({
                         backgroundSize: "contain",
                         height: "245px",
                         width: "100%",
+                        cursor: "pointer",
+                        transition: "transform 0.35s ease-in-out",
+                        "&:hover": { transform: "scale(1.03) " },
                     }}
                 ></Box>
                 <CardContent
@@ -123,8 +139,7 @@ const ProductCardComponent = ({
                         size="small"
                         sx={{ fontSize: "14px" }}
                         onClick={() => {
-                            handleSetPreviewedProduct(productData);
-                            handelOpenModal();
+                            handelAddToCart();
                         }}
                     >
                         <AddShoppingCartOutlinedIcon

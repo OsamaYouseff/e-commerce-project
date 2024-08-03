@@ -18,6 +18,8 @@ E-commerece Notes
 
 8 - don't forget to change all px to rem after finishing development.
 
-9 - do something to make user experience good when he trying to add to increase number of item or remove item (probably you need to use state)
+9 - do something to make user experience good when he trying to add to increase number of item or remove item (probably you need to use state) ×××××××××××××××××××××××
 
 10 - find some way to move GoHome function from apiCutomerSlice because it's looks like it's a side effect .
+
+11 - compare between two components (itemComponent and itemComponentDetailed) and try to convirt it two one component

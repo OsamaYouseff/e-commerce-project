@@ -77,7 +77,7 @@ function MainComponent() {
                 <CssBaseline />
                 <Provider store={store}>
                     <RouterProvider router={router}>
-                        <App />
+                        {/* <App /> */}
                     </RouterProvider>
                 </Provider>
             </ThemeProvider>

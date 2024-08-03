@@ -27,7 +27,7 @@ export default function CartDrawer() {
     //// redux
     const dispatch = useDispatch();
     const customerCart = useSelector((state) => state.CartApiRequest.response);
-    const actionType = useSelector((state) => state.CartApiRequest.actionType);
+    const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
 
     const productsCount = customerCart?.products?.length || "0";
     const totalPrice = customerCart?.totalPrice || 0;
@@ -55,8 +55,24 @@ export default function CartDrawer() {
     };
 
     const handelShowCartProduct = () => {
-        if (customerCart == undefined || customerCart == null) {
-            return <></>;
+        if (customerCart.products.length === 0) {
+            return (
+                <Box
+                    className="flex-center"
+                    sx={{
+                        p: 2,
+                        bgcolor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
+                        textAlign: "center",
+                        borderRadius: "10px",
+                        fontWeight: "bolder",
+                        height: "100%",
+                        fontSize: "1.2rem",
+                    }}
+                >
+                    No products in cart 😅
+                </Box>
+            );
         } else {
             return customerCart.products.map((item) => (
                 <ItemComponent
@@ -69,7 +85,7 @@ export default function CartDrawer() {
     };
 
     useEffect(() => {
-        if (IsUserLoggedIn()) dispatch(getCustomerCartReducer());
+        if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
     }, []);
 
     const list = (anchor) => (
@@ -143,13 +159,20 @@ export default function CartDrawer() {
                     minHeight: "58vh",
                     px: 1,
                     width: "100%",
-                    transform: {
-                        xs: "translateX(10px)",
-                        sm: "translateX(0px)",
-                    },
+                    // transform: {
+                    //     xs: "translateX(10px)",
+                    //     sm: "translateX(0px)",
+                    // },
                 }}
             >
-                <div style={{ width: "100%", height: "300px", bgcolor: "red" }}>
+                <div
+                    style={{
+                        width: "100%",
+                        minHeight: "390px",
+                        maxHeight: "90vh",
+                        bgcolor: "red",
+                    }}
+                >
                     {handelShowCartProduct()}
                 </div>
             </Box>
@@ -163,7 +186,6 @@ export default function CartDrawer() {
                         flexDirection: "column",
                         gap: 1,
                         my: 2,
-                        marginLeft: "10px",
                         fontSize: "17px",
                     }}
                 >
@@ -204,7 +226,6 @@ export default function CartDrawer() {
                         display: "flex",
                         flexDirection: "column",
                         gap: 1,
-                        marginLeft: "10px",
                         fontSize: "17px",
                     }}
                 >

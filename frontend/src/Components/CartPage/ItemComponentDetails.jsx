@@ -8,18 +8,33 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 
 ///// redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
     addUpdateProductInCartReducer,
     removeProductFromCartReducer,
 } from "../../redux/ApiCartSlice.js";
+import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
+import { useState } from "react";
 
-const ItemComponentDetails = ({ ItemKey, item, quantity }) => {
+const ItemComponentDetails = ({ item, quantity }) => {
     const theme = useTheme(ColorModeContext);
 
-    const dispatch = useDispatch();
+    //// state
+    const [filedQuantity, setFiledQuantity] = useState(quantity);
 
+    //// redux
+    const dispatch = useDispatch();
+    const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
+
+    //// handlers
     function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
+        if (!IsUserLoggedIn()) {
+            alert("Adding to local state soon");
+            return;
+        }
+
+        if (isLoading) return; //// prevent user form doing many requests at the same time
+
         let targetProduct = {
             productId: item._id,
             quantity: targetQuantity,
@@ -39,12 +54,19 @@ const ItemComponentDetails = ({ ItemKey, item, quantity }) => {
     }
 
     function handleClickDelete() {
-        dispatch(
-            removeProductFromCartReducer({
-                productId: item._id,
-                price: item.price,
-            })
-        );
+        if (!IsUserLoggedIn() || isLoading) {
+            alert("Adding to local state soon");
+            return;
+        } else {
+            if (isLoading) return; //// prevent user form doing many requests at the same time
+
+            dispatch(
+                removeProductFromCartReducer({
+                    productId: item._id,
+                    price: item.price,
+                })
+            );
+        }
     }
 
     if (item == undefined) {
@@ -52,7 +74,7 @@ const ItemComponentDetails = ({ ItemKey, item, quantity }) => {
     } else {
         return (
             <Stack
-                key={ItemKey}
+                key={item._id}
                 direction="row"
                 justifyContent={"space-between"}
                 alignItems={"center"}
@@ -139,7 +161,12 @@ const ItemComponentDetails = ({ ItemKey, item, quantity }) => {
 
                             <input
                                 type="text"
-                                value={quantity}
+                                value={filedQuantity}
+                                onChange={(e) => {
+                                    let value = e.target.value;
+                                    if (value <= 0) value = 1;
+                                    setFiledQuantity(value);
+                                }}
                                 onBlur={(e) => {
                                     let value = e.target.value;
                                     if (value <= 0) value = 1;

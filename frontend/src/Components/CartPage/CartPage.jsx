@@ -1,70 +1,65 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Container, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
-import ItemComponentDetails from "./ItemComponentDetails";
-import { Fragment, useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
+import { Fragment, useEffect } from "react";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 //// custom components
 import MidHeader from "../GenericComponents/Header/MidHeader";
+import CheckoutPanel from "./CheckoutPanel";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
+import ItemComponent from "../CartDrawer/ItemComponent";
+import { Link } from "react-router-dom";
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
-    const [country, setCountry] = useState("");
-    const [stateCity, setStateCity] = useState("");
 
     //// redux
     const dispatch = useDispatch();
     const customerCart = useSelector((state) => state.CartApiRequest.response);
-    const actionType = useSelector((state) => state.CartApiRequest.actionType);
+    const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
 
     const productsCount = customerCart?.products?.length || 0;
     const totalPrice = customerCart?.totalPrice || 0;
-    const discount =
-        totalPrice >= 100 ? Number((totalPrice * 0.1).toFixed(2)) : 0;
-    const shippingCalc = totalPrice !== 0 ? (totalPrice >= 50 ? 0 : 20) : 0;
-    const shippingCost = shippingCalc === 0 ? "Free" : "$20";
-    const finalPrice =
-        totalPrice !== 0
-            ? (totalPrice - discount + shippingCalc).toFixed(2)
-            : 0;
-
-    const handleChangeCountry = (event) => {
-        setCountry(event.target.value);
-    };
-
-    const handleChangeState = (event) => {
-        setStateCity(event.target.value);
-    };
 
     const handelShowCartProduct = () => {
-        if (customerCart == undefined || customerCart == null) {
-            return <></>;
-        } else {
-            return customerCart.products.map((item) => (
-                <ItemComponentDetails
-                    key={item.id}
-                    ItemKey={item.id}
-                    item={item.productDetails}
-                    quantity={item.quantity}
-                />
-            ));
+        if (customerCart.products.length === 0) {
+            return (
+                <Box
+                    sx={{
+                        p: 2,
+                        bgcolor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
+                        textAlign: "center",
+                        borderRadius: "10px",
+                        fontWeight: "bolder",
+                        fontSize: "1.5rem",
+                    }}
+                >
+                    No products in cart 😅
+                </Box>
+            );
         }
+        return customerCart.products.map((item) => (
+            <ItemComponent
+                key={item.id}
+                ItemKey={item.id}
+                item={item.productDetails}
+                quantity={item.quantity}
+                withDetails={true}
+            />
+        ));
     };
 
     useEffect(() => {
-        if (IsUserLoggedIn()) dispatch(getCustomerCartReducer());
+        if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
     }, []);
 
     return (
@@ -98,37 +93,71 @@ const CartPage = () => {
                             overflow: "auto",
                         }}
                     >
-                        <Typography
-                            variant="h1"
-                            fontSize={"20px"}
-                            sx={{ mb: 1 }}
-                        >
-                            Shopping Bag
-                        </Typography>
-                        <Typography
-                            variant="h2"
-                            fontSize={"20px"}
+                        <Link to="/home">
+                            <Button
+                                size="small"
+                                sx={{ fontWeight: "bolder", mb: 2 }}
+                            >
+                                <ArrowBackIosIcon />
+                                Back to shopping
+                            </Button>
+                        </Link>
+
+                        <Stack
                             sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
+                                flexDirection: {
+                                    xs: "column",
+                                    sm: "row",
+                                },
+                                gap: 2,
+
+                                alignItems: "start",
+                                justifyContent: "space-between",
                             }}
                         >
-                            <span
-                                style={{
-                                    width: "30px",
-                                    textAlign: "center",
-                                    color: theme.palette.primary.main,
+                            <Typography
+                                variant="h1"
+                                fontSize={"24px"}
+                                sx={{
+                                    width: { xs: "100%", sm: "auto" },
+                                    pl: { sx: 0, sm: 1 },
+                                    textAlign: { xs: "center", sm: "start" },
                                     fontWeight: "bolder",
-                                    fontSize: "30px",
-                                    background: theme.palette.bgColor.main,
-                                    borderRadius: "6px",
                                 }}
                             >
-                                {productsCount}
-                            </span>
-                            Items in your shopping bag
-                        </Typography>
+                                Shopping Cart
+                            </Typography>
+
+                            <Typography
+                                variant="h2"
+                                fontSize={"20px"}
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: "6px",
+                                    width: { xs: "100%", sm: "auto" },
+                                    justifyContent: {
+                                        xs: "center",
+                                        sm: "start",
+                                    },
+                                }}
+                            >
+                                <span
+                                    style={{
+                                        width: "30px",
+                                        textAlign: "center",
+                                        color: theme.palette.primary.main,
+                                        fontWeight: "bolder",
+                                        fontSize: "30px",
+                                        background: theme.palette.bgColor.main,
+                                        borderRadius: "6px",
+                                    }}
+                                >
+                                    {productsCount}
+                                </span>
+                                Items in your shopping Cart
+                            </Typography>
+                        </Stack>
 
                         <Box
                             sx={{
@@ -195,229 +224,12 @@ const CartPage = () => {
                             {handelShowCartProduct()}
                         </Box>
                     </Box>
-                    <Box
-                        sx={{
-                            width: { xs: "100%", md: "30%" },
-                            borderRadius: "15px",
-                            p: 2,
-                            boxShadow: 2,
-                            border: `1px solid ${theme.palette.footerBgColor.background}`,
-                            bgcolor: theme.palette.bgColor.main,
-                        }}
-                    >
-                        <Typography
-                            variant="h1"
-                            fontSize={"20px"}
-                            sx={{ mb: 2, fontWeight: "bolder" }}
-                        >
-                            Calculated Shipping
-                        </Typography>
-                        <FormControl
-                            sx={{ mb: 2, minWidth: 120, width: "100%" }}
-                            size="small"
-                        >
-                            <InputLabel id="demo-select-small-label">
-                                Country
-                            </InputLabel>
-                            <Select
-                                labelId="demo-select-small-label"
-                                id="demo-select-small"
-                                value={country}
-                                label="Country"
-                                onChange={handleChangeCountry}
-                                sx={{ borderRadius: "35px" }}
-                            >
-                                <MenuItem value={2}>Egypt</MenuItem>
-                                <MenuItem value={3}>KSA</MenuItem>
-                                <MenuItem value={4}>UAE</MenuItem>
-                                <MenuItem value={8}>UK</MenuItem>
-                                <MenuItem value={1}>USA</MenuItem>
-                            </Select>
-                        </FormControl>
-                        <Stack
-                            direction="row"
-                            justifyContent={"space-between"}
-                            alignItems={"center"}
-                            mb={2}
-                            gap={1}
-                        >
-                            <FormControl
-                                sx={{ minWidth: 120, width: "50%" }}
-                                size="small"
-                            >
-                                <InputLabel id="demo-select-small-label">
-                                    State / City
-                                </InputLabel>
-                                <Select
-                                    labelId="demo-select-small-label"
-                                    id="demo-select-small"
-                                    value={stateCity}
-                                    label="State / City"
-                                    onChange={handleChangeState}
-                                    sx={{ borderRadius: "35px" }}
-                                >
-                                    <MenuItem value={1}>New York</MenuItem>
-                                    <MenuItem value={2}>Cairo</MenuItem>
-                                    <MenuItem value={3}>Riyadh</MenuItem>
-                                    <MenuItem value={4}>London</MenuItem>
-                                    <MenuItem value={5}>Abu Dhabi</MenuItem>
-                                </Select>
-                            </FormControl>
 
-                            <TextField
-                                label="Zip Code"
-                                id="outlined-size-small"
-                                size="small"
-                                sx={{
-                                    ".MuiOutlinedInput-root": {
-                                        borderRadius: "25px",
-                                    },
-                                    width: "50%",
-                                }}
-                            />
-                        </Stack>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                width: " 100%",
-                                borderRadius: "25px",
-                                fontWeight: "bolder",
-                                mb: 3,
-                            }}
-                        >
-                            Update
-                        </Button>
-                        <Divider sx={{ mb: 3 }} />
-                        <Typography
-                            variant="h1"
-                            fontSize={"20px"}
-                            sx={{ mb: 2, fontWeight: "bolder" }}
-                        >
-                            Coupon Code
-                        </Typography>
-                        <Typography
-                            variant="h6"
-                            fontSize={"13px"}
-                            sx={{ mb: 2, fontWeight: "bolder" }}
-                        >
-                            lorem ipsum dolor sit amet adipiscing elit lorem
-                            ipsum dolor sit amet consectetur elit ipsum dolor
-                            sit amet adipiscing elit lorem
-                        </Typography>
-                        <TextField
-                            label="Coupon Code"
-                            id="outlined-size-small"
-                            size="small"
-                            sx={{
-                                ".MuiOutlinedInput-root": {
-                                    borderRadius: "25px",
-                                },
-                                width: "100%",
-                                mb: 2,
-                            }}
-                        />
-                        <Button
-                            variant="contained"
-                            sx={{
-                                width: " 100%",
-                                borderRadius: "25px",
-                                fontWeight: "bolder",
-                                mb: 3,
-                            }}
-                        >
-                            Apply
-                        </Button>
-                        <Box
-                            sx={{
-                                borderRadius: "15px",
-                                boxShadow: 1,
-                                bgcolor: theme.palette.footerBgColor.accent,
-                                p: 2,
-                            }}
-                        >
-                            <Typography
-                                variant="h1"
-                                fontSize={"20px"}
-                                sx={{ mb: 2, fontWeight: "bolder" }}
-                            >
-                                Total Cart Price
-                            </Typography>
-                            <Stack sx={{ fontWeight: "bolder" }}>
-                                <Typography
-                                    variant="h6"
-                                    fontSize={"14px"}
-                                    sx={{
-                                        mb: 1,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        fontWeight: "inherit",
-                                    }}
-                                >
-                                    Cart Subtotal
-                                    <span style={{ fontSize: "15px" }}>
-                                        ${totalPrice.toFixed(2)}
-                                    </span>
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    fontSize={"14px"}
-                                    sx={{
-                                        mb: 1,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        fontWeight: "inherit",
-                                    }}
-                                >
-                                    Shipping
-                                    <span style={{ fontSize: "15px" }}>
-                                        {shippingCost}
-                                    </span>
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    fontSize={"14px"}
-                                    sx={{
-                                        mb: 1,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        fontWeight: "inherit",
-                                    }}
-                                >
-                                    Discount
-                                    <span style={{ fontSize: "15px" }}>
-                                        - ${discount}
-                                    </span>
-                                </Typography>
-                                <Typography
-                                    variant="h6"
-                                    fontSize={"14px"}
-                                    sx={{
-                                        mb: 1,
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                        alignItems: "center",
-                                        fontWeight: "inherit",
-                                    }}
-                                >
-                                    Cart Total price
-                                    <span
-                                        style={{
-                                            color: "#ff4450",
-                                            fontSize: "20px",
-                                        }}
-                                    >
-                                        {finalPrice}
-                                    </span>
-                                </Typography>
-                            </Stack>
-                        </Box>
-                    </Box>
+                    <CheckoutPanel totalPrice={totalPrice} />
                 </Stack>
             </Container>
         </Fragment>
     );
 };
+
 export default CartPage;
