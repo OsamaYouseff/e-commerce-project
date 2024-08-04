@@ -58,7 +58,7 @@ export const CartApiSlice = createSlice({
                 currentState.isLoading = false;
                 currentState.response = action.payload;
             })
-            .addCase(getCustomerCartReducer.rejected, (currentState, action) => {
+            .addCase(getCustomerCartReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
                 currentState.error = true;
             })
