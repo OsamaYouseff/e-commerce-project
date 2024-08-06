@@ -64,6 +64,10 @@ const router = createBrowserRouter([
         element: routeElement(<UserInfoPage />, true),
     },
     {
+        path: "/userInfo/:section/:addressId",
+        element: routeElement(<UserInfoPage />, true),
+    },
+    {
         path: "/*",
         element: routeElement(<ErrorPage />),
     },

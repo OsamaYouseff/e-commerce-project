@@ -11,6 +11,7 @@ const TextFieldComponent = ({
     colWidth,
     keyName,
     mb = 3,
+    placeholder = "",
 }) => {
     function handelFormData(e) {
         setFormData(keyName, e.target.value.trim());
@@ -29,6 +30,7 @@ const TextFieldComponent = ({
                 value={value == "null" ? "" : value}
                 onChange={(e) => handelFormData(e)}
                 size="small"
+                placeholder={placeholder}
             />
         </Grid>
     );

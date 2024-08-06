@@ -1,5 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
+import { GoHome } from "../General/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -9,6 +10,7 @@ export const getCustomerCart = async () => {
 
     if (!customerData || !accessToken) {
         alert("Please login first");
+        GoHome();
         return;
     }
 
@@ -43,6 +45,7 @@ export const addUpdateProductInCart = async (addedProduct) => {
 
     if (!customerData || !accessToken) {
         alert("Please login first");
+        GoHome();
         return;
     }
 
@@ -78,6 +81,7 @@ export const removeProductToCart = async (removeProduct) => {
 
     if (!customerData || !accessToken) {
         alert("Please login first");
+        GoHome();
         return;
     }
 

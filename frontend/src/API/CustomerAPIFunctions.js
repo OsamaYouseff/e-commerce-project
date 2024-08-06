@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-import { ResetLocalStorage, StoreDataAtLocalStorage } from "../General/GeneralFunctions";
+import { GoHome, ResetLocalStorage, StoreDataAtLocalStorage } from "../General/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -67,7 +67,7 @@ export const updateCustomerAccount = async (customerFromData) => {
 
 
     if (!customerData || !accessToken) {
-        alert("Please login first");
+        alert("Please login first"); GoHome();
         return;
     }
     const customerId = JSON.parse(customerData)["_id"];
@@ -113,6 +113,7 @@ export const changeCustomerPassword = async (customerFromData) => {
 
     if (!customerData || !accessToken) {
         alert("Please login first");
+        GoHome();
         return;
     }
     const customerId = JSON.parse(customerData)["_id"];
@@ -150,6 +151,7 @@ export const deleteCustomerAccount = async () => {
 
     if (!customerData || !accessToken) {
         alert("Please login first");
+        GoHome();
         return;
     }
     const customerId = JSON.parse(customerData)["_id"];

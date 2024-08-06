@@ -1,9 +1,11 @@
-import { useRouteError } from "react-router-dom";
+import { useParams, useRouteError } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
 
 const ErrorPage = () => {
     const error = useRouteError();
     console.log(error);
+    console.log(useParams());
+
     return (
         <Box
             sx={{

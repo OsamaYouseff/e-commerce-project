@@ -23,3 +23,5 @@ E-commerece Notes
 10 - find some way to move GoHome function from apiCutomerSlice because it's looks like it's a side effect .
 
 11 - compare between two components (itemComponent and itemComponentDetailed) and try to convirt it two one component
+
+12 - fix creating cart endpoint .

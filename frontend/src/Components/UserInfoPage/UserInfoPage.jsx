@@ -27,8 +27,12 @@ import PaymentsComponent from "./PaymentsComponent/PaymentsComponent.jsx";
 import SettingsComponent from "./SettingsComponent/SettingsComponent.jsx";
 import WishlistComponent from "./WishlistComponent/WishlistComponent.jsx";
 
+///// sub custom component
+import AddAddressComponent from "./AddressComponent/AddAddressComponent.jsx";
+import UpdateAddressComponent from "./AddressComponent/UpdateAddressComponent.jsx";
+
 const UserInfoPage = () => {
-    const { section } = useParams();
+    const { section, addressId } = useParams();
 
     const dispatch = useDispatch();
     const CustomerMenuItems = CustomerMenuItemsVar;
@@ -51,6 +55,10 @@ const UserInfoPage = () => {
                 return <ProfileComponent customerData={customerData} />;
             case "address":
                 return <AddressComponent />;
+            case "add-address":
+                return <AddAddressComponent />;
+            case "update-address":
+                return <UpdateAddressComponent />;
             case "wishlist":
                 return <WishlistComponent />;
             case "payments":
@@ -71,7 +79,7 @@ const UserInfoPage = () => {
                     marginTop: "10px",
                     bgcolor: theme.palette.categoryColor.main,
                     borderRadius: "6px",
-                    px: "5px ",
+                    px: "2px !important",
                     py: "8px",
                     boxShadow: 3,
                     mb: 2,
@@ -79,13 +87,15 @@ const UserInfoPage = () => {
                 }}
             >
                 <Stack
+                    className="flex-between"
                     sx={{
                         display: "flex",
                         gap: "20px",
                         flexDirection: { xs: "column", md: "row" },
                         width: "100%",
                         height: "100%",
-                        p: 0,
+                        p: 1,
+                        alignItems: { xs: "center", md: "flex-start" },
                     }}
                 >
                     <Stack
@@ -151,17 +161,20 @@ const UserInfoPage = () => {
                             ))}
                         </Box>
                     </Stack>
+
                     <Divider
                         orientation="vertical"
                         flexItem
                         sx={{ display: { xs: "none", md: "block" } }}
                     />
+
                     {/* Variable Page */}
                     <Box
                         sx={{
                             minWidth: { xl: "1100px" },
                             minHeight: { xs: "auto" },
                             height: "100%",
+                            flexGrow: 1,
                         }}
                     >
                         {getTargetSection(section)}

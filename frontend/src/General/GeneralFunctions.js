@@ -51,4 +51,17 @@ export function IsUserLoggedIn() {
         return false;
 }
 
+export function GetAddressInfo() {
+    if (sessionStorage.getItem("edited-address"))
+        return JSON.parse(sessionStorage.getItem("edited-address"));
 
+    return {
+        userId: null,
+        firstName: null,
+        lastName: null,
+        fullAddress: null,
+        label: null,
+        phoneNumber: null,
+        isDefault: null,
+    };
+}
