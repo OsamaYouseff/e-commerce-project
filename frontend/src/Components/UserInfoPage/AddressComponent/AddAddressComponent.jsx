@@ -21,8 +21,8 @@ const AddAddressComponent = () => {
     //// states
     const [formData, setFormData] = useState({
         userId: customerData._id,
-        firstName: customerData.firstname,
-        lastName: customerData.lastname,
+        firstName: customerData?.firstname,
+        lastName: customerData?.lastname,
         fullAddress: "",
         label: "",
         phoneNumber: "",
@@ -46,6 +46,7 @@ const AddAddressComponent = () => {
             ...formData,
             [key]: value,
         };
+
         setFormData(updatedFormData);
     };
 

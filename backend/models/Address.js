@@ -35,4 +35,16 @@ const AddressSchema = new mongoose.Schema({
     timestamps: true
 });
 
+// Add a pre-save hook to ensure only one default address
+AddressSchema.pre('save', async function (next) {
+    if (this.isDefault) {
+        await this.constructor.updateMany(
+            { user: this.user, _id: { $ne: this._id } },
+            { $set: { isDefault: false } }
+        );
+    }
+    next();
+});
+
+
 module.exports = mongoose.model('Address', AddressSchema);

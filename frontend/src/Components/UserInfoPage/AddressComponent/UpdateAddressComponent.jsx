@@ -76,7 +76,7 @@ const UpdateAddressComponent = () => {
             })
         );
 
-        // setIsDataChanged(false);
+        setIsDataChanged(false);
     };
 
     const handelFormData = (key, value) => {
@@ -85,7 +85,7 @@ const UpdateAddressComponent = () => {
             [key]: value,
         };
         setFormData(updatedFormData);
-        checkDataChanged(updatedFormData);
+        // checkDataChanged(updatedFormData);
     };
 
     const [country, setCountry] = useState(fullAddress[0]);

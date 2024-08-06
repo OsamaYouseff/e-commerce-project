@@ -55,19 +55,21 @@ const AddressPage = () => {
                 </Typography>
             </Box>
 
-            <Link to={"/userInfo/add-address"}>
-                <Button
-                    variant="contained"
-                    sx={{
-                        maxWidth: "200px",
-                        fontWeight: "bolder",
-                        mb: 2,
-                        mx: { xs: 0.5, md: 1 },
-                    }}
-                >
-                    Add new address
-                </Button>
-            </Link>
+            <Button
+                variant="contained"
+                sx={{
+                    maxWidth: "200px",
+                    fontWeight: "bolder",
+                    mb: 2,
+                    mx: { xs: 0.5, md: 1 },
+                    a: {
+                        textDecoration: "none !important",
+                        color: "inherit",
+                    },
+                }}
+            >
+                <Link to={"/userInfo/add-address"}>Add new address</Link>
+            </Button>
             {/* Addresses List */}
             <Stack
                 sx={{

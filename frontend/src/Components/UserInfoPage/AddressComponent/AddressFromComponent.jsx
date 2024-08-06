@@ -94,10 +94,10 @@ const FormAddressComponent = ({
                         <SwitchButton
                             defaultChecked={formData.isDefault}
                             sx={{ mr: 1 }}
+                            onClick={() =>
+                                handelFormData("isDefault", !formData.isDefault)
+                            }
                         />
-                    }
-                    onClick={() =>
-                        handelFormData("isDefault", !formData.isDefault)
                     }
                     labelPlacement="start"
                     label="Set as default address"
@@ -166,19 +166,19 @@ const FormAddressComponent = ({
                         value={formData.firstName}
                         setFormData={handelFormData}
                         label="First Name"
-                        id="firstname"
+                        id="firstName"
                         type="text"
                         colWidth={12}
-                        keyName="firstname"
+                        keyName="firstName"
                     />
                     <TextFieldComponent
                         value={formData.lastName}
                         setFormData={handelFormData}
                         label="Last Name"
-                        id="lastname"
+                        id="lastName"
                         type="text"
                         colWidth={12}
-                        keyName="lastname"
+                        keyName="lastName"
                     />
                 </Grid>
             </Box>

@@ -10,14 +10,18 @@ import { useNavigate } from "react-router-dom";
 
 //// redux
 import { useDispatch } from "react-redux";
-import { deleteCustomerAddressReducer } from "../../../redux/ApiAddressSlice";
+import {
+    deleteCustomerAddressReducer,
+    getCustomerAddressReducer,
+    setDefaultAddressReducer,
+} from "../../../redux/ApiAddressSlice";
 import { useState } from "react";
 
 const AddressCard = ({ address, numOfAddresses }) => {
     const theme = useTheme(ColorModeContext);
     const navigate = useNavigate();
-    const [isDefault, setIsDefault] = useState(address.isDefault);
 
+    const [isDefault, setIsDefault] = useState(address.isDefault);
     const isDisabled = address.isDefault && numOfAddresses === 1;
 
     /// redux
@@ -32,10 +36,19 @@ const AddressCard = ({ address, numOfAddresses }) => {
             dispatch(deleteCustomerAddressReducer(address._id));
         }
     };
-    const handelSetDefault = () => {
+    const handelSetDefault = async () => {
+        if (isDefault) {
+            alert("There must be at least one default address");
+            return;
+        }
+
         if (!isDisabled) setIsDefault(!isDefault);
+
+        await dispatch(setDefaultAddressReducer(address._id));
+
+        window.location.reload();
     };
-    const handelEditAddress = async () => {
+    const handelUpdateAddress = async () => {
         await sessionStorage.setItem("edited-address", JSON.stringify(address));
 
         navigate(`/userInfo/update-address/${address._id}`);
@@ -45,7 +58,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
         <Box
             sx={{
                 bgcolor: theme.palette.natural.main,
-                px: { xs: 1, sm: 3 },
+                px: { xs: 2, sm: 3 },
                 pt: 1,
                 pb: 2,
                 borderRadius: "6px",
@@ -71,7 +84,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                 <Box className="flex-between" sx={{ gap: { xs: 1, md: 2 } }}>
                     <Button
                         variant="outlined"
-                        onClick={handelEditAddress}
+                        onClick={handelUpdateAddress}
                         sx={{ fontWeight: "bolder" }}
                     >
                         Edit

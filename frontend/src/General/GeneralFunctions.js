@@ -65,3 +65,21 @@ export function GetAddressInfo() {
         isDefault: null,
     };
 }
+
+
+export function GetTokenAndUserId() {
+    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+
+
+    if (!customerData || !accessToken) {
+        alert("there are some data missing please logout and login again");
+        GoHome();
+        return;
+    }
+    const customerId = JSON.parse(customerData)["_id"];
+
+
+    return { customerId, accessToken };
+}
+

@@ -19,6 +19,14 @@ router.post('/:id', verifyTokenAndAuthorization, async (req, res) => {
             isDefault: req.body.isDefault
         });
 
+        if (req.body.isDefault) {
+            // Unset any existing default address
+            await Address.updateMany(
+                { userId: req.user.id, isDefault: true },
+                { $set: { isDefault: false } }
+            );
+        }
+
         const savedAddress = await newAddress.save();
         res.status(201).json(savedAddress);
     } catch (error) {
@@ -66,9 +74,14 @@ router.put('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
 // DELETE AN ADDRESS
 router.delete('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const address = await Address.findOneAndDelete({ _id: req.params.addressId, user: req.user.id });
+        const address = await Address.findOneAndDelete({ _id: req.params.addressId, userId: req.user.id });
 
         if (!address) return res.status(404).json({ message: 'Address not found' });
+
+        //// if deleted address is the default, set another address as default
+        if (address.isDefault) {
+            await Address.findOneAndUpdate({ userId: req.user.id }, { isDefault: true }, { new: true });
+        }
 
         const updatedAddresses = await Address.find({ userId: req.user.id });
 
@@ -79,8 +92,37 @@ router.delete('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) =
 });
 
 
-
 // SET DEFAULT ADDRESS
+router.put('/set-default/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        const addressId = req.params.addressId;
+        const userId = req.user.id;
+
+        // Find the address and check if it belongs to the user
+        const address = await Address.findOne({ _id: addressId, userId: userId });
+        if (!address) {
+            return res.status(404).json({ message: 'Address not found' });
+        }
+
+        // Unset any existing default address
+        await Address.updateMany(
+            { userId: userId, isDefault: true },
+            { $set: { isDefault: false } }
+        );
+
+        // Set the new default address
+        address.isDefault = true;
+        await address.save();
+
+
+        // get all updated addresses
+        const addresses = await Address.find({ userId: userId });
+
+        res.json({ message: 'Default address updated successfully', addresses });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 
 

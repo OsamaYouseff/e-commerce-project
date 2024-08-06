@@ -124,9 +124,10 @@ export default function CartDrawer() {
         >
             {/* Close Button */}
             <Button
+                size="small"
                 sx={{
                     position: "absolute",
-                    right: 8,
+                    right: 0,
                     top: -10,
                     color: theme.palette.text.primary,
                     marginTop: "15px",
