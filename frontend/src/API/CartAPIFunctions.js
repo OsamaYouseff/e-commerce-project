@@ -1,20 +1,13 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-import { GoHome } from "../General/GeneralFunctions";
+import { GetTokenAndUserId } from "../General/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const getCustomerCart = async () => {
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
 
-    if (!customerData || !accessToken) {
-        alert("Please login first");
-        GoHome();
-        return;
-    }
+    const { customerId, accessToken } = GetTokenAndUserId();
 
-    const customerId = JSON.parse(customerData)["_id"];
 
     let config = {
         method: 'get',
@@ -40,16 +33,8 @@ export const getCustomerCart = async () => {
 };
 
 export const addUpdateProductInCart = async (addedProduct) => {
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
 
-    if (!customerData || !accessToken) {
-        alert("Please login first");
-        GoHome();
-        return;
-    }
-
-    const customerId = JSON.parse(customerData)["_id"];
+    const { customerId, accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'post',
@@ -76,16 +61,9 @@ export const addUpdateProductInCart = async (addedProduct) => {
 }
 
 export const removeProductToCart = async (removeProduct) => {
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
 
-    if (!customerData || !accessToken) {
-        alert("Please login first");
-        GoHome();
-        return;
-    }
+    const { customerId, accessToken } = GetTokenAndUserId();
 
-    const customerId = JSON.parse(customerData)["_id"];
 
     let config = {
         method: 'post',

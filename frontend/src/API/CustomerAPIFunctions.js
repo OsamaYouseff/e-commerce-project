@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-import { GoHome, ResetLocalStorage, StoreDataAtLocalStorage } from "../General/GeneralFunctions";
+import { GetTokenAndUserId, ResetLocalStorage, StoreDataAtLocalStorage } from "../General/GeneralFunctions";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
@@ -30,6 +30,7 @@ export const customerLogin = async (customerData, rememberMe) => {
         return { state: false, message: error.response.data.message };
     }
 };
+
 export const registerACustomer = async (customerFromData) => {
     const url = `${baseURL}/api/auth/register`;
 
@@ -62,15 +63,7 @@ export const registerACustomer = async (customerFromData) => {
 
 export const updateCustomerAccount = async (customerFromData) => {
 
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-
-    if (!customerData || !accessToken) {
-        alert("Please login first"); GoHome();
-        return;
-    }
-    const customerId = JSON.parse(customerData)["_id"];
+    const { customerId, accessToken } = GetTokenAndUserId();
 
     const config = {
         method: 'put',
@@ -108,15 +101,7 @@ export const updateCustomerAccount = async (customerFromData) => {
 
 export const changeCustomerPassword = async (customerFromData) => {
 
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-    if (!customerData || !accessToken) {
-        alert("Please login first");
-        GoHome();
-        return;
-    }
-    const customerId = JSON.parse(customerData)["_id"];
+    const { customerId, accessToken } = GetTokenAndUserId();
 
 
     const config = {
@@ -146,15 +131,7 @@ export const changeCustomerPassword = async (customerFromData) => {
 
 export const deleteCustomerAccount = async () => {
 
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
-
-    if (!customerData || !accessToken) {
-        alert("Please login first");
-        GoHome();
-        return;
-    }
-    const customerId = JSON.parse(customerData)["_id"];
+    const { customerId, accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'delete',

@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerAddressesReducer } from "../../../redux/ApiAddressSlice.js";
 
-const AddressPage = () => {
+const AddressComponent = () => {
     const dispatch = useDispatch();
     const customerAddresses = useSelector(
         (state) => state.AddressesApiRequest.response
@@ -21,7 +21,7 @@ const AddressPage = () => {
 
     const showAddresses = () => {
         const numOfAddresses = customerAddresses?.length || 0;
-        if (customerAddresses) {
+        if (numOfAddresses >= 1) {
             return customerAddresses.map((address) => {
                 return (
                     <AddressCard
@@ -37,7 +37,7 @@ const AddressPage = () => {
     };
 
     return (
-        <Stack sx={{ minWidth: "67vw" }}>
+        <Stack sx={{ minWidth: "67vw", minHeight: "70vh" }}>
             <Box sx={{ mb: 2, px: { xs: 0.5, md: 1 } }}>
                 <Typography
                     variant="h4"
@@ -89,4 +89,4 @@ const AddressPage = () => {
     );
 };
 
-export default AddressPage;
+export default AddressComponent;

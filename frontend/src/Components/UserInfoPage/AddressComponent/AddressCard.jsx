@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
     deleteCustomerAddressReducer,
-    getCustomerAddressReducer,
     setDefaultAddressReducer,
 } from "../../../redux/ApiAddressSlice";
 import { useState } from "react";
@@ -37,16 +36,15 @@ const AddressCard = ({ address, numOfAddresses }) => {
         }
     };
     const handelSetDefault = async () => {
-        if (isDefault) {
+        if (isDefault || isDisabled) {
             alert("There must be at least one default address");
             return;
         }
-
         if (!isDisabled) setIsDefault(!isDefault);
 
         await dispatch(setDefaultAddressReducer(address._id));
 
-        window.location.reload();
+        // window.location.reload();
     };
     const handelUpdateAddress = async () => {
         await sessionStorage.setItem("edited-address", JSON.stringify(address));
@@ -63,7 +61,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                 pb: 2,
                 borderRadius: "6px",
                 boxShadow: 1,
-                maxWidth: { xs: "100%", md: "800px" },
+                maxWidth: { xs: "100%", md: "800px", lg: "1000px" },
             }}
         >
             <Stack

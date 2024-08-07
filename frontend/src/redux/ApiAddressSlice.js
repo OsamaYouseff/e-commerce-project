@@ -7,7 +7,6 @@ import {
     updateCustomerAddress,
     setAddressDefault,
 } from "../API/AddressAPIFunctions";
-import { GoHome } from "../General/GeneralFunctions";
 // import axios from 'axios'
 
 export const getCustomerAddressesReducer = createAsyncThunk(
@@ -26,12 +25,12 @@ export const deleteCustomerAddressReducer = createAsyncThunk(
     async (addressId) => {
         const response = await deleteCustomerAddress(addressId);
 
+        // console.log(response)
+
         // console.log("########### : ", response.data.updatedAddresses
         //     , response.data.message);
-        return {
-            addresses: response.data.updatedAddresses,
-            message: response.data.message,
-        };
+        return response;
+
     }
 );
 
@@ -85,6 +84,9 @@ export const setDefaultAddressReducer = createAsyncThunk(
 
         // alert(response.message);
 
+
+        console.log(response)
+
         return response;
     }
 );
@@ -126,7 +128,7 @@ export const AddressApiSlice = createSlice({
                 deleteCustomerAddressReducer.fulfilled,
                 (currentState, action) => {
                     currentState.isLoading = false;
-                    currentState.response = action.payload.addresses;
+                    currentState.response = action.payload.updatedAddresses;
                     currentState.message = action.payload.message;
                 }
             )
@@ -171,8 +173,8 @@ export const AddressApiSlice = createSlice({
                 currentState.isLoading = true;
             })
             .addCase(setDefaultAddressReducer.fulfilled, (currentState, action) => {
-                currentState.response = action.payload.addressData;
                 currentState.isLoading = false;
+                currentState.response = action.payload.updatedAddresses;
                 currentState.message = action.payload.message;
 
             })

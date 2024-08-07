@@ -49,7 +49,10 @@ router.get('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
 // GET ALL ADDRESSES OF A USER
 router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const addresses = await Address.find({ userId: req.user.id });
+        const addresses = await Address.find({ userId: req.user.id })
+            .sort({ isDefault: -1 }) // Sort by isDefault in descending order (true values first)
+            .exec();
+
         res.json(addresses);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -63,8 +66,37 @@ router.put('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
         const address = await Address.findOne({ _id: req.params.addressId, userId: req.user.id });
         if (!address) return res.status(404).json({ message: 'Address not found' });
 
-        Object.assign(address, req.body);
-        const updatedAddress = await address.save();
+        const addressCount = await Address.countDocuments({ userId: req.user.id });
+
+        // Check if trying to unset the only address as default
+        if (addressCount === 1 && !req.body.isDefault) {
+            return res.status(400).json({ message: 'Cannot unset default for the only address' });
+        }
+
+        let updatedAddress;
+
+        if (req.body.isDefault) {
+            // Set this address as default and unset all others
+            await Address.updateMany(
+                { userId: req.user.id },
+                { $set: { isDefault: false } }
+            );
+            Object.assign(address, req.body, { isDefault: true });
+        } else if (address.isDefault && !req.body.isDefault) {
+            // Unsetting the current default address
+            Object.assign(address, req.body, { isDefault: false });
+            // Set another address as default
+            await Address.findOneAndUpdate(
+                { userId: req.user.id, _id: { $ne: address._id } },
+                { isDefault: true },
+                { sort: { createdAt: -1 } }
+            );
+        } else {
+            // Regular update without changing default status
+            Object.assign(address, req.body);
+        }
+
+        updatedAddress = await address.save();
         res.json(updatedAddress);
     } catch (error) {
         res.status(400).json({ message: error.message });
@@ -78,12 +110,13 @@ router.delete('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) =
 
         if (!address) return res.status(404).json({ message: 'Address not found' });
 
-        //// if deleted address is the default, set another address as default
+        //// if deleted address was the default address, set another address as default
         if (address.isDefault) {
             await Address.findOneAndUpdate({ userId: req.user.id }, { isDefault: true }, { new: true });
         }
 
-        const updatedAddresses = await Address.find({ userId: req.user.id });
+        const updatedAddresses = await Address.find({ userId: req.user.id }).sort({ isDefault: -1 })
+            .exec();
 
         res.json({ message: 'Address deleted successfully', updatedAddresses });
     } catch (error) {
@@ -116,7 +149,7 @@ router.put('/set-default/:id/:addressId', verifyTokenAndAuthorization, async (re
 
 
         // get all updated addresses
-        const addresses = await Address.find({ userId: userId });
+        const addresses = await Address.find({ userId: userId }).sort({ isDefault: -1 }).exec();
 
         res.json({ message: 'Default address updated successfully', addresses });
     } catch (error) {

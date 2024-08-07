@@ -65,7 +65,11 @@ const AddAddressComponent = () => {
         >
             <Box sx={{ mb: 6 }}>
                 <Link to="/userInfo/address">
-                    <Button size="small" sx={{ fontWeight: "bolder", mb: 1 }}>
+                    <Button
+                        size="small"
+                        sx={{ fontWeight: "bolder", mb: 1 }}
+                        variant="outlined"
+                    >
                         <ArrowBackIosIcon />
                         Back to addresses
                     </Button>

@@ -116,6 +116,7 @@ const CartPage = () => {
                             <Button
                                 size="small"
                                 sx={{ fontWeight: "bolder", mb: 2 }}
+                                variant="outlined"
                             >
                                 <ArrowBackIosIcon />
                                 Back to shopping
