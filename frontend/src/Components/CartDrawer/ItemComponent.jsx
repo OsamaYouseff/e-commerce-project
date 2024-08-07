@@ -16,7 +16,13 @@ import {
 import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
 import { useState } from "react";
 
-const ItemComponent = ({ item, quantity, withDetails = false }) => {
+const ItemComponent = ({
+    item,
+    quantity,
+    withDetails = false,
+    handelOpenModal,
+    handleSetPreviewedProduct,
+}) => {
     const theme = useTheme(ColorModeContext);
 
     //// state
@@ -88,10 +94,15 @@ const ItemComponent = ({ item, quantity, withDetails = false }) => {
                     }}
                 >
                     <Box
+                        onClick={() => {
+                            handleSetPreviewedProduct(item);
+                            handelOpenModal();
+                        }}
                         className="flex-center"
                         sx={{
                             width: "100px",
                             maxHeight: "100px",
+                            cursor: "pointer",
                         }}
                     >
                         <img
@@ -275,10 +286,15 @@ const ItemComponent = ({ item, quantity, withDetails = false }) => {
                     }}
                 >
                     <Box
+                        onClick={() => {
+                            handleSetPreviewedProduct(item);
+                            handelOpenModal();
+                        }}
                         className="flex-center"
                         sx={{
                             width: "90px",
                             maxHeight: "100%",
+                            cursor: "pointer",
                         }}
                     >
                         <img

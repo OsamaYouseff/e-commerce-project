@@ -22,6 +22,7 @@ import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponen
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
+import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
@@ -32,6 +33,18 @@ export default function CartDrawer() {
     const customerCart = useSelector((state) => state.CartApiRequest.response);
     const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
     const error = useSelector((state) => state.CartApiRequest.error);
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [PreviewedProduct, setPreviewedProduct] = useState({
+        id: 2,
+        attributes: {},
+    });
+
+    const handleSetPreviewedProduct = (newValue) => {
+        setPreviewedProduct(newValue);
+    };
 
     const productsCount = customerCart?.products?.length || "0";
     const totalPrice = customerCart?.totalPrice || 0;
@@ -101,6 +114,8 @@ export default function CartDrawer() {
                     key={item.productId}
                     quantity={item.quantity}
                     item={item.productDetails}
+                    handelOpenModal={handleOpen}
+                    handleSetPreviewedProduct={handleSetPreviewedProduct}
                 />
             ));
         }
@@ -317,6 +332,16 @@ export default function CartDrawer() {
             >
                 {list("right")}
             </Drawer>
+            {
+                // toggle modal appearance
+                open && (
+                    <ProductDetails
+                        PreviewedProduct={PreviewedProduct}
+                        handleCloseModal={handleClose}
+                        open={open}
+                    />
+                )
+            }
         </Box>
     );
 }

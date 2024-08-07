@@ -27,3 +27,5 @@ E-commerece Notes
 12 - fix creating cart endpoint .
 
 13 - fix state of addresses when you set address a default it didn't update after getting response. (done) ×××××××××××××××××××××××
+
+14 - make a detailed page for product to show all possible data about product .

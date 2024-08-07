@@ -4,13 +4,14 @@ import { Button, Container, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 //// custom components
 import MidHeader from "../GenericComponents/Header/MidHeader";
 import CheckoutPanel from "./CheckoutPanel";
 import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,19 @@ const CartPage = () => {
     const customerCart = useSelector((state) => state.CartApiRequest.response);
     const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
     const error = useSelector((state) => state.CartApiRequest.error);
+
+    //// Modal vars
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [PreviewedProduct, setPreviewedProduct] = useState({
+        id: 2,
+        attributes: {},
+    });
+
+    const handleSetPreviewedProduct = (newValue) => {
+        setPreviewedProduct(newValue);
+    };
 
     const productsCount = customerCart?.products?.length || 0;
     const totalPrice = customerCart?.totalPrice || 0;
@@ -74,6 +88,8 @@ const CartPage = () => {
                 item={item.productDetails}
                 quantity={item.quantity}
                 withDetails={true}
+                handelOpenModal={handleOpen}
+                handleSetPreviewedProduct={handleSetPreviewedProduct}
             />
         ));
     };
@@ -253,6 +269,16 @@ const CartPage = () => {
                     <CheckoutPanel totalPrice={totalPrice} />
                 </Stack>
             </Container>
+            {
+                // toggle modal appearance
+                open && (
+                    <ProductDetails
+                        PreviewedProduct={PreviewedProduct}
+                        handleCloseModal={handleClose}
+                        open={open}
+                    />
+                )
+            }
         </Fragment>
     );
 };
