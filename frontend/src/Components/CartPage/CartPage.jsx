@@ -10,6 +10,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //// custom components
 import MidHeader from "../GenericComponents/Header/MidHeader";
 import CheckoutPanel from "./CheckoutPanel";
+import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
@@ -241,7 +242,11 @@ const CartPage = () => {
                                 </span>
                             </Stack>
 
-                            {handelShowCartProduct()}
+                            {isLoading ? (
+                                <CircularLoaderComponent />
+                            ) : (
+                                handelShowCartProduct()
+                            )}
                         </Box>
                     </Box>
 

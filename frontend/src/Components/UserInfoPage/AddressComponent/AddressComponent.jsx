@@ -1,10 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Button, Stack, Typography } from "@mui/material";
-import AddressCard from "./AddressCard";
 import { Link } from "react-router-dom";
 
-import { useEffect } from "react";
+// custom component
+import CircularLoaderComponent from "../../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import AddressCard from "./AddressCard";
 
+//// hooks
+import { useEffect } from "react";
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerAddressesReducer } from "../../../redux/ApiAddressSlice.js";
@@ -13,6 +16,9 @@ const AddressComponent = () => {
     const dispatch = useDispatch();
     const customerAddresses = useSelector(
         (state) => state.AddressesApiRequest.response
+    );
+    const isLoading = useSelector(
+        (state) => state.AddressesApiRequest.isLoading
     );
 
     useEffect(() => {
@@ -81,7 +87,9 @@ const AddressComponent = () => {
                 }}
             >
                 {/* Address Card */}
-                {showAddresses()}
+                {isLoading ? <CircularLoaderComponent /> : showAddresses()}
+                {/* {<CircularLoaderComponent />} */}
+
                 {/*== Address Card ==*/}
             </Stack>
             {/*== Addresses List ==*/}

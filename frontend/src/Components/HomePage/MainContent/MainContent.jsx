@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 
+//// custom component
 import ProductCardComponent from "../../CardComponent/ProductCardComponent";
 
 /// Icons

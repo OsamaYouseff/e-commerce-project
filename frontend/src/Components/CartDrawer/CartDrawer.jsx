@@ -15,6 +15,9 @@ import { Link } from "react-router-dom";
 //// hooks
 import { useEffect, useState } from "react";
 
+// Custom components
+import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
@@ -193,7 +196,11 @@ export default function CartDrawer() {
                         bgcolor: "red",
                     }}
                 >
-                    {handelShowCartProduct()}
+                    {isLoading ? (
+                        <CircularLoaderComponent />
+                    ) : (
+                        handelShowCartProduct()
+                    )}
                 </div>
             </Box>
             {/*== Cart Items ==*/}

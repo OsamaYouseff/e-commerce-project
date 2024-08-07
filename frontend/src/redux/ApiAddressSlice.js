@@ -39,7 +39,7 @@ export const getCustomerAddressReducer = createAsyncThunk(
     async (addressId) => {
         const response = await getCustomerAddress(addressId);
 
-        // console.log("%%%%%%%%%%%% : ", response)
+        console.log("%%%%%%%%%%%% : ", response)
 
         return response;
     }
@@ -82,10 +82,11 @@ export const setDefaultAddressReducer = createAsyncThunk(
     async (addressId) => {
         const response = await setAddressDefault(addressId);
 
-        // alert(response.message);
+        if (!response.state) {
+            alert(response.message);
+        }
 
-
-        console.log(response)
+        // console.log(response)
 
         return response;
     }
@@ -143,7 +144,13 @@ export const AddressApiSlice = createSlice({
             })
             .addCase(getCustomerAddressReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload[0];
+
+                if (action.payload.state) {
+                    currentState.response = action.payload.address[0];
+                } else {
+                    currentState.error = true;
+                    currentState.message = "Failed to get address or address not found";
+                }
             })
             .addCase(getCustomerAddressReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
@@ -158,8 +165,13 @@ export const AddressApiSlice = createSlice({
                 addNewCustomerAddressReducer.fulfilled,
                 (currentState, action) => {
                     currentState.isLoading = false;
+
+                    if (!action.payload.state) {
+                        currentState.error = true;
+                    }
+
                     currentState.message = action.payload.message;
-                    currentState.error = action.payload.state;
+
                 }
             )
             .addCase(addNewCustomerAddressReducer.rejected, (currentState, action) => {
@@ -174,7 +186,12 @@ export const AddressApiSlice = createSlice({
             })
             .addCase(setDefaultAddressReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload.updatedAddresses;
+
+                if (action.payload.state) {
+                    currentState.response = action.payload.updatedAddresses;
+                } else {
+                    currentState.error = true;
+                }
                 currentState.message = action.payload.message;
 
             })

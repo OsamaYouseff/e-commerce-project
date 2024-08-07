@@ -137,6 +137,20 @@ router.put('/set-default/:id/:addressId', verifyTokenAndAuthorization, async (re
             return res.status(404).json({ message: 'Address not found' });
         }
 
+        const addressCount = await Address.countDocuments({ userId: userId });
+
+        // Check if this address is already the default
+        if (address.isDefault) {
+            return res.status(400).json({ message: 'This address is already set as default' });
+        }
+
+        // If there's only one address, always set it as default
+        if (addressCount === 1) {
+            address.isDefault = true;
+            await address.save();
+            return res.json({ message: 'Address set as default', address });
+        }
+
         // Unset any existing default address
         await Address.updateMany(
             { userId: userId, isDefault: true },
@@ -147,8 +161,7 @@ router.put('/set-default/:id/:addressId', verifyTokenAndAuthorization, async (re
         address.isDefault = true;
         await address.save();
 
-
-        // get all updated addresses
+        // Get all updated addresses
         const addresses = await Address.find({ userId: userId }).sort({ isDefault: -1 }).exec();
 
         res.json({ message: 'Default address updated successfully', addresses });

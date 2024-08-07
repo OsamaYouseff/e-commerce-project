@@ -69,7 +69,7 @@ export const getCustomerAddress = async (addressId) => {
     try {
         const response = await axios.request(config);
 
-        return response.data;
+        return { state: true, address: response.data };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error);
@@ -129,7 +129,7 @@ export const updateCustomerAddress = async (addressData, addressId) => {
 
         console.log(response)
 
-        return { state: true, message: "Address Added Successfully." };
+        return { state: true, message: "Address Updated Successfully." };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error.response.data.message);

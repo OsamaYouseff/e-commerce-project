@@ -9,7 +9,7 @@ const AddressCard = () => {
         <Box
             sx={{
                 bgcolor: theme.palette.natural.main,
-                px: 2,
+                px: { xs: 2, sm: 3 },
                 pt: 2,
                 pb: 2,
                 borderRadius: "6px",
@@ -65,6 +65,7 @@ const AddressCard = () => {
                     </Stack>
                 </Box>
             </Stack>
+
             <Typography sx={{ fontSize: "12px", textAlign: "right" }}>
                 Order ID <span>NEGF90071920411</span>
             </Typography>
