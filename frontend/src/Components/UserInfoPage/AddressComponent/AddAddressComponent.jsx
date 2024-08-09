@@ -12,7 +12,7 @@ import { useState } from "react";
 import { GetUserInfo } from "../../../General/GeneralFunctions";
 import { useDispatch } from "react-redux";
 import CountriesComponent from "./CountriesComponent";
-import { addNewCustomerAddressReducer } from "../../../redux/ApiAddressSlice";
+import { addNewCustomerAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
 
 const AddAddressComponent = () => {
     const dispatch = useDispatch();

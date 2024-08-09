@@ -12,8 +12,8 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 
 /// redux
 import { useDispatch } from "react-redux";
-import { changePasswordReducer } from "../../../redux/ApiCustomerSlice";
-import { deleteCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
+import { changePasswordReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { deleteCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 
 const SettingsComponent = () => {
     const dispatch = useDispatch();
@@ -48,8 +48,6 @@ const SettingsComponent = () => {
     };
 
     const handleDeleteAccount = () => {
-        //  take confirmation by using dialog
-
         const confirmation = window.confirm(
             "Are you sure you want to delete your account?"
         );
@@ -67,7 +65,7 @@ const SettingsComponent = () => {
     };
 
     return (
-        <Stack sx={{ minWidth: "67vw", height: "80vh" }}>
+        <Stack sx={{ minWidth: "67vw", height: "70vh" }}>
             <Box sx={{ mb: 2, px: 1 }}>
                 <Typography
                     variant="h4"

@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     getCustomerAddressReducer,
     updateCustomerAddressReducer,
-} from "../../../redux/ApiAddressSlice";
+} from "../../../redux/AddressSlice/ApiAddressSlice";
 import CountriesComponent from "./CountriesComponent";
 
 const UpdateAddressComponent = () => {

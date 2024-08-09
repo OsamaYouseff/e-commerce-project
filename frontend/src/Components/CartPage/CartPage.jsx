@@ -15,7 +15,7 @@ import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
-import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
+import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ItemComponent from "../CartDrawer/ItemComponent";
 import { Link } from "react-router-dom";
@@ -45,7 +45,7 @@ const CartPage = () => {
     const productsCount = customerCart?.products?.length || 0;
     const totalPrice = customerCart?.totalPrice || 0;
 
-    const handelShowCartProduct = () => {
+    const handelShowCartProducts = () => {
         if (error) {
             return (
                 <Box
@@ -261,7 +261,7 @@ const CartPage = () => {
                             {isLoading ? (
                                 <CircularLoaderComponent />
                             ) : (
-                                handelShowCartProduct()
+                                handelShowCartProducts()
                             )}
                         </Box>
                     </Box>

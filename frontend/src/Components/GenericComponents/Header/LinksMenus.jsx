@@ -191,10 +191,11 @@ const LinksMenus = () => {
 };
 
 // eslint-disable-next-line react/prop-types
-function BaseMenu({ titleName, subMenu }) {
+function BaseMenu({ key, titleName, subMenu }) {
     const theme = useTheme(ColorModeContext);
     return (
         <Box
+            key={key}
             className="flex-center"
             sx={{
                 ".css-10hburv-MuiTypography-root": {

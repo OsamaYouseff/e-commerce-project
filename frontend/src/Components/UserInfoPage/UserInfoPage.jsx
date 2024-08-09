@@ -13,7 +13,7 @@ import { useTheme } from "@emotion/react";
 
 /// redux
 import { GetUserInfo } from "../../General/GeneralFunctions";
-import { logoutCustomerAccountReducer } from "../../redux/ApiCustomerSlice";
+import { logoutCustomerAccountReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
 //// General Vars & Functions

@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     addUpdateProductInCartReducer,
     removeProductFromCartReducer,
-} from "../../redux/ApiCartSlice.js";
+} from "../../redux/CartSlice/ApiCartSlice.js";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
 import { useState } from "react";
 
@@ -75,7 +75,7 @@ const ItemComponent = ({
         }
     }
 
-    if (item == undefined) {
+    if (!item) {
         return <></>;
     } else {
         if (withDetails) {

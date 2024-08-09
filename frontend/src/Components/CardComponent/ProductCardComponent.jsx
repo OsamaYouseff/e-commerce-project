@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 /// Icons
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { useDispatch } from "react-redux";
-import { addUpdateProductInCartReducer } from "../../redux/ApiCartSlice";
+import { addUpdateProductInCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 
 const ProductCardComponent = ({
     productData,
@@ -137,13 +137,17 @@ const ProductCardComponent = ({
                 >
                     <Button
                         size="small"
-                        sx={{ fontSize: "14px" }}
+                        sx={{ fontSize: "14px", fontWeight: "bolder" }}
                         onClick={() => {
                             handelAddToCart();
                         }}
+                        variant="outlined"
                     >
                         <AddShoppingCartOutlinedIcon
-                            sx={{ marginRight: "5px", fontSize: "20px" }}
+                            sx={{
+                                marginRight: "5px",
+                                fontSize: "20px",
+                            }}
                         />
                         Add To Cart
                     </Button>

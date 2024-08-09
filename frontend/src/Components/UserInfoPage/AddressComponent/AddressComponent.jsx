@@ -10,7 +10,7 @@ import AddressCard from "./AddressCard";
 import { useEffect } from "react";
 //// redux
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerAddressesReducer } from "../../../redux/ApiAddressSlice.js";
+import { getCustomerAddressesReducer } from "../../../redux/AddressSlice/ApiAddressSlice.js";
 
 const AddressComponent = () => {
     const dispatch = useDispatch();

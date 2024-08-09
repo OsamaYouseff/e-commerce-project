@@ -19,7 +19,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 ///// Redux Actions
-import { customerLoginReducer } from "../../redux/ApiCustomerSlice";
+import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 
 export default function LoginPage() {
     const dispatch = useDispatch();

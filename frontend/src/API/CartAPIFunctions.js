@@ -60,7 +60,7 @@ export const addUpdateProductInCart = async (addedProduct) => {
 
 }
 
-export const removeProductToCart = async (removeProduct) => {
+export const removeProductFromCart = async (removeProduct) => {
 
     const { customerId, accessToken } = GetTokenAndUserId();
 

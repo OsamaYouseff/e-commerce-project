@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { addUpdateProductInCart, getCustomerCart, removeProductToCart } from '../API/CartAPIFunctions';
+import { addUpdateProductInCart, getCustomerCart, removeProductFromCart } from '../../API/CartAPIFunctions';
 
 
 export const getCustomerCartReducer = createAsyncThunk("getCustomerCartAPI/sendRequest", async () => {
@@ -10,7 +10,7 @@ export const getCustomerCartReducer = createAsyncThunk("getCustomerCartAPI/sendR
     return response;
 })
 
-export const addUpdateProductInCartReducer = createAsyncThunk("addUpdateProductAPI/sendRequest", async (addedProduct) => {
+export const addUpdateProductInCartReducer = createAsyncThunk("addUpdateProductToCartAPI/sendRequest", async (addedProduct) => {
 
     const response = await addUpdateProductInCart(addedProduct);
 
@@ -19,9 +19,9 @@ export const addUpdateProductInCartReducer = createAsyncThunk("addUpdateProductA
     return response;
 })
 
-export const removeProductFromCartReducer = createAsyncThunk("removeProductAPI/sendRequest", async (removedProduct) => {
+export const removeProductFromCartReducer = createAsyncThunk("removeProductFromCartAPI/sendRequest", async (removedProduct) => {
 
-    const response = await removeProductToCart(removedProduct);
+    const response = await removeProductFromCart(removedProduct);
 
     // console.log(response)
 

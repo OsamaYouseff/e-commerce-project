@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import {
     deleteCustomerAddressReducer,
     setDefaultAddressReducer,
-} from "../../../redux/ApiAddressSlice";
+} from "../../../redux/AddressSlice/ApiAddressSlice";
 
 const AddressCard = ({ address, numOfAddresses }) => {
     const theme = useTheme(ColorModeContext);

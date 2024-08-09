@@ -6,7 +6,7 @@ import {
     addNewCustomerAddress,
     updateCustomerAddress,
     setAddressDefault,
-} from "../API/AddressAPIFunctions";
+} from "../../API/AddressAPIFunctions";
 // import axios from 'axios'
 
 export const getCustomerAddressesReducer = createAsyncThunk(

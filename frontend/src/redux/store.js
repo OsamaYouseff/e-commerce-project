@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import ProductsApiReducer from "./ApiProductSlice"
-import CustomerApiReducer from "./ApiCustomerSlice"
-import CartApiReducer from "./ApiCartSlice"
-import AddressesApiReducer from "./ApiAddressSlice"
+import ProductsApiReducer from "./ProductSlice/ApiProductSlice"
+import CustomerApiReducer from "./CustomerSlice/ApiCustomerSlice"
+import CartApiReducer from "./CartSlice/ApiCartSlice"
+import AddressesApiReducer from "./AddressSlice/ApiAddressSlice"
+import WishlistApiReducer from "./WishlistSlice/ApiWishlistSlice"
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
         CustomerApiRequest: CustomerApiReducer,
         CartApiRequest: CartApiReducer,
         AddressesApiRequest: AddressesApiReducer,
+        WishlistApiRequest: WishlistApiReducer,
     },
 })
 

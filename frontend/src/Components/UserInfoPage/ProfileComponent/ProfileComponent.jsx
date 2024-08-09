@@ -17,7 +17,7 @@ import { useState } from "react";
 
 /// redux
 import { GetUserInfo } from "../../../General/GeneralFunctions";
-import { updateCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
+import { updateCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
 const ProfileComponent = ({ customerData }) => {

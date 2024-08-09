@@ -12,7 +12,7 @@ import { useTheme } from "@emotion/react";
 ///// redux
 import { useDispatch } from "react-redux";
 import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
-import { logoutCustomerAccountReducer } from "../../../redux/ApiCustomerSlice";
+import { logoutCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 
 //// General Vars & Functions
 import { CustomerMenuItemsVar } from "../../../General/GeneralVariables";

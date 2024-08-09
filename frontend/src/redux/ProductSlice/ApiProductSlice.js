@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getFilteredProducts } from '../API/ProductAPIFunctions';
+import { getFilteredProducts } from '../../API/ProductAPIFunctions';
 // import axios from 'axios'
 
 export const getFilteredProductsReducer = createAsyncThunk("getFilteredProductsAPI/sendRequest", async (filter = "") => {

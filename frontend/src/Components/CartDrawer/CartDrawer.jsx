@@ -20,7 +20,7 @@ import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponen
 
 //// redux
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomerCartReducer } from "../../redux/ApiCartSlice";
+import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 

@@ -4,18 +4,26 @@ import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 /// Icons
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
+import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
 ///// redux
 import { useDispatch } from "react-redux";
-import { addUpdateProductInCartReducer } from "../../../redux/ApiCartSlice.js";
+import { addUpdateProductInCartReducer } from "../../../redux/CartSlice/ApiCartSlice.js";
+import {
+    addProductToWishlistReducer,
+    removeProductFromWishlistReducer,
+} from "../../../redux/WishlistSlice/ApiWishlistSlice";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
+
+import { isProductInWishlist } from "../../../API/WishlistAPIFunctions.js";
 
 //// styles
 const CloseBtnStyles = {
@@ -49,15 +57,49 @@ const modalStyles = {
     gap: { xs: 1, md: 4 },
     justifyContent: { sx: "center", md: "space-between" },
 };
+const favIconStyle = {
+    px: 0.6,
+    py: 0.5,
+    border: "1px solid",
+    borderRadius: "6px",
+    width: "100%",
+};
+
+//// custom component
+const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
+    return (
+        <Box
+            className="flex-center"
+            sx={favIconStyle}
+            color={color}
+            onClick={() => handler()}
+        >
+            <Typography
+                sx={{
+                    fontWeight: "bold",
+                    mr: 1,
+                    display: {
+                        sx: "block",
+                        md: "none",
+                    },
+                }}
+            >
+                {title}
+            </Typography>
+            {icons}
+        </Box>
+    );
+};
 
 // eslint-disable-next-line react/prop-types
 const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const theme = useTheme(ColorModeContext);
-    const productImg = PreviewedProduct.img;
-    const [selectedImg, setSelectedImg] = useState(0);
+    const productImg = PreviewedProduct?.img;
+
     const dispatch = useDispatch();
 
-    // const [previewImgUrl, setPreviewImgUrl] = useState(`${productImg}`);
+    const [inWishlist, setInWishlist] = useState(false);
+
     const handleClickAddToCart = () => {
         if (IsUserLoggedIn()) {
             dispatch(
@@ -73,11 +115,30 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         //// else make state changing only
     };
 
-    const handelSelectedImg = (event, newValue) => {
-        if (newValue !== null) {
-            setSelectedImg(newValue);
-        }
+    const handelAddToWishlist = async () => {
+        await dispatch(
+            addProductToWishlistReducer({ productId: PreviewedProduct._id })
+        );
+        setInWishlist(true);
     };
+    const handelRemoveFromWishlist = async () => {
+        await dispatch(
+            removeProductFromWishlistReducer({
+                productId: PreviewedProduct._id,
+            })
+        );
+        setInWishlist(false);
+    };
+
+    useEffect(() => {
+        const checkWishlistStatus = async () => {
+            const result = await isProductInWishlist(PreviewedProduct._id);
+            setInWishlist(result);
+        };
+
+        checkWishlistStatus();
+    }, [PreviewedProduct._id]);
+
     return (
         <Box>
             <Modal
@@ -93,6 +154,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                         borderRadius: "10px",
                         border: "none",
                         bgcolor: theme.palette.categoryColor.main,
+                        p: { xs: 1, sm: 2, md: 2 },
                     },
                 }}
             >
@@ -153,7 +215,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 variant="h6"
                                 sx={{
                                     fontWeight: "bold",
-                                    fontSize: { xs: "20px", lg: "18px" },
+                                    fontSize: { xs: "18px", lg: "18px" },
                                 }}
                             >
                                 {PreviewedProduct.title.slice(0, 20)}
@@ -163,6 +225,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 fontSize={"22px"}
                                 color={"crimson"}
                                 variant="h6"
+                                fontWeight={"bold"}
                             >
                                 ${PreviewedProduct.price}
                             </Typography>
@@ -176,34 +239,108 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                     textAlign: { xs: "justify", md: "left" },
                                 },
                                 maxWidth: { xs: "100%", lg: "100%" },
+                                px: 1,
                             }}
                         >
+                            {/* {PreviewedProduct.desc.slice(0, 300)} */}
                             {PreviewedProduct.desc}
                         </Typography>
+
                         <Stack
                             sx={{
-                                justifyContent: { xs: "center", md: "left" },
-                                overflow: "auto",
-                                minWidth: { xs: "100%", md: "100%" },
+                                width: "100% !important",
+                                flexDirection: { xs: "column", md: "row" },
+                                gap: { xs: 1, md: 2 },
                             }}
-                            direction={"row"}
-                            gap={1}
-                            my={2}
                         >
-                            <ToggleButtonGroup
-                                value={selectedImg}
-                                exclusive
-                                onChange={handelSelectedImg}
+                            <Button
                                 sx={{
-                                    ".Mui-selected": {
-                                        opacity: "1",
-                                        border: "1px solid #ff6e6e",
-                                        background: "initial",
-                                        borderRadius: "5px !important",
-                                    },
+                                    textTransform: "capitalize",
+                                    p: "5px 15px !important",
+                                    bgcolor: "#ff6e6e",
+                                    fontWeight: "bold",
+                                }}
+                                variant="contained"
+                            >
+                                <AddShoppingCartOutlinedIcon
+                                    sx={{ mr: 1 }}
+                                    fontSize="small"
+                                />
+                                Buy now
+                            </Button>
+
+                            <Button
+                                onClick={() => {
+                                    handleClickAddToCart();
+                                }}
+                                sx={{
+                                    mb: { xs: 1, md: 0 },
+                                    textTransform: "capitalize",
+                                    p: "5px 15px !important",
+                                    fontWeight: "bold",
+                                }}
+                                color="secondary"
+                                variant="contained"
+                            >
+                                <AddShoppingCartOutlinedIcon
+                                    sx={{ mr: 1 }}
+                                    fontSize="small"
+                                />
+                                Add To Cart
+                            </Button>
+
+                            <Box
+                                className="flex-center"
+                                sx={{
+                                    cursor: "pointer",
                                 }}
                             >
-                                {/* {productImg.map((item, index) => {
+                                {inWishlist ? (
+                                    <WishlistIcon
+                                        title={"REMOVE FROM WISHLIST"}
+                                        icons={<FavoriteRoundedIcon />}
+                                        favIconStyle={favIconStyle}
+                                        color={"#E91E63"}
+                                        handler={handelRemoveFromWishlist}
+                                    />
+                                ) : (
+                                    <WishlistIcon
+                                        title={"ADD TO WISHLIST"}
+                                        icons={<FavoriteBorderRoundedIcon />}
+                                        favIconStyle={favIconStyle}
+                                        color={"primary.main"}
+                                        handler={handelAddToWishlist}
+                                    />
+                                )}
+                            </Box>
+                        </Stack>
+                    </Box>
+                </Stack>
+            </Modal>
+        </Box>
+    );
+};
+
+export default ProductDetails;
+
+{
+    /* <ToggleButtonGroup
+    value={selectedImg}
+    exclusive
+    onChange={handelSelectedImg}
+    sx={{
+        ".Mui-selected": {
+            opacity: "1",
+            border: "1px solid #ff6e6e",
+            background: "initial",
+            borderRadius: "5px !important",
+            display: "none",
+        },
+    }}
+> */
+}
+{
+    /* {productImg.map((item, index) => {
                                     return (
                                         <ToggleButton
                                             value={index}
@@ -236,64 +373,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                             />
                                         </ToggleButton>
                                     );
-                                })} */}
-                            </ToggleButtonGroup>
-                        </Stack>
-                        <Stack
-                            sx={{
-                                width: "100% !important",
-                                flexDirection: { xs: "column", md: "row" },
-                                gap: { xs: 1, md: 0 },
-                            }}
-                        >
-                            <Button
-                                sx={{
-                                    textTransform: "capitalize",
-                                    p: "5px 15px !important",
-                                    bgcolor: "#ff6e6e",
-                                    fontWeight: "bold",
-                                }}
-                                variant="contained"
-                            >
-                                <AddShoppingCartOutlinedIcon
-                                    sx={{ mr: 1 }}
-                                    fontSize="small"
-                                />
-                                Buy now
-                            </Button>
-                            <span
-                                style={{
-                                    display: "inline-block",
-                                    width: "10px",
-                                }}
-                            >
-                                {" "}
-                            </span>
-                            <Button
-                                onClick={() => {
-                                    handleClickAddToCart();
-                                }}
-                                sx={{
-                                    mb: { xs: 1, md: 0 },
-                                    textTransform: "capitalize",
-                                    p: "5px 15px !important",
-                                    fontWeight: "bold",
-                                }}
-                                color="secondary"
-                                variant="contained"
-                            >
-                                <AddShoppingCartOutlinedIcon
-                                    sx={{ mr: 1 }}
-                                    fontSize="small"
-                                />
-                                Add To Cart
-                            </Button>
-                        </Stack>
-                    </Box>
-                </Stack>
-            </Modal>
-        </Box>
-    );
-};
-
-export default ProductDetails;
+                                })} */
+}
+{
+    /* </ToggleButtonGroup>; */
+}

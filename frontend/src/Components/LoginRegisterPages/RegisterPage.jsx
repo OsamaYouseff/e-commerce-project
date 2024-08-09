@@ -15,7 +15,7 @@ import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFiel
 
 //// Redux
 import { useDispatch } from "react-redux";
-import { registerACustomerReducer } from "../../redux/ApiCustomerSlice";
+import { registerACustomerReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 
 //// functions
 function isPasswordsMatch(password = "", confirmPassword = "") {

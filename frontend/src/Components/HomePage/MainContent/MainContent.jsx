@@ -15,7 +15,7 @@ import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getFilteredProductsReducer } from "../../../redux/ApiProductSlice";
+import { getFilteredProductsReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 const MainContent = () => {
