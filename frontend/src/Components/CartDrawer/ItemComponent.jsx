@@ -26,7 +26,7 @@ const ItemComponent = ({
     const theme = useTheme(ColorModeContext);
 
     //// state
-    const [filedQuantity, setFiledQuantity] = useState(quantity);
+    const [fieldQuantity, setFieldQuantity] = useState(quantity);
 
     //// redux
     const dispatch = useDispatch();
@@ -34,6 +34,10 @@ const ItemComponent = ({
 
     //// handlers
     function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
+        /// prevent request if the quantity doesn't changed
+        if (fieldQuantity === +targetQuantity && type === "CHANGE_QUANTITY")
+            return;
+
         if (!IsUserLoggedIn()) {
             alert("Adding to local state soon");
             return;
@@ -65,7 +69,6 @@ const ItemComponent = ({
             return;
         } else {
             if (isLoading) return; //// prevent user form doing many requests at the same time
-
             dispatch(
                 removeProductFromCartReducer({
                     productId: item._id,
@@ -166,7 +169,7 @@ const ItemComponent = ({
                                     }}
                                     variant="contained"
                                     onClick={() => {
-                                        setFiledQuantity(filedQuantity - 1);
+                                        setFieldQuantity(fieldQuantity - 1);
                                         if (quantity <= 1) return;
                                         handleClickIncreaseDecrease(
                                             "DECREASE_QUANTITY"
@@ -178,11 +181,11 @@ const ItemComponent = ({
 
                                 <input
                                     type="text"
-                                    value={filedQuantity}
+                                    value={fieldQuantity}
                                     onChange={(e) => {
                                         let value = e.target.value;
                                         if (value <= 0) value = 1;
-                                        setFiledQuantity(value);
+                                        setFieldQuantity(value);
                                     }}
                                     onBlur={(e) => {
                                         let value = e.target.value;
@@ -219,7 +222,7 @@ const ItemComponent = ({
                                     }}
                                     variant="contained"
                                     onClick={() => {
-                                        setFiledQuantity(filedQuantity + 1);
+                                        setFieldQuantity(fieldQuantity + 1);
                                         handleClickIncreaseDecrease(
                                             "INCREASE_QUANTITY"
                                         );
@@ -254,9 +257,11 @@ const ItemComponent = ({
                                 sx={{
                                     border: `1px solid  ${theme.palette.text.primary}`,
                                     aspectRatio: "1 / 1",
+                                    transition: "all 0.25s ease",
                                     "&:hover": {
-                                        color: "#ff4450",
-                                        borderColor: "#ff4450",
+                                        color: "#e91e63",
+                                        borderColor: "#e91e63",
+                                        scale: "1.08",
                                     },
                                     p: 0.6,
                                 }}
@@ -355,7 +360,7 @@ const ItemComponent = ({
                                     variant="contained"
                                     onClick={() => {
                                         if (quantity <= 1) return;
-                                        setFiledQuantity(filedQuantity - 1);
+                                        setFieldQuantity(fieldQuantity - 1);
                                         handleClickIncreaseDecrease(
                                             "DECREASE_QUANTITY"
                                         );
@@ -366,11 +371,11 @@ const ItemComponent = ({
 
                                 <input
                                     type="text"
-                                    value={filedQuantity}
+                                    value={fieldQuantity}
                                     onChange={(e) => {
                                         let value = e.target.value;
                                         if (value <= 0) value = 1;
-                                        setFiledQuantity(value);
+                                        setFieldQuantity(value);
                                     }}
                                     onBlur={(e) => {
                                         let value = e.target.value;
@@ -407,7 +412,7 @@ const ItemComponent = ({
                                     }}
                                     variant="contained"
                                     onClick={() => {
-                                        setFiledQuantity(filedQuantity + 1);
+                                        setFieldQuantity(fieldQuantity + 1);
                                         handleClickIncreaseDecrease(
                                             "INCREASE_QUANTITY"
                                         );

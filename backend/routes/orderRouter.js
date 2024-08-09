@@ -8,7 +8,6 @@ const {
 const router = require("express").Router();
 
 //CREATE
-
 router.post("/", verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
 
@@ -56,7 +55,7 @@ router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-// //GET ALL
+//GET ALL
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
@@ -95,5 +94,8 @@ router.get("/income", verifyTokenAndAdmin, async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+
+
 
 module.exports = router;

@@ -83,8 +83,8 @@ const CartPage = () => {
         }
         return customerCart.products.map((item) => (
             <ItemComponent
-                key={item.id}
-                ItemKey={item.id}
+                key={item._id}
+                itemKey={item._id}
                 item={item.productDetails}
                 quantity={item.quantity}
                 withDetails={true}
