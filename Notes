@@ -29,3 +29,8 @@ E-commerece Notes
 13 - fix state of addresses when you set address a default it didn't update after getting response. (done) ×××××××××××××××××××××××
 
 14 - make a detailed page for product to show all possible data about product .
+
+15 - change fontColor for nav menu in userinfo component & decrease the width of the nav menu in large screens.
+
+
+

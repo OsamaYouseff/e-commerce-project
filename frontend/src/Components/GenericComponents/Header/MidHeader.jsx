@@ -156,8 +156,9 @@ const MidHeader = function () {
                         </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="Search…"
-                            value={""}
-                            readOnly={true}
+                            value={"Search…"}
+                            // readOnly={true}
+                            autoComplete="off"
                             inputProps={{ "aria-label": "search" }}
                             sx={{ flex: 1 }}
                         />

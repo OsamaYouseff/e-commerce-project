@@ -65,6 +65,7 @@ const CustomerMenu = () => {
                             height: 28,
                             color: theme.palette.sectionBgColor.main,
                             bgcolor: theme.palette.text.primary,
+                            fontWeight: "bold",
                         }}
                     >
                         {userName.toUpperCase()[0]}
