@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useEffect, useState } from "react";
 // import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+// import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
 /// Icons
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
@@ -116,18 +116,26 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     };
 
     const handelAddToWishlist = async () => {
-        await dispatch(
-            addProductToWishlistReducer({ productId: PreviewedProduct._id })
-        );
-        setInWishlist(true);
+        if (IsUserLoggedIn()) {
+            await dispatch(
+                addProductToWishlistReducer({ productId: PreviewedProduct._id })
+            );
+            setInWishlist(true);
+        } else {
+            alert("Adding to local state soon");
+        }
     };
     const handelRemoveFromWishlist = async () => {
-        await dispatch(
-            removeProductFromWishlistReducer({
-                productId: PreviewedProduct._id,
-            })
-        );
-        setInWishlist(false);
+        if (IsUserLoggedIn()) {
+            await dispatch(
+                removeProductFromWishlistReducer({
+                    productId: PreviewedProduct._id,
+                })
+            );
+            setInWishlist(false);
+        } else {
+            alert("Adding to local state soon");
+        }
     };
 
     useEffect(() => {
@@ -136,7 +144,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
             setInWishlist(result);
         };
 
-        checkWishlistStatus();
+        if (IsUserLoggedIn()) checkWishlistStatus();
+        else alert("Please log in or sign up with new account");
     }, [PreviewedProduct._id]);
 
     return (

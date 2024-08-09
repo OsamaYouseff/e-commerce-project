@@ -10,7 +10,10 @@ import FormAddressComponent from "./AddressFromComponent";
 import { useEffect, useState } from "react";
 
 /// redux
-import { GetAddressInfo } from "../../../General/GeneralFunctions";
+import {
+    GetAddressInfo,
+    IsUserLoggedIn,
+} from "../../../General/GeneralFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getCustomerAddressReducer,
@@ -69,14 +72,15 @@ const UpdateAddressComponent = () => {
             fullAddress: `${country},${formData.fullAddress}`,
         };
 
-        dispatch(
-            updateCustomerAddressReducer({
-                updatedAddressData,
-                addressId: addressData._id,
-            })
-        );
-
-        setIsDataChanged(false);
+        if (IsUserLoggedIn()) {
+            dispatch(
+                updateCustomerAddressReducer({
+                    updatedAddressData,
+                    addressId: addressData._id,
+                })
+            );
+            setIsDataChanged(false);
+        } else alert("Please log in or sign up with new account");
     };
 
     const handelFormData = (key, value) => {
@@ -98,7 +102,9 @@ const UpdateAddressComponent = () => {
     };
 
     // useEffect(() => {
-    //     // dispatch(getCustomerAddressReducer(addressId));
+    //     // if (IsUserLoggedIn()) dispatch(getCustomerAddressReducer(addressId));
+    //        else alert("Please log in or sign up with new account");
+
     // }, []);
 
     return (

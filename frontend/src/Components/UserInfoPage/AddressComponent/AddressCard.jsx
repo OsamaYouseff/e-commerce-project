@@ -16,6 +16,7 @@ import {
     deleteCustomerAddressReducer,
     setDefaultAddressReducer,
 } from "../../../redux/AddressSlice/ApiAddressSlice";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const AddressCard = ({ address, numOfAddresses }) => {
     const theme = useTheme(ColorModeContext);
@@ -34,7 +35,9 @@ const AddressCard = ({ address, numOfAddresses }) => {
             "Are you sure you want to delete this address?"
         );
         if (confirmation) {
-            dispatch(deleteCustomerAddressReducer(address._id));
+            if (IsUserLoggedIn())
+                dispatch(deleteCustomerAddressReducer(address._id));
+            else alert("Please log in or sign up with new account");
         }
     };
     const handelSetDefault = async () => {
@@ -44,7 +47,9 @@ const AddressCard = ({ address, numOfAddresses }) => {
         }
         // if (!isDisabled) setIsDefault(!isDefault);
 
-        await dispatch(setDefaultAddressReducer(address._id));
+        if (IsUserLoggedIn())
+            await dispatch(setDefaultAddressReducer(address._id));
+        else alert("Please log in or sign up with new account");
 
         // window.location.reload();
     };

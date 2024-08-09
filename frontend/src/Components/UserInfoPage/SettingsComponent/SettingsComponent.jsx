@@ -14,6 +14,7 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 import { useDispatch } from "react-redux";
 import { changePasswordReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { deleteCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const SettingsComponent = () => {
     const dispatch = useDispatch();
@@ -44,7 +45,8 @@ const SettingsComponent = () => {
             return;
         }
         // alert("password changed successfully");
-        await dispatch(changePasswordReducer(formData));
+        if (IsUserLoggedIn()) await dispatch(changePasswordReducer(formData));
+        else alert("Please log in or sign up with new account");
     };
 
     const handleDeleteAccount = () => {
@@ -52,7 +54,8 @@ const SettingsComponent = () => {
             "Are you sure you want to delete your account?"
         );
         if (confirmation) {
-            dispatch(deleteCustomerAccountReducer());
+            if (IsUserLoggedIn()) dispatch(deleteCustomerAccountReducer());
+            else alert("Please log in or sign up with new account");
         }
     };
 

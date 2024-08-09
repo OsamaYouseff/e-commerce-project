@@ -36,7 +36,7 @@ const CustomerMenu = () => {
     };
 
     const handleLogout = () => {
-        dispatch(logoutCustomerAccountReducer());
+        if (IsUserLoggedIn()) dispatch(logoutCustomerAccountReducer());
     };
 
     //// adding logout function

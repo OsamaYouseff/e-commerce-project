@@ -9,7 +9,7 @@ import FormAddressComponent from "./AddressFromComponent";
 import { useState } from "react";
 
 /// redux
-import { GetUserInfo } from "../../../General/GeneralFunctions";
+import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { useDispatch } from "react-redux";
 import CountriesComponent from "./CountriesComponent";
 import { addNewCustomerAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
@@ -38,7 +38,9 @@ const AddAddressComponent = () => {
             fullAddress: `${country},${formData.fullAddress}`,
         };
 
-        dispatch(addNewCustomerAddressReducer(addressData));
+        if (IsUserLoggedIn())
+            dispatch(addNewCustomerAddressReducer(addressData));
+        else alert("Please log in or sign up with new account");
     };
 
     const handelFormData = (key, value) => {

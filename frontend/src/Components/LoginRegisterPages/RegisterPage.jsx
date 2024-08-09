@@ -16,6 +16,7 @@ import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFiel
 //// Redux
 import { useDispatch } from "react-redux";
 import { registerACustomerReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
+import { GoHome, IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 //// functions
 function isPasswordsMatch(password = "", confirmPassword = "") {
@@ -87,17 +88,15 @@ export default function RegisterPage() {
 
         // const data = new FormData(event.currentTarget);
         //// Send data to API
-        dispatch(registerACustomerReducer(formData));
+        if (!IsUserLoggedIn()) dispatch(registerACustomerReducer(formData));
+        else alert("You are already logged in");
     };
 
     //// Todo : add validation using React Hook Form library
     //// Todo : add modal for messages
 
-    if (
-        localStorage.getItem("customerInfo") ||
-        sessionStorage.getItem("customerInfo")
-    ) {
-        window.location.href = "/";
+    if (IsUserLoggedIn()) {
+        GoHome();
     } else {
         return (
             <Container

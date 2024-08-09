@@ -96,6 +96,7 @@ const CartPage = () => {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
+        else alert("Please log in or sign up with new account");
     }, []);
 
     return (

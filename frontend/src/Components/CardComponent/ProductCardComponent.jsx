@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { useDispatch } from "react-redux";
 import { addUpdateProductInCartReducer } from "../../redux/CartSlice/ApiCartSlice";
+import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 const ProductCardComponent = ({
     productData,
@@ -20,13 +21,17 @@ const ProductCardComponent = ({
     const dispatch = useDispatch();
 
     const handelAddToCart = () => {
-        dispatch(
-            addUpdateProductInCartReducer({
-                productId: productData._id,
-                quantity: 1,
-                price: productData.price,
-            })
-        );
+        if (IsUserLoggedIn()) {
+            dispatch(
+                addUpdateProductInCartReducer({
+                    productId: productData._id,
+                    quantity: 1,
+                    price: productData.price,
+                })
+            );
+        } else {
+            alert("Adding to local state soon");
+        }
     };
 
     return (

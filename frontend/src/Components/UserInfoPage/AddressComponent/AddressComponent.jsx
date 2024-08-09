@@ -11,6 +11,7 @@ import { useEffect } from "react";
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerAddressesReducer } from "../../../redux/AddressSlice/ApiAddressSlice.js";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
 
 const AddressComponent = () => {
     const dispatch = useDispatch();
@@ -22,7 +23,8 @@ const AddressComponent = () => {
     );
 
     useEffect(() => {
-        dispatch(getCustomerAddressesReducer());
+        if (IsUserLoggedIn()) dispatch(getCustomerAddressesReducer());
+        else alert("Please log in or sign up with new account");
     }, []);
 
     const showAddresses = () => {

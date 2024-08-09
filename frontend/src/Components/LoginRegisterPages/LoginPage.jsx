@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 
 ///// Redux Actions
 import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
+import { GoHome, IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export default function LoginPage() {
     const [formData, setFormData] = useState({
         // username: "ahmedsayed@gmail.com",
         username: "sama",
-        password: "Os123@.seto",
+        password: "Os123@.seto1",
         rememberMe: false,
     });
 
@@ -37,14 +38,13 @@ export default function LoginPage() {
         if (formData.username.trim() === "" || formData.password.trim() === "")
             return alert("Please enter both username and password");
 
-        dispatch(customerLoginReducer(formData));
+        if (!IsUserLoggedIn()) dispatch(customerLoginReducer(formData));
+        else alert("You are already logged in");
     };
 
-    if (
-        localStorage.getItem("customerInfo") ||
-        sessionStorage.getItem("customerInfo")
-    ) {
-        window.location.href = "/";
+    //// prevent user from accessing login page if he is already logged in
+    if (IsUserLoggedIn()) {
+        GoHome();
     } else {
         return (
             <Container

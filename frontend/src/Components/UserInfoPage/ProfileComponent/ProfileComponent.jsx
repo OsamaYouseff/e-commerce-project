@@ -16,7 +16,7 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 
 /// redux
-import { GetUserInfo } from "../../../General/GeneralFunctions";
+import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { updateCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
@@ -56,11 +56,11 @@ const ProfileComponent = ({ customerData }) => {
     const handleUpdateData = async (e) => {
         e.preventDefault();
 
-        await dispatch(updateCustomerAccountReducer(formData));
-
-        setIsDataChanged(false);
-
-        customerData = GetUserInfo();
+        if (IsUserLoggedIn()) {
+            await dispatch(updateCustomerAccountReducer(formData));
+            setIsDataChanged(false);
+            customerData = GetUserInfo();
+        } else alert("Please log in or sign up with new account");
     };
 
     const handelGender = (event, newValue) => {

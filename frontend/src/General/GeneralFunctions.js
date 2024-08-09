@@ -1,5 +1,5 @@
 export function GoHome() {
-    document.querySelector(".go-home").click();
+    window.location.href = "/";
 }
 
 export function GetUserInfo() {

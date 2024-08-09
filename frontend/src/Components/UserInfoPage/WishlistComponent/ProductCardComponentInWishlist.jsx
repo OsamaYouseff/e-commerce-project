@@ -16,6 +16,8 @@ import { useState } from "react";
 /// redux
 import { useDispatch } from "react-redux";
 import { removeProductFromWishlistReducer } from "../../../redux/WishlistSlice/ApiWishlistSlice";
+import { addUpdateProductInCartReducer } from "../../../redux/CartSlice/ApiCartSlice";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const favIconStyle = {
     px: 0.6,
@@ -30,13 +32,15 @@ const ProductCardComponentInWishlist = ({
 }) => {
     const dispatch = useDispatch();
     const handelAddToCart = () => {
-        // dispatch(
-        //     addUpdateProductInCartReducer({
-        //         productId: productData._id,
-        //         quantity: 1,
-        //         price: productData.price,
-        //     })
-        // );
+        if (IsUserLoggedIn()) {
+            dispatch(
+                addUpdateProductInCartReducer({
+                    productId: productData._id,
+                    quantity: 1,
+                    price: productData.price,
+                })
+            );
+        } else alert("Please log in or sign up with new account");
     };
 
     const [inWishlist, setInWishlist] = useState(true);
@@ -45,9 +49,11 @@ const ProductCardComponentInWishlist = ({
         setInWishlist(!inWishlist);
     };
     const handelRemoveFromWishlist = async () => {
-        await dispatch(
-            removeProductFromWishlistReducer({ productId: productData._id })
-        );
+        if (IsUserLoggedIn())
+            await dispatch(
+                removeProductFromWishlistReducer({ productId: productData._id })
+            );
+        else alert("Please log in or sign up with new account");
     };
 
     if (!productData) {

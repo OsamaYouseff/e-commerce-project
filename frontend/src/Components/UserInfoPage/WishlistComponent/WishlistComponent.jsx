@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Container, Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
@@ -115,6 +116,7 @@ const WishlistComponent = () => {
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading)
             dispatch(getCustomerWishlistReducer());
+        else alert("Please log in or sign up with new account");
     }, []);
 
     return (
