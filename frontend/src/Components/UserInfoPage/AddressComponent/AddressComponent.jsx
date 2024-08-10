@@ -3,7 +3,7 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
 // custom component
-import CircularLoaderComponent from "../../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCard from "./AddressCard";
 
 //// hooks
@@ -89,8 +89,8 @@ const AddressComponent = () => {
                 }}
             >
                 {/* Address Card */}
-                {isLoading ? <CircularLoaderComponent /> : showAddresses()}
-                {/* {<CircularLoaderComponent />} */}
+                {isLoading ? <LoaderComponent /> : showAddresses()}
+                {/* {<LoaderComponent />} */}
 
                 {/*== Address Card ==*/}
             </Stack>

@@ -1,18 +1,101 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Button } from "@mui/material";
 import OrderCard from "./OrderCard";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ColorModeContext } from "../../../Theme/theme";
+import { useTheme } from "@emotion/react";
+
+/// custom component
+import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
+
+// redux
+import { useSelector, useDispatch } from "react-redux";
+import { getCustomerOrdersMinimizedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
 
 const OrdersComponent = () => {
     const [historyDate, setHistoryDate] = useState("Last 3 months");
+    const theme = useTheme(ColorModeContext);
+
+    const dispatch = useDispatch();
+    const customerOrders = useSelector(
+        (state) => state.OrdersApiRequest.minOrdersResponse
+    );
+    const error = useSelector((state) => state.OrdersApiRequest.error);
+    const isLoading = useSelector((state) => state.OrdersApiRequest.isLoading);
+
+    // console.log(customerOrders);
+
+    //// Modal vars
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const [PreviewedProduct, setPreviewedProduct] = useState({
+        id: 2,
+        attributes: {},
+    });
 
     const handleChange = (event) => {
         setHistoryDate(event.target.value);
     };
+
+    const handleSetPreviewedProduct = (newValue) => {
+        setPreviewedProduct(newValue);
+    };
+
+    const handelShowOrdersItems = () => {
+        if (error || !customerOrders) {
+            return (
+                <Box
+                    className="flex-column-center"
+                    sx={{ minHeight: "50vh", gap: "15px" }}
+                >
+                    <Typography variant="h6">
+                        There is something wrong 😢
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => window.location.reload()}
+                        sx={{ fontWeight: "bold" }}
+                    >
+                        Reload Page
+                    </Button>
+                </Box>
+            );
+        } else if (customerOrders?.length === 0) {
+            return (
+                <Box
+                    sx={{
+                        p: 2,
+                        bgcolor: theme.palette.background.paper,
+                        color: theme.palette.text.primary,
+                        textAlign: "center",
+                        borderRadius: "10px",
+                        fontWeight: "bolder",
+                        fontSize: "1.5rem",
+                    }}
+                >
+                    You have no orders 😅
+                </Box>
+            );
+        }
+        return customerOrders.map((order) => (
+            <OrderCard
+                key={order.orderId}
+                order={order}
+                handelOpenModal={handleOpen}
+                handleSetPreviewedProduct={handleSetPreviewedProduct}
+            />
+        ));
+    };
+
+    useEffect(() => {
+        dispatch(getCustomerOrdersMinimizedReducer());
+    }, []);
+
     return (
-        <Stack sx={{ minWidth: "60vw", height: "77vh" }}>
+        <Stack sx={{ minWidth: "60vw" }}>
             <Box sx={{ mb: 2, px: { xs: 0.5, md: 1 } }}>
                 <Typography
                     variant="h4"
@@ -42,8 +125,11 @@ const OrdersComponent = () => {
                     justifyContent: "space-between",
                 }}
             >
-                <Typography variant="body" sx={{ my: 1, fontSize: "18px" }}>
-                    Completed
+                <Typography
+                    variant="body"
+                    sx={{ my: 1, fontSize: "20px", fontWeight: "bolder" }}
+                >
+                    All Status
                 </Typography>
                 <Stack direction={"row"} alignItems={"center"} gap={2}>
                     <OutlinedInput placeholder="Find your order" size="small" />
@@ -74,21 +160,20 @@ const OrdersComponent = () => {
                     </Select>
                 </Stack>
             </Stack>
-            {/* Address List */}
+            {/* Order List */}
             <Stack
                 sx={{
                     px: { xs: 0.5, md: 1 },
                     gap: 2,
                     mb: 2,
-                    overflowY: "auto",
-                    maxHeight: { xs: "auto", md: "70vh", lg: "60vh" },
                 }}
             >
-                {/* Address Card */}
-                <OrderCard />
-                {/*== Address Card ==*/}
+                {/* Order Card */}
+                {/* <OrderCard /> */}
+                {isLoading ? <LoaderComponent /> : handelShowOrdersItems()}
+                {/*== Order Card ==*/}
             </Stack>
-            {/*== Address List ==*/}
+            {/*== Order List ==*/}
         </Stack>
     );
 };

@@ -40,7 +40,7 @@ const initialState = {
     },
     isLoading: false,
     error: false,
-    errorMsg: null,
+    message: null,
 
 }
 
@@ -75,7 +75,7 @@ export const CartApiSlice = createSlice({
             })
             .addCase(addUpdateProductInCartReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.errorMsg = action.error.message;
+                currentState.message = action.error.message;
                 currentState.error = true;
             })
 
@@ -90,7 +90,7 @@ export const CartApiSlice = createSlice({
             })
             .addCase(removeProductFromCartReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.errorMsg = action.error.message;
+                currentState.message = action.error.message;
                 currentState.error = true;
             });
     }

@@ -5,6 +5,7 @@ import CustomerApiReducer from "./CustomerSlice/ApiCustomerSlice"
 import CartApiReducer from "./CartSlice/ApiCartSlice"
 import AddressesApiReducer from "./AddressSlice/ApiAddressSlice"
 import WishlistApiReducer from "./WishlistSlice/ApiWishlistSlice"
+import OrdersApiReducer from "./OrdersSlice/ApiOrdersSlice"
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
         CartApiRequest: CartApiReducer,
         AddressesApiRequest: AddressesApiReducer,
         WishlistApiRequest: WishlistApiReducer,
+        OrdersApiRequest: OrdersApiReducer,
     },
 })
 

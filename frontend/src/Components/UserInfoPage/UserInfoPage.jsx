@@ -34,6 +34,7 @@ import WishlistComponent from "./WishlistComponent/WishlistComponent.jsx";
 ///// sub custom component
 import AddAddressComponent from "./AddressComponent/AddAddressComponent.jsx";
 import UpdateAddressComponent from "./AddressComponent/UpdateAddressComponent.jsx";
+import OrderSummary from "./OrdersComponent/OrderSummary.jsx";
 
 const UserInfoPage = () => {
     const { section } = useParams();
@@ -56,6 +57,8 @@ const UserInfoPage = () => {
         switch (section) {
             case "orders":
                 return <OrdersComponent />;
+            case "order-summary":
+                return <OrderSummary />;
             case "profile":
                 return <ProfileComponent customerData={customerData} />;
             case "address":
@@ -111,7 +114,7 @@ const UserInfoPage = () => {
                             minWidth: {
                                 xs: "100%",
                                 md: "200px",
-                                lg: "300px",
+                                lg: "250px",
                             },
                             height: "100%",
                             p: 3,
@@ -144,7 +147,7 @@ const UserInfoPage = () => {
                                     href={item.url}
                                     style={{
                                         textDecoration: "none",
-                                        color: "inherit",
+                                        color: theme.palette.text.primary,
                                     }}
                                     onClick={item.action}
                                 >
@@ -162,9 +165,13 @@ const UserInfoPage = () => {
                                                     : "inherit"
                                             }`,
                                             borderRadius: "6px",
+                                            fontWeight: "bold",
+                                            mb: 0.6,
                                         }}
                                     >
-                                        <ListItemIcon>{item.icon}</ListItemIcon>
+                                        <ListItemIcon sx={{ color: "inherit" }}>
+                                            {item.icon}
+                                        </ListItemIcon>
                                         {item.title}
                                     </MenuItem>
                                 </a>

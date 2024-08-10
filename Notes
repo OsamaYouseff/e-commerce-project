@@ -32,5 +32,7 @@ E-commerece Notes
 
 15 - change fontColor for nav menu in userinfo component & decrease the width of the nav menu in large screens.
 
+16 - don't forget to enhance cartSlice file and add message to response.
+
 
 

@@ -64,7 +64,7 @@ const router = createBrowserRouter([
         element: routeElement(<UserInfoPage />, true),
     },
     {
-        path: "/userInfo/:section/:addressId",
+        path: "/userInfo/:section/:elementId",
         element: routeElement(<UserInfoPage />, true),
     },
     {

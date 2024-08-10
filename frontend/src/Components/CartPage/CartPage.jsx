@@ -10,7 +10,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //// custom components
 import MidHeader from "../GenericComponents/Header/MidHeader";
 import CheckoutPanel from "./CheckoutPanel";
-import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 
 //// redux
@@ -19,6 +19,7 @@ import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ItemComponent from "../CartDrawer/ItemComponent";
 import { Link } from "react-router-dom";
+import { SomeThingWrong } from "../../General/GeneralComponents";
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
@@ -46,23 +47,14 @@ const CartPage = () => {
     const totalPrice = customerCart?.totalPrice || 0;
 
     const handelShowCartProducts = () => {
-        if (error) {
+        if (error || !customerCart) {
             return (
-                <Box
-                    className="flex-column-center"
-                    sx={{ minHeight: "50vh", gap: "15px" }}
-                >
-                    <Typography variant="h6">
-                        There is something wrong 😢
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        onClick={() => window.location.reload()}
-                        sx={{ fontWeight: "bold" }}
-                    >
-                        Reload Page
-                    </Button>
-                </Box>
+                <SomeThingWrong
+                    minHeight={"50vh"}
+                    errorMsg={
+                        "Something went wrong 😢 Can not get your cart items."
+                    }
+                />
             );
         } else if (customerCart.products.length === 0) {
             return (
@@ -260,7 +252,7 @@ const CartPage = () => {
                             </Stack>
 
                             {isLoading ? (
-                                <CircularLoaderComponent />
+                                <LoaderComponent />
                             ) : (
                                 handelShowCartProducts()
                             )}

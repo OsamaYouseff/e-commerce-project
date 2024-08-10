@@ -16,13 +16,14 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 // Custom components
-import CircularLoaderComponent from "../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
+import { SomeThingWrong } from "../../General/GeneralComponents";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
@@ -72,23 +73,12 @@ export default function CartDrawer() {
     };
 
     const handelShowCartProduct = () => {
-        if (error) {
+        if (error || !customerCart) {
             return (
-                <Box
-                    className="flex-column-center"
-                    sx={{ minHeight: "50vh", gap: "15px" }}
-                >
-                    <Typography variant="h6">
-                        There is something wrong 😢
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        onClick={() => window.location.reload()}
-                        sx={{ fontWeight: "bold" }}
-                    >
-                        Reload Page
-                    </Button>
-                </Box>
+                <SomeThingWrong
+                    minHeight="50vh"
+                    errorMsg={"There is something wrong 😢"}
+                />
             );
         } else if (customerCart.products.length === 0) {
             return (
@@ -212,11 +202,7 @@ export default function CartDrawer() {
                         bgcolor: "red",
                     }}
                 >
-                    {isLoading ? (
-                        <CircularLoaderComponent />
-                    ) : (
-                        handelShowCartProduct()
-                    )}
+                    {isLoading ? <LoaderComponent /> : handelShowCartProduct()}
                 </div>
             </Box>
             {/*== Cart Items ==*/}

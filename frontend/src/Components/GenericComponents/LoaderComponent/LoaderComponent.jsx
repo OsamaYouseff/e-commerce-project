@@ -27,7 +27,7 @@ function GradientCircularProgress() {
     );
 }
 
-export default function CircularLoaderComponent() {
+export default function LoaderComponent() {
     return (
         <Box
             className="flex-center "

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 //// custom components
-import CircularLoaderComponent from "../../GenericComponents/CircularLoaderComponent/CircularLoaderComponent";
+import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 
 // //// redux
@@ -205,11 +205,7 @@ const WishlistComponent = () => {
                 flexWrap={"wrap"}
                 justifyContent={"flex-start"}
             >
-                {isLoading ? (
-                    <CircularLoaderComponent />
-                ) : (
-                    handelShowWishlistProducts()
-                )}
+                {isLoading ? <LoaderComponent /> : handelShowWishlistProducts()}
             </Stack>
 
             {

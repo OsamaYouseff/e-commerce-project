@@ -22,7 +22,7 @@ import {
 import CountriesComponent from "./CountriesComponent";
 
 const UpdateAddressComponent = () => {
-    // const { addressId } = useParams();
+    // const { elementId } = useParams();
     const dispatch = useDispatch();
 
     let addressData = GetAddressInfo();

@@ -1,5 +1,4 @@
 /// Components
-// import TestComponent from "./testComponents/TestComponent";
 import MidHeader from "../GenericComponents/Header/MidHeader";
 import BottomHeader from "../GenericComponents/Header/BottomHeader";
 import HeroSection from "./HeroSection/HeroSection";
@@ -15,4 +14,4 @@ const HomePage = () => {
         </>
     );
 };
-export default HomePage
+export default HomePage;
