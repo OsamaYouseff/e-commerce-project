@@ -15,7 +15,7 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
 
     const response = await getSpecificOrderForCustomerDetailed(orderId);
 
-    console.log(response)
+    // console.log(response)
 
     return response;
 })

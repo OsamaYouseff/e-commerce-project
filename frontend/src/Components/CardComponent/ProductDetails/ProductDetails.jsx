@@ -64,6 +64,8 @@ const favIconStyle = {
     borderRadius: "6px",
     width: "100%",
 };
+const fontSizeClamp =
+    "clamp(18px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
 
 //// custom component
 const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
@@ -218,13 +220,15 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 gap: { xs: 2, md: 0 },
                                 mb: { xs: 1, md: 0 },
                                 minWidth: "100%",
+                                py: { xs: 1, sm: "0 !important" },
+                                px: "8px !important",
                             }}
                         >
                             <Typography
                                 variant="h6"
                                 sx={{
                                     fontWeight: "bold",
-                                    fontSize: { xs: "18px", lg: "18px" },
+                                    fontSize: fontSizeClamp,
                                 }}
                             >
                                 {PreviewedProduct.title.slice(0, 20)}
@@ -251,8 +255,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 px: 1,
                             }}
                         >
-                            {/* {PreviewedProduct.desc.slice(0, 300)} */}
-                            {PreviewedProduct.desc}
+                            {PreviewedProduct.desc.slice(0, 300)}
+                            {/* {PreviewedProduct.desc} */}
                         </Typography>
 
                         <Stack
@@ -260,6 +264,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 width: "100% !important",
                                 flexDirection: { xs: "column", md: "row" },
                                 gap: { xs: 1, md: 2 },
+                                px: "8px !important",
                             }}
                         >
                             <Button

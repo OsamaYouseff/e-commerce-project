@@ -55,8 +55,6 @@ const OrderSummary = () => {
 
     const shippingAddress = customerOrder?.shippingAddress;
 
-    console.log(customerOrder);
-
     useEffect(() => {
         if (IsUserLoggedIn())
             dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));

@@ -12,6 +12,7 @@ import MidHeader from "../GenericComponents/Header/MidHeader";
 import CheckoutPanel from "./CheckoutPanel";
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
+import CompleteCheckoutModal from "./CompleteCheckoutModal/CompleteCheckoutModal";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,8 @@ import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ItemComponent from "../CartDrawer/ItemComponent";
 import { Link } from "react-router-dom";
 import { SomeThingWrong } from "../../General/GeneralComponents";
+
+let checkoutInfo;
 
 const CartPage = () => {
     const theme = useTheme(ColorModeContext);
@@ -30,17 +33,31 @@ const CartPage = () => {
     const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
     const error = useSelector((state) => state.CartApiRequest.error);
 
-    //// Modal vars
+    //// Product Modal vars
     const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpenProductModal = () => setOpen(true);
+    const handleCloseProductModal = () => setOpen(false);
     const [PreviewedProduct, setPreviewedProduct] = useState({
         id: 2,
         attributes: {},
     });
 
+    ///// complete checkout modal
+    const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
+    const handleOpenCheckoutModal = () => setOpenCheckoutModal(true);
+    const handleCloseCheckoutModal = () => setOpenCheckoutModal(false);
+
     const handleSetPreviewedProduct = (newValue) => {
         setPreviewedProduct(newValue);
+    };
+
+    const handelCheckout = (financialData) => {
+        checkoutInfo = {
+            products: customerCart.products,
+            financials: financialData,
+        };
+
+        handleOpenCheckoutModal();
     };
 
     const productsCount = customerCart?.products?.length || 0;
@@ -80,7 +97,7 @@ const CartPage = () => {
                 item={item.productDetails}
                 quantity={item.quantity}
                 withDetails={true}
-                handelOpenModal={handleOpen}
+                handelOpenModal={handleOpenProductModal}
                 handleSetPreviewedProduct={handleSetPreviewedProduct}
             />
         ));
@@ -88,7 +105,8 @@ const CartPage = () => {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        else alert("Please log in or sign up with new account");
+        // TODO : don't forget to uncomment the line below
+        // else alert("Please log in or sign up with new account");
     }, []);
 
     return (
@@ -259,7 +277,10 @@ const CartPage = () => {
                         </Box>
                     </Box>
 
-                    <CheckoutPanel totalPrice={totalPrice} />
+                    <CheckoutPanel
+                        totalPrice={totalPrice}
+                        handelCheckout={handelCheckout}
+                    />
                 </Stack>
             </Container>
             {
@@ -267,11 +288,19 @@ const CartPage = () => {
                 open && (
                     <ProductDetails
                         PreviewedProduct={PreviewedProduct}
-                        handleCloseModal={handleClose}
+                        handleCloseModal={handleCloseProductModal}
                         open={open}
                     />
                 )
             }
+            {openCheckoutModal && (
+                <CompleteCheckoutModal
+                    openCheckoutModal={openCheckoutModal}
+                    handleOpenCheckoutModal={handleOpenCheckoutModal}
+                    handleCloseCheckoutModal={handleCloseCheckoutModal}
+                    checkoutInfo={checkoutInfo}
+                />
+            )}
         </Fragment>
     );
 };

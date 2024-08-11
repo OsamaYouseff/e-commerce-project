@@ -1,38 +1,43 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../Theme/theme";
 import { Box, Stack } from "@mui/system";
 import { Button, Typography } from "@mui/material";
+import {
+    CalcTotalCartPrice,
+    isDiscountValid,
+} from "../../General/GeneralFunctions";
 
-const CheckoutPanel = ({ totalPrice }) => {
+const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
     const theme = useTheme(ColorModeContext);
 
-    const [country, setCountry] = useState("");
-    const [stateCity, setStateCity] = useState("");
+    const [discountCode, setDiscountCode] = useState("");
 
-    const discount =
-        totalPrice >= 100 ? Number((totalPrice * 0.1).toFixed(2)) : 0;
-    const shippingCalc = totalPrice !== 0 ? (totalPrice >= 50 ? 0 : 20) : 0;
-    const shippingCost = shippingCalc === 0 ? "Free" : "$20";
-    const finalPrice =
-        totalPrice !== 0
-            ? (totalPrice - discount + shippingCalc).toFixed(2)
-            : 0;
+    let { finalPrice, shippingCost, discount, shippingCalc } =
+        CalcTotalCartPrice(totalPrice, discountCode);
 
-    const handleChangeCountry = (event) => {
-        setCountry(event.target.value);
+    const [isCouponFieldDisabled, setIsCouponFieldDisabled] = useState(false);
+
+    const handelChangeCouponCode = () => {
+        if (isDiscountValid(discountCode)) setIsCouponFieldDisabled(true);
+        else {
+            alert("Invalid Coupon Code");
+            setIsCouponFieldDisabled(false);
+        }
     };
 
-    const handleChangeState = (event) => {
-        setStateCity(event.target.value);
+    const handleCheckoutCart = () => {
+        handelCheckout({
+            subtotalInCents: totalPrice * 100,
+            discount: discount * 100,
+            shippingCostInCents: shippingCalc * 100,
+            totalAmountInCents: finalPrice * 100,
+            currency: "USD",
+        });
     };
+
     return (
         <Box
             sx={{
@@ -49,107 +54,56 @@ const CheckoutPanel = ({ totalPrice }) => {
                 fontSize={"20px"}
                 sx={{ mb: 2, fontWeight: "bolder" }}
             >
-                Calculated Shipping
+                Order Summary
             </Typography>
-            <FormControl
-                sx={{ mb: 2, minWidth: 120, width: "100%" }}
-                size="small"
-            >
-                <InputLabel id="demo-select-small-label">Country</InputLabel>
-                <Select
-                    labelId="demo-select-small-label"
-                    id="demo-select-small"
-                    value={country}
-                    label="Country"
-                    onChange={handleChangeCountry}
-                    sx={{ borderRadius: "35px" }}
-                >
-                    <MenuItem value={2}>Egypt</MenuItem>
-                    <MenuItem value={3}>KSA</MenuItem>
-                    <MenuItem value={4}>UAE</MenuItem>
-                    <MenuItem value={8}>UK</MenuItem>
-                    <MenuItem value={1}>USA</MenuItem>
-                </Select>
-            </FormControl>
-            <Stack
-                direction="row"
-                justifyContent={"space-between"}
-                alignItems={"center"}
-                mb={2}
-                gap={1}
-            >
-                <FormControl sx={{ minWidth: 120, width: "50%" }} size="small">
-                    <InputLabel id="demo-select-small-label">
-                        State / City
-                    </InputLabel>
-                    <Select
-                        labelId="demo-select-small-label"
-                        id="demo-select-small"
-                        value={stateCity}
-                        label="State / City"
-                        onChange={handleChangeState}
-                        sx={{ borderRadius: "35px" }}
-                    >
-                        <MenuItem value={1}>New York</MenuItem>
-                        <MenuItem value={2}>Cairo</MenuItem>
-                        <MenuItem value={3}>Riyadh</MenuItem>
-                        <MenuItem value={4}>London</MenuItem>
-                        <MenuItem value={5}>Abu Dhabi</MenuItem>
-                    </Select>
-                </FormControl>
 
+            <Typography
+                variant="h4"
+                fontSize={"16px"}
+                sx={{ mb: 2, fontWeight: "bolder" }}
+            >
+                Coupon Code
+            </Typography>
+            <Stack
+                className="flex-between"
+                mb={2}
+                sx={{ position: "relative" }}
+            >
                 <TextField
-                    label="Zip Code"
+                    defaultValue={discountCode}
+                    value={discountCode}
+                    disabled={isCouponFieldDisabled}
+                    onChange={(e) => setDiscountCode(e.target.value)}
+                    label="Enter coupon"
                     id="outlined-size-small"
                     size="small"
                     sx={{
                         ".MuiOutlinedInput-root": {
                             borderRadius: "25px",
                         },
-                        width: "50%",
+                        width: "100%",
                     }}
                 />
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        setDiscountCode("");
+                        setIsCouponFieldDisabled(false);
+                    }}
+                    sx={{
+                        right: 2,
+                        top: 1.75,
+                        width: " 30%",
+                        borderRadius: "25px",
+                        fontWeight: "bolder",
+                        position: "absolute",
+                    }}
+                >
+                    Remove
+                </Button>
             </Stack>
             <Button
-                variant="contained"
-                sx={{
-                    width: " 100%",
-                    borderRadius: "25px",
-                    fontWeight: "bolder",
-                    mb: 3,
-                }}
-            >
-                Update
-            </Button>
-            <Divider sx={{ mb: 3 }} />
-            <Typography
-                variant="h1"
-                fontSize={"20px"}
-                sx={{ mb: 2, fontWeight: "bolder" }}
-            >
-                Coupon Code
-            </Typography>
-            <Typography
-                variant="h6"
-                fontSize={"13px"}
-                sx={{ mb: 2, fontWeight: "bolder" }}
-            >
-                lorem ipsum dolor sit amet adipiscing elit lorem ipsum dolor sit
-                amet consectetur elit ipsum dolor sit amet adipiscing elit lorem
-            </Typography>
-            <TextField
-                label="Coupon Code"
-                id="outlined-size-small"
-                size="small"
-                sx={{
-                    ".MuiOutlinedInput-root": {
-                        borderRadius: "25px",
-                    },
-                    width: "100%",
-                    mb: 2,
-                }}
-            />
-            <Button
+                onClick={handelChangeCouponCode}
                 variant="contained"
                 sx={{
                     width: " 100%",
@@ -239,12 +193,14 @@ const CheckoutPanel = ({ totalPrice }) => {
                                 fontSize: "20px",
                             }}
                         >
-                            {finalPrice}
+                            ${finalPrice}
                         </span>
                     </Typography>
                 </Stack>
             </Box>
             <Button
+                onClick={handleCheckoutCart}
+                aria-label="checkout"
                 variant="contained"
                 sx={{
                     width: " 100%",
@@ -253,6 +209,7 @@ const CheckoutPanel = ({ totalPrice }) => {
                     mb: 1,
                     bgcolor: "#1d273b",
                     color: "white",
+                    border: `1px solid ${theme.palette.primary.main} `,
                 }}
             >
                 Checkout

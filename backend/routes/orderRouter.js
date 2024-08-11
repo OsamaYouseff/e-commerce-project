@@ -77,7 +77,7 @@ router.get('/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
       {
         $lookup: {
           from: "products",
-          localField: "items.product",
+          localField: "items.productId",
           foreignField: "_id",
           as: "productDetails"
         }
@@ -156,7 +156,7 @@ router.get('/minimized/:id/:orderId', verifyTokenAndAuthorization, async (req, r
       {
         $lookup: {
           from: "products", // Assuming your Product model corresponds to a 'products' collection
-          localField: "items.product",
+          localField: "items.productId",
           foreignField: "_id",
           as: "productDetails"
         }
@@ -208,7 +208,7 @@ router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
       {
         $lookup: {
           from: "products",
-          localField: "items.product",
+          localField: "items.productId",
           foreignField: "_id",
           as: "productDetails"
         }

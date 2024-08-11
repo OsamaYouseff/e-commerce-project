@@ -153,8 +153,33 @@ export function GetOrderMessage(status = "", estimatedDeliveryDate = "") {
 
 }
 
-
 export function convertCentsToDollars(cents) {
     return (cents / 100).toFixed(2);
 }
 
+const coupons = [
+    "10OFF", "15OFF", "20OFF", "25OFF", "50OFF"
+]
+
+export function CalcTotalCartPrice(subtotalPrice, couponCode = "") {
+    const discount = couponCode ? Number((GetCouponDiscount(couponCode) * subtotalPrice).toFixed(2)) : 0;
+    const shippingCalc = subtotalPrice !== 0 ? (subtotalPrice >= 50 ? 0 : 20) : 0;
+    const shippingCost = shippingCalc === 0 ? "Free" : "$20";
+    const finalPrice = subtotalPrice !== 0 ? (subtotalPrice - discount + shippingCalc).toFixed(2) : 0;
+
+
+    return { finalPrice, shippingCost, discount, shippingCalc };
+}
+
+export function isDiscountValid(couponCode) {
+    return coupons.includes(couponCode)
+}
+
+function GetCouponDiscount(couponCode) {
+    if (coupons.includes(couponCode)) {
+        return Number(couponCode.slice(0, -3) / 100);
+    } else {
+        return 0;
+    }
+
+}

@@ -91,7 +91,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                     <p
                         style={{
                             fontWeight: "bolder",
-                            width: "100%",
+                            width: "50%",
                             fontSize: "18px",
                         }}
                     >
