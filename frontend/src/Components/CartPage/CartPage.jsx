@@ -21,6 +21,7 @@ import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import ItemComponent from "../CartDrawer/ItemComponent";
 import { Link } from "react-router-dom";
 import { SomeThingWrong } from "../../General/GeneralComponents";
+import { clearCart } from "../../API/CartAPIFunctions";
 
 let checkoutInfo;
 
@@ -282,6 +283,8 @@ const CartPage = () => {
                         handelCheckout={handelCheckout}
                     />
                 </Stack>
+
+                {/* <Button onClick={() => clearCart()} variant="contained">CLEAR CART</Button> */}
             </Container>
             {
                 // toggle modal appearance

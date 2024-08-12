@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCustomerOrdersMinimized, getSpecificOrderForCustomerDetailed } from '../../API/OrdersAPIFunctions';
+import { getCustomerOrdersMinimized, getSpecificOrderForCustomerDetailed, createCustomerOrder } from '../../API/OrdersAPIFunctions';
+import { clearCart } from '../../API/CartAPIFunctions';
 
 
 export const getCustomerOrdersMinimizedReducer = createAsyncThunk("getCustomerOrdersMinimizedAPI/sendRequest", async () => {
@@ -16,6 +17,26 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
     const response = await getSpecificOrderForCustomerDetailed(orderId);
 
     // console.log(response)
+
+    return response;
+})
+
+export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (orderData) => {
+
+    const response = await createCustomerOrder(orderData);
+
+    console.log(response)
+    console.log(response.status)
+
+    if (response.status) {
+
+        await clearCart()
+
+        alert("Order Placed Successfully");
+
+        document.location.reload(true);
+    }
+
 
     return response;
 })
@@ -81,7 +102,11 @@ export const CartApiSlice = createSlice({
             })
             .addCase(getSpecificOrderForCustomerDetailedReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload;
+
+                if (action.payload.status) currentState.response = action.payload.order;
+                else currentState.error = true;
+
+                currentState.message = action.payload.message;
 
             })
             .addCase(getSpecificOrderForCustomerDetailedReducer.rejected, (currentState, action) => {
@@ -91,19 +116,19 @@ export const CartApiSlice = createSlice({
             })
 
 
-        // // removeProductFromCartReducer cases
-        // .addCase(removeProductFromCartReducer.pending, (currentState) => {
-        //     currentState.isLoading = true;
-        // })
-        // .addCase(removeProductFromCartReducer.fulfilled, (currentState, action) => {
-        //     currentState.isLoading = false;
-        //     currentState.response = action.payload; // Update the response state as needed
-        // })
-        // .addCase(removeProductFromCartReducer.rejected, (currentState, action) => {
-        //     currentState.isLoading = false;
-        //     currentState.message = action.error.message;
-        //     currentState.error = true;
-        // });
+            // createCustomerOrderReducer cases
+            .addCase(createCustomerOrderReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            })
+            .addCase(createCustomerOrderReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+                currentState.message = action.payload.message;
+            })
+            .addCase(createCustomerOrderReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
+                currentState.message = action.payload.message;
+                currentState.error = true;
+            });
     }
 });
 

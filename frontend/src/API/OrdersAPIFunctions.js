@@ -75,13 +75,48 @@ export const getSpecificOrderForCustomerDetailed = async (orderId) => {
 
         // console.log("XXXXXXXXXXXXX : ", response.data[0])
 
-        return response.data[0];
+        return { status: true, order: response.data[0] };
 
     } catch (error) {
-        console.console.log('Error Fetching order Data : ', error);
+        console.log('Error Fetching order Data : ', error);
+        return { status: false, message: "Failed to fetch order items" };
+
         // throw error;
     }
 };
+
+
+export const createCustomerOrder = async (orderData) => {
+
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/orders/${customerId}`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: orderData,
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log("ORDER RESPONSE : ", response.data)
+
+        return { status: true, message: "Your order has been placed successfully." };
+
+    } catch (error) {
+        console.log('Error Fetching order Data : ', error);
+        // throw error;
+        return { status: true, message: "Failed to place your order try again later." };
+
+    }
+};
+
+
 
 
 

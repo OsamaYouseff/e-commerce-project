@@ -9,8 +9,7 @@ const {
 const router = require("express").Router();
 
 
-//CREATE
-
+//// CREATE
 router.post("/", verifyToken, async (req, res) => {
   ////// make sure that this is the first cart
 
@@ -29,7 +28,7 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-//UPDATE
+//// UPDATE
 router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const updatedCart = await Cart.findOneAndUpdate(
@@ -242,24 +241,27 @@ router.post("/remove-product/:id", verifyTokenAndAuthorization, async (req, res)
 });
 
 
-////// CLEAR CART
+//// CLEAR CART
 router.put("/clear/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const updatedCart = await Cart.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { products: [] },
-      },
-      { new: true }
+    const updatedCart = await Cart.findOneAndUpdate(
+      { userId: req.user.id },
+      { $set: { products: [], totalPrice: 0 } },
+      { new: true, upsert: true }
     );
+
+    if (!updatedCart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
+
     res.status(200).json(updatedCart);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ message: "Error clearing cart", error: err.message });
   }
 });
 
 
-//DELETE
+//// DELETE
 router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     await Cart.findByIdAndDelete(req.params.id);
@@ -269,7 +271,7 @@ router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-//GET CART WITH USER ID
+//// GET CART WITH USER ID
 router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const cart = await Cart.findOne({ userId: req.params.id });
@@ -279,7 +281,7 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-//GET ALL
+//// GET ALL
 
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
@@ -291,7 +293,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 
-// Get all carts with detailed product information
+//// Get all carts with detailed product information
 router.get("/cart_detailed_products/:id", verifyTokenAndAuthorization, async (req, res) => {
   try {
     const userId = req.params.id;

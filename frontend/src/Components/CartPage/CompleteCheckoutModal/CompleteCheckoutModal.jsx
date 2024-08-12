@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import Modal from "@mui/material/Modal";
 import { Box, Stack, Typography, Button, Divider, Container } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@emotion/react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
@@ -12,13 +12,14 @@ import AddCardRoundedIcon from "@mui/icons-material/AddCardRounded";
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 /// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 
 // redux
-import { useDispatch } from "react-redux";
-// import { getSpecificOrderForCustomerDetailedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { getCustomerDefaultAddressReducer, getCustomerAddressesReducer, getCustomerAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
+import { createCustomerOrderReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
 import { convertCentsToDollars, FormatDate, GetTokenAndUserId, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { SomeThingWrong } from "../../../General/GeneralComponents";
 import AddressCardMin from "./AddressCardMin";
@@ -33,6 +34,10 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
     const currency = checkoutInfo?.financials?.currency === "USD" ? "$" : checkoutInfo?.financials?.currency;
     const shippingCost = checkoutInfo?.financials.shippingCostInCents === 0 ? "Free" : `${currency}${checkoutInfo?.financials.shippingCostInCents}`;
 
+    const dispatch = useDispatch();
+    const selectedAddress = useSelector((state) => state.AddressesApiRequest.singleAddressResponse);
+
+    // console.log(selectedAddress)
 
     const handelPaymentMethod = (event, newValue) => {
         if (newValue === null) return;
@@ -49,23 +54,32 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             };
         });
 
-        const OrderInfo = {
+
+        const OrderData = {
             userId: customerId,
             items: filteredProducts,
             financials: checkoutInfo.financials,
-            shippingAddressId: null,
-            shippingAddress: checkoutInfo.shippingAddress,
+            shippingAddressId: selectedAddress._id,
             paymentMethod: paymentMethod,
             shippingInfo: {
                 estimatedDeliveryDate: estimatedDeliveryDate
             },
         };
 
-        console.log(OrderInfo)
+        console.log(OrderData)
 
+        dispatch(createCustomerOrderReducer(OrderData))
 
         // handleCloseCheckoutModal()
     };
+
+
+    useEffect(() => {
+        if (IsUserLoggedIn()) {
+            dispatch(getCustomerDefaultAddressReducer())
+        }
+    }, []);
+
 
     return (
         <Modal
@@ -114,7 +128,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                     sx={{
                         gap: 2,
                         flexDirection: {
-                            xs: "column-reverse !important",
+                            xs: "column !important",
                             md: "row !important",
                         },
                         alignItems: {
@@ -133,9 +147,16 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                             bgcolor: theme.palette.sectionBgColor.main,
                         }}
                     >
-                        {/* Address info */}
-                        <AccordionUsage />
-                        {/*== Address info ==*/}
+                        {/* Selecting Address Section */}
+
+                        {/* Selected address */}
+                        <AddressCardMin address={selectedAddress} defaultAddress={true} />
+                        {/* Selected address */}
+
+                        <AddressSection selectedAddressId={selectedAddress?._id} />
+
+
+                        {/*== Selecting Address Section ==*/}
 
                         <Divider sx={{ my: 1 }} />
                         {/* products in cart */}
@@ -258,11 +279,11 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                                     aria-label="male-gender"
                                 >
                                     <Stack
+                                        sx={{ fontSize: "13px" }}
                                         alignItems={"center"}
-                                        sx={{ fontSize: "15px" }}
                                     >
                                         <MonetizationOnRoundedIcon
-                                            sx={{ fontSize: "34px" }}
+                                            sx={{ fontSize: "30px" }}
                                         />
                                         Cash on Delivery
                                     </Stack>
@@ -272,11 +293,11 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                                     aria-label="female-gender"
                                 >
                                     <Stack
-                                        sx={{ fontSize: "15px" }}
+                                        sx={{ fontSize: "13px" }}
                                         alignItems={"center"}
                                     >
                                         <AddCardRoundedIcon
-                                            sx={{ fontSize: "34px" }}
+                                            sx={{ fontSize: "30px" }}
                                         />
                                         Credit/Debit Card
                                     </Stack>
@@ -301,19 +322,56 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
 }
 
 
-function AccordionUsage() {
+function AddressSection({ selectedAddressId }) {
+
+    const dispatch = useDispatch();
+    const customerAddresses = useSelector((state) => state.AddressesApiRequest.response);
+    const isLoading = useSelector((state) => state.AddressesApiRequest.isLoading);
+
+    // console.log(customerAddresses)
+
+    const handelSelectedAddress = (newSelectedAddressId) => {
+        // alert(newSelectedAddressId)
+
+        if (IsUserLoggedIn() && newSelectedAddressId !== selectedAddressId) {
+            dispatch(getCustomerAddressReducer(newSelectedAddressId))
+        }
+    }
+    const showAddresses = () => {
+        if (customerAddresses) {
+            return customerAddresses.map((address) => {
+                return (
+                    <AddressCardMin
+                        key={address._id}
+                        address={address}
+                        selectedAddressId={selectedAddressId}
+                        handelSelectedAddress={handelSelectedAddress}
+                    />
+                );
+            });
+        } else {
+            return <Box>You do not have any addresses</Box>;
+        }
+    };
+
+    useEffect(() => {
+        if (IsUserLoggedIn()) {
+            dispatch(getCustomerAddressesReducer())
+        }
+    }, []);
+
     return (
         <div>
-            <AddressCardMin defaultAddress={true} />
             <Accordion>
                 <AccordionSummary
                     className="border"
-                    // expandIcon={<ExpandMoreIcon />}
+                    expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1-content"
                     id="panel1-header"
                     sx={{ ".MuiAccordionSummary-content": { display: "flex", justifyContent: "space-between ", alignItems: "center" }, fontWeight: "bolder" }}
                 >
-                    Address Details
+
+
                     <Button
                         variant="outlined"
                         size="small"
@@ -322,8 +380,8 @@ function AccordionUsage() {
                         Change address
                     </Button>
                 </AccordionSummary>
-                <AccordionDetails>
-                    <AddressCardMin />
+                <AccordionDetails className="flex-column-center" sx={{ gap: 2, p: 0 }}>
+                    {isLoading ? <LoaderComponent /> : showAddresses()}
                 </AccordionDetails>
             </Accordion>
 

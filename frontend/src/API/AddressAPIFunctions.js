@@ -60,7 +60,7 @@ export const getCustomerAddress = async (addressId) => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${baseURL}/api/addresses/${customerId}/${addressId}`,
+        url: `${baseURL}/api/addresses/find/${customerId}/${addressId}`,
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -168,6 +168,30 @@ export const setAddressDefault = async (addressId) => {
     }
 };
 
+export const getCustomerDefaultAddress = async () => {
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/addresses/find-default/${customerId}`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        // console.log(response.data)
+
+        return { state: true, message: "Default address Fetched Successfully.", defaultAddress: response.data };
+
+    } catch (error) {
+        console.log('Error Customer Addresses Data : ', error);
+        return { state: false, message: "Failed to fetch default address." };
+    }
+};
 
 
 

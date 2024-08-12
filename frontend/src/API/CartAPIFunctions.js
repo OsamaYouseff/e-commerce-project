@@ -90,3 +90,31 @@ export const removeProductFromCart = async (removeProduct) => {
 
 
 }
+
+export const clearCart = async () => {
+
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'put',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/carts/clear/${customerId}`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log(" XXXXXX : ", response.data)
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error Removing Product From Cart : ', error);
+        throw error;
+    }
+
+
+}

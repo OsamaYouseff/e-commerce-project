@@ -6,18 +6,17 @@ import {
     addNewCustomerAddress,
     updateCustomerAddress,
     setAddressDefault,
+    getCustomerDefaultAddress
 } from "../../API/AddressAPIFunctions";
 // import axios from 'axios'
 
-export const getCustomerAddressesReducer = createAsyncThunk(
-    "getCustomerAddressesAPI/sendRequest",
-    async () => {
-        const response = await getCustomerAddresses();
+export const getCustomerAddressesReducer = createAsyncThunk("getCustomerAddressesAPI/sendRequest", async () => {
+    const response = await getCustomerAddresses();
 
-        // console.log("########### : ", response);
+    // console.log("########### : ", response);
 
-        return response;
-    }
+    return response;
+}
 );
 
 export const deleteCustomerAddressReducer = createAsyncThunk(
@@ -37,12 +36,22 @@ export const deleteCustomerAddressReducer = createAsyncThunk(
 export const getCustomerAddressReducer = createAsyncThunk(
     "getCustomerAddressAPI/sendRequest",
     async (addressId) => {
+
         const response = await getCustomerAddress(addressId);
 
-        console.log("%%%%%%%%%%%% : ", response)
+        // console.log("%%%%%%%%%%%% : ", response)
 
         return response;
     }
+);
+
+export const getCustomerDefaultAddressReducer = createAsyncThunk("getCustomerDefaultAddressAPI/sendRequest", async () => {
+    const response = await getCustomerDefaultAddress();
+
+    // console.log("%%%%%%%%%%%% : ", response)
+
+    return response;
+}
 );
 
 export const addNewCustomerAddressReducer = createAsyncThunk(
@@ -95,6 +104,7 @@ export const setDefaultAddressReducer = createAsyncThunk(
 ///// state
 const initialState = {
     response: [], ///////////////////////////// make sure to make it an object to avoid Error ////////////////////////////
+    singleAddressResponse: {},
     isLoading: false,
     error: false,
     message: null,
@@ -125,8 +135,7 @@ export const AddressApiSlice = createSlice({
             .addCase(deleteCustomerAddressReducer.pending, (currentState) => {
                 currentState.isLoading = true;
             })
-            .addCase(
-                deleteCustomerAddressReducer.fulfilled,
+            .addCase(deleteCustomerAddressReducer.fulfilled,
                 (currentState, action) => {
                     currentState.isLoading = false;
                     currentState.response = action.payload.updatedAddresses;
@@ -146,13 +155,32 @@ export const AddressApiSlice = createSlice({
                 currentState.isLoading = false;
 
                 if (action.payload.state) {
-                    currentState.response = action.payload.address[0];
+                    currentState.singleAddressResponse = action.payload.address;
                 } else {
                     currentState.error = true;
                     currentState.message = "Failed to get address or address not found";
                 }
             })
             .addCase(getCustomerAddressReducer.rejected, (currentState) => {
+                currentState.isLoading = false;
+                currentState.error = true;
+            })
+
+            //// get customer default address
+            .addCase(getCustomerDefaultAddressReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            })
+            .addCase(getCustomerDefaultAddressReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+
+                if (action.payload.state) {
+                    currentState.singleAddressResponse = action.payload.defaultAddress;
+                } else {
+                    currentState.error = true;
+                    currentState.message = "Failed to get address or address not found";
+                }
+            })
+            .addCase(getCustomerDefaultAddressReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
                 currentState.error = true;
             })

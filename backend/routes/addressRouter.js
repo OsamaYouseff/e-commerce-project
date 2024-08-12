@@ -1,12 +1,13 @@
 const Address = require('../models/Address'); // Adjust path as needed
 const {
     verifyTokenAndAuthorization,
+    verifyToken,
 } = require("./verifyToken");
 
 const router = require("express").Router();
 
 
-//CREATE AN ADDRESS
+// CREATE AN ADDRESS
 router.post('/:id', verifyTokenAndAuthorization, async (req, res) => {
     try {
         const newAddress = new Address({
@@ -36,9 +37,15 @@ router.post('/:id', verifyTokenAndAuthorization, async (req, res) => {
 
 
 // GET AN ADDRESSES FOR A USER
-router.get('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
+router.get('/find/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
     try {
-        const addresses = await Address.find({ _id: req.params.addressId });
+        // console.log(req.params)
+        const addresses = await Address.findOne({ _id: req.params.addressId });
+
+        if (!addresses) {
+            return res.status(404).json({ message: 'Address not found' });
+        }
+
         res.json(addresses);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -56,6 +63,23 @@ router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
         res.json(addresses);
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+});
+
+// GET DEFAULT ADDRESS FOR USER
+router.get('/find-default/:id', verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        const defaultAddress = await Address.findOne(
+            { userId: req.params.id, isDefault: true }
+        ).exec();
+
+        if (!defaultAddress) {
+            return res.status(404).json({ message: 'No default address found' });
+        }
+
+        res.json(defaultAddress);
+    } catch (error) {
+        res.status(500).json({ message: 'Error retrieving default address', error: error.message });
     }
 });
 

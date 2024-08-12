@@ -7,6 +7,17 @@ import { useTheme } from "@emotion/react";
 
 const defaultStyle = {
     position: "absolute",
+    bottom: "10px",
+    right: "10px",
+    padding: "2px 10px",
+    borderRadius: "5px",
+    fontSize: "15px",
+    fontWeight: "bold",
+    background: "#009688"
+}
+
+const selectedStyle = {
+    position: "absolute",
     top: "10px",
     right: "10px",
     padding: "2px 10px",
@@ -16,22 +27,24 @@ const defaultStyle = {
     background: "#673AB7"
 }
 
-const AddressCardMin = ({ defaultAddress = false }) => {
+const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, handelSelectedAddress }) => {
     const theme = useTheme(ColorModeContext);
-    const address = {
-        _id: "66b3948c5bf683150118a774",
-        userId: "66a4ecdc15e14384d8786e7c",
-        fullAddress: "Egypt,Governorate-5003111-Marinah",
-        phoneNumber: "+020 1236789032",
-        firstName: "Ahmed",
-        lastName: "Moustafa",
-        label: "Home",
-        isDefault: true,
-        createdAt: "2024-08-07T15:36:44.417Z",
-        updatedAt: "2024-08-07T15:36:50.609Z",
-    };
+
+    const isSelectedAddress = selectedAddressId === address._id;
+
+    // console.log(selectedAddressId)
+
+    const handelChangeSelectedAddress = () => {
+        if (!isSelectedAddress && !defaultAddress) {
+            handelSelectedAddress(address._id);
+        }
+
+    }
+
+
     return (
         <Box
+            onClick={() => handelChangeSelectedAddress()}
             sx={{
                 bgcolor: theme.palette.natural.main,
                 px: { xs: 2, sm: 3 },
@@ -40,9 +53,19 @@ const AddressCardMin = ({ defaultAddress = false }) => {
                 boxShadow: 1,
                 width: "100%",
                 position: "relative",
+                transition: "all 0.3s ease",
+                border: `1px solid ${isSelectedAddress ? "#673AB7" : "transparent"}`,
+                "&:hover": {
+                    borderColor: `${!defaultAddress ? "#E91E63" : "transparent"}`,
+                    transform: `${!defaultAddress ? "scale(1.01)" : ""}`,
+                },
+
+
+                cursor: defaultAddress ? "default" : "pointer",
             }}
         >
-            <span style={{ ...defaultStyle, display: defaultAddress ? "inline" : "none" }} >Default</span>
+            <span style={{ ...defaultStyle, display: address.isDefault ? "inline" : "none" }} >Default</span>
+            <span style={{ ...selectedStyle, display: isSelectedAddress ? "inline" : "none" }} >Selected</span>
             <Stack
                 direction={"row"}
                 justifyContent={"space-between"}
@@ -115,3 +138,16 @@ const AddressCardMin = ({ defaultAddress = false }) => {
 };
 
 export default AddressCardMin;
+
+// const address = {
+//     _id: "66b3948c5bf683150118a774",
+//     userId: "66a4ecdc15e14384d8786e7c",
+//     fullAddress: "Egypt,Governorate-5003111-Marinah",
+//     phoneNumber: "+020 1236789032",
+//     firstName: "Ahmed",
+//     lastName: "Moustafa",
+//     label: "Home",
+//     isDefault: true,
+//     createdAt: "2024-08-07T15:36:44.417Z",
+//     updatedAt: "2024-08-07T15:36:50.609Z",
+// };
