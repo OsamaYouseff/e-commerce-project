@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { addUpdateProductInCart, getCustomerCart, removeProductFromCart } from '../../API/CartAPIFunctions';
+import toast from 'react-hot-toast';
 
 
 export const getCustomerCartReducer = createAsyncThunk("getCustomerCartAPI/sendRequest", async () => {
@@ -39,8 +40,7 @@ const initialState = {
         totalPrice: 0
     },
     isLoading: false,
-    error: false,
-    message: null,
+    error: false
 
 }
 
@@ -56,10 +56,16 @@ export const CartApiSlice = createSlice({
             })
             .addCase(getCustomerCartReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload;
+                if (action.payload.status) {
+                    currentState.response = action.payload.response;
+                } else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
             })
             .addCase(getCustomerCartReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
+                toast.error("Failed to get your cart items😢");
                 currentState.error = true;
             })
 
@@ -70,12 +76,16 @@ export const CartApiSlice = createSlice({
             })
             .addCase(addUpdateProductInCartReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload; // You may want to update the products array or other fields accordingly
-
+                if (action.payload.status) {
+                    currentState.response = action.payload.response; // You may want to update the products array or other fields accordingly
+                    toast.success(action.payload.message);
+                } else {
+                    toast.error("Failed to add/update your product to cart😢");
+                }
             })
-            .addCase(addUpdateProductInCartReducer.rejected, (currentState, action) => {
+            .addCase(addUpdateProductInCartReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
-                currentState.message = action.error.message;
+                toast.error("Failed to add/update your product to cart😢");
                 currentState.error = true;
             })
 
@@ -86,12 +96,18 @@ export const CartApiSlice = createSlice({
             })
             .addCase(removeProductFromCartReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload; // Update the response state as needed
+                if (action.payload.status) {
+                    currentState.response = action.payload.response
+                    toast.success(action.payload.message);
+                } else {
+                    toast.error("Failed to remove your product from cart😢");
+                    // currentState.error = true;
+                }
             })
-            .addCase(removeProductFromCartReducer.rejected, (currentState, action) => {
+            .addCase(removeProductFromCartReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
-                currentState.message = action.error.message;
-                currentState.error = true;
+                toast.error("Failed to remove your product from cart😢");
+                // currentState.error = true;
             });
     }
 });

@@ -8,7 +8,6 @@ export const getCustomerCart = async () => {
 
     const { customerId, accessToken } = GetTokenAndUserId();
 
-
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
@@ -23,12 +22,14 @@ export const getCustomerCart = async () => {
 
         // console.log("XXXXXXXXXXXXX : ", response.data)
 
-        if (response.data.products.length == 0) return response.data; //// cart is empty
-        else return response.data;
+        if (response.data.products.length == 0)
+            return { status: true, response: response.data };
+        else
+            return { status: true, response: response.data };
 
     } catch (error) {
-        console.console.log('Error Fetching Cart Data : ', error);
-        // throw error;
+        console.log('Error Fetching Cart Data : ', error);
+        return { status: false, message: "Failed to get your cart items😢" };
     }
 };
 
@@ -50,11 +51,11 @@ export const addUpdateProductInCart = async (addedProduct) => {
     try {
         const response = await axios.request(config);
 
-        return response.data;
+        return { status: true, response: response.data, message: "This item has been added/updated successfully to your cart" };
 
     } catch (error) {
-        console.error('Error Updating Product To Cart : ', error);
-        throw error;
+        console.log('Error Updating Product To Cart : ', error.data.response.message);
+        return { status: false, message: error.data.response.message };
     }
 
 
@@ -63,7 +64,6 @@ export const addUpdateProductInCart = async (addedProduct) => {
 export const removeProductFromCart = async (removeProduct) => {
 
     const { customerId, accessToken } = GetTokenAndUserId();
-
 
     let config = {
         method: 'post',
@@ -81,7 +81,7 @@ export const removeProductFromCart = async (removeProduct) => {
 
         // console.log(" XXXXXX : ", response.data)
 
-        return response.data;
+        return { status: true, response: response.data, message: "This item has been deleted successfully to your cart" }
 
     } catch (error) {
         console.error('Error Removing Product From Cart : ', error);
@@ -90,7 +90,6 @@ export const removeProductFromCart = async (removeProduct) => {
 
 
 }
-
 export const clearCart = async () => {
 
     const { customerId, accessToken } = GetTokenAndUserId();
@@ -113,6 +112,41 @@ export const clearCart = async () => {
 
     } catch (error) {
         console.error('Error Removing Product From Cart : ', error);
+        throw error;
+    }
+
+
+}
+
+export const createCustomerCart = async () => {
+
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let data = JSON.stringify({
+        "userId": customerId,
+        "products": []
+    });
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/carts`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: data,
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log(" XXXXXX : ", response.data)
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error Creating Customer Cart : ', error.response.data.message);
         throw error;
     }
 

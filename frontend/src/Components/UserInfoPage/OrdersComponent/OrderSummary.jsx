@@ -44,22 +44,20 @@ const OrderSummary = () => {
     const { elementId } = useParams();
     const dispatch = useDispatch();
 
-    const customerOrder = useSelector(
-        (state) => state.OrdersApiRequest.response
-    );
+
+    const customerOrder = useSelector((state) => state.OrdersApiRequest.response);
     const isLoading = useSelector((state) => state.OrdersApiRequest.isLoading);
     const error = useSelector((state) => state.OrdersApiRequest.error);
-
-    const currency =
-        customerOrder?.financials?.currency === "USD" ? "$" : currency;
-
     const shippingAddress = customerOrder?.shippingAddress;
+    const currency = customerOrder?.financials?.currency === "USD" ? "$" : currency;
+
 
     useEffect(() => {
         if (IsUserLoggedIn())
             dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
         else alert("Please log in or sign up with new account");
     }, []);
+
 
     const { orderStatus, message } = GetOrderMessage(
         customerOrder.status,

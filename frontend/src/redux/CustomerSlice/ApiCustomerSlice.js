@@ -1,16 +1,17 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { changeCustomerPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateCustomerAccount } from '../../API/CustomerAPIFunctions';
-import { GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
+import { getMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
+
+import toast from 'react-hot-toast';
+import { createCustomerCart } from '../../API/CartAPIFunctions';
+import { createCustomerWishlist } from '../../API/WishlistAPIFunctions';
+
 
 export const customerLoginReducer = createAsyncThunk("customerLoginAPI/sendRequest", async (data) => {
 
     const { rememberMe, ...formFields } = data;
 
     const response = await customerLogin(formFields, rememberMe);
-
-    if (response.state) {
-        GoHome();
-    }
 
     return response;
 
@@ -22,8 +23,9 @@ export const registerACustomerReducer = createAsyncThunk("registerACustomerAPI/s
 
     console.log("response : ", response);
 
-    if (response.state) {
-        GoHome();
+    if (response.status) {
+        await createCustomerCart();
+        await createCustomerWishlist();
     }
 
     return response;
@@ -34,7 +36,7 @@ export const updateCustomerAccountReducer = createAsyncThunk("updateCustomerAcco
 
     const response = await updateCustomerAccount(formData);
 
-    console.log(response.message)
+    // console.log(response.message)
 
     return response;
 
@@ -50,8 +52,8 @@ export const changePasswordReducer = createAsyncThunk("ChangeCustomerPasswordAPI
 
     const response = await changeCustomerPassword(formData);
 
-    console.log("state :", response.state);
-    console.log("Message :", response.message);
+    // console.log("status :", response.status);
+    // console.log("Message :", response.message);
 
     return response;
 })
@@ -59,7 +61,7 @@ export const changePasswordReducer = createAsyncThunk("ChangeCustomerPasswordAPI
 export const deleteCustomerAccountReducer = createAsyncThunk("DeleteCustomerAccountAPI/sendRequest", async () => {
     const response = await deleteCustomerAccount();
 
-    // console.log("state :", response.state);
+    // console.log("status :", response.status);
     // console.log("Message :", response.message);
 
     return response;
@@ -70,7 +72,7 @@ export const deleteCustomerAccountReducer = createAsyncThunk("DeleteCustomerAcco
 const initialState = {
     response: null,     ///////////////////////////// make sure to make it an object to avoid Error ////////////////////////////
     isLoading: false,
-    error: null,
+    error: false,
     message: null,
 }
 
@@ -86,15 +88,24 @@ export const CustomerApiSlice = createSlice({
         }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
 
             currentState.isLoading = false;
-            currentState.message = action.payload.message;
 
-            if (action.payload.state) currentState.error = false;
-            else currentState.error = true;
+            console.log("payload : ", action.payload);
+
+            if (action.payload.status) {
+                toast.success("Login successfully ,Welcome 😀");
+
+                GoHome();
+            }
+            else {
+                currentState.error = true;
+                toast.error(action.payload.message);
+            }
+
 
 
         }).addCase(customerLoginReducer.rejected, (currentState, action) => {
             currentState.isLoading = false;
-            currentState.error = action.payload.message;
+            currentState.error = true;
         })
 
         //// register a customer
@@ -103,15 +114,20 @@ export const CustomerApiSlice = createSlice({
         }).addCase(registerACustomerReducer.fulfilled, (currentState, action) => {
 
             currentState.isLoading = false;
-            currentState.message = action.payload.message;
-
-            if (action.payload.state) currentState.error = false;
-            else currentState.error = true;
-
+            if (action.payload.status) {
+                toast.success("Registered successfully ,Welcome 😀");
+                GoHome();
+            }
+            else {
+                currentState.error = true;
+                toast.error(getMessagesFromObject(action.payload.message));
+            }
 
         }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
             currentState.isLoading = false;
-            currentState.error = action.payload.message;
+            toast.error(getMessagesFromObject(action.payload.message));
+            currentState.error = true;
+
         })
 
         ///// update customer account
@@ -119,15 +135,22 @@ export const CustomerApiSlice = createSlice({
             currentState.isLoading = true;
         }).addCase(updateCustomerAccountReducer.fulfilled, (currentState, action) => {
             currentState.isLoading = false;
-            currentState.message = action.payload.message;
+            if (action.payload.status) {
+                toast.success("Your account updated successfully 😀");
 
-            if (action.payload.state) document.location.reload();
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+            }
+            else {
+                currentState.error = true;
+                toast.error(action.payload.message);
+            }
 
-            if (action.payload.state) currentState.error = false;
-            else currentState.error = true;
         }).addCase(updateCustomerAccountReducer.rejected, (currentState, action) => {
             currentState.isLoading = false;
-            currentState.error = action.payload.message;
+            currentState.error = true;
+            toast.error(action.payload.message);
         })
 
         ///// change customer's password
@@ -136,14 +159,18 @@ export const CustomerApiSlice = createSlice({
         }).addCase(changePasswordReducer.fulfilled, (currentState, action) => {
 
             currentState.isLoading = false;
-            currentState.message = action.payload.message;
-
-            if (action.payload.state) currentState.error = false;
-            else currentState.error = true;
+            if (action.payload.status) {
+                toast.success("Password changed successfully 😀");
+            }
+            else {
+                currentState.error = true;
+                toast.error(action.payload.message);
+            }
 
         }).addCase(changePasswordReducer.rejected, (currentState, action) => {
             currentState.isLoading = false;
-            currentState.error = action.payload.message;
+            currentState.error = true;
+            toast.error(action.payload.message);
         })
 
 
@@ -154,14 +181,21 @@ export const CustomerApiSlice = createSlice({
             ResetLocalStorage();
 
             currentState.isLoading = false;
-            currentState.message = action.payload.message;
+            if (action.payload.status) {
+                toast.success("Your account deleted successfully 😑");
 
-            if (action.payload.state) currentState.error = false;
-            else currentState.error = true;
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000)
+            }
+            else {
+                currentState.error = true;
+                toast.error(action.payload.message);
+            }
 
         }).addCase(deleteCustomerAccountReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            currentState.error = action.payload.message;
+            currentState.error = true;
+            toast.error(action.payload.message);
         })
     }
 })

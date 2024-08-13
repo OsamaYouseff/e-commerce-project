@@ -66,57 +66,47 @@ router.get('/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
       { $match: { userId: userId, _id: orderId } },
       {
         $lookup: {
-          from: "addresses",
-          localField: "shippingAddressId",
-          foreignField: "_id",
-          as: "shippingAddress"
-        }
-      },
-      { $unwind: "$shippingAddress" },
-      { $unwind: "$items" },
-      {
-        $lookup: {
           from: "products",
           localField: "items.productId",
           foreignField: "_id",
           as: "productDetails"
         }
       },
-      { $unwind: "$productDetails" },
       {
-        $group: {
-          _id: "$_id",
-          userId: { $first: "$userId" },
-          financials: { $first: "$financials" },
-          shippingInfo: { $first: "$shippingInfo" },
-          status: { $first: "$status" },
-          paymentMethod: { $first: "$paymentMethod" },
-          createdAt: { $first: "$createdAt" },
-          shippingAddress: { $first: "$shippingAddress" },
+        $addFields: {
           items: {
-            $push: {
-              _id: "$productDetails._id",
-              title: "$productDetails.title",
-              img: "$productDetails.img",
-              priceAtOrderInCents: "$items.priceAtOrderInCents",
+            $map: {
+              input: "$items",
+              as: "item",
+              in: {
+                _id: "$$item.productId",
+                title: {
+                  $arrayElemAt: [
+                    "$productDetails.title",
+                    { $indexOfArray: ["$productDetails._id", "$$item.productId"] }
+                  ]
+                },
+                img: {
+                  $arrayElemAt: [
+                    "$productDetails.img",
+                    { $indexOfArray: ["$productDetails._id", "$$item.productId"] }
+                  ]
+                },
+                priceAtOrderInCents: "$$item.priceAtOrderInCents",
+                quantity: "$$item.quantity"
+              }
             }
           }
         }
       },
       {
         $project: {
-          _id: 1,
-          userId: 1,
           financials: 1,
           shippingInfo: 1,
+          _id: 1,
+          userId: 1,
           items: 1,
-          shippingAddress: {
-            fullAddress: 1,
-            phoneNumber: 1,
-            firstName: 1,
-            lastName: 1,
-            label: 1
-          },
+          shippingAddress: 1,
           status: 1,
           paymentMethod: 1,
           createdAt: 1
@@ -125,15 +115,14 @@ router.get('/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
     ]);
 
     if (result.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this user' });
+      return res.status(404).json({ message: 'Order not found for this user' });
     }
 
-    res.json(result);
+    res.json(result[0]);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
-
 
 //GET ALL
 router.get("/", verifyTokenAndAdmin, async (req, res) => {

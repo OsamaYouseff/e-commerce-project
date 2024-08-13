@@ -20,7 +20,7 @@ export const getCustomerOrders = async () => {
     try {
         const response = await axios.request(config);
 
-        // console.log("XXXXXXXXXXXXX : ", response.data[0].items)
+        console.log("XXXXXXXXXXXXX : ", response.data[0].items)
 
         if (response.data[0].items.length == 0) return response.data[0]; //// order is empty
         else return response.data[0];
@@ -49,10 +49,12 @@ export const getCustomerOrdersMinimized = async () => {
 
         // console.log("XXXXXXXXXXXXX : ", response.data)
 
-        return response.data;
+        return { status: true, response: response.data };
 
     } catch (error) {
         console.log('Error Fetching Order Data : ', error);
+        return { status: false, message: "Failed to fetch your order items 😢" };
+
         // throw error;
     }
 };
@@ -73,13 +75,13 @@ export const getSpecificOrderForCustomerDetailed = async (orderId) => {
     try {
         const response = await axios.request(config);
 
-        // console.log("XXXXXXXXXXXXX : ", response.data[0])
+        // console.log("XXXXXXXXXXXXX : ", response.data)
 
-        return { status: true, order: response.data[0] };
+        return { status: true, order: response.data };
 
     } catch (error) {
         console.log('Error Fetching order Data : ', error);
-        return { status: false, message: "Failed to fetch order items" };
+        return { status: false, message: "Failed to get your order information 😢" };
     }
 };
 

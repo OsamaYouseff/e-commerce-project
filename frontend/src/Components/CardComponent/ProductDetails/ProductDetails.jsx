@@ -15,7 +15,7 @@ import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 
 ///// redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUpdateProductInCartReducer } from "../../../redux/CartSlice/ApiCartSlice.js";
 import {
     addProductToWishlistReducer,
@@ -99,8 +99,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const productImg = PreviewedProduct?.img;
 
     const dispatch = useDispatch();
-
     const [inWishlist, setInWishlist] = useState(false);
+    const error = useSelector((state) => state.WishlistApiRequest.error);
 
     const handleClickAddToCart = () => {
         if (IsUserLoggedIn()) {
@@ -122,7 +122,9 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
             await dispatch(
                 addProductToWishlistReducer({ productId: PreviewedProduct._id })
             );
-            setInWishlist(true);
+
+            if (!error)
+                setInWishlist(true);
         } else {
             alert("Adding to local state soon");
         }
@@ -130,11 +132,12 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const handelRemoveFromWishlist = async () => {
         if (IsUserLoggedIn()) {
             await dispatch(
-                removeProductFromWishlistReducer({
-                    productId: PreviewedProduct._id,
-                })
+                removeProductFromWishlistReducer({ productId: PreviewedProduct._id })
             );
-            setInWishlist(false);
+
+            if (!error)
+                setInWishlist(false);
+
         } else {
             alert("Adding to local state soon");
         }

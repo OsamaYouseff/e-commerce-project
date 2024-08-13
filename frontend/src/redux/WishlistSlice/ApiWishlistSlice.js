@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { addProductToWishlist, getCustomerWishlist, removeProductFromWishlist } from '../../API/WishlistAPIFunctions';
+import toast from 'react-hot-toast';
 
 
 export const getCustomerWishlistReducer = createAsyncThunk("getCustomerWishlistAPI/sendRequest", async () => {
@@ -54,13 +55,18 @@ export const WishlistApiSlice = createSlice({
             })
             .addCase(getCustomerWishlistReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload;
+
+                if (action.payload.status) {
+                    currentState.response = action.payload.response;
+                } else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
             })
-            .addCase(getCustomerWishlistReducer.rejected, (currentState) => {
+            .addCase(getCustomerWishlistReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
                 currentState.error = true;
-                currentState.message = "Failed to Get Your wishlist.";
-
+                toast.error(action.payload.message);
             })
 
 
@@ -71,18 +77,22 @@ export const WishlistApiSlice = createSlice({
             .addCase(addProductToWishlistReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
 
-                if (action.payload.state)
+                if (action.payload.status) {
+                    toast.success(action.payload.message);
                     currentState.response = action.payload.products;
-                else
+                }
+                else {
                     currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
                 currentState.message = action.payload.message;
 
             })
             .addCase(addProductToWishlistReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.message = action.error.message;
                 currentState.error = true;
+                toast.error(action.payload.message);
             })
 
 
@@ -93,17 +103,20 @@ export const WishlistApiSlice = createSlice({
             .addCase(removeProductFromWishlistReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
 
-                if (action.payload.state)
+                if (action.payload.status) {
+                    toast.success(action.payload.message);
                     currentState.response = action.payload.products;
-                else
+                }
+                else {
                     currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
-                currentState.message = action.payload.message;
             })
             .addCase(removeProductFromWishlistReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.message = action.error.message;
                 currentState.error = true;
+                toast.error(action.payload.message);
             });
     }
 });

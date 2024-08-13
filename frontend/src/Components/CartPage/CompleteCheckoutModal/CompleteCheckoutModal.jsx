@@ -62,22 +62,28 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             };
         });
 
+        const filteredShippingAddress = {
+            fullAddress: selectedAddress.fullAddress,
+            phoneNumber: selectedAddress.phoneNumber,
+            firstName: selectedAddress.firstName,
+            lastName: selectedAddress.lastName,
+            label: selectedAddress.label,
+        }
+
         const orderData = {
             userId: customerId,
             items: filteredProducts,
             financials: checkoutInfo.financials,
-            shippingAddressId: selectedAddress._id,
+            shippingAddress: filteredShippingAddress,
             paymentMethod: paymentMethod,
             shippingInfo: {
                 estimatedDeliveryDate: estimatedDeliveryDate
             },
         };
 
-
-        // console.log(orderData)
+        console.log(orderData)
 
         const orderValidationRes = isOrderInfoValid(orderData)
-
 
         if (orderValidationRes.length === 0) {
             IsUserLoggedIn()
@@ -88,7 +94,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             alert(getErrorsMessage(orderValidationRes))
         }
 
-        // handleCloseCheckoutModal()
+        handleCloseCheckoutModal()
     };
 
 
@@ -357,4 +363,5 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
         </Modal>
     );
 }
+
 

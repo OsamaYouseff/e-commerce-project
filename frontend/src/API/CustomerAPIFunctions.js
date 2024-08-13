@@ -23,11 +23,11 @@ export const customerLogin = async (customerData, rememberMe) => {
         if (rememberMe) StoreDataAtLocalStorage('localStorage', response.data);
         else StoreDataAtLocalStorage('sessionStorage', response.data);
 
-        return { state: true, message: "Logged In Successfully" };
+        return { status: true, message: "Logged In Successfully" };
 
     } catch (error) {
         console.log('Error fetching customers:', error.response.data.message);
-        return { state: false, message: error.response.data.message };
+        return { status: false, message: error.response.data.message };
     }
 };
 
@@ -53,11 +53,11 @@ export const registerACustomer = async (customerFromData) => {
 
         StoreDataAtLocalStorage('localStorage', response.data);
 
-        return { state: true, message: "Signed Up Successfully" };
+        return { status: true, message: "Signed Up Successfully" };
 
     } catch (error) {
         console.log('Error creating customer : ', error.response.data);
-        return { state: false, message: error.response.data };
+        return { status: false, message: error.response.data };
     }
 };
 
@@ -89,20 +89,18 @@ export const updateCustomerAccount = async (customerFromData) => {
 
         // console.log('Customer updated successfully : ', response.data);
 
-        return { state: true, message: "Customer updated successfully" };
+        return { status: true, message: "Customer updated successfully" };
 
     } catch (error) {
         console.log('Error updating customer : ', error);
-        return { state: false, message: error.response.data };
+        return { status: false, message: "Failed to update your account information" };
 
     }
 
 };
 
 export const changeCustomerPassword = async (customerFromData) => {
-
     const { customerId, accessToken } = GetTokenAndUserId();
-
 
     const config = {
         method: 'post',
@@ -118,13 +116,13 @@ export const changeCustomerPassword = async (customerFromData) => {
     try {
         const response = await axios.request(config);
         // console.log('password changed successfully : ', response.data.message);
-        return { state: true, message: response.data.message };
+        return { status: true, message: response.data.message };
 
     } catch (error) {
 
         // console.log('Error : ', error.response.data.message);
         // console.error('Error changing password : ', error);
-        return { state: false, message: error.response.data.message }
+        return { status: false, message: error.response.data.message }
     }
 
 };
@@ -146,11 +144,11 @@ export const deleteCustomerAccount = async () => {
     try {
         const response = await axios.request(config);
         // console.log('Customer deleted successfully:', response.data);
-        return { state: true, message: response.data };
+        return { status: true, message: response.data };
 
     } catch (error) {
-        // console.log('Error deleting customer:', error.response.data.error);
-        return { state: true, message: error.response.data.error };
+        console.log('Error deleting customer:', error.response.data.error);
+        return { status: false, message: "Failed to delete your account 😅" };
 
     }
 };

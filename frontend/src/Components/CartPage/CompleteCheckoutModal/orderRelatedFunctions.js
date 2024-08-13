@@ -37,7 +37,7 @@ export function isOrderInfoValid(orderData) {
         if (!Number.isInteger(financials.shippingCostInCents) || financials.shippingCostInCents < 0) {
             errors.push('Invalid shippingCostInCents');
         }
-        if (typeof financials.totalAmountInCents !== 'number' || financials.totalAmountInCents < 0) {
+        if (!Number.isInteger(financials.totalAmountInCents) || financials.totalAmountInCents < 0) {
             errors.push('Invalid totalAmountInCents');
         }
         if (!financials.currency || typeof financials.currency !== 'string') {
@@ -45,9 +45,26 @@ export function isOrderInfoValid(orderData) {
         }
     }
 
-    // Check shippingAddressId
-    if (!orderData.shippingAddressId || typeof orderData.shippingAddressId !== 'string') {
-        errors.push('Invalid or missing shippingAddressId');
+    // Check shippingAddress
+    const shippingAddress = orderData.shippingAddress;
+    if (!shippingAddress || typeof shippingAddress !== 'object') {
+        errors.push('Invalid or missing shippingAddress');
+    } else {
+        if (!shippingAddress.fullAddress || typeof shippingAddress.fullAddress !== 'string') {
+            errors.push('Invalid or missing fullAddress in shippingAddress');
+        }
+        if (!shippingAddress.phoneNumber || typeof shippingAddress.phoneNumber !== 'string') {
+            errors.push('Invalid or missing phoneNumber in shippingAddress');
+        }
+        if (!shippingAddress.firstName || typeof shippingAddress.firstName !== 'string') {
+            errors.push('Invalid or missing firstName in shippingAddress');
+        }
+        if (!shippingAddress.lastName || typeof shippingAddress.lastName !== 'string') {
+            errors.push('Invalid or missing lastName in shippingAddress');
+        }
+        if (!shippingAddress.label || typeof shippingAddress.label !== 'string') {
+            errors.push('Invalid or missing label in shippingAddress');
+        }
     }
 
     // Check paymentMethod
@@ -65,9 +82,8 @@ export function isOrderInfoValid(orderData) {
     }
 
     return errors;
-
-
 }
+
 export function getErrorsMessage(errors) {
     let message = '';
     if (errors.length > 0) {

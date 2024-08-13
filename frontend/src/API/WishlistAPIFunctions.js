@@ -21,13 +21,19 @@ export const getCustomerWishlist = async () => {
     try {
         const response = await axios.request(config);
 
-        // console.log("XXXXXXXXXXXXX : ", response.data)
+        console.log("XXXXXXXXXXXXX : ", response.data)
 
-        if (response.data.products.length == 0) return response.data; //// Wishlist is empty
-        else return response.data;
+        return { status: true, response: response.data }  //// Wishlist is empty
+
+        // if (response.data.products.length == 0)
+        // return response.data; //// Wishlist is empty
+        // else return response.data;
 
     } catch (error) {
-        console.console.log('Error Fetching Wishlist Data : ', error);
+        console.log('Error Fetching Wishlist Data : ', error);
+
+        return { status: false, message: "Failed to get your wishlist items😢" };
+
         // throw error;
     }
 };
@@ -50,11 +56,11 @@ export const addProductToWishlist = async (addedProduct) => {
     try {
         const response = await axios.request(config);
 
-        return { state: true, products: response.data, message: "Product Added Successfully To Wishlist." };
+        return { status: true, products: response.data, message: "This product added successfully to wishlist.😎" };
 
     } catch (error) {
-        console.log('Error Adding Product To Wishlist : ', error.response.data.message);
-        return { state: false, message: error.response.data.message };
+        console.log('Error Adding Product To Wishlist : ', error);
+        return { status: false, message: "Failed to add product to wishlist 😢" };
 
     }
 
@@ -83,17 +89,51 @@ export const removeProductFromWishlist = async (removeProduct) => {
 
         // console.log(" XXXXXX : ", response.data)
 
-        return { state: true, products: response.data, message: "Product Removed Successfully From Wishlist." };
+        return { status: true, products: response.data, message: "this product removed successfully from wishlist. 😎" };
 
     } catch (error) {
-        console.log('Error Removing Product From Wishlist : ', error.response.data.message);
-        return { state: false, message: error.response.data.message };
+        console.log('Error Removing Product From Wishlist : ', error);
+        return { status: false, message: "Failed to remove product from wishlist 😢" };
 
     }
 
 
 }
 
+export const createCustomerWishlist = async () => {
+
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let data = JSON.stringify({
+        "userId": customerId,
+        "products": []
+    });
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/wishlist`,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        },
+        data: data,
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log(" XXXXXX : ", response.data)
+
+        return response.data;
+
+    } catch (error) {
+        console.error('Error Creating Customer Cart : ', error.response.data.message);
+        throw error;
+    }
+
+
+}
 
 export const isProductInWishlist = async (productId) => {
 
@@ -124,3 +164,5 @@ export const isProductInWishlist = async (productId) => {
 
 
 }
+
+

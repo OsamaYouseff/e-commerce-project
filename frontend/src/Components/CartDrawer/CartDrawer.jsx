@@ -28,6 +28,7 @@ import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 
+
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
     const theme = useTheme(ColorModeContext);
@@ -37,6 +38,7 @@ export default function CartDrawer() {
     const customerCart = useSelector((state) => state.CartApiRequest.response);
     const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
     const error = useSelector((state) => state.CartApiRequest.error);
+    const message = useSelector((state) => state.CartApiRequest.message);
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);

@@ -25,10 +25,10 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
 
     const handleCheckoutCart = () => {
         handelCheckout({
-            subtotalInCents: totalPrice * 100,
-            discount: discount * 100,
-            shippingCostInCents: shippingCalc * 100,
-            totalAmountInCents: finalPrice * 100,
+            subtotalInCents: Math.round(totalPrice * 100),
+            discount: Math.round(discount * 100),
+            shippingCostInCents: Math.round(shippingCalc * 100),
+            totalAmountInCents: Math.round(finalPrice * 100),
             currency: "USD",
         });
     };

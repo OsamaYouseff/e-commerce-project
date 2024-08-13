@@ -15,8 +15,12 @@ const OrderSchema = new mongoose.Schema(
       totalAmountInCents: { type: Number, required: true },
       currency: { type: String, required: true, default: 'USD' },
     },
-    shippingAddressId: {
-      type: mongoose.Schema.Types.ObjectId, ref: 'Address', required: true
+    shippingAddress: {
+      fullAddress: { type: String, required: true },
+      phoneNumber: { type: String, required: true },
+      firstName: { type: String, required: true },
+      lastName: { type: String, required: true },
+      label: { type: String, enum: ['Home', 'Work'], default: null },
     },
     status: {
       type: String,

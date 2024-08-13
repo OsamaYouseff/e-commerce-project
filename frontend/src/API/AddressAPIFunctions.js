@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-useless-catch */
 import axios from "axios";
 import { GetTokenAndUserId } from "../General/GeneralFunctions";
@@ -45,11 +46,11 @@ export const deleteCustomerAddress = async (addressId) => {
     try {
         const response = await axios.request(config);
 
-        return response.data;
+        return { status: true, ...response.data };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error);
-        throw error;
+        return { status: false, message: "Failed to delete address." };
     }
 };
 
@@ -69,7 +70,7 @@ export const getCustomerAddress = async (addressId) => {
     try {
         const response = await axios.request(config);
 
-        return { state: true, address: response.data };
+        return { status: true, address: response.data, message: "Address changed successfully." };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error);
@@ -96,11 +97,11 @@ export const addNewCustomerAddress = async (addressData) => {
     try {
         const response = await axios.request(config);
 
-        return { state: true, message: "Address Added Successfully." };
+        return { status: true, message: "Address Added Successfully." };
 
     } catch (error) {
-        console.log('Error Customer Addresses Data : ', error.response.data.message);
-        return { state: false, message: error.response.data.message };
+        console.log('Error Customer Addresses Data : ', error);
+        return { status: false, message: "Failed to add this address😢 make sure all fields is valid" };
     }
 };
 
@@ -127,13 +128,13 @@ export const updateCustomerAddress = async (addressData, addressId) => {
     try {
         const response = await axios.request(config);
 
-        console.log(response)
+        // console.log(response)
 
-        return { state: true, message: "Address Updated Successfully." };
+        return { status: true, message: "Address Updated Successfully." };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error.response.data.message);
-        return { state: false, message: error.response.data.message };
+        return { status: false, message: "Failed to update this address" };
     }
 };
 
@@ -160,11 +161,11 @@ export const setAddressDefault = async (addressId) => {
 
         // console.log(response)
 
-        return { state: true, message: "Address set as default Successfully.", updatedAddresses: response.data.addresses };
+        return { status: true, message: "Address set as default Successfully.", updatedAddresses: response.data.addresses };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error);
-        return { state: false, message: "Failed to set address as default" };
+        return { status: false, message: "Failed to set address as default" };
     }
 };
 
@@ -185,17 +186,11 @@ export const getCustomerDefaultAddress = async () => {
 
         // console.log(response.data)
 
-        return { state: true, message: "Default address Fetched Successfully.", defaultAddress: response.data };
+        return { status: true, message: "Default address Fetched Successfully.", defaultAddress: response.data };
 
     } catch (error) {
         console.log('Error Customer Addresses Data : ', error);
-        return { state: false, message: "Failed to fetch default address." };
+        return { status: false, message: "Failed to fetch default address." };
     }
 };
-
-
-
-
-
-
 
