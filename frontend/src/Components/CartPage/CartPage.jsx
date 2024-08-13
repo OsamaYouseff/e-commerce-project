@@ -13,7 +13,7 @@ import CheckoutPanel from "./CheckoutPanel";
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 import CompleteCheckoutModal from "./CompleteCheckoutModal/CompleteCheckoutModal";
-import { SomeThingWrong } from "../../General/GeneralComponents";
+import { SomeThingWrong } from "../GenericComponents/SomeThingWrong/SomeThingWrong";
 import ItemComponent from "../CartDrawer/ItemComponent/ItemComponent";
 
 //// router

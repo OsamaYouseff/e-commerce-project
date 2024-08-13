@@ -16,7 +16,7 @@ import { getCustomerWishlistReducer } from "../../../redux/WishlistSlice/ApiWish
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import ProductCardComponentInWishlist from "./ProductCardComponentInWishlist";
-import { SomeThingWrong } from "../../../General/GeneralComponents";
+import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 
 const WishlistComponent = () => {
     const theme = useTheme(ColorModeContext);

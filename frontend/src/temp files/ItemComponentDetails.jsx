@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Stack, Box, Typography } from "@mui/material";
-import { ColorModeContext } from "../../Theme/theme";
+import { ColorModeContext } from "../Theme/theme.jsx";
 import { useTheme } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,8 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     addUpdateProductInCartReducer,
     removeProductFromCartReducer,
-} from "../../redux/CartSlice/ApiCartSlice.js";
-import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
+} from "../redux/CartSlice/ApiCartSlice.js";
+import { IsUserLoggedIn } from "../General/GeneralFunctions.js";
 import { useState } from "react";
 
 const ItemComponentDetails = ({ item, quantity }) => {

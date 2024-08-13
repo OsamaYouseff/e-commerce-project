@@ -1,5 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
 
+/* @font-face {
+    font-family: "CascadiaCode";
+    src: url("../public/fonts/CascadiaCode-Light.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-ExtraLight.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-Bold.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-BoldItalic.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCodeNF-Regular.ttf") format("ttf");
+} */
+
 /* scroll bar styles */
 
 /* for Firefox */
@@ -33,7 +42,8 @@
 /* scroll bar styles */
 
 * {
-    font-family: "Open Sans", sans-serif;
+    /* font-family: "Cascadia" !important; */
+    font-family: "Open Sans" !important;
 }
 
 .border {

@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
-import LocalGroceryStoreOutlinedIcon from "@mui/icons-material/LocalGroceryStoreOutlined";
 import { styled, alpha, useTheme } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
@@ -95,7 +94,7 @@ const MidHeader = function () {
     let customerData = GetUserInfo();
 
     return (
-        <Container maxWidth="xl" sx={{ marginTop: "15px" }}>
+        <Container maxWidth="xl" sx={{ marginTop: "8px" }}>
             <Stack
                 className=""
                 sx={{
@@ -117,9 +116,8 @@ const MidHeader = function () {
                             color: theme.palette.text.primary,
                         }}
                     >
-                        <LocalGroceryStoreOutlinedIcon
-                            sx={{ fontSize: "28px" }}
-                        />
+
+                        <img style={{ width: "38px" }} src="../../../../public/images/shop-logo.png" alt="e-commerce website logo" />
                         <Typography
                             className="go-home"
                             variant="body"
@@ -130,7 +128,7 @@ const MidHeader = function () {
                                 textDecoration: "none",
                             }}
                         >
-                            E-Commerce
+                            EVO MARKET
                         </Typography>
                     </Stack>
                 </a>

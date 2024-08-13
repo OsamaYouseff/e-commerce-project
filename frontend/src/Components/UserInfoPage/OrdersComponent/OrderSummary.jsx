@@ -20,7 +20,7 @@ import {
     GetStateColor,
     IsUserLoggedIn,
 } from "../../../General/GeneralFunctions";
-import { SomeThingWrong } from "../../../General/GeneralComponents";
+import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 
 const orderChildrenStyle = {
     fontSize: {

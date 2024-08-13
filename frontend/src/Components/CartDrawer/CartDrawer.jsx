@@ -17,8 +17,9 @@ import { useEffect, useState } from "react";
 // Custom components
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 import ItemComponent from "./ItemComponent/ItemComponent";
-import { SomeThingWrong } from "../../General/GeneralComponents";
+import { SomeThingWrong } from "../GenericComponents/SomeThingWrong/SomeThingWrong";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
+
 
 /// General Vars & Functions
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";

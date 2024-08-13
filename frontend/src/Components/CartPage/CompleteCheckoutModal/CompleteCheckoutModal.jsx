@@ -16,7 +16,7 @@ import AddCardRoundedIcon from "@mui/icons-material/AddCardRounded";
 // import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCardMin from "./AddressCardMin";
 import ProductPreviewInCheckout from "./ProductPreviewInCheckout";
-import { SomeThingWrong } from "../../../General/GeneralComponents";
+import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 import SelectAddressSection from "./SelectAddressSection";
 
 //// General Vars & Functions

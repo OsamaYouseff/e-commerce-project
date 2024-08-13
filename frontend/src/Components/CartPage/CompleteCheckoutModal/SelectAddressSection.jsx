@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 /// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCardMin from "./AddressCardMin";
-import { SomeThingWrong } from "../../../General/GeneralComponents";
+import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 
 //// General Vars & Functions
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
