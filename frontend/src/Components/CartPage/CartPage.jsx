@@ -13,15 +13,19 @@ import CheckoutPanel from "./CheckoutPanel";
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 import CompleteCheckoutModal from "./CompleteCheckoutModal/CompleteCheckoutModal";
+import { SomeThingWrong } from "../../General/GeneralComponents";
+import ItemComponent from "../CartDrawer/ItemComponent/ItemComponent";
+
+//// router
+import { Link } from "react-router-dom";
+
+//// General Vars & Functions
+import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 //// redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
-import { IsUserLoggedIn } from "../../General/GeneralFunctions";
-import ItemComponent from "../CartDrawer/ItemComponent";
-import { Link } from "react-router-dom";
-import { SomeThingWrong } from "../../General/GeneralComponents";
-import { clearCart } from "../../API/CartAPIFunctions";
+// import { clearCart } from "../../API/CartAPIFunctions";
 
 let checkoutInfo;
 
@@ -53,6 +57,11 @@ const CartPage = () => {
     };
 
     const handelCheckout = (financialData) => {
+        if (customerCart.products.length === 0) {
+            alert("You have to add some products to cart to checkout them.")
+            return;
+        }
+
         checkoutInfo = {
             products: customerCart.products,
             financials: financialData,
@@ -91,6 +100,7 @@ const CartPage = () => {
                 </Box>
             );
         }
+
         return customerCart.products.map((item) => (
             <ItemComponent
                 key={item._id}
@@ -218,12 +228,7 @@ const CartPage = () => {
                                 borderRadius: "6px",
                             }}
                         >
-                            <Stack
-                                direction="row"
-                                p={1}
-                                gap={2}
-                                mb={2}
-                                mt={1}
+                            <Stack direction="row" p={1} mb={2} mt={1}
                                 sx={{
                                     boxShadow: 1,
                                     borderRadius: "6px",
@@ -233,8 +238,9 @@ const CartPage = () => {
                                 <span
                                     style={{
                                         fontSize: "19px",
-                                        width: "33%",
+                                        width: "35%",
                                         fontWeight: "bold",
+                                        textAlign: "center"
                                     }}
                                 >
                                     Product
@@ -242,8 +248,10 @@ const CartPage = () => {
                                 <span
                                     style={{
                                         fontSize: "19px",
-                                        width: "9%",
+                                        width: "14%",
                                         fontWeight: "bold",
+                                        textAlign: "center"
+
                                     }}
                                 >
                                     Price
@@ -251,7 +259,7 @@ const CartPage = () => {
                                 <span
                                     style={{
                                         fontSize: "19px",
-                                        width: "20%",
+                                        width: "29%",
                                         fontWeight: "bold",
                                         textAlign: "center",
                                     }}
@@ -261,7 +269,7 @@ const CartPage = () => {
                                 <span
                                     style={{
                                         fontSize: "19px",
-                                        width: "32%",
+                                        width: "18%",
                                         fontWeight: "bold",
                                         textAlign: "center",
                                     }}

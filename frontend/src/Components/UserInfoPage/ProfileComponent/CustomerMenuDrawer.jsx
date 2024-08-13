@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
@@ -32,8 +33,8 @@ export default function CustomerMenuDrawer() {
                 overflow: "auto",
             }}
             role="presentation"
-            // onClick={toggleDrawer(anchor, false)}
-            // onKeyDown={toggleDrawer(anchor, false)}
+        // onClick={toggleDrawer(anchor, false)}
+        // onKeyDown={toggleDrawer(anchor, false)}
         >
             {/* Close Button */}
             <Button
@@ -50,20 +51,7 @@ export default function CustomerMenuDrawer() {
             >
                 <CloseRoundedIcon
                     sx={{
-                        fontSize: "45px",
-                        width: "35px",
-                        height: "35px",
-                        cursor: "pointer",
-                        borderRadius: "50%",
-                        p: 0.2,
-                        color: theme.palette.text.primary,
-                        border: `2px solid ${theme.palette.text.primary}`,
-                        "&:hover": {
-                            rotate: "180deg",
-                            color: "#ff6e6e",
-                            borderColor: "#ff6e6e",
-                        },
-                        transition: "0.35s",
+                        fontSize: "45px", width: "35px", height: "35px", cursor: "pointer", borderRadius: "50%", p: 0.2, color: theme.palette.text.primary, border: `2px solid ${theme.palette.text.primary}`, "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", }, transition: "0.35s",
                     }}
                     onClick={toggleDrawer("left", false)}
                 />

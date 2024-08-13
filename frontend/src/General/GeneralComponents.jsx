@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Typography } from "@mui/material";
 
-export const SomeThingWrong = ({ minHeight, errorMsg }) => {
+export const SomeThingWrong = ({ minHeight, errorMsg, additionalElements }) => {
     return (
         <Box
             className="flex-column-center"
-            sx={{ minHeight: minHeight, gap: "15px" }}
+            sx={{ minHeight: minHeight, gap: "15px", width: "100%" }}
         >
-            <Typography variant="h6">{errorMsg}</Typography>
+            <Typography variant="h6" sx={{ color: "#ff0057", fontWeight: "bold" }}>{errorMsg}</Typography>
             <Button
                 variant="contained"
                 onClick={() => window.location.reload()}
@@ -15,6 +15,8 @@ export const SomeThingWrong = ({ minHeight, errorMsg }) => {
             >
                 Reload Page
             </Button>
+
+            {additionalElements}
         </Box>
     );
 };

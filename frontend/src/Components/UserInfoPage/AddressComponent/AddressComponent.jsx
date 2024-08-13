@@ -2,16 +2,18 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 
-// custom component
+//// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCard from "./AddressCard";
 
 //// hooks
 import { useEffect } from "react";
+
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerAddressesReducer } from "../../../redux/AddressSlice/ApiAddressSlice.js";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
+
 
 const AddressComponent = () => {
     const dispatch = useDispatch();
@@ -40,7 +42,14 @@ const AddressComponent = () => {
                 );
             });
         } else {
-            return <Box>You do not have any addresses</Box>;
+            return (
+                <Box
+                    className="flex-column-center"
+                    sx={{ minHeight: "40vh", gap: "15px", width: "100%" }}
+                >
+                    <Typography variant="h5">You do not have any address yet 🤷‍♂️</Typography>
+                </Box>
+            );
         }
     };
 
@@ -88,11 +97,8 @@ const AddressComponent = () => {
                     // maxHeight: { xs: "auto", md: "70vh", lg: "60vh" },
                 }}
             >
-                {/* Address Card */}
                 {isLoading ? <LoaderComponent /> : showAddresses()}
-                {/* {<LoaderComponent />} */}
 
-                {/*== Address Card ==*/}
             </Stack>
             {/*== Addresses List ==*/}
         </Stack>

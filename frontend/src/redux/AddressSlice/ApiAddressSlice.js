@@ -1,13 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-    deleteCustomerAddress,
-    getCustomerAddresses,
-    getCustomerAddress,
-    addNewCustomerAddress,
-    updateCustomerAddress,
-    setAddressDefault,
-    getCustomerDefaultAddress
+    deleteCustomerAddress, getCustomerAddresses, getCustomerAddress, addNewCustomerAddress,
+    updateCustomerAddress, setAddressDefault, getCustomerDefaultAddress
 } from "../../API/AddressAPIFunctions";
+
 // import axios from 'axios'
 
 export const getCustomerAddressesReducer = createAsyncThunk("getCustomerAddressesAPI/sendRequest", async () => {

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { Box, Stack, Typography, Button } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 
 import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@emotion/react";

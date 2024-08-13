@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { Stack, Typography } from "@mui/material";
-import ItemComponent from "./ItemComponent";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { useTheme, styled } from "@mui/material/styles";
 import { ColorModeContext } from "../../Theme/theme";
@@ -17,13 +16,16 @@ import { useEffect, useState } from "react";
 
 // Custom components
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent";
+import ItemComponent from "./ItemComponent/ItemComponent";
+import { SomeThingWrong } from "../../General/GeneralComponents";
+import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
+
+/// General Vars & Functions
+import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
-import { IsUserLoggedIn } from "../../General/GeneralFunctions";
-import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
-import { SomeThingWrong } from "../../General/GeneralComponents";
 
 export default function CartDrawer() {
     const [state, setState] = useState({ right: false });
@@ -38,10 +40,7 @@ export default function CartDrawer() {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({
-        id: 2,
-        attributes: {},
-    });
+    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {}, });
 
     const handleSetPreviewedProduct = (newValue) => {
         setPreviewedProduct(newValue);
@@ -128,38 +127,23 @@ export default function CartDrawer() {
                 overflow: "auto",
             }}
             role="presentation"
-            // onClick={toggleDrawer(anchor, false)}
-            // onKeyDown={toggleDrawer(anchor, false)}
+        // onClick={toggleDrawer(anchor, false)}
+        // onKeyDown={toggleDrawer(anchor, false)}
         >
             {/* Close Button */}
             <Button
                 size="small"
                 sx={{
-                    position: "absolute",
-                    right: 0,
-                    top: -10,
-                    color: theme.palette.text.primary,
-                    marginTop: "15px",
-                    zIndex: 1,
-                    "&:hover": { bgcolor: "transparent" },
+                    position: "absolute", right: 0, top: -10, color: theme.palette.text.primary, marginTop: "15px", zIndex: 1, "&:hover": { bgcolor: "transparent" },
                 }}
                 onClick={toggleDrawer("right", false)}
             >
                 <CloseRoundedIcon
                     sx={{
-                        fontSize: "45px",
-                        width: "35px",
-                        height: "35px",
-                        cursor: "pointer",
-                        borderRadius: "50%",
-                        p: 0.2,
-                        color: theme.palette.text.primary,
+                        fontSize: "45px", width: "35px", height: "35px", cursor: "pointer",
+                        borderRadius: "50%", p: 0.2, color: theme.palette.text.primary,
                         border: `2px solid ${theme.palette.text.primary}`,
-                        "&:hover": {
-                            rotate: "180deg",
-                            color: "#ff6e6e",
-                            borderColor: "#ff6e6e",
-                        },
+                        "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", },
                         transition: "0.35s",
                     }}
                     onClick={toggleDrawer("right", false)}

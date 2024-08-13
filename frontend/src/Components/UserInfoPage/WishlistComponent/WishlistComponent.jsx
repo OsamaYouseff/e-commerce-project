@@ -16,6 +16,7 @@ import { getCustomerWishlistReducer } from "../../../redux/WishlistSlice/ApiWish
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import ProductCardComponentInWishlist from "./ProductCardComponentInWishlist";
+import { SomeThingWrong } from "../../../General/GeneralComponents";
 
 const WishlistComponent = () => {
     const theme = useTheme(ColorModeContext);
@@ -67,21 +68,11 @@ const WishlistComponent = () => {
     const handelShowWishlistProducts = () => {
         if (error) {
             return (
-                <Box
-                    className="flex-column-center"
-                    sx={{ minHeight: "50vh", gap: "15px", width: "100%" }}
-                >
-                    <Typography variant="h6">
-                        There is something wrong 😢
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        onClick={() => window.location.reload()}
-                        sx={{ fontWeight: "bold" }}
-                    >
-                        Reload Page
-                    </Button>
-                </Box>
+
+                <SomeThingWrong minHeight={"50vh"}
+                    errorMsg={
+                        " There is something wrong 😢."
+                    } />
             );
         } else if (customerWishlist.products.length === 0) {
             return (

@@ -80,11 +80,8 @@ export const getSpecificOrderForCustomerDetailed = async (orderId) => {
     } catch (error) {
         console.log('Error Fetching order Data : ', error);
         return { status: false, message: "Failed to fetch order items" };
-
-        // throw error;
     }
 };
-
 
 export const createCustomerOrder = async (orderData) => {
 
@@ -110,73 +107,6 @@ export const createCustomerOrder = async (orderData) => {
 
     } catch (error) {
         console.log('Error Fetching order Data : ', error);
-        // throw error;
-        return { status: true, message: "Failed to place your order try again later." };
-
+        return { status: false, message: "Failed to place your order please confirm your address and payment method and try again later." };
     }
 };
-
-
-
-
-
-
-
-// export const addUpdateProductInOrder = async (addedProduct) => {
-
-//     const { customerId, accessToken } = GetTokenAndUserId();
-
-//     let config = {
-//         method: 'post',
-//         maxBodyLength: Infinity,
-//         url: `${baseURL}/api/orders/add_update-product/${customerId}`,
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${accessToken}`
-//         },
-//         data: addedProduct
-//     };
-
-//     try {
-//         const response = await axios.request(config);
-
-//         return response.data;
-
-//     } catch (error) {
-//         console.error('Error Updating Product To order : ', error);
-//         throw error;
-//     }
-
-
-// }
-
-// export const removeProductFromOrder = async (removeProduct) => {
-
-//     const { customerId, accessToken } = GetTokenAndUserId();
-
-
-//     let config = {
-//         method: 'post',
-//         maxBodyLength: Infinity,
-//         url: `${baseURL}/api/orders/remove-product/${customerId}`,
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'Authorization': `Bearer ${accessToken}`
-//         },
-//         data: removeProduct
-//     };
-
-//     try {
-//         const response = await axios.request(config);
-
-//         // console.log(" XXXXXX : ", response.data)
-
-//         return response.data;
-
-//     } catch (error) {
-//         console.error('Error Removing Product From order : ', error);
-//         throw error;
-//     }
-
-
-// }

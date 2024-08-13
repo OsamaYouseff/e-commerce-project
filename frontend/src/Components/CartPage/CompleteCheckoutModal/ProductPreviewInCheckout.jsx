@@ -92,7 +92,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                             Get it by{" "}
                             <span
                                 style={{
-                                    color: "#abff67",
+                                    color: theme.palette.specialText.main,
                                 }}
                             >
                                 {FormatDate(estimatedDeliveryDate)}
@@ -101,7 +101,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     </Box>
                 </Box>
             </Box>
-        </Stack>
+        </Stack >
     )
 }
 

@@ -183,3 +183,7 @@ function GetCouponDiscount(couponCode) {
     }
 
 }
+
+export function GetEstimatedDeliveryDate() {
+    return new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
+}

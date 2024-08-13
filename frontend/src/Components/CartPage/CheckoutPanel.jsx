@@ -5,20 +5,15 @@ import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../Theme/theme";
 import { Box, Stack } from "@mui/system";
 import { Button, Typography } from "@mui/material";
-import {
-    CalcTotalCartPrice,
-    isDiscountValid,
-} from "../../General/GeneralFunctions";
+import { CalcTotalCartPrice, isDiscountValid } from "../../General/GeneralFunctions";
 
 const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
     const theme = useTheme(ColorModeContext);
 
     const [discountCode, setDiscountCode] = useState("");
-
-    let { finalPrice, shippingCost, discount, shippingCalc } =
-        CalcTotalCartPrice(totalPrice, discountCode);
-
+    let { finalPrice, shippingCost, discount, shippingCalc } = CalcTotalCartPrice(totalPrice, discountCode);
     const [isCouponFieldDisabled, setIsCouponFieldDisabled] = useState(false);
+
 
     const handelChangeCouponCode = () => {
         if (isDiscountValid(discountCode)) setIsCouponFieldDisabled(true);
@@ -38,9 +33,11 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
         });
     };
 
+
     return (
         <Box
             sx={{
+                height: "100%",
                 width: { xs: "100%", md: "30%" },
                 borderRadius: "15px",
                 p: 2,

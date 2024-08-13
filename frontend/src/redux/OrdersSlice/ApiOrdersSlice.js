@@ -26,15 +26,15 @@ export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderA
     const response = await createCustomerOrder(orderData);
 
     console.log(response)
-    console.log(response.status)
 
     if (response.status) {
 
         await clearCart()
-
-        alert("Order Placed Successfully");
+        alert(response.message);
 
         document.location.reload(true);
+    } else {
+        alert(response.message);
     }
 
 
