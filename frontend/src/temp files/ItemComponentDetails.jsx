@@ -6,13 +6,12 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import toast from 'react-hot-toast';
+
 
 ///// redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-    addUpdateProductInCartReducer,
-    removeProductFromCartReducer,
-} from "../redux/CartSlice/ApiCartSlice.js";
+import { addUpdateProductInCartReducer, removeProductFromCartReducer } from "../redux/CartSlice/ApiCartSlice.js";
 import { IsUserLoggedIn } from "../General/GeneralFunctions.js";
 import { useState } from "react";
 
@@ -29,7 +28,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
     //// handlers
     function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
         if (!IsUserLoggedIn()) {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
             return;
         }
 
@@ -55,7 +54,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
 
     function handleClickDelete() {
         if (!IsUserLoggedIn() || isLoading) {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
             return;
         } else {
             if (isLoading) return; //// prevent user form doing many requests at the same time

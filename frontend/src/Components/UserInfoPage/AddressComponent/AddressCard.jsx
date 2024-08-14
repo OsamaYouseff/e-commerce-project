@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../../Theme/theme";
 import { FormControlLabel } from "@mui/material";
 import SwitchButton from "../../GenericComponents/SwitchButton/SwitchButton";
+import toast from 'react-hot-toast';
 
 //// router
 import { useNavigate } from "react-router-dom";
@@ -12,44 +13,47 @@ import { motion, AnimatePresence } from "framer-motion";
 
 //// redux
 import { useDispatch } from "react-redux";
-import {
-    deleteCustomerAddressReducer,
-    setDefaultAddressReducer,
-} from "../../../redux/AddressSlice/ApiAddressSlice";
+import { deleteCustomerAddressReducer, setDefaultAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
+import { useState } from "react";
+import ConfirmComponent from "../../GenericComponents/ConfirmComponent/ConfirmComponent";
 
 const AddressCard = ({ address, numOfAddresses }) => {
     const theme = useTheme(ColorModeContext);
     const navigate = useNavigate();
 
-    const isDefault = address.isDefault;
-    // const [isDefault, setIsDefault] = useState(address.isDefault);
-    const isDisabled = address.isDefault && numOfAddresses === 1;
-
     /// redux
     const dispatch = useDispatch();
 
+    const isDefault = address.isDefault;
+    const isDisabled = address.isDefault && numOfAddresses === 1;
+    // const [isDefault, setIsDefault] = useState(address.isDefault);
+
+    //// Confirm Component
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const handleClickOpenConfirmDialog = () => setOpenConfirmDialog(true);
+    const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+
     //// handlers
+    const confirmDeleteAddress = () => {
+        if (IsUserLoggedIn())
+            dispatch(deleteCustomerAddressReducer(address._id));
+        else toast.error("Please log in or sign up with new account");
+    }
     const handelDeleteAddress = () => {
-        const confirmation = window.confirm(
-            "Are you sure you want to delete this address?"
-        );
-        if (confirmation) {
-            if (IsUserLoggedIn())
-                dispatch(deleteCustomerAddressReducer(address._id));
-            else alert("Please log in or sign up with new account");
-        }
+        handleClickOpenConfirmDialog();
     };
     const handelSetDefault = async () => {
         if (isDefault || isDisabled) {
-            alert("There must be at least one default address");
+            toast.error("There must be at least one default address");
             return;
         }
         // if (!isDisabled) setIsDefault(!isDefault);
 
         if (IsUserLoggedIn())
             await dispatch(setDefaultAddressReducer(address._id));
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
 
         // window.location.reload();
     };
@@ -75,7 +79,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                 sx={{
                     bgcolor: theme.palette.natural.main,
                     px: { xs: 2, sm: 3 },
-                    pt: 1,
+                    pt: { xs: 1, sm: 2 },
                     pb: 2,
                     borderRadius: "6px",
                     boxShadow: 1,
@@ -88,15 +92,16 @@ const AddressCard = ({ address, numOfAddresses }) => {
                     alignItems={"center"}
                     sx={{ flexDirection: { xs: "column-reverse", sm: "row" } }}
                 >
-                    <p
-                        style={{
+                    <Typography
+                        sx={{
                             fontWeight: "bolder",
-                            width: "50%",
+                            width: { xs: "100%", sm: "fit-content" },
                             fontSize: "18px",
+                            my: 1
                         }}
                     >
                         {address.label} Address
-                    </p>
+                    </Typography>
                     <Box
                         className="flex-between"
                         sx={{ gap: { xs: 1, md: 2 } }}
@@ -193,6 +198,14 @@ const AddressCard = ({ address, numOfAddresses }) => {
                         {address.phoneNumber}
                     </Box>
                 </Stack>
+                {
+                    openConfirmDialog && <ConfirmComponent
+                        openConfirmDialog={openConfirmDialog}
+                        confirmAction={confirmDeleteAddress}
+                        handleCloseConfirmDialog={handleCloseConfirmDialog}
+                        message="Are you sure you want to delete this address?"
+                    />
+                }
             </Box>
         </AnimatePresence>
     );

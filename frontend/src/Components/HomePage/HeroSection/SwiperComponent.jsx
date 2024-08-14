@@ -79,7 +79,7 @@ const SwiperComponent = () => {
 									},
 								}}>
 									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(17, 50), fontWeight: "bold" }}> Life style collection</Typography>
-									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(20, 50) }}> {item.gender}</Typography>
+									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(24, 50), fontWeight: "bold" }}> {item.gender}</Typography>
 									<Typography className="banner-text-child"
 										sx={{
 											display: "flex",

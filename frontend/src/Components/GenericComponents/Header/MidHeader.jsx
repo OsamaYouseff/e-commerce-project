@@ -117,7 +117,7 @@ const MidHeader = function () {
                         }}
                     >
 
-                        <img style={{ width: "38px" }} src="../../../../public/images/shop-logo.png" alt="e-commerce website logo" />
+                        <img style={{ width: "38px" }} src="/images/shop-logo.png" alt="e-commerce website logo" />
                         <Typography
                             className="go-home"
                             variant="body"

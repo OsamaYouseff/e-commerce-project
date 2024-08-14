@@ -26,7 +26,6 @@ import { getCustomerAddressesReducer, getCustomerAddressReducer } from "../../..
 import { Link } from "react-router-dom";
 
 
-
 const SelectAddressSection = ({ selectedAddressId }) => {
     const dispatch = useDispatch();
     const customerAddresses = useSelector((state) => state.AddressesApiRequest.response);
@@ -39,7 +38,6 @@ const SelectAddressSection = ({ selectedAddressId }) => {
 
 
     const handelSelectedAddress = (newSelectedAddressId) => {
-        // alert(newSelectedAddressId)
 
         if (IsUserLoggedIn() && newSelectedAddressId !== selectedAddressId) {
             dispatch(getCustomerAddressReducer(newSelectedAddressId))

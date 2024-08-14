@@ -8,6 +8,8 @@ import Rating from "@mui/material/Rating";
 import { motion, AnimatePresence } from "framer-motion";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import toast from 'react-hot-toast';
+
 
 /// Icons
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
@@ -40,7 +42,7 @@ const ProductCardComponentInWishlist = ({
                     price: productData.price,
                 })
             );
-        } else alert("Please log in or sign up with new account");
+        } else toast.error("Please log in or sign up with new account");
     };
 
     const [inWishlist, setInWishlist] = useState(true);
@@ -53,7 +55,7 @@ const ProductCardComponentInWishlist = ({
             await dispatch(
                 removeProductFromWishlistReducer({ productId: productData._id })
             );
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     };
 
     if (!productData) {

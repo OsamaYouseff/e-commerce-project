@@ -51,6 +51,10 @@ const routeElement = (currentComponent, showMidHeader = false) => {
                     style: {
                         background: '#363636',
                         color: '#fff',
+                        padding: '8px 16px',
+                        fontSize: '18px',
+                        minWidth: "fit-content",
+                        maxWidth: "100%",
                     },
 
                     // Default options for specific types

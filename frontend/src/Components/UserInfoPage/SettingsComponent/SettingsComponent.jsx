@@ -2,6 +2,12 @@ import { Box, Button, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import { TextField } from "@mui/material";
 
+//// custom Components
+import toast from 'react-hot-toast';
+import ConfirmComponent from "../../GenericComponents/ConfirmComponent/ConfirmComponent"
+
+
+
 /// context
 import { ColorModeContext } from "../../../Theme/theme";
 
@@ -27,6 +33,16 @@ const SettingsComponent = () => {
         confirmNewPassword: "",
     });
 
+
+
+    //// Confirm Component
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const handleClickOpenConfirmDialog = () => setOpenConfirmDialog(true);
+    const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+
+
+
     //// handlers
     const handleChangePassword = async (e) => {
         e.preventDefault();
@@ -35,28 +51,28 @@ const SettingsComponent = () => {
         if (
             formData.newPassword.trim() !== formData.confirmNewPassword.trim()
         ) {
-            alert("New password and confirm new Password Fields do not match");
+            toast.error("New password and confirm new Password Fields do not match");
             return;
         }
 
         ///// min length
         if (formData.newPassword.trim().length < 8) {
-            alert("New password must be at least 8 characters long");
+            toast.error("New password must be at least 8 characters long");
             return;
         }
-        // alert("password changed successfully");
+        // toast.error("password changed successfully");
         if (IsUserLoggedIn()) await dispatch(changePasswordReducer(formData));
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
+    };
+
+
+    const confirmDeleteAccount = () => {
+        if (IsUserLoggedIn()) dispatch(deleteCustomerAccountReducer());
+        else toast.error("Please log in or sign up with new account");
     };
 
     const handleDeleteAccount = () => {
-        const confirmation = window.confirm(
-            "Are you sure you want to delete your account?"
-        );
-        if (confirmation) {
-            if (IsUserLoggedIn()) dispatch(deleteCustomerAccountReducer());
-            else alert("Please log in or sign up with new account");
-        }
+        handleClickOpenConfirmDialog();
     };
 
     const handelFormData = (key, value) => {
@@ -69,6 +85,8 @@ const SettingsComponent = () => {
 
     return (
         <Stack sx={{ minWidth: "67vw", height: "70vh" }}>
+
+
             <Box sx={{ mb: 2, px: 1 }}>
                 <Typography
                     variant="h4"
@@ -156,6 +174,15 @@ const SettingsComponent = () => {
                     We are sad 😢 to see you go, but hope to see you again!
                 </Typography>
             </Box>
+            {
+                openConfirmDialog && <ConfirmComponent
+                    openConfirmDialog={openConfirmDialog}
+                    confirmAction={confirmDeleteAccount}
+                    handleCloseConfirmDialog={handleCloseConfirmDialog}
+                    message="Are you sure you want to delete your account?"
+                />
+            }
+
         </Stack>
     );
 };

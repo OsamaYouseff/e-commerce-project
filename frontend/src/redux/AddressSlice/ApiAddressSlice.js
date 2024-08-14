@@ -65,7 +65,7 @@ export const updateCustomerAddressReducer = createAsyncThunk("updateCustomerAddr
 
     const response = await updateCustomerAddress(updatedAddressData, addressId);
 
-    // alert(response.message);
+    // toast.error(response.message);
 
     // if (response.status)
     //     history.back()
@@ -80,7 +80,7 @@ export const setDefaultAddressReducer = createAsyncThunk(
         const response = await setAddressDefault(addressId);
 
         // if (!response.status) {
-        //     alert(response.message);
+        //     toast.error(response.message);
         // }
         // console.log(response)
 
@@ -94,6 +94,7 @@ const initialState = {
     singleAddressResponse: {},
     isLoading: false,
     error: false,
+    message: null,
 };
 
 export const AddressApiSlice = createSlice({
@@ -110,11 +111,18 @@ export const AddressApiSlice = createSlice({
             })
             .addCase(getCustomerAddressesReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
-                currentState.response = action.payload;
+                if (action.payload.status) {
+                    currentState.response = action.payload.addresses;
+                } else {
+                    currentState.message = action.payload.message;
+                    currentState.error = true;
+                }
             })
-            .addCase(getCustomerAddressesReducer.rejected, (currentState) => {
+            .addCase(getCustomerAddressesReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
                 currentState.error = true;
+                currentState.message = action.payload.message;
+
             })
 
             //// delete customer address
@@ -170,6 +178,7 @@ export const AddressApiSlice = createSlice({
                     // toast.success(action.payload.message);
                 } else {
                     currentState.error = true;
+                    currentState.message = action.payload.message;
                     toast.error(action.payload.message);
                 }
             })
@@ -177,6 +186,7 @@ export const AddressApiSlice = createSlice({
                 currentState.isLoading = false;
                 toast.error(action.payload.message);
                 currentState.error = true;
+                currentState.message = action.payload.message;
             })
 
             //// add new customer address

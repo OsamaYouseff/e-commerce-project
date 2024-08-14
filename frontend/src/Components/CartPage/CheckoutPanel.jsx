@@ -6,6 +6,8 @@ import { ColorModeContext } from "../../Theme/theme";
 import { Box, Stack } from "@mui/system";
 import { Button, Typography } from "@mui/material";
 import { CalcTotalCartPrice, isDiscountValid } from "../../General/GeneralFunctions";
+import toast from 'react-hot-toast';
+
 
 const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
     const theme = useTheme(ColorModeContext);
@@ -18,8 +20,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
     const handelChangeCouponCode = () => {
         if (isDiscountValid(discountCode)) setIsCouponFieldDisabled(true);
         else {
-            alert("Invalid Coupon Code");
-            setIsCouponFieldDisabled(false);
+            toast.error("Invalid Coupon Code");
         }
     };
 

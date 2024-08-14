@@ -4,6 +4,7 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 //// custom components
 import FormAddressComponent from "./AddressFromComponent";
+import toast from 'react-hot-toast';
 
 ///// hooks
 import { useState } from "react";
@@ -40,7 +41,7 @@ const AddAddressComponent = () => {
 
         if (IsUserLoggedIn())
             dispatch(addNewCustomerAddressReducer(addressData));
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     };
 
     const handelFormData = (key, value) => {

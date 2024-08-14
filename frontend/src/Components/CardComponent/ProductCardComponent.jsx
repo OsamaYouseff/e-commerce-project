@@ -13,6 +13,9 @@ import { useDispatch } from "react-redux";
 import { addUpdateProductInCartReducer } from "../../redux/CartSlice/ApiCartSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
+import toast from 'react-hot-toast';
+
+
 const ProductCardComponent = ({
     productData,
     handelOpenModal,
@@ -30,7 +33,7 @@ const ProductCardComponent = ({
                 })
             );
         } else {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
         }
     };
 

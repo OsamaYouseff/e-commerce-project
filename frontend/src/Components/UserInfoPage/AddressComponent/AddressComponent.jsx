@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 //// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCard from "./AddressCard";
+import toast from 'react-hot-toast';
+
 
 //// hooks
 import { useEffect } from "react";
@@ -26,7 +28,7 @@ const AddressComponent = () => {
 
     useEffect(() => {
         if (IsUserLoggedIn()) dispatch(getCustomerAddressesReducer());
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     }, []);
 
     const showAddresses = () => {

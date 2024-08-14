@@ -20,12 +20,19 @@ router.post('/:id', verifyTokenAndAuthorization, async (req, res) => {
             isDefault: req.body.isDefault
         });
 
+        const addressCount = await Address.countDocuments({ userId: req.user.id });
+
         if (req.body.isDefault) {
             // Unset any existing default address
             await Address.updateMany(
                 { userId: req.user.id, isDefault: true },
                 { $set: { isDefault: false } }
             );
+        }
+
+        //// Set the new address as default if it's the only one
+        if (!req.body.isDefault && addressCount === 0) {
+            newAddress.isDefault = true;
         }
 
         const savedAddress = await newAddress.save();

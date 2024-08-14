@@ -31,7 +31,7 @@ export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderA
     if (response.status) {
         await clearCart()
 
-        // alert(response.message);
+        // toast.error(response.message);
 
 
         setTimeout(() => {
@@ -39,7 +39,7 @@ export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderA
         }, 1000)
 
     } else {
-        alert(response.message);
+        toast.error(response.message);
     }
 
 

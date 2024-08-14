@@ -18,6 +18,7 @@ import AddressCardMin from "./AddressCardMin";
 import ProductPreviewInCheckout from "./ProductPreviewInCheckout";
 import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 import SelectAddressSection from "./SelectAddressSection";
+import toast from 'react-hot-toast';
 
 //// General Vars & Functions
 import { convertCentsToDollars, GetEstimatedDeliveryDate, GetTokenAndUserId, IsUserLoggedIn } from "../../../General/GeneralFunctions";
@@ -62,6 +63,11 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             };
         });
 
+        if (selectedAddress._id === undefined) {
+            toast.error("Please select an address if you don't have one create a new one");
+            return;
+        }
+
         const filteredShippingAddress = {
             fullAddress: selectedAddress.fullAddress,
             phoneNumber: selectedAddress.phoneNumber,
@@ -88,10 +94,10 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
         if (orderValidationRes.length === 0) {
             IsUserLoggedIn()
                 ? dispatch(createCustomerOrderReducer(orderData))
-                : alert("Please log in or sign up with new account");
+                : toast.error("Please log in or sign up with new account");
 
         } else {
-            alert(getErrorsMessage(orderValidationRes))
+            toast.error(getErrorsMessage(orderValidationRes))
         }
 
         handleCloseCheckoutModal()

@@ -9,6 +9,7 @@ import { ColorModeContext } from "../../../Theme/theme";
 
 //// custom component
 import ProductCardComponent from "../../CardComponent/ProductCardComponent";
+import toast from 'react-hot-toast';
 
 /// Icons
 import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
@@ -17,6 +18,7 @@ import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonF
 ///// Redux Actions
 import { getFilteredProductsReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const MainContent = () => {
     const allProducts = "";
@@ -67,7 +69,13 @@ const MainContent = () => {
     useEffect(() => {
         (async function fetchData() {
             await dispatch(getFilteredProductsReducer());
+
+            if (IsUserLoggedIn()) {
+                toast.success("Login Successful ,Welcome Back !");
+            }
+
         })();
+
     }, []);
 
     if (products) {

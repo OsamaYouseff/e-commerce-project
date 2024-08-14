@@ -13,6 +13,8 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent";
 
+import { toast } from "react-hot-toast";
+
 //// Redux
 import { useDispatch } from "react-redux";
 import { registerACustomerReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
@@ -77,19 +79,20 @@ export default function RegisterPage() {
 
         //// invalid password checking
         if (formData.password == undefined || confirmPassword == undefined)
-            return alert("Please enter both passwords");
+
+            return toast.error("Please enter both passwords");
 
         if (formData.password.trim().length < 8)
-            return alert("Password must be at least 8 characters long");
+            return toast.error("Password must be at least 8 characters long");
 
         //// check if passwords match
         if (!isPasswordsMatch(formData.password, confirmPassword))
-            return alert("Passwords do not match");
+            return toast.error("Passwords do not match");
 
         // const data = new FormData(event.currentTarget);
         //// Send data to API
         if (!IsUserLoggedIn()) dispatch(registerACustomerReducer(formData));
-        else alert("You are already logged in");
+        else toast.error("You are already logged in");
     };
 
     //// Todo : add validation using React Hook Form library

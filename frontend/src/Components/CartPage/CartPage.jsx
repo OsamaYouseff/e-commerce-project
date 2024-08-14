@@ -15,6 +15,7 @@ import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
 import CompleteCheckoutModal from "./CompleteCheckoutModal/CompleteCheckoutModal";
 import { SomeThingWrong } from "../GenericComponents/SomeThingWrong/SomeThingWrong";
 import ItemComponent from "../CartDrawer/ItemComponent/ItemComponent";
+import toast from 'react-hot-toast';
 
 //// router
 import { Link } from "react-router-dom";
@@ -25,6 +26,7 @@ import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 //// redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
+import NoItemsComponent from "../GenericComponents/NoItemsComponent/NoItemsComponent";
 // import { clearCart } from "../../API/CartAPIFunctions";
 
 let checkoutInfo;
@@ -58,7 +60,7 @@ const CartPage = () => {
 
     const handelCheckout = (financialData) => {
         if (customerCart.products.length === 0) {
-            alert("You have to add some products to cart to checkout them.")
+            toast.error("You have to add some products to cart to checkout them.")
             return;
         }
 
@@ -84,21 +86,8 @@ const CartPage = () => {
                 />
             );
         } else if (customerCart.products.length === 0) {
-            return (
-                <Box
-                    sx={{
-                        p: 2,
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                        textAlign: "center",
-                        borderRadius: "10px",
-                        fontWeight: "bolder",
-                        fontSize: "1.5rem",
-                    }}
-                >
-                    No products in cart 😅
-                </Box>
-            );
+            return <NoItemsComponent message={"No products in your cart 😅"} fontSize={"1.3rem"} minHeight={"48vh"} />
+
         }
 
         return customerCart.products.map((item) => (
@@ -117,7 +106,7 @@ const CartPage = () => {
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
         // TODO : don't forget to uncomment the line below
-        // else alert("Please log in or sign up with new account");
+        // else toast.error("Please log in or sign up with new account");
     }, []);
 
     return (
@@ -223,7 +212,7 @@ const CartPage = () => {
                                 my: 2,
                                 boxShadow: 1,
                                 bgcolor: theme.palette.bgColor.main,
-                                py: 1,
+                                py: 2,
                                 px: 2,
                                 borderRadius: "6px",
                             }}

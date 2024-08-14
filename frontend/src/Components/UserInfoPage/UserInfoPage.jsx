@@ -30,6 +30,7 @@ import OrdersComponent from "./OrdersComponent/OrdersComponent.jsx";
 import PaymentsComponent from "./PaymentsComponent/PaymentsComponent.jsx";
 import SettingsComponent from "./SettingsComponent/SettingsComponent.jsx";
 import WishlistComponent from "./WishlistComponent/WishlistComponent.jsx";
+import toast from 'react-hot-toast';
 
 ///// sub custom component
 import AddAddressComponent from "./AddressComponent/AddAddressComponent.jsx";
@@ -48,7 +49,7 @@ const UserInfoPage = () => {
 
     const handleLogout = () => {
         if (IsUserLoggedIn()) dispatch(logoutCustomerAccountReducer());
-        else alert("You are already logged out");
+        else toast.error("You are already logged out");
     };
     //// adding logout function
     CustomerMenuItems.at(-1).action = handleLogout;
@@ -158,12 +159,11 @@ const UserInfoPage = () => {
                                                 sm: "100%",
                                             },
                                             py: 1.2,
-                                            border: `1px solid ${
-                                                item.title.toLowerCase() ==
+                                            border: `1px solid ${item.title.toLowerCase() ==
                                                 section
-                                                    ? theme.palette.text.primary
-                                                    : "inherit"
-                                            }`,
+                                                ? theme.palette.text.primary
+                                                : "inherit"
+                                                }`,
                                             borderRadius: "6px",
                                             fontWeight: "bold",
                                             mb: 0.6,

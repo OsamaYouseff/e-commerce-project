@@ -3,6 +3,8 @@
 import axios from "axios";
 import { GetTokenAndUserId } from "../General/GeneralFunctions";
 
+import toast from "react-hot-toast";
+
 const baseURL = import.meta.env.VITE_BASE_URL;
 
 export const getCustomerAddresses = async () => {
@@ -22,11 +24,11 @@ export const getCustomerAddresses = async () => {
     try {
         const response = await axios.request(config);
 
-        return response.data;
+        return { status: true, addresses: response.data };
 
     } catch (error) {
-        console.log('Error Customer Addresses Data : ', error);
-        throw error;
+        console.log('Error Customer Addresses Data : ', error.response.data.message);
+        return { status: false, message: error.response.data.message };
     }
 };
 
@@ -108,7 +110,7 @@ export const addNewCustomerAddress = async (addressData) => {
 export const updateCustomerAddress = async (addressData, addressId) => {
 
     if (!addressData || !addressId) {
-        alert("Please provide address data and address id");
+        toast.error("Please provide address data and address id");
         return;
     }
 
@@ -141,7 +143,7 @@ export const updateCustomerAddress = async (addressData, addressId) => {
 export const setAddressDefault = async (addressId) => {
 
     if (!addressId) {
-        alert("Please provide address id");
+        toast.error("Please provide address id");
         return;
     }
 
@@ -189,8 +191,8 @@ export const getCustomerDefaultAddress = async () => {
         return { status: true, message: "Default address Fetched Successfully.", defaultAddress: response.data };
 
     } catch (error) {
-        console.log('Error Customer Addresses Data : ', error);
-        return { status: false, message: "Failed to fetch default address." };
+        console.log('Error Customer Addresses Data : ', error.response.data.message);
+        return { status: false, message: error.response.data.message };
     }
 };
 

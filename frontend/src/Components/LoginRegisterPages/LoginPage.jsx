@@ -11,6 +11,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import toast from 'react-hot-toast';
 
 ///// Custom Hooks
 import { useState } from "react";
@@ -36,10 +37,10 @@ export default function LoginPage() {
         event.preventDefault();
 
         if (formData.username.trim() === "" || formData.password.trim() === "")
-            return alert("Please enter both username and password");
+            return toast.error("Please enter both username and password");
 
         if (!IsUserLoggedIn()) dispatch(customerLoginReducer(formData));
-        else alert("You are already logged in");
+        else toast.error("You are already logged in");
     };
 
     //// prevent user from accessing login page if he is already logged in

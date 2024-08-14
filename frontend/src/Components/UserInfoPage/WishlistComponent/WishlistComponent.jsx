@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Container, Typography } from "@mui/material";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 import { useEffect, useState } from "react";
@@ -9,6 +9,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 //// custom components
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
+import toast from 'react-hot-toast';
+
 
 // //// redux
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +19,7 @@ import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import ProductCardComponentInWishlist from "./ProductCardComponentInWishlist";
 import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
+import NoItemsComponent from "../../GenericComponents/NoItemsComponent/NoItemsComponent";
 
 const WishlistComponent = () => {
     const theme = useTheme(ColorModeContext);
@@ -46,51 +49,12 @@ const WishlistComponent = () => {
         setPreviewedProduct(newValue);
     };
 
-    // const productData = {
-    //     productId: "66a918deda78b9fa2e1366af",
-    //     _id: "66b3d9d8434061dc95f93eb7",
-    //     productDetails: {
-    //         _id: "66a918deda78b9fa2e1366af",
-    //         title: "Opna Women's Short S",
-    //         desc: "100% Polyester, Machine wash, 100% cationic polyester interlock, Machine Wash & Pre Shrunk for a Great Fit, Lightweight, roomy and highly breathable with moisture wicking fabric which helps to keep moisture away, Soft Lightweight Fabric with comfortable V-neck collar and a slimmer fit, delivers a sleek, more feminine silhouette and Added Comfort",
-    //         img: "http://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg",
-    //         categories: ["women", "Opna", "t-shirt"],
-    //         size: "m",
-    //         color: "red",
-    //         price: 44.99,
-    //         rating: 3.5,
-    //         createdAt: "2024-07-30T16:46:22.383Z",
-    //         updatedAt: "2024-07-30T16:46:22.383Z",
-    //         __v: 0,
-    //     },
-    // };
-
     const handelShowWishlistProducts = () => {
         if (error) {
-            return (
+            return <SomeThingWrong minHeight={"50vh"} errorMsg={" There is something wrong 😢."} />
 
-                <SomeThingWrong minHeight={"50vh"}
-                    errorMsg={
-                        " There is something wrong 😢."
-                    } />
-            );
         } else if (customerWishlist.products.length === 0) {
-            return (
-                <Box
-                    sx={{
-                        p: 2,
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                        textAlign: "center",
-                        borderRadius: "10px",
-                        fontWeight: "bolder",
-                        fontSize: "1.5rem",
-                        width: "100%",
-                    }}
-                >
-                    No products in wishlist 😅 Add some Now
-                </Box>
-            );
+            return <NoItemsComponent message={"No products in your wishlist add some 😅"} fontSize={"1.3rem"} minHeight={"40vh"} />
         }
         return customerWishlist.products.map((item) => {
             return (
@@ -107,7 +71,7 @@ const WishlistComponent = () => {
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading)
             dispatch(getCustomerWishlistReducer());
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     }, []);
 
     return (

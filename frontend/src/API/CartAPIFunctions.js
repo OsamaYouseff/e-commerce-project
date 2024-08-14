@@ -81,7 +81,7 @@ export const removeProductFromCart = async (removeProduct) => {
 
         // console.log(" XXXXXX : ", response.data)
 
-        return { status: true, response: response.data, message: "This item has been deleted successfully to your cart" }
+        return { status: true, response: response.data, message: "This item has been deleted successfully from your cart" }
 
     } catch (error) {
         console.error('Error Removing Product From Cart : ', error);

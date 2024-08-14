@@ -19,7 +19,7 @@ import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponen
 import ItemComponent from "./ItemComponent/ItemComponent";
 import { SomeThingWrong } from "../GenericComponents/SomeThingWrong/SomeThingWrong";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
-
+import toast from 'react-hot-toast';
 
 /// General Vars & Functions
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
@@ -27,6 +27,7 @@ import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 //// redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerCartReducer } from "../../redux/CartSlice/ApiCartSlice";
+import NoItemsComponent from "../GenericComponents/NoItemsComponent/NoItemsComponent";
 
 
 export default function CartDrawer() {
@@ -76,30 +77,10 @@ export default function CartDrawer() {
 
     const handelShowCartProduct = () => {
         if (error || !customerCart) {
-            return (
-                <SomeThingWrong
-                    minHeight="50vh"
-                    errorMsg={"There is something wrong 😢"}
-                />
-            );
+            return <SomeThingWrong minHeight="50vh" errorMsg={"There is something wrong 😢"} />
         } else if (customerCart.products.length === 0) {
-            return (
-                <Box
-                    className="flex-center"
-                    sx={{
-                        p: 2,
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                        textAlign: "center",
-                        borderRadius: "10px",
-                        fontWeight: "bolder",
-                        height: "100%",
-                        fontSize: "1.2rem",
-                    }}
-                >
-                    No products in cart 😅
-                </Box>
-            );
+            return <NoItemsComponent message={"No products in your cart 😅"} fontSize={"1rem"} minHeight={"60vh"} />
+
         } else {
             return customerCart.products.map((item) => (
                 <ItemComponent
@@ -115,7 +96,7 @@ export default function CartDrawer() {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        // else alert("Please log in or sign up with new account");
+        // else toast.error("Please log in or sign up with new account");
     }, []);
 
     const list = (anchor) => (
@@ -173,7 +154,7 @@ export default function CartDrawer() {
                     overflow: "auto",
                     height: { xs: "58vh", sm: "auto" },
                     minHeight: "58vh",
-                    px: 1,
+                    pr: 1,
                     width: "100%",
                     // transform: {
                     //     xs: "translateX(10px)",
@@ -205,7 +186,7 @@ export default function CartDrawer() {
                         fontSize: "17px",
                     }}
                 >
-                    <Typography variant="h6">Got a coupon?</Typography>
+                    <Typography variant="h6" sx={{ fontWeight: "bolder" }}>Got a coupon?</Typography>
                     <Stack direction="row" gap={1}>
                         <input
                             type="text"
@@ -246,7 +227,7 @@ export default function CartDrawer() {
                     }}
                 >
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography sx={{ fontSize: "20px" }}>
+                        <Typography sx={{ fontSize: "20px", fontWeight: "bolder" }}>
                             Subtotal
                         </Typography>
                         <Typography

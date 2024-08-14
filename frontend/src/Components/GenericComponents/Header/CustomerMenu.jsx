@@ -60,6 +60,7 @@ const CustomerMenu = () => {
                     aria-expanded={open ? "true" : undefined}
                 >
                     <Avatar
+                        className="flex-center"
                         sx={{
                             width: 28,
                             height: 28,

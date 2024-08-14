@@ -9,6 +9,9 @@ import { useState } from "react";
 //// custom components
 import ControlProductAmount from "./ControlProductAmount.jsx";
 import DeleteBtn from "./DeleteBtn.jsx";
+import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from "framer-motion";
+
 
 //// general functions
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
@@ -34,7 +37,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
             return;
 
         if (!IsUserLoggedIn()) {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
             return;
         }
 
@@ -60,7 +63,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
 
     function handleDeleteProduct() {
         if (!IsUserLoggedIn()) {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
             return;
         } else {
             if (isLoading) return; //// prevent user form doing many requests at the same time
@@ -206,88 +209,100 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
             );
         } else {
             return (
-                <Stack
-                    key={item._id}
-                    direction="row"
-                    gap={1}
-                    justifyContent={"space-between"}
-                    sx={{
-                        p: 1.2,
-                        mb: 1,
-                        borderRadius: "5px",
-                        bgcolor: theme.palette.sectionBgColor.main,
-                        border: "1px solid transparent",
-                        // borderBottomColor: `${theme.palette.footerBgColor.primary} `,
-                        boxShadow: 1,
-                        transition: "all 0.3s ease",
-                        "&:hover": {
-                            bgcolor: theme.palette.sectionBgColor.main,
-                            borderColor: theme.palette.primary.main,
-                        }
-                    }}
-                >
-                    <Box
-                        onClick={() => {
-                            handleSetPreviewedProduct(item);
-                            handelOpenModal();
+                <AnimatePresence>
+                    <Stack
+                        component={motion.section}
+                        layout
+                        initial={{ transform: "scale(0)" }}
+                        animate={{ transform: "scale(1)" }}
+                        exit={{ transform: "scale(1)" }}
+                        transition={{
+                            duration: 0.35,
+                            type: "tween",
+                            stiffness: 40,
                         }}
-                        className="flex-center"
-                        sx={{
-                            width: "90px",
-                            maxHeight: "100%",
-                            cursor: "pointer",
-                        }}
-                    >
-                        <img
-                            style={{
-                                maxWidth: "100%",
-                                maxHeight: "90px",
-                                borderRadius: "5px",
-                            }}
-                            src={item.img}
-                            alt="cart-item"
-                        />
-                    </Box>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flex: 1,
-                            flexDirection: "column",
-                        }}
+                        key={item._id}
+                        direction="row"
+                        gap={1}
                         justifyContent={"space-between"}
+                        sx={{
+                            p: 1.2,
+                            mb: 1,
+                            borderRadius: "5px",
+                            bgcolor: theme.palette.sectionBgColor.main,
+                            border: "1px solid transparent",
+                            // borderBottomColor: `${theme.palette.footerBgColor.primary} `,
+                            boxShadow: 1,
+                            transition: "all 0.3s ease",
+                            "&:hover": {
+                                bgcolor: theme.palette.sectionBgColor.main,
+                                borderColor: theme.palette.primary.main,
+                            }
+                        }}
                     >
-                        <Stack direction="row" justifyContent={"space-between"}>
-                            <Typography
-                                sx={{ fontSize: "16px", maxWidth: "155px" }}
-                            >
-                                {item.title.slice(0, 20)}
-                            </Typography>
-                            <Typography
-                                sx={{
-                                    fontWeight: "bolder",
-                                    color: "#ff4450",
+                        <Box
+                            onClick={() => {
+                                handleSetPreviewedProduct(item);
+                                handelOpenModal();
+                            }}
+                            className="flex-center"
+                            sx={{
+                                width: "90px",
+                                maxHeight: "100%",
+                                cursor: "pointer",
+                            }}
+                        >
+                            <img
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "90px",
+                                    borderRadius: "5px",
                                 }}
-                            >
-                                ${item.price}
-                            </Typography>
-                        </Stack>
-                        <Stack
-                            direction="row"
-                            gap={2}
+                                src={item.img}
+                                alt="cart-item"
+                            />
+                        </Box>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flex: 1,
+                                flexDirection: "column",
+                            }}
                             justifyContent={"space-between"}
                         >
+                            <Stack direction="row" justifyContent={"space-between"}>
+                                <Typography
+                                    sx={{ fontSize: "16px", maxWidth: "155px" }}
+                                >
+                                    {item.title.slice(0, 20)}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        fontWeight: "bolder",
+                                        color: "#ff4450",
+                                    }}
+                                >
+                                    ${item.price}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                gap={2}
+                                justifyContent={"space-between"}
+                            >
 
-                            <ControlProductAmount
-                                fieldQuantity={fieldQuantity}
-                                setFieldQuantity={setFieldQuantity}
-                                handleClickIncreaseDecrease={handleClickIncreaseDecrease}
-                                quantity={quantity}
-                            />
+                                <ControlProductAmount
+                                    fieldQuantity={fieldQuantity}
+                                    setFieldQuantity={setFieldQuantity}
+                                    handleClickIncreaseDecrease={handleClickIncreaseDecrease}
+                                    quantity={quantity}
+                                />
 
-                            <DeleteBtn handleDeleteProduct={handleDeleteProduct} />
-                        </Stack>
-                    </Box>
-                </Stack>
+                                <DeleteBtn handleDeleteProduct={handleDeleteProduct} />
+                            </Stack>
+                        </Box>
+                    </Stack>
+                </AnimatePresence>
             );
         }
     }

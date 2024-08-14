@@ -13,6 +13,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
+import toast from 'react-hot-toast';
 
 ///// redux
 import { useDispatch, useSelector } from "react-redux";
@@ -112,7 +113,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 })
             );
         } else {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
         }
         //// else make state changing only
     };
@@ -126,7 +127,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
             if (!error)
                 setInWishlist(true);
         } else {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
         }
     };
     const handelRemoveFromWishlist = async () => {
@@ -139,7 +140,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 setInWishlist(false);
 
         } else {
-            alert("Adding to local state soon");
+            toast.error("Adding to local state soon");
         }
     };
 
@@ -150,7 +151,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         };
 
         if (IsUserLoggedIn()) checkWishlistStatus();
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     }, [PreviewedProduct._id]);
 
     return (

@@ -9,6 +9,8 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 /// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
+import toast from 'react-hot-toast';
+
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
@@ -55,7 +57,7 @@ const OrderSummary = () => {
     useEffect(() => {
         if (IsUserLoggedIn())
             dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
-        else alert("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     }, []);
 
 

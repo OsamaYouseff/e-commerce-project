@@ -1,3 +1,6 @@
+import toast from 'react-hot-toast';
+
+
 export function GoHome() {
     window.location.href = "/";
 }
@@ -72,7 +75,7 @@ export function GetTokenAndUserId() {
 
 
     if (!customerData || !accessToken) {
-        alert("there are some data missing please logout and login again");
+        toast.error("there are some data missing please logout and login again");
         GoHome();
         return;
     }

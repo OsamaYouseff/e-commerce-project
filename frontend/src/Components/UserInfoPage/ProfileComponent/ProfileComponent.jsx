@@ -7,6 +7,8 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Man2RoundedIcon from "@mui/icons-material/Man2Rounded";
 import Woman2RoundedIcon from "@mui/icons-material/Woman2Rounded";
 import TextFieldComponent from "../../GenericComponents/TextFieldComponent/TextFieldComponent";
+import toast from 'react-hot-toast';
+
 
 /// context
 import { ColorModeContext } from "../../../Theme/theme";
@@ -60,7 +62,7 @@ const ProfileComponent = ({ customerData }) => {
             await dispatch(updateCustomerAccountReducer(formData));
             setIsDataChanged(false);
             customerData = GetUserInfo();
-        } else alert("Please log in or sign up with new account");
+        } else toast.error("Please log in or sign up with new account");
     };
 
     const handelGender = (event, newValue) => {
@@ -203,10 +205,10 @@ const ProfileComponent = ({ customerData }) => {
                                             size="small"
                                             sx={{
                                                 ".MuiToggleButtonGroup-grouped.Mui-selected":
-                                                    {
-                                                        color: `${theme.palette.primary.main} !important`,
-                                                        borderColor: `${theme.palette.primary.main} !important`,
-                                                    },
+                                                {
+                                                    color: `${theme.palette.primary.main} !important`,
+                                                    borderColor: `${theme.palette.primary.main} !important`,
+                                                },
                                             }}
                                         >
                                             <ToggleButton
