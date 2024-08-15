@@ -1,11 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Stack, Typography, Button } from "@mui/material";
 import OrderCard from "./OrderCard";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useEffect, useState } from "react";
-import { ColorModeContext } from "../../../Theme/theme";
-import { useTheme } from "@emotion/react";
 
 /// custom component
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
@@ -13,15 +12,12 @@ import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderCompo
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerOrdersMinimizedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
+import NoItemsComponent from "../../GenericComponents/NoItemsComponent/NoItemsComponent";
 
 const OrdersComponent = () => {
     const [historyDate, setHistoryDate] = useState("Last 3 months");
-    const theme = useTheme(ColorModeContext);
-
     const dispatch = useDispatch();
-    const customerOrders = useSelector(
-        (state) => state.OrdersApiRequest.minOrdersResponse
-    );
+    const customerOrders = useSelector((state) => state.OrdersApiRequest.minOrdersResponse);
     const error = useSelector((state) => state.OrdersApiRequest.error);
     const isLoading = useSelector((state) => state.OrdersApiRequest.isLoading);
 
@@ -31,21 +27,15 @@ const OrdersComponent = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({
-        id: 2,
-        attributes: {},
-    });
+    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {} });
 
-    const handleChange = (event) => {
-        setHistoryDate(event.target.value);
-    };
+    const handleChange = (event) => setHistoryDate(event.target.value);
+    const handleSetPreviewedProduct = (newValue) => setPreviewedProduct(newValue);
 
-    const handleSetPreviewedProduct = (newValue) => {
-        setPreviewedProduct(newValue);
-    };
+
 
     const handelShowOrdersItems = () => {
-        if (error || !customerOrders) {
+        if (error) {
             return (
                 <Box
                     className="flex-column-center"
@@ -65,19 +55,7 @@ const OrdersComponent = () => {
             );
         } else if (customerOrders?.length === 0) {
             return (
-                <Box
-                    sx={{
-                        p: 2,
-                        bgcolor: theme.palette.background.paper,
-                        color: theme.palette.text.primary,
-                        textAlign: "center",
-                        borderRadius: "10px",
-                        fontWeight: "bolder",
-                        fontSize: "1.5rem",
-                    }}
-                >
-                    You have no orders 😅
-                </Box>
+                <NoItemsComponent message="You don't have any orders yet 😅" fontSize={"1.2rem"} minHeight="50vh" />
             );
         }
         return customerOrders.map((order) => (

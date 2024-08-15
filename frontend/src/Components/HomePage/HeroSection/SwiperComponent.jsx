@@ -9,10 +9,10 @@ import { useTheme } from '@emotion/react';
 import './Swiper.css';
 
 const bannerImagesData = [
-	{ gender: "men", discount: "30", src: "./images/banner-15.jpg" },
-	{ gender: "women", discount: "50", src: "./images/banner-25.jpg" },
-	{ gender: "men", discount: "30", src: "./images/banner-15.jpg" },
-	{ gender: "women", discount: "50", src: "./images/banner-25.jpg" }
+	{ category: "men", title: "Life style collection", discount: "30", src: "./images/banner-15.jpg" },
+	{ category: "women", title: "Life style collection", discount: "50", src: "./images/banner-25.jpg" },
+	{ category: "electronics", title: "Tech collection", discount: "30", src: "./images/banner-20.jpg" },
+	{ category: "Clothes", title: "Fashion collection", discount: "50", src: "./images/banner-21.jpg" }
 ]
 
 const SwiperComponent = () => {
@@ -78,8 +78,12 @@ const SwiperComponent = () => {
 										gap: "15px",
 									},
 								}}>
-									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(17, 50), fontWeight: "bold" }}> Life style collection</Typography>
-									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(24, 50), fontWeight: "bold" }}> {item.gender}</Typography>
+									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(17, 57), fontWeight: "bold" }}>
+										{item.title}
+									</Typography>
+									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(24, 50), fontWeight: "bold" }}>
+										{item.category}
+									</Typography>
 									<Typography className="banner-text-child"
 										sx={{
 											display: "flex",

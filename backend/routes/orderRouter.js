@@ -228,10 +228,9 @@ router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
       }
     ]);
 
-
-    if (result.length === 0) {
-      return res.status(404).json({ message: 'No orders found for this user' });
-    }
+    // if (result.length === 0) {
+    //   return res.status(404).json({ message: 'No orders found for this user' });
+    // }
 
     res.json(result);
   } catch (error) {
