@@ -8,6 +8,8 @@ import { FormatDate } from "../../../General/GeneralFunctions";
 const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeliveryDate }) => {
     const theme = useTheme(ColorModeContext);
 
+    console.log(product)
+
     return (
         <Stack
             key={index}
@@ -57,7 +59,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     <Box
                         className="flex-start"
                         sx={{
-                            width: "110px",
+                            // width: "110px",
                             height: "110px",
                         }}
                     >

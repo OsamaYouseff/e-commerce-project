@@ -11,8 +11,8 @@ import './Swiper.css';
 const bannerImagesData = [
 	{ category: "men", title: "Life style collection", discount: "30", src: "./images/banner-15.jpg" },
 	{ category: "women", title: "Life style collection", discount: "50", src: "./images/banner-25.jpg" },
-	{ category: "electronics", title: "Tech collection", discount: "30", src: "./images/banner-20.jpg" },
-	{ category: "Clothes", title: "Fashion collection", discount: "50", src: "./images/banner-21.jpg" }
+	{ category: "electronics", title: "Tech collection", discount: "10", src: "./images/banner-20.jpg" },
+	{ category: "Clothes", title: "Fashion collection", discount: "20", src: "./images/banner-21.jpg" }
 ]
 
 const SwiperComponent = () => {
@@ -78,7 +78,7 @@ const SwiperComponent = () => {
 										gap: "15px",
 									},
 								}}>
-									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(17, 57), fontWeight: "bold" }}>
+									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(17, 50), fontWeight: "bold" }}>
 										{item.title}
 									</Typography>
 									<Typography className="banner-text-child" sx={{ textTransform: "uppercase", fontSize: AdjustFontWithClamp(24, 50), fontWeight: "bold" }}>

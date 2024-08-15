@@ -44,22 +44,23 @@ const CartPage = () => {
     const [open, setOpen] = useState(false);
     const handleOpenProductModal = () => setOpen(true);
     const handleCloseProductModal = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({
-        id: 2,
-        attributes: {},
-    });
+    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {} });
 
     ///// complete checkout modal
     const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
     const handleOpenCheckoutModal = () => setOpenCheckoutModal(true);
     const handleCloseCheckoutModal = () => setOpenCheckoutModal(false);
 
-    const handleSetPreviewedProduct = (newValue) => {
-        setPreviewedProduct(newValue);
-    };
+    const handleSetPreviewedProduct = (newValue) => { setPreviewedProduct(newValue) };
 
     const handelCheckout = (financialData) => {
-        if (customerCart.products.length === 0) {
+
+        if (!IsUserLoggedIn()) {
+            toast.error("Please log in or sign up with new account");
+            return;
+        }
+
+        if (customerCart.products.length === 0 || !financialData) {
             toast.error("You have to add some products to cart to checkout them.")
             return;
         }
@@ -299,6 +300,7 @@ const CartPage = () => {
                     handleOpenCheckoutModal={handleOpenCheckoutModal}
                     handleCloseCheckoutModal={handleCloseCheckoutModal}
                     checkoutInfo={checkoutInfo}
+                    clearCartAtEnd={true}
                 />
             )}
         </Fragment>

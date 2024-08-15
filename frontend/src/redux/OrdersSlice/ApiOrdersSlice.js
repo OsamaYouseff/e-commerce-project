@@ -22,17 +22,15 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
     return response;
 })
 
-export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (orderData) => {
+export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (orderData, clearCartAtEnd = false) => {
 
     const response = await createCustomerOrder(orderData);
 
-    // console.log(response)
-
     if (response.status) {
-        await clearCart()
+        toast.success(response.message);
 
-        // toast.error(response.message);
-
+        if (clearCartAtEnd)
+            await clearCart()
 
         setTimeout(() => {
             document.location.reload(true);
@@ -135,16 +133,16 @@ export const CartApiSlice = createSlice({
             .addCase(createCustomerOrderReducer.fulfilled, (currentState, action) => {
                 currentState.isLoading = false;
                 if (action.payload.status) {
-                    toast.success(action.payload.message);
+                    // toast.success(action.payload.message);
                 } else {
-                    toast.error(action.payload.message);
+                    // toast.error(action.payload.message);
                     currentState.error = true;
                 }
             })
             .addCase(createCustomerOrderReducer.rejected, (currentState, action) => {
                 currentState.isLoading = false;
                 currentState.error = true;
-                toast.error(action.payload.message);
+                // toast.error(action.payload.message);
             });
     }
 });

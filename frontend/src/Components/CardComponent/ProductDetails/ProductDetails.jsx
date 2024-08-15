@@ -22,9 +22,10 @@ import {
     addProductToWishlistReducer,
     removeProductFromWishlistReducer,
 } from "../../../redux/WishlistSlice/ApiWishlistSlice";
-import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
+import { CalcTotalCartPrice, IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
 
 import { isProductInWishlist } from "../../../API/WishlistAPIFunctions.js";
+import CompleteCheckoutModal from "../../CartPage/CompleteCheckoutModal/CompleteCheckoutModal.jsx";
 
 //// styles
 const CloseBtnStyles = {
@@ -65,8 +66,7 @@ const favIconStyle = {
     borderRadius: "6px",
     width: "100%",
 };
-const fontSizeClamp =
-    "clamp(18px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
+const fontSizeClamp = "clamp(18px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
 
 //// custom component
 const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
@@ -94,6 +94,9 @@ const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
     );
 };
 
+
+let checkoutInfo;
+
 // eslint-disable-next-line react/prop-types
 const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const theme = useTheme(ColorModeContext);
@@ -102,6 +105,49 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const dispatch = useDispatch();
     const [inWishlist, setInWishlist] = useState(false);
     const error = useSelector((state) => state.WishlistApiRequest.error);
+
+    console.log(PreviewedProduct)
+
+
+    ///// complete checkout modal
+    const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
+    const handleOpenCheckoutModal = () => setOpenCheckoutModal(true);
+    const handleCloseCheckoutModal = () => setOpenCheckoutModal(false);
+
+    const handelBuyNow = () => {
+
+        if (!IsUserLoggedIn()) {
+            toast.error("Please log in or sign up with new account");
+            return;
+        }
+
+        const productPrice = PreviewedProduct.price;
+        let { finalPrice, shippingCalc } = CalcTotalCartPrice(productPrice);
+
+        checkoutInfo = {
+            products: [
+                {
+                    productId: PreviewedProduct._id,
+                    quantity: 1,
+                    productDetails: PreviewedProduct,
+                }
+            ],
+            financials: {
+                subtotalInCents: Math.round(productPrice * 100),
+                discount: 0,
+                shippingCostInCents: Math.round(shippingCalc * 100),
+                totalAmountInCents: Math.round(finalPrice * 100),
+                currency: "USD",
+            }
+        }
+
+        // console.log("############ : ", checkoutInfo);
+
+
+        handleOpenCheckoutModal();
+
+    }
+
 
     const handleClickAddToCart = () => {
         if (IsUserLoggedIn()) {
@@ -132,10 +178,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     };
     const handelRemoveFromWishlist = async () => {
         if (IsUserLoggedIn()) {
-            await dispatch(
-                removeProductFromWishlistReducer({ productId: PreviewedProduct._id })
-            );
-
+            await dispatch(removeProductFromWishlistReducer({ productId: PreviewedProduct._id }));
             if (!error)
                 setInWishlist(false);
 
@@ -272,6 +315,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                             }}
                         >
                             <Button
+                                onClick={handelBuyNow}
                                 sx={{
                                     textTransform: "capitalize",
                                     p: "5px 15px !important",
@@ -335,6 +379,15 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     </Box>
                 </Stack>
             </Modal>
+            {openCheckoutModal && (
+                <CompleteCheckoutModal
+                    openCheckoutModal={openCheckoutModal}
+                    handleOpenCheckoutModal={handleOpenCheckoutModal}
+                    handleCloseCheckoutModal={handleCloseCheckoutModal}
+                    checkoutInfo={checkoutInfo}
+                    clearCartAtEnd={false}
+                />
+            )}
         </Box>
     );
 };

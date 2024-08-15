@@ -13,7 +13,6 @@ import AddCardRoundedIcon from "@mui/icons-material/AddCardRounded";
 
 
 /// custom component
-// import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 import AddressCardMin from "./AddressCardMin";
 import ProductPreviewInCheckout from "./ProductPreviewInCheckout";
 import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
@@ -30,9 +29,10 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerDefaultAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
 import { createCustomerOrderReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
+import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent";
 
 
-export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCheckoutModal, checkoutInfo, }) {
+export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCheckoutModal, checkoutInfo, clearCartAtEnd }) {
     const theme = useTheme(ColorModeContext);
     const productsCount = checkoutInfo?.products?.length || 0;
     const estimatedDeliveryDate = GetEstimatedDeliveryDate();
@@ -45,8 +45,9 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
     const selectedAddress = useSelector((state) => state.AddressesApiRequest.singleAddressResponse);
     const error = useSelector((state) => state.AddressesApiRequest.error);
     const message = useSelector((state) => state.AddressesApiRequest.message);
+    const isLoading = useSelector((state) => state.AddressesApiRequest.isLoading);
 
-    // console.log(selectedAddress)
+    // console.log(checkoutInfo)
 
     const handelPaymentMethod = (event, newValue) => {
         if (newValue === null) return;
@@ -93,7 +94,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
 
         if (orderValidationRes.length === 0) {
             IsUserLoggedIn()
-                ? dispatch(createCustomerOrderReducer(orderData))
+                ? dispatch(createCustomerOrderReducer(orderData, clearCartAtEnd))
                 : toast.error("Please log in or sign up with new account");
 
         } else {
@@ -187,19 +188,20 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
 
                         {/* Selected address */}
                         {
-                            error ?
-                                <>
-                                    <SomeThingWrong minHeight={200} errorMsg={message}
-                                        additionalElements={
-                                            <Link to="/userInfo/address">
-                                                <Button variant="contained" sx={{ fontWeight: "bolder" }} color="secondary">
-                                                    Show My Address
-                                                </Button>
-                                            </Link>
-                                        }
-                                    />
-                                </>
-                                : <AddressCardMin address={selectedAddress} defaultAddress={true} />
+                            isLoading ? <LoaderComponent />
+                                : error
+                                    ? <>
+                                        <SomeThingWrong minHeight={200} errorMsg={message}
+                                            additionalElements={
+                                                <Link to="/userInfo/address">
+                                                    <Button variant="contained" sx={{ fontWeight: "bolder" }} color="secondary">
+                                                        Show My Address
+                                                    </Button>
+                                                </Link>
+                                            }
+                                        />
+                                    </>
+                                    : <AddressCardMin address={selectedAddress} defaultAddress={true} />
                         }
                         {/* Selected address */}
 

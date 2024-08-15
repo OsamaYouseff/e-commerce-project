@@ -21,13 +21,9 @@ export const getCustomerWishlist = async () => {
     try {
         const response = await axios.request(config);
 
-        console.log("XXXXXXXXXXXXX : ", response.data)
+        // console.log("XXXXXXXXXXXXX : ", response.data)
 
-        return { status: true, response: response.data }  //// Wishlist is empty
-
-        // if (response.data.products.length == 0)
-        // return response.data; //// Wishlist is empty
-        // else return response.data;
+        return { status: true, response: response.data }
 
     } catch (error) {
         console.log('Error Fetching Wishlist Data : ', error);
