@@ -32,7 +32,11 @@ E-commerece Notes
 
 15 - change fontColor for nav menu in userinfo component & decrease the width of the nav menu in large screens. (done) ×××××××××××××××××××××××
 
-16 - don't forget to enhance cartSlice file and add message to response.
+16 - don't forget to enhance cartSlice file and add message to response. (done) ×××××××××××××××××××××××
+
+17 - make user able to cancel any order if the order is pending or processing. (done) ×××××××××××××××××××××××
+
+18 - make sure to make product pagination.
 
 
 

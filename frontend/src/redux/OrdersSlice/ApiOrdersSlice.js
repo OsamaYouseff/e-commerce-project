@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getCustomerOrdersMinimized, getSpecificOrderForCustomerDetailed, createCustomerOrder } from '../../API/OrdersAPIFunctions';
+import { getCustomerOrdersMinimized, getSpecificOrderForCustomerDetailed, createCustomerOrder, deleteOrder } from '../../API/OrdersAPIFunctions';
 import { clearCart } from '../../API/CartAPIFunctions';
 import toast from 'react-hot-toast';
 
@@ -22,19 +22,20 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
     return response;
 })
 
-export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (orderData, clearCartAtEnd = false) => {
+export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (requestData) => {
+
+    const { orderData, clearCartAtEnd } = requestData;
 
     const response = await createCustomerOrder(orderData);
 
     if (response.status) {
         toast.success(response.message);
 
-        if (clearCartAtEnd)
+        if (clearCartAtEnd) {
             await clearCart()
+            setTimeout(() => { document.location.reload(true) }, 1000)
+        }
 
-        setTimeout(() => {
-            document.location.reload(true);
-        }, 1000)
 
     } else {
         toast.error(response.message);
@@ -42,6 +43,20 @@ export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderA
 
 
     return response;
+})
+
+export const deleteOrderReducer = createAsyncThunk("deleteCustomerOrderAPI/sendRequest", async (orderId) => {
+
+    const response = await deleteOrder(orderId);
+
+    if (response.status) {
+        toast.success(response.message);
+
+        setTimeout(() => { document.location.reload(true); }, 1500)
+
+    } else {
+        toast.error(response.message);
+    }
 })
 
 
@@ -139,7 +154,7 @@ export const CartApiSlice = createSlice({
                     currentState.error = true;
                 }
             })
-            .addCase(createCustomerOrderReducer.rejected, (currentState, action) => {
+            .addCase(createCustomerOrderReducer.rejected, (currentState) => {
                 currentState.isLoading = false;
                 currentState.error = true;
                 // toast.error(action.payload.message);

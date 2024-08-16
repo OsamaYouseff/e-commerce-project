@@ -88,13 +88,13 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             },
         };
 
-        console.log(orderData)
+        // console.log(orderData)
 
         const orderValidationRes = isOrderInfoValid(orderData)
 
         if (orderValidationRes.length === 0) {
             IsUserLoggedIn()
-                ? dispatch(createCustomerOrderReducer(orderData, clearCartAtEnd))
+                ? dispatch(createCustomerOrderReducer({ orderData, clearCartAtEnd }))
                 : toast.error("Please log in or sign up with new account");
 
         } else {
@@ -243,15 +243,15 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                                 Order Summary
                             </Typography>
                             <Stack gap={0.5}>
-                                <Typography variant="body">
+                                <Typography variant="body" fontSize={18} sx={{ fontWeight: "bolder" }}>
                                     Order Details{" "}
                                 </Typography>
                                 <Typography
                                     className="flex-between"
-                                    fontSize={14}
+                                    fontSize={15}
                                 >
                                     <span>Subtotal</span>
-                                    <span>
+                                    <span style={{ fontWeight: "bolder", color: theme.palette.specialText2.main }}>
                                         {currency}{" "}
                                         {convertCentsToDollars(
                                             checkoutInfo?.financials
@@ -261,17 +261,17 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                                 </Typography>
                                 <Typography
                                     className="flex-between"
-                                    fontSize={14}
+                                    fontSize={15}
                                 >
                                     <span>Shipping Cost</span>
-                                    <span>{shippingCost}</span>
+                                    <span style={{ fontWeight: "bolder" }}>{shippingCost}</span>
                                 </Typography>
                                 <Typography
                                     className="flex-between"
-                                    fontSize={14}
+                                    fontSize={15}
                                 >
                                     <span>Discount</span>
-                                    <span>
+                                    <span style={{ fontWeight: "bolder" }}>
                                         - {currency}{" "}
                                         {convertCentsToDollars(
                                             checkoutInfo?.financials?.discount
@@ -283,8 +283,8 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                                     className="flex-between"
                                     fontSize={16}
                                 >
-                                    <span>Order total</span>
-                                    <span>
+                                    <span style={{ fontWeight: "bolder" }}>Order total</span>
+                                    <span style={{ color: theme.palette.specialText.main, fontWeight: "bolder" }}>
                                         {currency}{" "}
                                         {convertCentsToDollars(
                                             checkoutInfo?.financials

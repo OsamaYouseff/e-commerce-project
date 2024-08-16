@@ -2,18 +2,37 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../../Theme/theme";
-import { FormatDate, GetOrderMessage, GetStateColor } from "../../../General/GeneralFunctions";
+import { FormatDate, GetOrderMessage, GetStateColor, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+
+//// custom Components
+import ConfirmComponent from "../../GenericComponents/ConfirmComponent/ConfirmComponent";
 
 
+import { useDispatch } from "react-redux";
+import { deleteOrderReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice.js"
 
-const OrderCard = ({ order, handelOpenModal, handleSetPreviewedProduct }) => {
+const OrderCard = ({ order }) => {
     const theme = useTheme(ColorModeContext);
-    const { orderStatus, message } = GetOrderMessage(
-        order.status,
-        FormatDate(order.estimatedDeliveryDate)
-    );
+    const { orderStatus, message } = GetOrderMessage(order.status, FormatDate(order.estimatedDeliveryDate));
+    const ableToCancelOrder = order.status === "pending" || order.status === "processing"
+
+
+    //// Confirm Component
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const handleClickOpenConfirmDialog = () => setOpenConfirmDialog(true);
+    const handleCloseConfirmDialog = () => setOpenConfirmDialog(false);
+
+    const dispatch = useDispatch();
+
+    const confirmCancelOrder = () => {
+
+        if (IsUserLoggedIn() && ableToCancelOrder) {
+            dispatch((deleteOrderReducer(order.orderId)))
+        }
+    }
 
     return (
         <AnimatePresence>
@@ -50,7 +69,7 @@ const OrderCard = ({ order, handelOpenModal, handleSetPreviewedProduct }) => {
                             color: GetStateColor(orderStatus.toLowerCase()),
                         }}
                     >
-                        {orderStatus}{" "}
+                        {" [ "}{orderStatus}{" ] - "}
                     </span>
                     <span>{message}</span>
                 </Box>
@@ -91,17 +110,17 @@ const OrderCard = ({ order, handelOpenModal, handleSetPreviewedProduct }) => {
                                 <img
                                     src={item.img}
                                     alt="product-img"
-                                    style={{ width: "65px", height: "70px" }}
+                                    style={{ maxWidth: "100px" }}
                                 />
                                 <Typography
                                     sx={{
-                                        fontSize: { xs: "15px", sm: "17px" },
+                                        fontSize: { xs: "15px", sm: "21px" },
                                         width: { xs: "100%" },
                                         maxWidth: { xs: "100%", md: "300px" },
                                         flexGrow: 1,
                                     }}
                                 >
-                                    {(item.title + " ").repeat(3)}
+                                    {(item.title + "")}
                                 </Typography>
                             </Box>
 
@@ -164,26 +183,40 @@ const OrderCard = ({ order, handelOpenModal, handleSetPreviewedProduct }) => {
                         gap: 1,
                     }}
                 >
-                    <Link to={`/userInfo/order-summary/${order.orderId}`}>
-                        <Button
-                            variant="outlined"
-                            size="small"
-                            sx={{
-                                fontWeight: "bold",
-                                width: {
-                                    xs: "100% !important",
-                                    sm: "fit-content !important",
-                                },
-                            }}
-                        >
-                            More details
-                        </Button>
-                    </Link>
+                    <Box className="flex-between" gap={2}>
+                        <Link to={`/userInfo/order-summary/${order.orderId}`}>
+                            <Button
+                                variant="outlined"
+                                size="small"
+                                sx={{
+                                    fontWeight: "bold",
+                                    width: {
+                                        xs: "100% !important",
+                                        sm: "fit-content !important",
+                                    },
+                                }}
+                            >
+                                More details
+                            </Button>
+                        </Link>
+                        <Button sx={{ display: ableToCancelOrder ? "block" : "none" }}
+                            variant="outlined" size="small" color="error"
+                            onClick={handleClickOpenConfirmDialog}
+                        >Cancel order</Button>
+                    </Box>
                     <Typography>
                         Order ID :{" "}
                         <span>{order.orderId.slice(0, 20).toUpperCase()}</span>
                     </Typography>
                 </Stack>
+                {
+                    openConfirmDialog && <ConfirmComponent
+                        openConfirmDialog={openConfirmDialog}
+                        confirmAction={confirmCancelOrder}
+                        handleCloseConfirmDialog={handleCloseConfirmDialog}
+                        message="Are you sure you want to cancel this Order?"
+                    />
+                }
             </Box>
         </AnimatePresence>
     );

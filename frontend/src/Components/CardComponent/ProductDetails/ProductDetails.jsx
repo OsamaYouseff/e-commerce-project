@@ -106,7 +106,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const [inWishlist, setInWishlist] = useState(false);
     const error = useSelector((state) => state.WishlistApiRequest.error);
 
-    console.log(PreviewedProduct)
+    // console.log(PreviewedProduct)
 
 
     ///// complete checkout modal

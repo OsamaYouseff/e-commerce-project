@@ -7,7 +7,7 @@ export const SomeThingWrong = ({ minHeight, errorMsg, additionalElements }) => {
             className="flex-column-center"
             sx={{ minHeight: minHeight, gap: "15px", width: "100%" }}
         >
-            <Typography variant="h6" sx={{ color: "#ff0057", fontWeight: "bold" }}>{errorMsg}</Typography>
+            <Typography variant="h6" sx={{ color: "#ff0057", fontWeight: "bold", textAlign: "center" }}>{errorMsg}</Typography>
             <Button
                 variant="contained"
                 onClick={() => window.location.reload()}

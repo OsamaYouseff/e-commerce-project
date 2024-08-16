@@ -43,6 +43,9 @@ export const getDesignTokens = (mode) => ({
                 specialText: {
                     main: "#479f00",
                 },
+                specialText2: {
+                    main: "#E91E63",
+                },
             }
             : {
                 // palette values for dark mode
@@ -81,6 +84,10 @@ export const getDesignTokens = (mode) => ({
                 specialText: {
                     main: "#abff67",
                 },
+                specialText2: {
+                    main: "#cd0046",
+                },
+
             }),
     },
 });

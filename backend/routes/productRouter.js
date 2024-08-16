@@ -56,30 +56,6 @@ router.get("/find/:id", async (req, res) => {
   }
 });
 
-// //GET ALL PRODUCTS & FILTER
-// router.get("/", async (req, res) => {
-//   const qNew = req.query.new;
-//   const qCategory = req.query.category;
-//   try {
-//     let products;
-
-//     if (qNew) {
-//       products = await Product.find().sort({ createdAt: -1 }).limit(1);
-//     } else if (qCategory) {
-//       products = await Product.find({
-//         categories: {
-//           $in: [qCategory],
-//         },
-//       });
-//     } else {
-//       products = await Product.find();
-//     }
-
-//     res.status(200).json(products);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
 
 // GET FILTERED PRODUCTS
 router.get("/", async (req, res) => {
@@ -108,5 +84,43 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Error fetching products", error: err.message });
   }
 });
+
+
+//// GET ALL PRODUCTS WITH PAGINATION
+router.get('/all', async (req, res) => {
+  try {
+    // Get page and limit from query parameters (with defaults)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+
+    // Calculate the number of documents to skip
+    const skip = (page - 1) * limit;
+
+    // Fetch the paginated data
+    const items = await Product.find()
+      .skip(skip)
+      .limit(limit);
+
+    // Get the total number of documents
+    const total = await Product.countDocuments();
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(total / limit);
+
+    // Send the paginated data with metadata
+    res.json({
+      data: items,
+      meta: {
+        total,
+        page,
+        totalPages,
+        limit
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 module.exports = router;

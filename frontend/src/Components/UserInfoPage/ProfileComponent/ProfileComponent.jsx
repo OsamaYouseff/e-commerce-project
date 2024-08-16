@@ -89,7 +89,7 @@ const ProfileComponent = ({ customerData }) => {
     return (
         <Box
             className="flex-center"
-            sx={{ flexGrow: 1, pt: 1, minHeight: "77vh" }}
+            sx={{ flexGrow: 1, pt: 1, minHeight: "70vh" }}
         >
             <Container
                 maxWidth="xl"

@@ -2,7 +2,7 @@ import NoItemComponent from "../../GenericComponents/NoItemsComponent/NoItemsCom
 
 const PaymentsComponent = () => {
     return (
-        <div style={{ minWidth: "67vw", minHeight: "77vh", padding: "0px 10px" }}>
+        <div style={{ minWidth: "67vw", minHeight: "70vh", padding: "0px 10px" }}>
             <h1>Payments Section</h1>
             <NoItemComponent message="Coming soon 😉" minHeight="60vh" fontSize={"1.5rem"} />
         </div>

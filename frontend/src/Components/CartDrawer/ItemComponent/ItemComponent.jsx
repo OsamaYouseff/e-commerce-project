@@ -109,14 +109,14 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         className="flex-between"
                         sx={{
                             width: { xs: "50%", sm: "34%" },
-                            // maxHeight: "100px",
                             cursor: "pointer",
-                            gap: { xs: 1, sm: 2 },
+                            gap: { xs: 1, sm: 1 },
                             flexDirection: {
                                 xs: "column !important",
                                 md: "row !important"
                             },
                             alignItems: "center ",
+                            justifyContent: { xs: "space-between", sm: "flex-start" },
                         }}
                     >
                         <img
@@ -181,12 +181,12 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             className="flex-center"
                             sx={{
 
-                                fontSize: "22px",
+                                fontSize: "19px",
                                 fontWeight: "bolder",
                                 width: {
                                     xs: "auto", sm: "22%",
                                 },
-                                color: "#ff4450",
+                                color: theme.palette.specialText2.main,
                                 gap: "3px",
                             }}
                         >

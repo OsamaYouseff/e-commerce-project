@@ -112,3 +112,30 @@ export const createCustomerOrder = async (orderData) => {
         return { status: false, message: "Failed to place your order please confirm your address and payment method and try again later." };
     }
 };
+
+
+export const deleteOrder = async (orderId) => {
+
+    const { customerId, accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'delete',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/orders/${customerId}/${orderId}`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        }
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        console.log("ORDER RESPONSE : ", response.data)
+
+        return { status: true, message: "Your order cancelled successfully." };
+
+    } catch (error) {
+        console.log('Error Fetching order Data : ', error);
+        return { status: false, message: "Failed to Cancel this order 😢" };
+    }
+};

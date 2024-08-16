@@ -23,16 +23,8 @@ const OrdersComponent = () => {
 
     // console.log(customerOrders);
 
-    //// Modal vars
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {} });
 
     const handleChange = (event) => setHistoryDate(event.target.value);
-    const handleSetPreviewedProduct = (newValue) => setPreviewedProduct(newValue);
-
-
 
     const handelShowOrdersItems = () => {
         if (error) {
@@ -59,12 +51,7 @@ const OrdersComponent = () => {
             );
         }
         return customerOrders.map((order) => (
-            <OrderCard
-                key={order.orderId}
-                order={order}
-                handelOpenModal={handleOpen}
-                handleSetPreviewedProduct={handleSetPreviewedProduct}
-            />
+            <OrderCard key={order.orderId} order={order} />
         ));
     };
 

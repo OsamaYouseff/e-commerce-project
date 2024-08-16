@@ -8,7 +8,7 @@ import { FormatDate } from "../../../General/GeneralFunctions";
 const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeliveryDate }) => {
     const theme = useTheme(ColorModeContext);
 
-    console.log(product)
+    // console.log(product)
 
     return (
         <Stack
