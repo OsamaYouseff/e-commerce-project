@@ -18,13 +18,9 @@ import { toast } from "react-hot-toast";
 //// Redux
 import { useDispatch } from "react-redux";
 import { registerACustomerReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
-import { GoHome, IsUserLoggedIn } from "../../General/GeneralFunctions";
+import { GoHome, IsUserLoggedIn, ValidateSignUpForm, PrintErrors } from "../../General/GeneralFunctions";
 
 //// functions
-function isPasswordsMatch(password = "", confirmPassword = "") {
-    return password.trim() === confirmPassword.trim();
-}
-
 function handlePasswordVisibility(showPassword, setShowPassword) {
     return showPassword ? (
         <RemoveRedEyeIcon
@@ -77,25 +73,17 @@ export default function RegisterPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        //// invalid password checking
-        if (formData.password == undefined || confirmPassword == undefined)
+        let errors = ValidateSignUpForm(formData, confirmPassword);
 
-            return toast.error("Please enter both passwords");
-
-        if (formData.password.trim().length < 8)
-            return toast.error("Password must be at least 8 characters long");
-
-        //// check if passwords match
-        if (!isPasswordsMatch(formData.password, confirmPassword))
-            return toast.error("Passwords do not match");
-
-        // const data = new FormData(event.currentTarget);
-        //// Send data to API
+        if (Object.keys(errors.errors).length > 0) {
+            let errorMessage = PrintErrors(errors.errors);
+            toast.error(errorMessage)
+            return;
+        }
         if (!IsUserLoggedIn()) dispatch(registerACustomerReducer(formData));
         else toast.error("You are already logged in");
     };
 
-    //// Todo : add validation using React Hook Form library
     //// Todo : add modal for messages
 
     if (IsUserLoggedIn()) {

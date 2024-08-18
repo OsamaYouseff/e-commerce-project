@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 
 ///// Redux Actions
 import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
-import { GoHome, IsUserLoggedIn } from "../../General/GeneralFunctions";
+import { GoHome, IsUserLoggedIn, PrintErrors, ValidateLoginForm } from "../../General/GeneralFunctions";
 
 export default function LoginPage() {
     const dispatch = useDispatch();
@@ -36,8 +36,13 @@ export default function LoginPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if (formData.username.trim() === "" || formData.password.trim() === "")
-            return toast.error("Please enter both username and password");
+        let errors = ValidateLoginForm(formData);
+
+        if (Object.keys(errors.errors).length > 0) {
+            let errorMessage = PrintErrors(errors.errors);
+            toast.error(errorMessage)
+            return;
+        }
 
         if (!IsUserLoggedIn()) dispatch(customerLoginReducer(formData));
         else toast.error("You are already logged in");

@@ -15,13 +15,7 @@ import toast from 'react-hot-toast';
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { getSpecificOrderForCustomerDetailedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
-import {
-    convertCentsToDollars,
-    FormatDate,
-    GetOrderMessage,
-    GetStateColor,
-    IsUserLoggedIn,
-} from "../../../General/GeneralFunctions";
+import { convertCentsToDollars, FormatDate, GetOrderMessage, GetStateColor, IsUserLoggedIn, } from "../../../General/GeneralFunctions";
 import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 
 const orderChildrenStyle = {
@@ -213,7 +207,7 @@ const OrderSummary = () => {
                                             className="flex-start"
                                             sx={{
                                                 width: "110px",
-                                                height: "110px",
+                                                // height: "110px",
                                             }}
                                         >
                                             <img

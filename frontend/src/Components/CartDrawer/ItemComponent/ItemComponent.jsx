@@ -123,7 +123,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             style={{
                                 minWidth: "100px",
                                 maxWidth: "100px",
-                                maxHeight: "100px",
+                                // maxHeight: "100px",
                                 borderRadius: "5px",
                             }}
                             src={item.img}

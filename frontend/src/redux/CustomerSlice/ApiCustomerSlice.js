@@ -103,7 +103,7 @@ export const CustomerApiSlice = createSlice({
 
 
 
-        }).addCase(customerLoginReducer.rejected, (currentState, action) => {
+        }).addCase(customerLoginReducer.rejected, (currentState) => {
             currentState.isLoading = false;
             currentState.error = true;
         })
