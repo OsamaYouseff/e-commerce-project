@@ -14,11 +14,31 @@ export const getFilteredProducts = async (filter) => {
     try {
         const response = await axios.request(config);
 
-        return response;
+        return { status: true, data: response, message: "Products Fetched Successfully" };
+
+    } catch (error) {
+        console.log('Error Fetching Products Data : ', error);
+        return { status: false, message: "Failed to get products" };
+    }
+};
+export const getAllProductsPaginated = async (filter) => {
+    const { page, limit } = filter;
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/products/all?page=${page}&limit=${limit}`,
+        headers: {}
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        return { status: true, response: response, message: "Products Fetched Successfully" };
 
     } catch (error) {
         console.error('Error Fetching Products Data : ', error);
-        throw error;
+        return { status: false, message: "Failed to get products" };
     }
 };
 

@@ -65,24 +65,6 @@ const ProductCardComponent = ({
                     justifyContent: "space-between",
                 }}
             >
-                {/* <CardMedia
-                    className="card-img"
-                    component="img"
-                    alt="green iguana"
-                    height="245"
-                    image={`${productData.img}`}
-                    loading="lazy"
-                    sx={{
-                        boxShadow: 3,
-                        cursor: "pointer",
-                        flexGrow: 1,
-                        transition: "transform 0.35s ease-in-out",
-                        "&:hover": {
-                            transform: "scale(1.05) rotate(2deg)",
-                        },
-                        maxHeight: "245px",
-                    }}
-                /> */}
 
                 <Box
                     onClick={() => {

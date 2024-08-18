@@ -16,9 +16,13 @@ import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getFilteredProductsReducer } from "../../../redux/ProductSlice/ApiProductSlice";
+import { getFilteredProductsReducer, getAllProductsPaginatedReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
+
+
+let storedContent = [];
+
 
 const MainContent = () => {
     const allProducts = "";
@@ -30,9 +34,8 @@ const MainContent = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.ProductsApiRequest.response);
     const error = useSelector((state) => state.ProductsApiRequest.error);
-    const isLoading = useSelector(
-        (state) => state.ProductsApiRequest.isLoading
-    );
+    const isLoading = useSelector((state) => state.ProductsApiRequest.isLoading);
+    const totalPagesNum = useSelector((state) => state.ProductsApiRequest.meta.totalPages)
 
     const theme = useTheme(ColorModeContext);
     const ToggleButtonStyles = {
@@ -61,14 +64,32 @@ const MainContent = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({
-        id: 2,
-        attributes: {},
-    });
+    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {} });
+
+
+    //// pagination logic
+    const [page, setPage] = useState(1);
+    const totalPages = totalPagesNum || 1;
+    const limit = 8;
+
 
     useEffect(() => {
+
+        // (async function fetchData() {
+        //     await dispatch(getFilteredProductsReducer());
+
+        //     if (IsUserLoggedIn()) {
+        //         toast.success("Login Successful ,Welcome Back !");
+        //     }
+
+        // })();
+
+        if (products.length > 0) {
+            storedContent.push(...products);
+        }
+
         (async function fetchData() {
-            await dispatch(getFilteredProductsReducer());
+            await dispatch(getAllProductsPaginatedReducer({ page: page, limit: limit }));
 
             if (IsUserLoggedIn()) {
                 toast.success("Login Successful ,Welcome Back !");
@@ -76,7 +97,29 @@ const MainContent = () => {
 
         })();
 
+    }, [page]);
+
+
+    const handleNextPage = () => {
+        if (page < totalPages) {
+            setPage(page + 1);
+        }
+    };
+
+
+    const handleScroll = () => {
+
+        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100) {
+            document.querySelector(".more").click();
+        }
+
+    };
+
+    useEffect(() => {
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
 
     if (products) {
         return (
@@ -152,6 +195,19 @@ const MainContent = () => {
                     flexWrap={"wrap"}
                     justifyContent={"space-between"}
                 >
+                    {
+                        storedContent?.map((product) => (
+                            <ProductCardComponent
+                                key={product._id}
+                                productData={product}
+                                handelOpenModal={handleOpen}
+                                handleSetPreviewedProduct={
+                                    handleSetPreviewedProduct
+                                }
+                            />
+                        ))
+                    }
+
                     {products?.map((product) => (
                         <ProductCardComponent
                             key={product._id}
@@ -162,6 +218,8 @@ const MainContent = () => {
                             }
                         />
                     ))}
+
+
                 </Stack>
                 {
                     // toggle modal appearance
@@ -173,6 +231,11 @@ const MainContent = () => {
                         />
                     )
                 }
+
+                <Box className="flex-center" sx={{ mt: "15px", p: 2, gap: 2, scale: 0 }}>
+                    {/* <span>{`Page ${page} of ${totalPages}`}</span> */}
+                    <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
+                </Box>
             </Container>
         );
     } else if (isLoading) {

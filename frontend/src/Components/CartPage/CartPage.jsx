@@ -106,8 +106,7 @@ const CartPage = () => {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        // TODO : don't forget to uncomment the line below
-        // else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account");
     }, []);
 
     return (
