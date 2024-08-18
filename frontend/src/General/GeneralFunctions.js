@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast';
-
+import Cookies from 'js-cookie';
 
 export function GoHome() {
     window.location.href = "/";
@@ -26,29 +26,36 @@ export function GetUserInfo() {
 }
 
 export function ResetLocalStorage() {
+    sessionStorage.removeItem("customerInfo");
     localStorage.removeItem("customerInfo");
     localStorage.removeItem("token");
-    sessionStorage.removeItem("customerInfo");
     sessionStorage.removeItem("token");
+    Cookies.remove("token");
 }
 
 export function StoreDataAtLocalStorage(Type = "localStorage", data) {
 
+    if (!data) {
+        toast.error("there are some data missing please logout and login again");
+        GoHome();
+        return
+    }
+
     if (Type === "localStorage") {
-        localStorage.setItem('token', data.accessToken);
         localStorage.setItem('customerInfo', JSON.stringify(data.userInfo));
 
     } else if (Type === "sessionStorage") {
-        sessionStorage.setItem('token', data.accessToken);
         sessionStorage.setItem('customerInfo', JSON.stringify(data.userInfo));
     }
+
+    Cookies.set('token', data.accessToken, { expires: 3 });
+
 
 }
 
 export function IsUserLoggedIn() {
 
-    if ((localStorage.getItem("customerInfo") && localStorage.getItem("token"))
-        || (sessionStorage.getItem("customerInfo") && sessionStorage.getItem("token")))
+    if ((localStorage.getItem("customerInfo") || (sessionStorage.getItem("customerInfo")) && Cookies.get('token')))
         return true;
     else
         return false;
@@ -71,7 +78,7 @@ export function GetAddressInfo() {
 
 export function GetTokenAndUserId() {
     const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token');
+    const accessToken = Cookies.get('token');
 
 
     if (!customerData || !accessToken) {
@@ -263,7 +270,6 @@ export function ValidateLoginForm(formData) {
         errors: errors
     };
 }
-
 
 export function PrintErrors(errors) {
     let errorMessage = "";

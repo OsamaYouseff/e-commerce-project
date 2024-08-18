@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: "Invalid username or password" });
         }
 
-        const { password, ...userInfo } = user._doc;
+        const { password, passwordHistory, updatedAt, createdAt, __v, ...userInfo } = user._doc;
 
         // Create access token
         const accessToken = jwt.sign(
