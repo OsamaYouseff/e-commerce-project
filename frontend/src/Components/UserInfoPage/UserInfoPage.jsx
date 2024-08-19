@@ -45,8 +45,6 @@ const UserInfoPage = () => {
     const theme = useTheme(ColorModeContext);
     let customerData = GetUserInfo();
 
-    //// TODO : Fix login reducer to rerender component after login
-
     const handleLogout = () => {
         if (IsUserLoggedIn()) dispatch(logoutCustomerAccountReducer());
         else toast.error("You are already logged out");

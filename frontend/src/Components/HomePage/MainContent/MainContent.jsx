@@ -1,11 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import { Box, Container, Stack, Typography, Button } from "@mui/material";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import { ColorModeContext } from "../../../Theme/theme";
 
 //// custom component
 import ProductCardComponent from "../../CardComponent/ProductCardComponent";
@@ -16,7 +12,7 @@ import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getFilteredProductsReducer, getAllProductsPaginatedReducer } from "../../../redux/ProductSlice/ApiProductSlice";
+import { getAllProductsPaginatedReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
@@ -25,11 +21,6 @@ let storedContent = [];
 
 
 const MainContent = () => {
-    const allProducts = "";
-    const menProducts = "men";
-    const womenProducts = "women";
-
-    const [productCategory, setProductCategory] = useState(allProducts);
 
     const dispatch = useDispatch();
     const products = useSelector((state) => state.ProductsApiRequest.response);
@@ -37,25 +28,6 @@ const MainContent = () => {
     const isLoading = useSelector((state) => state.ProductsApiRequest.isLoading);
     const totalPagesNum = useSelector((state) => state.ProductsApiRequest.meta.totalPages)
 
-    const theme = useTheme(ColorModeContext);
-    const ToggleButtonStyles = {
-        fontSize:
-            "clamp(10px,calc(14px + (16 - 14) * (100vw - 1000px) / (1920 - 1000)),16px) !important",
-        border: "1px solid #777 !important",
-        borderRadius: "4px !important",
-        padding: "5px 10px",
-        color: theme.palette.text.primary,
-        flexGrow: "1",
-    };
-    const handleProductCategory = (event, newValue) => {
-        if (newValue) {
-            setProductCategory(newValue);
-            dispatch(getFilteredProductsReducer(`categories=${newValue}`));
-        } else {
-            dispatch(getFilteredProductsReducer(""));
-            setProductCategory(allProducts);
-        }
-    };
     const handleSetPreviewedProduct = (newValue) => {
         setPreviewedProduct(newValue);
     };
@@ -74,16 +46,6 @@ const MainContent = () => {
 
 
     useEffect(() => {
-
-        // (async function fetchData() {
-        //     await dispatch(getFilteredProductsReducer());
-
-        //     if (IsUserLoggedIn()) {
-        //         toast.success("Login Successful ,Welcome Back !");
-        //     }
-
-        // })();
-
         if (products.length > 0) {
             storedContent.push(...products);
         }
@@ -145,7 +107,7 @@ const MainContent = () => {
                         gap={3}
                         sx={{ flexGrow: { xs: 1, sm: 0 } }}
                     >
-                        <ToggleButtonGroup
+                        {/* <ToggleButtonGroup
                             value={productCategory}
                             exclusive
                             onChange={handleProductCategory}
@@ -179,7 +141,7 @@ const MainContent = () => {
                             >
                                 Women Category
                             </ToggleButton>
-                        </ToggleButtonGroup>
+                        </ToggleButtonGroup> */}
                     </Stack>
                     <Box
                         sx={{
@@ -231,11 +193,7 @@ const MainContent = () => {
                         />
                     )
                 }
-
-                <Box className="flex-center" sx={{ mt: "15px", p: 2, gap: 2, scale: 0 }}>
-                    {/* <span>{`Page ${page} of ${totalPages}`}</span> */}
-                    <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
-                </Box>
+                <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
             </Container>
         );
     } else if (isLoading) {

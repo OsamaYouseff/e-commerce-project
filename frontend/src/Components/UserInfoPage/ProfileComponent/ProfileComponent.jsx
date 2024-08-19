@@ -35,7 +35,6 @@ const ProfileComponent = ({ customerData }) => {
         phone: customerData.phone,
         gender: customerData.gender,
     });
-    ///// TODO : Return isDataChanged to false after doing your job
     const [isDataChanged, setIsDataChanged] = useState(false);
 
     //// handlers
