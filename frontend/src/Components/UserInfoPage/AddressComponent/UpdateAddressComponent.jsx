@@ -12,15 +12,9 @@ import toast from 'react-hot-toast';
 import { useEffect, useState } from "react";
 
 /// redux
-import {
-    GetAddressInfo,
-    IsUserLoggedIn,
-} from "../../../General/GeneralFunctions";
+import { CheckDuplicated, GetAddressInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    getCustomerAddressReducer,
-    updateCustomerAddressReducer,
-} from "../../../redux/AddressSlice/ApiAddressSlice";
+import { getCustomerAddressReducer, updateCustomerAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
 import CountriesComponent from "./CountriesComponent";
 
 const UpdateAddressComponent = () => {
@@ -49,19 +43,15 @@ const UpdateAddressComponent = () => {
 
     //// handlers
     const checkDataChanged = (formData) => {
-        // if (
-        //     formData.userId === "" &&
-        //     formData.firstName === "" &&
-        //     formData.lastName === "" &&
-        //     formData.fullAddress === "" &&
-        //     formData.label === "" &&
-        //     formData.phoneNumber === "" &&
-        //     formData.isDefault === ""
-        // ) {
-        //     setIsDataChanged(false);
-        // } else {
-        //     setIsDataChanged(true);
-        // }
+
+        let updatedAddressData = {
+            ...formData,
+            phoneNumber: `+${phoneCode} ${formData.phoneNumber}`,
+            fullAddress: `${country},${formData.fullAddress}`,
+        };
+
+        if (CheckDuplicated(updatedAddressData, addressData)) setIsDataChanged(false);
+        else setIsDataChanged(true);
     };
 
     const handleUpdateAddress = async (e) => {
@@ -90,13 +80,18 @@ const UpdateAddressComponent = () => {
             [key]: value,
         };
         setFormData(updatedFormData);
-        // checkDataChanged(updatedFormData);
+        checkDataChanged(updatedFormData);
     };
 
     const [country, setCountry] = useState(fullAddress[0]);
     const [phoneCode, setPhoneCode] = useState(code.slice(1));
     const handleChangeCountry = (newValue) => {
         setCountry(newValue);
+
+        if (newValue === fullAddress[0])
+            setIsDataChanged(false);
+        else setIsDataChanged(true);
+
     };
     const handleChangePhoneCode = (newValue) => {
         setPhoneCode(newValue);
@@ -156,7 +151,7 @@ const UpdateAddressComponent = () => {
                 type="submit"
                 fullWidth
                 variant="contained"
-                // disabled={!isDataChanged}
+                disabled={!isDataChanged}
                 sx={{
                     mt: 3,
                     mb: 2,
@@ -172,166 +167,3 @@ const UpdateAddressComponent = () => {
 
 export default UpdateAddressComponent;
 
-{
-    /* <Stack
-                sx={{
-                    gap: 2,
-                    mb: 2,
-                    width: "100%",
-                    overflowY: "auto",
-                    // maxHeight: { xs: "auto", md: "70vh", lg: "60vh" },
-                    flexDirection: { xs: "column", md: "row" },
-                    alignItems: "flex-start",
-                    justifyContent: "center",
-                }}
-            >
-                
-                <Box
-                    component="form"
-                    noValidate
-                    sx={{
-                        flexGrow: 1,
-                        width: { xs: "100%", md: "50%" },
-                        maxWidth: { xs: "100%", md: "50%" },
-                        overflowX: "hidden",
-                    }}
-                >
-                    <Typography variant="h6" mb={2}>
-                        Location details
-                    </Typography>
-
-                    <CountriesComponent
-                        country={country}
-                        handleChangeCountry={handleChangeCountry}
-                        handleChangePhoneCode={handleChangePhoneCode}
-                    />
-
-                    <Grid mt={1} container spacing={2}>
-                        <TextFieldComponent
-                            value={formData.fullAddress}
-                            setFormData={handelFormData}
-                            label="Full Address"
-                            id="fullAddress"
-                            type="text"
-                            colWidth={12}
-                            keyName="fullAddress"
-                            placeholder="[City]-[Street Name]-[building Number]"
-                        />
-                    </Grid>
-
-                    <FormControl sx={{ mb: 1 }}>
-                        <FormLabel id="row-radio">
-                            Address label (optional)
-                        </FormLabel>
-                        <RadioGroup
-                            value={formData.label}
-                            row
-                            aria-labelledby="row-radio"
-                            name="row-radio-buttons-group"
-                            sx={{ pl: 2 }}
-                        >
-                            <FormControlLabel
-                                value="Home"
-                                control={<Radio />}
-                                label="Home"
-                                onClick={() => handelFormData("label", "Home")}
-                            />
-                            <FormControlLabel
-                                value="Work"
-                                control={<Radio />}
-                                label="Work"
-                                onClick={() => handelFormData("label", "Work")}
-                            />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <FormControlLabel
-                        sx={{ display: "block" }}
-                        control={
-                            <SwitchButton
-                                defaultChecked={formData.isDefault}
-                                sx={{ mr: 1 }}
-                            />
-                        }
-                        onClick={() =>
-                            handelFormData("isDefault", !formData.isDefault)
-                        }
-                        labelPlacement="start"
-                        label="Set as default address"
-                        // disabled
-                        value={formData.isDefault}
-                    />
-                </Box>
-
-                <Divider orientation="vertical" flexItem>
-                    <Divider orientation="horizontal" flexItem></Divider>
-                </Divider>
-
-                <Box
-                    component="form"
-                    noValidate
-                    sx={{
-                        maxWidth: { xs: "100%", md: "50%" },
-                        width: { xs: "100%", md: "50%" },
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "flex-start",
-                        minHeight: "100%",
-                    }}
-                >
-                    <Typography variant="h6" mb={2}>
-                        Your contact details
-                    </Typography>
-
-                    <Stack
-                        className="flex-between"
-                        sx={{
-                            justifyContent: "space-between",
-                            width: "100%",
-                            gap: 2,
-                        }}
-                    >
-                        <TextField
-                            size="small"
-                            sx={{
-                                maxWidth: 90,
-                                mb: 3,
-                            }}
-                            defaultValue={phoneCode}
-                            mb={3}
-                        />
-                        <Box sx={{ flexGrow: 1 }}>
-                            <TextFieldComponent
-                                value={formData.phoneNumber}
-                                setFormData={handelFormData}
-                                label="phone Number"
-                                id="phoneNumber"
-                                type="text"
-                                colWidth={12}
-                                keyName="phoneNumber"
-                            />
-                        </Box>
-                    </Stack>
-                    <Grid container>
-                        <TextFieldComponent
-                            value={formData.firstName}
-                            setFormData={handelFormData}
-                            label="First Name"
-                            id="firstname"
-                            type="text"
-                            colWidth={12}
-                            keyName="firstname"
-                        />
-                        <TextFieldComponent
-                            value={formData.lastName}
-                            setFormData={handelFormData}
-                            label="Last Name"
-                            id="lastname"
-                            type="text"
-                            colWidth={12}
-                            keyName="lastname"
-                        />
-                    </Grid>
-                </Box>
-            </Stack> */
-}

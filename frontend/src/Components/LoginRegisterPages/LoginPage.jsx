@@ -11,6 +11,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import toast from 'react-hot-toast';
 
 ///// Custom Hooks
@@ -23,15 +25,29 @@ import { useDispatch } from "react-redux";
 import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 import { GoHome, IsUserLoggedIn, PrintErrors, ValidateLoginForm } from "../../General/GeneralFunctions";
 
+//// styles
+const eyeStyles = {
+    cursor: "pointer",
+    position: "absolute",
+    right: "-0%",
+    top: "58%",
+    transform: "translate(-50%,-50%)",
+    zIndex: 10,
+    color: "white",
+    borderRadius: "50%",
+    height: "25px",
+};
+
 export default function LoginPage() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        // username: "ahmedsayed@gmail.com",
         username: "sama",
         password: "Os123@.seto2",
         rememberMe: false,
     });
+    const [showPassword, setShowPassword] = useState(false);
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -48,6 +64,20 @@ export default function LoginPage() {
         else toast.error("You are already logged in");
     };
 
+    function handlePasswordVisibility(showPassword, setShowPassword) {
+        return showPassword ? (
+            <RemoveRedEyeIcon
+                sx={eyeStyles}
+                onClick={() => setShowPassword(!showPassword)}
+            />
+        ) : (
+            <VisibilityOffIcon
+                sx={eyeStyles}
+                onClick={() => setShowPassword(!showPassword)}
+            />
+        );
+    }
+
     //// prevent user from accessing login page if he is already logged in
     if (IsUserLoggedIn()) {
         GoHome();
@@ -56,7 +86,7 @@ export default function LoginPage() {
             <Container
                 component="main"
                 maxWidth="sm"
-                sx={{ boxShadow: 6, borderRadius: 3, p: 4 }}
+                sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 } }}
             >
                 <CssBaseline />
                 <Box
@@ -77,7 +107,7 @@ export default function LoginPage() {
                         component="form"
                         onSubmit={handleSubmit}
                         noValidate
-                        sx={{ mt: 1 }}
+                        sx={{ mt: 1, width: "100%" }}
                     >
                         <TextField
                             margin="normal"
@@ -97,24 +127,30 @@ export default function LoginPage() {
                                 })
                             }
                         />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            size="small"
-                            value={formData.password}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    password: e.target.value.trim(),
-                                })
-                            }
-                        />
+                        <Grid item xs={12} sx={{ position: "relative" }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type={showPassword ? "password" : "text"}
+                                id="password"
+                                autoComplete="current-password"
+                                size="small"
+                                value={formData.password}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password: e.target.value.trim(),
+                                    })
+                                }
+                            />
+                            {handlePasswordVisibility(
+                                showPassword,
+                                setShowPassword
+                            )}
+                        </Grid>
                         <FormControlLabel
                             control={
                                 <Checkbox value="remember" color="primary" />
@@ -154,7 +190,7 @@ export default function LoginPage() {
                             </Button>
                         </Link>
                         <Grid container>
-                            <Grid item xs>
+                            {/* <Grid item xs>
                                 <Link
                                     href="#"
                                     variant="body2"
@@ -162,7 +198,7 @@ export default function LoginPage() {
                                 >
                                     Forgot password?
                                 </Link>
-                            </Grid>
+                            </Grid> */}
                             <Grid item>
                                 <Link
                                     href="/register"

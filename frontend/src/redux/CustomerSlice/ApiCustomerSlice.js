@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { changeCustomerPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateCustomerAccount } from '../../API/CustomerAPIFunctions';
-import { getMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
+import { GetMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
 
 import toast from 'react-hot-toast';
 import { createCustomerCart } from '../../API/CartAPIFunctions';
@@ -120,12 +120,12 @@ export const CustomerApiSlice = createSlice({
             }
             else {
                 currentState.error = true;
-                toast.error(getMessagesFromObject(action.payload.message));
+                toast.error(GetMessagesFromObject(action.payload.message));
             }
 
         }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
             currentState.isLoading = false;
-            toast.error(getMessagesFromObject(action.payload.message));
+            toast.error(GetMessagesFromObject(action.payload.message));
             currentState.error = true;
 
         })

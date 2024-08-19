@@ -93,7 +93,7 @@ export default function RegisterPage() {
             <Container
                 component="main"
                 maxWidth="sm"
-                sx={{ boxShadow: 6, borderRadius: 3, p: 1, my: 1 }}
+                sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 }, my: 1 }}
             >
                 <CssBaseline />
                 <Box
@@ -115,47 +115,9 @@ export default function RegisterPage() {
                         component="form"
                         noValidate
                         onSubmit={handleSubmit}
-                        sx={{ mt: 3 }}
+                        sx={{ mt: 3, width: "100%" }}
                     >
                         <Grid container spacing={2}>
-                            {/* <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="given-name"
-                                name="firstname"
-                                required
-                                fullWidth
-                                id="firstname"
-                                label="First Name"
-                                autoFocus
-                                value={formData.firstname}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        firstname: e.target.value.trim(),
-                                    })
-                                }
-                                size="small"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="lastname"
-                                label="Last Name"
-                                name="lastname"
-                                autoComplete="family-name"
-                                value={formData.lastname}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        lastname: e.target.value.trim(),
-                                    })
-                                }
-                                size="small"
-                            />
-                        </Grid> */}
-
                             <TextFieldComponent
                                 value={formData.username}
                                 setFormData={handelFormData}
@@ -180,7 +142,7 @@ export default function RegisterPage() {
                                 <TextField
                                     required
                                     fullWidth
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? "password" : "text"}
                                     id="password"
                                     label="Password"
                                     name="password"
@@ -204,7 +166,7 @@ export default function RegisterPage() {
                                     required
                                     fullWidth
                                     id="password"
-                                    type={showPassword ? "text" : "password"}
+                                    type={showPassword ? "password" : "text"}
                                     label="Confirm Password"
                                     name="password"
                                     autoComplete="confirm-password"
@@ -273,7 +235,7 @@ export default function RegisterPage() {
                         </Grid>
                     </Box>
                 </Box>
-            </Container>
+            </Container >
         );
     }
 }

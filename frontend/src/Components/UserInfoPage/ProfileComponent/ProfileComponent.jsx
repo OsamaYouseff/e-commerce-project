@@ -18,7 +18,7 @@ import { useTheme } from "@emotion/react";
 import { useState } from "react";
 
 /// redux
-import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
+import { GetUserInfo, IsUserLoggedIn, CheckDuplicated } from "../../../General/GeneralFunctions";
 import { updateCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
@@ -39,19 +39,9 @@ const ProfileComponent = ({ customerData }) => {
 
     //// handlers
     const checkDataChanged = (formData) => {
-        if (
-            formData.firstname === customerData.firstname &&
-            formData.lastname === customerData.lastname &&
-            formData.username === customerData.username &&
-            formData.email === customerData.email &&
-            formData.password === customerData.password &&
-            formData.phone === customerData.phone &&
-            formData.gender === customerData.gender
-        ) {
-            setIsDataChanged(false);
-        } else {
-            setIsDataChanged(true);
-        }
+
+        if (CheckDuplicated(formData, customerData)) setIsDataChanged(false);
+        else setIsDataChanged(true);
     };
 
     const handleUpdateData = async (e) => {

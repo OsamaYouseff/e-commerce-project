@@ -193,7 +193,7 @@ const MainContent = () => {
                         />
                     )
                 }
-                <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
+                <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
             </Container>
         );
     } else if (isLoading) {

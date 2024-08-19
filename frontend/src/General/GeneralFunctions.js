@@ -181,7 +181,7 @@ export function CalcTotalCartPrice(subtotalPrice, couponCode = "") {
     return { finalPrice, shippingCost, discount, shippingCalc };
 }
 
-export function isDiscountValid(couponCode) {
+export function IsDiscountValid(couponCode) {
     return coupons.includes(couponCode)
 }
 
@@ -198,7 +198,7 @@ export function GetEstimatedDeliveryDate() {
     return new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString();
 }
 
-export function getMessagesFromObject(errors) {
+export function GetMessagesFromObject(errors) {
     let message = '';
 
     Object.keys(errors).forEach((key) => {
@@ -281,3 +281,15 @@ export function PrintErrors(errors) {
     return errorMessage;
 }
 
+export function CheckDuplicated(firstObject, secondObject) {
+
+    let isDuplicated = true;
+    // console.log(firstObject, secondObject)
+
+    Object.keys(firstObject).forEach((key) => {
+        if (firstObject[key] !== secondObject[key]) isDuplicated = false;
+    });
+
+    return isDuplicated;
+
+}
