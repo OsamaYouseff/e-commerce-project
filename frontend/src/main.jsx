@@ -28,6 +28,7 @@ import LoginPage from "./Components/LoginRegisterPages/LoginPage.jsx";
 import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
 import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
 import UserInfoPage from "./Components/UserInfoPage/UserInfoPage.jsx";
+import ProductPage from "./Components/ProductPage/ProductPage.jsx";
 
 const routeElement = (currentComponent, showMidHeader = false) => {
     return (
@@ -99,6 +100,10 @@ const router = createBrowserRouter([
     {
         path: "/userInfo/:section/:elementId",
         element: routeElement(<UserInfoPage />, true),
+    },
+    {
+        path: "/product/:productId",
+        element: routeElement(<ProductPage />, true),
     },
     {
         path: "/*",

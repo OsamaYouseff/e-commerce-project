@@ -19,6 +19,15 @@ import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 let storedContent = [];
 
+function ShowGreetingsMessage() {
+    let prevPage = document.referrer.split("/").at(-1);
+    if (prevPage === "login") {
+        toast.success("Login successfully ,Welcome Back !");
+    } else if (prevPage === "register") {
+        toast.success("Registered successfully ,Welcome !");
+    }
+}
+
 
 const MainContent = () => {
 
@@ -53,10 +62,7 @@ const MainContent = () => {
         (async function fetchData() {
             await dispatch(getAllProductsPaginatedReducer({ page: page, limit: limit }));
 
-            if (IsUserLoggedIn()) {
-                toast.success("Login Successful ,Welcome Back !");
-            }
-
+            if (IsUserLoggedIn()) ShowGreetingsMessage();
         })();
 
     }, [page]);
@@ -67,7 +73,6 @@ const MainContent = () => {
             setPage(page + 1);
         }
     };
-
 
     const handleScroll = () => {
 
@@ -82,129 +87,17 @@ const MainContent = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-
-    if (products) {
-        return (
-            <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
-                <Stack
-                    direction={"row"}
-                    alignItems={"center"}
-                    justifyContent={"space-between"}
-                    flexWrap={"wrap"}
-                    gap={3}
-                >
-                    <Box>
-                        <Typography fontSize={"20px"} fontWeight={"bold"}>
-                            Selected Products
-                        </Typography>
-                        <Typography fontSize={"15px"}>
-                            All our new arrival in a exclusive brand collection
-                        </Typography>
-                    </Box>
-                    <Stack
-                        direction={"row"}
-                        alignItems={"center"}
-                        gap={3}
-                        sx={{ flexGrow: { xs: 1, sm: 0 } }}
-                    >
-                        {/* <ToggleButtonGroup
-                            value={productCategory}
-                            exclusive
-                            onChange={handleProductCategory}
-                            aria-label="text alignment"
-                            sx={{
-                                gap: "10px !important",
-                                ".Mui-selected": {
-                                    background: `${theme.palette.sectionBgColor.main} !important`,
-                                },
-                                flexGrow: 1,
-                            }}
-                        >
-                            <ToggleButton
-                                sx={ToggleButtonStyles}
-                                value={allProducts}
-                                aria-label="left aligned"
-                            >
-                                All products
-                            </ToggleButton>
-                            <ToggleButton
-                                sx={ToggleButtonStyles}
-                                value={menProducts}
-                                aria-label="centered"
-                            >
-                                Men Category
-                            </ToggleButton>
-                            <ToggleButton
-                                sx={ToggleButtonStyles}
-                                value={womenProducts}
-                                aria-label="right aligned"
-                            >
-                                Women Category
-                            </ToggleButton>
-                        </ToggleButtonGroup> */}
-                    </Stack>
-                    <Box
-                        sx={{
-                            flexGrow: 0.5,
-                            display: { xs: "none", sm: "block" },
-                        }}
-                    ></Box>
-                </Stack>
-                <Stack
-                    className="products"
-                    sx={{ mt: "15px", py: "15px", gap: "25px 10px" }}
-                    direction={"row"}
-                    flexWrap={"wrap"}
-                    justifyContent={"space-between"}
-                >
-                    {
-                        storedContent?.map((product) => (
-                            <ProductCardComponent
-                                key={product._id}
-                                productData={product}
-                                handelOpenModal={handleOpen}
-                                handleSetPreviewedProduct={
-                                    handleSetPreviewedProduct
-                                }
-                            />
-                        ))
-                    }
-
-                    {products?.map((product) => (
-                        <ProductCardComponent
-                            key={product._id}
-                            productData={product}
-                            handelOpenModal={handleOpen}
-                            handleSetPreviewedProduct={
-                                handleSetPreviewedProduct
-                            }
-                        />
-                    ))}
-
-
-                </Stack>
-                {
-                    // toggle modal appearance
-                    open && (
-                        <ProductDetails
-                            PreviewedProduct={PreviewedProduct}
-                            handleCloseModal={handleClose}
-                            open={open}
-                        />
-                    )
-                }
-                <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
-            </Container>
-        );
-    } else if (isLoading) {
+    if (isLoading) {
         return (
             <Container>
                 <Box sx={{ marginY: "15px" }}>
-                    <SkeletonFeedback />
+                    <SkeletonFeedback numOfSkeletons={15} />
                 </Box>
             </Container>
         );
-    } else if (error || !products) {
+    }
+
+    if (error || !products) {
         return (
             <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
                 <Box
@@ -225,6 +118,120 @@ const MainContent = () => {
             </Container>
         );
     }
+
+    return (
+        <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
+            <Stack
+                direction={"row"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                flexWrap={"wrap"}
+                gap={3}
+            >
+                <Box>
+                    <Typography fontSize={"20px"} fontWeight={"bold"}>
+                        Selected Products
+                    </Typography>
+                    <Typography fontSize={"15px"}>
+                        All our new arrival in a exclusive brand collection
+                    </Typography>
+                </Box>
+                <Stack
+                    direction={"row"}
+                    alignItems={"center"}
+                    gap={3}
+                    sx={{ flexGrow: { xs: 1, sm: 0 } }}
+                >
+                    {/* <ToggleButtonGroup
+                        value={productCategory}
+                        exclusive
+                        onChange={handleProductCategory}
+                        aria-label="text alignment"
+                        sx={{
+                            gap: "10px !important",
+                            ".Mui-selected": {
+                                background: `${theme.palette.sectionBgColor.main} !important`,
+                            },
+                            flexGrow: 1,
+                        }}
+                    >
+                        <ToggleButton
+                            sx={ToggleButtonStyles}
+                            value={allProducts}
+                            aria-label="left aligned"
+                        >
+                            All products
+                        </ToggleButton>
+                        <ToggleButton
+                            sx={ToggleButtonStyles}
+                            value={menProducts}
+                            aria-label="centered"
+                        >
+                            Men Category
+                        </ToggleButton>
+                        <ToggleButton
+                            sx={ToggleButtonStyles}
+                            value={womenProducts}
+                            aria-label="right aligned"
+                        >
+                            Women Category
+                        </ToggleButton>
+                    </ToggleButtonGroup> */}
+                </Stack>
+                <Box
+                    sx={{
+                        flexGrow: 0.5,
+                        display: { xs: "none", sm: "block" },
+                    }}
+                ></Box>
+            </Stack>
+            <Stack
+                className="products"
+                sx={{ mt: "15px", py: "15px", gap: "25px 10px" }}
+                direction={"row"}
+                flexWrap={"wrap"}
+                justifyContent={"space-between"}
+            >
+                {
+                    storedContent?.map((product) => (
+                        <ProductCardComponent
+                            key={product._id}
+                            productData={product}
+                            handelOpenModal={handleOpen}
+                            handleSetPreviewedProduct={
+                                handleSetPreviewedProduct
+                            }
+                        />
+                    ))
+                }
+
+                {products?.map((product) => (
+                    <ProductCardComponent
+                        key={product._id}
+                        productData={product}
+                        handelOpenModal={handleOpen}
+                        handleSetPreviewedProduct={
+                            handleSetPreviewedProduct
+                        }
+                    />
+                ))}
+
+
+            </Stack>
+            {
+                // toggle modal appearance
+                open && (
+                    <ProductDetails
+                        PreviewedProduct={PreviewedProduct}
+                        handleCloseModal={handleClose}
+                        open={open}
+                    />
+                )
+            }
+            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
+        </Container>
+    );
+
 };
 
 export default MainContent;

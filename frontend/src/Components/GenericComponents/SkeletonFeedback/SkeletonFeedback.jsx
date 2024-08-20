@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 
@@ -7,7 +8,7 @@ const SkeletonStyles = {
     height: 360,
     borderRadius: "8px",
 };
-const SkeletonFeedback = () => {
+const SkeletonFeedback = ({ numOfSkeletons = 10 }) => {
     return (
         <Stack
             direction="row"
@@ -19,7 +20,7 @@ const SkeletonFeedback = () => {
             alignItems={"space-between"}
             justifyContent={"center"}
         >
-            {[...Array(10)].map((item, index) => (
+            {[...Array(numOfSkeletons)].map((item, index) => (
                 <Skeleton
                     key={index}
                     variant="rectangular"

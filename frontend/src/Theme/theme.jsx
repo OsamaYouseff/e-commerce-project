@@ -51,10 +51,10 @@ export const getDesignTokens = (mode) => ({
                 // palette values for dark mode
                 categoryColor: {
                     main: "#252b32",
-                    // main: "#a8d0ff",
                 },
                 bgColor: {
-                    main: "#121212",
+                    // main: "#121212",
+                    main: "#0c0d0d",
                 },
                 bgColor2: {
                     main: "#fff",

@@ -90,12 +90,10 @@ const SelectAddressSection = ({ selectedAddressId }) => {
                         gap: 2,
                     }}
                 >
-
-
                     <Button
                         variant="outlined"
                         size="small"
-                        sx={{ fontWeight: "bolder" }}
+                        sx={{ fontWeight: "bolder", mr: 1 }}
                     >
                         Change address
                     </Button>

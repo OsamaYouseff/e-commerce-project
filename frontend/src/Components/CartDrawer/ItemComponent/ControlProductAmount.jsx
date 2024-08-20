@@ -8,29 +8,33 @@ import RemoveIcon from "@mui/icons-material/Remove";
 
 
 
-const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncreaseDecrease, quantity }) => {
+
+
+const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncreaseDecrease, quantity, scale = ".8" }) => {
     const theme = useTheme(ColorModeContext);
+
+    const buttonStyles = {
+        width: "70px",
+        height: "35px",
+        border: ` 2px solid ${theme.palette.primary.main} `,
+        borderRadius: "6px",
+        fontSize: " 20px",
+        p: 1,
+        m: 0,
+        fontWeight: "bolder",
+    }
 
     return (
         <Stack
-            width={"100%"}
             direction="row"
             gap={0.8}
             alignItems={"flex-end"}
             justifyContent={"center"}
+            sx={{ scale: scale }}
         >
             <IconButton
                 color="primary"
-                sx={{
-                    width: "40px",
-                    height: "25px",
-                    border: ` 1px solid ${theme.palette.primary.main} `,
-                    borderRadius: "6px",
-                    fontSize: " 20px",
-                    p: 0,
-                    m: 0,
-                    fontWeight: "bolder",
-                }}
+                sx={buttonStyles}
                 variant="contained"
                 onClick={() => {
                     if (quantity <= 1) return;
@@ -60,9 +64,9 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                     );
                 }}
                 style={{
-                    width: "40px",
-                    height: "25px",
-                    fontSize: "18px",
+                    width: "60px",
+                    height: "35px",
+                    fontSize: "22px",
                     fontWeight: "bold",
                     borderRadius: "5px",
                     border: `1px solid ${theme.palette.text.primary}`,
@@ -76,16 +80,7 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
 
             <IconButton
                 color="primary"
-                sx={{
-                    width: "40px",
-                    height: "25px",
-                    border: ` 1px solid ${theme.palette.primary.main} `,
-                    borderRadius: "6px",
-                    fontSize: " 20px",
-                    p: 0,
-                    m: 0,
-                    fontWeight: "bolder",
-                }}
+                sx={buttonStyles}
                 variant="contained"
                 onClick={() => {
                     setFieldQuantity(fieldQuantity + 1);

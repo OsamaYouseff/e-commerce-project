@@ -131,7 +131,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         />
                         <Typography
                             sx={{
-                                fontSize: { xs: "14px", sm: "18px" },
+                                fontSize: { xs: "15px", sm: "18px" },
                                 textAlign: { xs: "center", sm: "left" },
                             }}
                         >
@@ -254,7 +254,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         >
                             <img
                                 style={{
-                                    maxWidth: "100%",
+                                    maxWidth: "130%",
                                     maxHeight: "90px",
                                     borderRadius: "5px",
                                 }}
@@ -267,12 +267,13 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 display: "flex",
                                 flex: 1,
                                 flexDirection: "column",
+                                gap: 1
                             }}
                             justifyContent={"space-between"}
                         >
                             <Stack direction="row" justifyContent={"space-between"}>
                                 <Typography
-                                    sx={{ fontSize: "16px", maxWidth: "155px" }}
+                                    sx={{ pl: 2.7, fontSize: "17px", maxWidth: "155px" }}
                                 >
                                     {item.title.slice(0, 20)}
                                 </Typography>
@@ -298,7 +299,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                     quantity={quantity}
                                 />
 
-                                <DeleteBtn handleDeleteProduct={handleDeleteProduct} />
+                                <DeleteBtn sx={{ flex: 1 }} handleDeleteProduct={handleDeleteProduct} />
                             </Stack>
                         </Box>
                     </Stack>

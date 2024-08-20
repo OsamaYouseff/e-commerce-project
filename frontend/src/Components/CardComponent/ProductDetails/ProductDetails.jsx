@@ -26,6 +26,7 @@ import { CalcTotalCartPrice, IsUserLoggedIn } from "../../../General/GeneralFunc
 
 import { isProductInWishlist } from "../../../API/WishlistAPIFunctions.js";
 import CompleteCheckoutModal from "../../CartPage/CompleteCheckoutModal/CompleteCheckoutModal.jsx";
+import { Link } from "react-router-dom";
 
 //// styles
 const CloseBtnStyles = {
@@ -66,7 +67,7 @@ const favIconStyle = {
     borderRadius: "6px",
     width: "100%",
 };
-const fontSizeClamp = "clamp(18px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
+const fontSizeClamp = "clamp(20px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
 
 //// custom component
 const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
@@ -140,10 +141,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 currency: "USD",
             }
         }
-
         // console.log("############ : ", checkoutInfo);
-
-
         handleOpenCheckoutModal();
 
     }
@@ -226,10 +224,10 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                         sx={{
                             padding: "0",
                             height: "300px",
-                            maxWidth: { xs: 200, lg: "350px" },
-                            minWidth: { xs: 200, lg: "320px" },
-                            maxHeight: { xs: 200, lg: "320px" },
-                            minHeight: { xs: 200, lg: "320px" },
+                            maxWidth: { xs: 320, lg: "350px" },
+                            minWidth: { xs: 300, lg: "320px" },
+                            maxHeight: { xs: 200, lg: "100%" },
+                            // minHeight: { xs: 200, lg: "320px" },
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -281,7 +279,6 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 {PreviewedProduct.title.slice(0, 20)}
                             </Typography>
                             <Typography
-                                my={0.4}
                                 fontSize={"22px"}
                                 color={"crimson"}
                                 variant="h6"
@@ -312,44 +309,54 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 flexDirection: { xs: "column", md: "row" },
                                 gap: { xs: 1, md: 2 },
                                 px: "8px !important",
+                                flexWrap: "wrap",
                             }}
                         >
-                            <Button
-                                onClick={handelBuyNow}
-                                sx={{
-                                    textTransform: "capitalize",
-                                    p: "5px 15px !important",
-                                    bgcolor: "#ff6e6e",
-                                    fontWeight: "bold",
-                                }}
-                                variant="contained"
-                            >
-                                <AddShoppingCartOutlinedIcon
-                                    sx={{ mr: 1 }}
-                                    fontSize="small"
-                                />
-                                Buy now
-                            </Button>
+                            <Box className="flex-between" gap={1} sx={{ maxHeight: "40px" }}  >
+                                <Button
+                                    onClick={handelBuyNow}
+                                    sx={{
+                                        textTransform: "capitalize",
+                                        p: "5px 15px !important",
+                                        bgcolor: "#ff6e6e",
+                                        fontWeight: "bold",
+                                        minWidth: { xs: "49%", md: "125px" },
+                                        maxWidth: { xs: "49%", md: "125px" },
 
-                            <Button
-                                onClick={() => {
-                                    handleClickAddToCart();
-                                }}
-                                sx={{
-                                    mb: { xs: 1, md: 0 },
-                                    textTransform: "capitalize",
-                                    p: "5px 15px !important",
-                                    fontWeight: "bold",
-                                }}
-                                color="secondary"
-                                variant="contained"
-                            >
-                                <AddShoppingCartOutlinedIcon
-                                    sx={{ mr: 1 }}
-                                    fontSize="small"
-                                />
-                                Add To Cart
-                            </Button>
+                                    }}
+                                    variant="contained"
+                                >
+                                    <AddShoppingCartOutlinedIcon
+                                        sx={{ mr: 1 }}
+                                        fontSize="small"
+                                    />
+                                    Buy now
+                                </Button>
+
+                                <Button
+                                    onClick={() => {
+                                        handleClickAddToCart();
+                                    }}
+                                    sx={{
+                                        // mb: { xs: 1, md: 0 },
+                                        textTransform: "capitalize",
+                                        p: "5px 15px !important",
+                                        fontWeight: "bold",
+                                        minWidth: { xs: "49%", md: "145px" },
+                                        maxWidth: { xs: "50%", md: "185px" },
+
+                                    }}
+                                    color="secondary"
+                                    variant="contained"
+                                >
+                                    <AddShoppingCartOutlinedIcon
+                                        sx={{ mr: 1 }}
+                                        fontSize="small"
+                                    />
+                                    Add To Cart
+                                </Button>
+
+                            </Box>
 
                             <Box
                                 className="flex-center"
@@ -375,10 +382,13 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                     />
                                 )}
                             </Box>
+                            <Link to={`/product/${PreviewedProduct._id}`}>
+                                <Button sx={{ fontWeight: "bold", width: { xs: "100%", md: "100%" } }} color="secondary" variant="outlined">More Details</Button>
+                            </Link>
                         </Stack>
                     </Box>
-                </Stack>
-            </Modal>
+                </Stack >
+            </Modal >
             {openCheckoutModal && (
                 <CompleteCheckoutModal
                     openCheckoutModal={openCheckoutModal}
@@ -388,64 +398,9 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     clearCartAtEnd={false}
                 />
             )}
-        </Box>
+        </Box >
     );
 };
 
 export default ProductDetails;
 
-{
-    /* <ToggleButtonGroup
-    value={selectedImg}
-    exclusive
-    onChange={handelSelectedImg}
-    sx={{
-        ".Mui-selected": {
-            opacity: "1",
-            border: "1px solid #ff6e6e",
-            background: "initial",
-            borderRadius: "5px !important",
-            display: "none",
-        },
-    }}
-> */
-}
-{
-    /* {productImg.map((item, index) => {
-                                    return (
-                                        <ToggleButton
-                                            value={index}
-                                            key={item.id}
-                                            sx={{
-                                                display: "flex",
-                                                p: 0,
-                                                border: "1px solid transparent",
-                                                "&:hover": {
-                                                    borderColor: "#ff6e6e",
-                                                },
-                                                borderRadius: 1,
-                                                cursor: "pointer",
-                                                transition: "0.35s",
-                                                overflow: "hidden",
-                                                margin: "0 2px",
-                                                opacity: 0.5,
-                                                marginX: "5px",
-                                            }}
-                                        >
-                                            <img
-                                                height={100}
-                                                width={90}
-                                                src={item.url}
-                                                alt="product-preview-img"
-                                                onClick={() => {
-                                                    setPreviewImgUrl(item.url);
-                                                    setSelectedImg(index);
-                                                }}
-                                            />
-                                        </ToggleButton>
-                                    );
-                                })} */
-}
-{
-    /* </ToggleButtonGroup>; */
-}

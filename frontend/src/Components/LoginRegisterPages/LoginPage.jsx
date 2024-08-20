@@ -46,7 +46,7 @@ export default function LoginPage() {
         password: "Os123@.seto2",
         rememberMe: false,
     });
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(true);
 
 
     const handleSubmit = (event) => {
