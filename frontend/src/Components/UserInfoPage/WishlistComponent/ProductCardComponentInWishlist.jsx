@@ -42,7 +42,7 @@ const ProductCardComponentInWishlist = ({
                     price: productData.price,
                 })
             );
-        } else toast.error("Please log in or sign up with new account");
+        } else toast.error("Please log in or sign up with new account🙂");
     };
 
     const [inWishlist, setInWishlist] = useState(true);
@@ -55,7 +55,7 @@ const ProductCardComponentInWishlist = ({
             await dispatch(
                 removeProductFromWishlistReducer({ productId: productData._id })
             );
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     };
 
     if (!productData) {

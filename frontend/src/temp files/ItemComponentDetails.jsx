@@ -28,7 +28,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
     //// handlers
     function handleClickIncreaseDecrease(type, targetQuantity = quantity) {
         if (!IsUserLoggedIn()) {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
             return;
         }
 
@@ -54,7 +54,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
 
     function handleClickDelete() {
         if (!IsUserLoggedIn() || isLoading) {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
             return;
         } else {
             if (isLoading) return; //// prevent user form doing many requests at the same time

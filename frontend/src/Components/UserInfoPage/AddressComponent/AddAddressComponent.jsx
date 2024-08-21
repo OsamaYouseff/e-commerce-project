@@ -41,7 +41,7 @@ const AddAddressComponent = () => {
 
         if (IsUserLoggedIn())
             dispatch(addNewCustomerAddressReducer(addressData));
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     };
 
     const handelFormData = (key, value) => {

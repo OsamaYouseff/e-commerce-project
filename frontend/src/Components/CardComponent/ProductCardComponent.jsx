@@ -33,7 +33,7 @@ const ProductCardComponent = ({
                 })
             );
         } else {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
         }
     };
 

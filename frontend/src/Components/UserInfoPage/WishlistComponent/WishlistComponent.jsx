@@ -71,7 +71,7 @@ const WishlistComponent = () => {
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading)
             dispatch(getCustomerWishlistReducer());
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
     return (

@@ -28,7 +28,7 @@ const AddressComponent = () => {
 
     useEffect(() => {
         if (IsUserLoggedIn()) dispatch(getCustomerAddressesReducer());
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
     const showAddresses = () => {

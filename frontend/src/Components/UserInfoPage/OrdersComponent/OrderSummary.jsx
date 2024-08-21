@@ -51,7 +51,7 @@ const OrderSummary = () => {
     useEffect(() => {
         if (IsUserLoggedIn())
             dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
 

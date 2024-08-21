@@ -51,7 +51,7 @@ const ProfileComponent = ({ customerData }) => {
             await dispatch(updateCustomerAccountReducer(formData));
             setIsDataChanged(false);
             customerData = GetUserInfo();
-        } else toast.error("Please log in or sign up with new account");
+        } else toast.error("Please log in or sign up with new account🙂");
     };
 
     const handelGender = (event, newValue) => {

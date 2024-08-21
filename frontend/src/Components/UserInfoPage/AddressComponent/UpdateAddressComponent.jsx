@@ -71,7 +71,7 @@ const UpdateAddressComponent = () => {
                 })
             );
             setIsDataChanged(false);
-        } else toast.error("Please log in or sign up with new account");
+        } else toast.error("Please log in or sign up with new account🙂");
     };
 
     const handelFormData = (key, value) => {
@@ -99,7 +99,7 @@ const UpdateAddressComponent = () => {
 
     // useEffect(() => {
     //     // if (IsUserLoggedIn()) dispatch(getCustomerAddressReducer(addressId));
-    //        else toast.error("Please log in or sign up with new account");
+    //        else toast.error("Please log in or sign up with new account🙂");
 
     // }, []);
 

@@ -37,7 +37,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
             return;
 
         if (!IsUserLoggedIn()) {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
             return;
         }
 
@@ -63,7 +63,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
 
     function handleDeleteProduct() {
         if (!IsUserLoggedIn()) {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
             return;
         } else {
             if (isLoading) return; //// prevent user form doing many requests at the same time

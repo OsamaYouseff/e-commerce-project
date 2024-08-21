@@ -39,7 +39,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
     const confirmDeleteAddress = () => {
         if (IsUserLoggedIn())
             dispatch(deleteCustomerAddressReducer(address._id));
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     }
     const handelDeleteAddress = () => {
         handleClickOpenConfirmDialog();
@@ -53,7 +53,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
 
         if (IsUserLoggedIn())
             await dispatch(setDefaultAddressReducer(address._id));
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
 
         // window.location.reload();
     };

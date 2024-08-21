@@ -115,7 +115,7 @@ const ProductPage = () => {
     const handelBuyNow = () => {
 
         if (!IsUserLoggedIn()) {
-            toast.error("Please log in or sign up with new account");
+            toast.error("Please log in or sign up with new account🙂");
             return;
         }
 
@@ -156,7 +156,7 @@ const ProductPage = () => {
                 })
             );
         } else {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
         }
         //// else make state changing only
     };
@@ -170,7 +170,7 @@ const ProductPage = () => {
             if (!error)
                 setInWishlist(true);
         } else {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
         }
     };
     const handelRemoveFromWishlist = async () => {
@@ -180,7 +180,7 @@ const ProductPage = () => {
                 setInWishlist(false);
 
         } else {
-            toast.error("Adding to local state soon");
+            toast.error("Please log in or sign up with new account to do this action🙂");
         }
     };
 

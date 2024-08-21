@@ -96,7 +96,7 @@ export default function CartDrawer() {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        // else toast.error("Please log in or sign up with new account");
+        // else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
     const list = (anchor) => (

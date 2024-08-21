@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { changeCustomerPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateCustomerAccount } from '../../API/CustomerAPIFunctions';
 import { GetMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
-
-import toast from 'react-hot-toast';
 import { createCustomerCart } from '../../API/CartAPIFunctions';
 import { createCustomerWishlist } from '../../API/WishlistAPIFunctions';
+import toast from 'react-hot-toast';
+
 
 
 export const customerLoginReducer = createAsyncThunk("customerLoginAPI/sendRequest", async (data) => {
@@ -92,8 +92,7 @@ export const CustomerApiSlice = createSlice({
             console.log("payload : ", action.payload);
 
             if (action.payload.status) {
-                toast.success("Login successfully ,Welcome 😀");
-
+                // toast.success("Login successfully ,Welcome 😀");
                 GoHome();
             }
             else {
@@ -115,7 +114,7 @@ export const CustomerApiSlice = createSlice({
 
             currentState.isLoading = false;
             if (action.payload.status) {
-                toast.success("Registered successfully ,Welcome 😀");
+                // toast.success("Registered successfully ,Welcome 😀");
                 GoHome();
             }
             else {

@@ -95,7 +95,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
         if (orderValidationRes.length === 0) {
             IsUserLoggedIn()
                 ? dispatch(createCustomerOrderReducer({ orderData, clearCartAtEnd }))
-                : toast.error("Please log in or sign up with new account");
+                : toast.error("Please log in or sign up with new account🙂");
 
         } else {
             toast.error(getErrorsMessage(orderValidationRes))

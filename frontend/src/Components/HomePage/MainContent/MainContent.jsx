@@ -22,9 +22,9 @@ let storedContent = [];
 function ShowGreetingsMessage() {
     let prevPage = document.referrer.split("/").at(-1);
     if (prevPage === "login") {
-        toast.success("Login successfully ,Welcome Back !");
+        toast.success("Login successfully ,Welcome Back !😀");
     } else if (prevPage === "register") {
-        toast.success("Registered successfully ,Welcome !");
+        toast.success("Registered successfully ,Welcome !😀");
     }
 }
 

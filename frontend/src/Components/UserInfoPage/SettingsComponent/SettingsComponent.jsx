@@ -62,13 +62,13 @@ const SettingsComponent = () => {
         }
         // toast.error("password changed successfully");
         if (IsUserLoggedIn()) await dispatch(changePasswordReducer(formData));
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     };
 
 
     const confirmDeleteAccount = () => {
         if (IsUserLoggedIn()) dispatch(deleteCustomerAccountReducer());
-        else toast.error("Please log in or sign up with new account");
+        else toast.error("Please log in or sign up with new account🙂");
     };
 
     const handleDeleteAccount = () => {
