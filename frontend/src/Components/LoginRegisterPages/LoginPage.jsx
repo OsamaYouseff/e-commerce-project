@@ -42,8 +42,10 @@ export default function LoginPage() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        username: "sama",
-        password: "Os123@.seto2",
+        // username: "sama",
+        // password: "Os123@.seto2",
+        username: "",
+        password: "",
         rememberMe: false,
     });
     const [showPassword, setShowPassword] = useState(true);
@@ -61,7 +63,10 @@ export default function LoginPage() {
         }
 
         if (!IsUserLoggedIn()) dispatch(customerLoginReducer(formData));
-        else toast.error("You are already logged in");
+        else {
+            toast.error("You are already logged in");
+            setTimeout(() => { GoHome(); }, 1500)
+        }
     };
 
     function handlePasswordVisibility(showPassword, setShowPassword) {

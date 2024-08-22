@@ -56,7 +56,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
             </Typography>
 
             <Typography
-                variant="h4"
+                variant="h1"
                 fontSize={"16px"}
                 sx={{ mb: 2, fontWeight: "bolder" }}
             >
@@ -130,7 +130,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 </Typography>
                 <Stack sx={{ fontWeight: "bolder" }}>
                     <Typography
-                        variant="h6"
+                        variant="h2"
                         fontSize={"14px"}
                         sx={{
                             mb: 1,
@@ -146,7 +146,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         </span>
                     </Typography>
                     <Typography
-                        variant="h6"
+                        variant="h2"
                         fontSize={"14px"}
                         sx={{
                             mb: 1,
@@ -160,7 +160,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         <span style={{ fontSize: "15px" }}>{shippingCost}</span>
                     </Typography>
                     <Typography
-                        variant="h6"
+                        variant="h2"
                         fontSize={"14px"}
                         sx={{
                             mb: 1,
@@ -174,7 +174,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         <span style={{ fontSize: "15px" }}>- ${discount}</span>
                     </Typography>
                     <Typography
-                        variant="h6"
+                        variant="h2"
                         fontSize={"14px"}
                         sx={{
                             mb: 1,
@@ -187,7 +187,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         Cart Total price
                         <span
                             style={{
-                                color: "#ff4450",
+                                color: theme.palette.specialText.main,
                                 fontSize: "20px",
                             }}
                         >

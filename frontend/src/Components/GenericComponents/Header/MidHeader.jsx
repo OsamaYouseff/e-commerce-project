@@ -62,6 +62,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 function ToggleCustomerAvatar(customerData) {
     return customerData._id !== null ? (
         <IconButton
+
             aria-label="cart"
             sx={{
                 transition: transitionDuration,
@@ -117,7 +118,7 @@ const MidHeader = function () {
                         }}
                     >
 
-                        <img style={{ width: "38px" }} src="/images/shop-logo.png" alt="e-commerce website logo" />
+                        <img style={{ width: "38px", height: "38px" }} src="/images/shop-logo.png" alt="e-commerce website logo" />
                         <Typography
                             className="go-home"
                             variant="body"
@@ -169,9 +170,12 @@ const MidHeader = function () {
                 <Stack
                     alignItems={"center"}
                     direction={"row"}
+                    spacing={1}
                     sx={{ [theme.breakpoints.down("md")]: { order: -1 } }}
                 >
                     {ToggleCustomerAvatar(customerData)}
+
+
                     <IconButton
                         aria-label="cart"
                         sx={{ p: 0.2, aspectRatio: "1" }}

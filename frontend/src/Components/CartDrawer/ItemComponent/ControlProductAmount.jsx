@@ -31,12 +31,13 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                 gap={0.8}
                 alignItems={"flex-end"}
                 justifyContent={"center"}
-                sx={{ scale: scale, transform: { xs: "translateX(-25px)", sm: "translateX(-15px)", md: "translateX(-12px)" } }}
+                sx={{ scale: scale, transform: scale == 1 ? "" : { xs: "translateX(-25px)", sm: "translateX(-15px)", md: "translateX(-12px)" } }}
             >
                 <IconButton
                     color="primary"
                     sx={buttonStyles}
                     variant="contained"
+                    aria-label="decrease quantity"
                     onClick={() => {
                         if (quantity <= 1) return;
                         setFieldQuantity(fieldQuantity - 1);
@@ -56,6 +57,8 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                         if (value <= 0) value = 1;
                         setFieldQuantity(value);
                     }}
+                    aria-label="change quantity"
+
                     onBlur={(e) => {
                         let value = e.target.value;
                         if (value <= 0) value = 1;
@@ -83,6 +86,7 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                     color="primary"
                     sx={buttonStyles}
                     variant="contained"
+                    aria-label="increase quantity"
                     onClick={() => {
                         setFieldQuantity(fieldQuantity + 1);
                         handleClickIncreaseDecrease(

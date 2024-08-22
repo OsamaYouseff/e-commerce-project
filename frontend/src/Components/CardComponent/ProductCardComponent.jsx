@@ -14,6 +14,8 @@ import { addUpdateProductInCartReducer } from "../../redux/CartSlice/ApiCartSlic
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
 
 import toast from 'react-hot-toast';
+import { useTheme } from "@emotion/react";
+import { ColorModeContext } from "../../Theme/theme";
 
 
 const ProductCardComponent = ({
@@ -22,6 +24,8 @@ const ProductCardComponent = ({
     handleSetPreviewedProduct,
 }) => {
     const dispatch = useDispatch();
+    const theme = useTheme(ColorModeContext);
+
 
     const handelAddToCart = () => {
         if (IsUserLoggedIn()) {
@@ -57,7 +61,7 @@ const ProductCardComponent = ({
                         sm: "48%",
                         md: "32%",
                         lg: "24%",
-                        xl: 300,
+                        xl: 275,
                     },
                     boxShadow: 3,
                     display: "flex",
@@ -110,7 +114,7 @@ const ProductCardComponent = ({
                             gutterBottom
                             fontSize={"16px"}
                             component="div"
-                            color={"crimson"}
+                            sx={{ color: theme.palette.specialText2.main }}
                         >
                             ${productData.price}
                         </Typography>

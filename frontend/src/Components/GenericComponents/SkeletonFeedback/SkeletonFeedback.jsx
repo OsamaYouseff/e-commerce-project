@@ -11,14 +11,10 @@ const SkeletonStyles = {
 const SkeletonFeedback = ({ numOfSkeletons = 10 }) => {
     return (
         <Stack
-            direction="row"
-            sx={{
-                width: "100% !important",
-                flexWrap: "wrap",
-                gap: " 15px 10px",
-            }}
-            alignItems={"space-between"}
-            justifyContent={"center"}
+            sx={{ mt: "15px", py: "15px", gap: "15px 10px" }}
+            direction={"row"}
+            flexWrap={"wrap"}
+            justifyContent={"space-between"}
         >
             {[...Array(numOfSkeletons)].map((item, index) => (
                 <Skeleton

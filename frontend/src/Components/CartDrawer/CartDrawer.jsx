@@ -265,6 +265,7 @@ export default function CartDrawer() {
                 width: "38px",
                 height: "38px",
                 color: theme.palette.text.primary,
+
             }}
         >
             <StyledBadge
@@ -281,7 +282,7 @@ export default function CartDrawer() {
                 }}
             >
                 <ShoppingCartIcon
-                    sx={{ transition: transitionDuration, height: "30px" }}
+                    sx={{ transition: transitionDuration, height: "45px", fontSize: "35px", }}
                 />
             </StyledBadge>
             <Drawer

@@ -49,7 +49,7 @@ const SwiperComponent = () => {
 				bannerImagesData.map((item, index) => {
 					return (
 						<SwiperSlide key={index} sx={{ position: "relative" }}>
-							<img className='banner-img' src={item.src} alt="banner-img" />
+							<img className='banner-img' src={item.src} alt="banner-img" loading="lazy" />
 							<Stack className='banner-text' direction={"column"}
 								sx={{
 									width: {

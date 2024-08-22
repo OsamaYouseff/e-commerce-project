@@ -309,7 +309,7 @@ const ProductPage = () => {
                     <span style={{ display: "inline-block", fontWeight: "bold", minWidth: "110px" }}>Size :</span>{PreviewedProduct.size}
                 </Typography>
 
-                <Stack className="flex-center" sx={{ mb: 2, width: "100%", justifyContent: "flex-start" }}>
+                <Stack className="flex-center" sx={{ mb: 4, width: "100%", justifyContent: "flex-start" }}>
                     <Typography sx={{ fontSize: { xs: "16px", lg: "18px" }, minWidth: "110px", fontWeight: "bold" }}> Quantity : </Typography>
                     <ControlProductAmount
                         fieldQuantity={fieldQuantity}
@@ -318,16 +318,17 @@ const ProductPage = () => {
                         scale="1"
                     />
                 </Stack>
+
                 <Stack
                     sx={{
                         width: "100% !important",
                         flexDirection: { xs: "column" },
                         gap: { xs: 2, md: 2 },
                         flexWrap: "wrap",
-                        mb: 1
+                        mb: 5
                     }}
                 >
-                    <Box className="flex-between" sx={{ flexWrap: "wrap" }} gap={2} >
+                    <Box className="flex-between" sx={{ flexWrap: "wrap" }} gap={3} >
                         <Button
                             onClick={handelBuyNow}
                             sx={{ ...buttonsStyle, bgcolor: "#ff6e6e" }}
@@ -346,33 +347,33 @@ const ProductPage = () => {
                             Add To Cart
                         </Button>
 
+                        <Box
+                            className="flex-center"
+                            sx={{
+                                cursor: "pointer",
+                                width: "100%",
+                            }}
+                        >
+                            {inWishlist ? (
+                                <WishlistIcon
+                                    title={"REMOVE FROM WISHLIST"}
+                                    icons={<FavoriteRoundedIcon />}
+                                    favIconStyle={favIconStyle}
+                                    color={"#E91E63"}
+                                    handler={handelRemoveFromWishlist}
+                                />
+                            ) : (
+                                <WishlistIcon
+                                    title={"ADD TO WISHLIST"}
+                                    icons={<FavoriteBorderRoundedIcon />}
+                                    favIconStyle={favIconStyle}
+                                    color={"primary.main"}
+                                    handler={handelAddToWishlist}
+                                />
+                            )}
+                        </Box>
                     </Box>
 
-                    <Box
-                        className="flex-center"
-                        sx={{
-                            cursor: "pointer",
-                            width: "100%",
-                        }}
-                    >
-                        {inWishlist ? (
-                            <WishlistIcon
-                                title={"REMOVE FROM WISHLIST"}
-                                icons={<FavoriteRoundedIcon />}
-                                favIconStyle={favIconStyle}
-                                color={"#E91E63"}
-                                handler={handelRemoveFromWishlist}
-                            />
-                        ) : (
-                            <WishlistIcon
-                                title={"ADD TO WISHLIST"}
-                                icons={<FavoriteBorderRoundedIcon />}
-                                favIconStyle={favIconStyle}
-                                color={"primary.main"}
-                                handler={handelAddToWishlist}
-                            />
-                        )}
-                    </Box>
 
 
                 </Stack>
@@ -384,7 +385,7 @@ const ProductPage = () => {
                         maxWidth: { xs: "100%", lg: "100%" },
                         lineHeight: "1.5",
                         letterSpacing: ".5px",
-                        mb: 2,
+                        mb: 4,
                     }}
                 >
                     <span style={{ fontWeight: "bold", fontSize: "18px", }}>Description : </span>  <br /> {PreviewedProduct.desc}

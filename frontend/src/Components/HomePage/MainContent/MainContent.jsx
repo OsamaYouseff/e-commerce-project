@@ -87,11 +87,11 @@ const MainContent = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    if (isLoading) {
+    if (isLoading && storedContent.length === 0) {
         return (
-            <Container>
+            <Container maxWidth="xl" py={3} sx={{ marginTop: "75px" }}>
                 <Box sx={{ marginY: "15px" }}>
-                    <SkeletonFeedback numOfSkeletons={15} />
+                    <SkeletonFeedback numOfSkeletons={20} />
                 </Box>
             </Container>
         );
@@ -142,41 +142,6 @@ const MainContent = () => {
                     gap={3}
                     sx={{ flexGrow: { xs: 1, sm: 0 } }}
                 >
-                    {/* <ToggleButtonGroup
-                        value={productCategory}
-                        exclusive
-                        onChange={handleProductCategory}
-                        aria-label="text alignment"
-                        sx={{
-                            gap: "10px !important",
-                            ".Mui-selected": {
-                                background: `${theme.palette.sectionBgColor.main} !important`,
-                            },
-                            flexGrow: 1,
-                        }}
-                    >
-                        <ToggleButton
-                            sx={ToggleButtonStyles}
-                            value={allProducts}
-                            aria-label="left aligned"
-                        >
-                            All products
-                        </ToggleButton>
-                        <ToggleButton
-                            sx={ToggleButtonStyles}
-                            value={menProducts}
-                            aria-label="centered"
-                        >
-                            Men Category
-                        </ToggleButton>
-                        <ToggleButton
-                            sx={ToggleButtonStyles}
-                            value={womenProducts}
-                            aria-label="right aligned"
-                        >
-                            Women Category
-                        </ToggleButton>
-                    </ToggleButtonGroup> */}
                 </Stack>
                 <Box
                     sx={{
@@ -186,8 +151,12 @@ const MainContent = () => {
                 ></Box>
             </Stack>
             <Stack
-                className="products"
-                sx={{ mt: "15px", py: "15px", gap: "25px 10px" }}
+                // className="products border"
+                // sx={{ mt: "15px", py: "15px", gap: "25px 10px" }}
+                // direction={"row"}
+                // flexWrap={"wrap"}
+                // justifyContent={"space-between"}
+                sx={{ mt: "15px", py: "15px", gap: "15px 10px" }}
                 direction={"row"}
                 flexWrap={"wrap"}
                 justifyContent={"space-between"}
@@ -228,7 +197,7 @@ const MainContent = () => {
                     />
                 )
             }
-            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page === totalPages}>Next</Button>
+            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page >= totalPages}>Next</Button>
         </Container>
     );
 

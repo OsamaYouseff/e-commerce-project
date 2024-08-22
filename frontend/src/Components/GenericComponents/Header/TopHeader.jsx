@@ -16,7 +16,6 @@ import { useState } from "react";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import XIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import { Link } from "react-router-dom";
 
 const options = ["AR", "EN"];
 
@@ -89,13 +88,12 @@ const TopHeader = function () {
                                 onClick={() => {
                                     localStorage.setItem(
                                         "mode",
-                                        theme.palette.mode === "dark"
-                                            ? "light"
-                                            : "dark"
+                                        theme.palette.mode === "dark" ? "light" : "dark"
                                     );
                                     colorMode.toggleColorMode();
                                 }}
                                 color="inherit"
+                                aria-label="Switch to dark mode"
                             >
                                 <LightModeOutlined sx={{ fontSize: "20px" }} />
                             </IconButton>
@@ -104,13 +102,12 @@ const TopHeader = function () {
                                 onClick={() => {
                                     localStorage.setItem(
                                         "mode",
-                                        theme.palette.mode === "dark"
-                                            ? "light"
-                                            : "dark"
+                                        theme.palette.mode === "dark" ? "light" : "dark"
                                     );
                                     colorMode.toggleColorMode();
                                 }}
                                 color="inherit"
+                                aria-label="Switch to light mode"
                             >
                                 <DarkModeOutlined sx={{ fontSize: "20px" }} />
                             </IconButton>
@@ -119,7 +116,6 @@ const TopHeader = function () {
                     {/*==theme icon==*/}
                 </Stack>
             </Container>
-            <Link className="go-home" to="/"></Link>
         </Box>
     );
 };
@@ -153,8 +149,9 @@ function SimpleListMenu() {
                 <ListItemButton
                     id="lock-button"
                     aria-haspopup="listbox"
-                    aria-controls="lock-menu"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-controls="change-language-menu"
+                    aria-label="Select language"
+                    aria-expanded={open ? "true" : "false"}
                     onClick={handleClickListItem}
                     sx={{
                         padding: "0px 5px",
@@ -182,12 +179,12 @@ function SimpleListMenu() {
                 </ListItemButton>
             </List>
             <Menu
-                id="lock-menu"
+                id="change-language-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                    "aria-labelledby": "lock-button",
+                    "aria-labelledby": "change-language-menu",
                     role: "listbox",
                 }}
             >

@@ -112,7 +112,7 @@ const SettingsComponent = () => {
                     mb: 2,
                 }}
             >
-                <Typography variant="h6">Security</Typography>
+                <Typography variant="h3" sx={{ fontSize: "24px" }}>Security</Typography>
                 <Stack
                     component="form"
                     noValidate
@@ -152,7 +152,7 @@ const SettingsComponent = () => {
                     borderRadius: "6px",
                 }}
             >
-                <Typography variant="h6" mb={2}>
+                <Typography variant="h3" sx={{ fontSize: "24px" }} mb={2}>
                     Account Deletion
                 </Typography>
                 <Button
@@ -168,7 +168,7 @@ const SettingsComponent = () => {
                     Delete Account
                 </Button>
                 <Typography
-                    variant="h6"
+                    variant="h3"
                     sx={{ fontSize: "15px", width: "100%" }}
                 >
                     We are sad 😢 to see you go, but hope to see you again!

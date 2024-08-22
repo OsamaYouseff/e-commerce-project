@@ -53,23 +53,27 @@ const CustomerMenu = () => {
                 }
             >
                 <IconButton
+
                     onClick={handleClick}
                     size="small"
-                    aria-controls={open ? "account-menu" : undefined}
+                    aria-controls={open ? "account-menu" : "account-menu"}
                     aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-expanded={open ? "true" : "false"}
                 >
                     <Avatar
                         className="flex-center"
                         sx={{
-                            width: 28,
-                            height: 28,
+                            width: 32,
+                            height: 32,
+
                             color: theme.palette.sectionBgColor.main,
                             bgcolor: theme.palette.text.primary,
-                            fontWeight: "bold",
+                            fontWeight: "bolder",
                         }}
                     >
-                        {userName.toUpperCase()[0]}
+                        <span style={{ fontSize: "24px" }}>
+                            {userName.toUpperCase()[0]}
+                        </span>
                     </Avatar>
                 </IconButton>
             </Tooltip>

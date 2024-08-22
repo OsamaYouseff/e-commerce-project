@@ -56,10 +56,14 @@ export default function RegisterPage() {
 
     ///// TODO: clear these fields after finishing development
     const [formData, setFormData] = useState({
-        username: "ahmedsayed",
-        email: "AhmedSayed@gmail.com",
-        password: "Os123@.seto",
-        phone: "+0201234567890",
+        // username: "ahmedsayed",
+        // email: "AhmedSayed@gmail.com",
+        // password: "Os123@.seto",
+        // phone: "+0201234567890",
+        username: "",
+        email: "",
+        password: "",
+        phone: "",
     });
 
     const handelFormData = (key, value) => {

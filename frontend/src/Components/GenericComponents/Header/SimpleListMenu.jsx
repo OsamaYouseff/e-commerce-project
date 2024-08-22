@@ -55,9 +55,9 @@ const SimpleListMenu = () => {
                 <ListItemButton
                     id="lock-button"
                     aria-haspopup="listbox"
-                    aria-controls="lock-menu"
+                    aria-controls="change-category-menu"
                     aria-label="when device is locked"
-                    aria-expanded={open ? "true" : undefined}
+                    aria-expanded={open ? "true" : "false"}
                     onClick={handleClickListItem}
                     sx={{ maxHeight: "40px", border: "1px solid #777" }}
                 >

@@ -138,12 +138,18 @@ router.post("/change-password/:id", verifyTokenAndAuthorization, async (req, res
 });
 
 
-// /// test encryption
-// router.get("/test-encryption", async (req, res) => {
-//     const hashedPassword = await bcrypt.hash("12345678", 10);
-//     console.log(hashedPassword);
-//     res.send(hashedPassword);
-// })
+router.get("/check-username/:username", async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.params.username });
+        if (user) {
+            return res.status(200).json({ message: "Username already exists", result: true });
+        } else {
+            return res.status(200).json({ message: "Username is available", result: false });
+        }
+    } catch (err) {
+        res.status(500).json({ message: "An error occurred while checking the username", result: true });
+    }
+})
 
 
 

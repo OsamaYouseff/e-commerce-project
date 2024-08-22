@@ -1,5 +1,8 @@
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
+import axios from "axios";
+const baseURL = import.meta.env.VITE_BASE_URL;
+
 
 export function GoHome() {
     window.location.href = "/";
@@ -235,7 +238,6 @@ export function ValidateSignUpForm(formData, confirmPassword) {
         }
     }
 
-
     // Phone validation
     if (!formData.phone || formData.phone.trim().length === 0) {
         errors.phone = "Phone number is required";
@@ -292,4 +294,74 @@ export function CheckDuplicated(firstObject, secondObject) {
 
     return isDuplicated;
 
+}
+
+
+async function checkUsernameExistence(targetUsername) {
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/users/check-username/${targetUsername}`,
+        headers: {}
+    };
+
+    try {
+        const response = await axios.request(config);
+        // console.log('username checked successfully : ', response.data.message);
+        return response.data.result;
+
+    } catch (error) {
+        console.log('username checked failed : ', error.message);
+        return error.data.result;
+    }
+
+}
+
+
+export async function ValidateProfileInfoForm(formData, isUsernameChanged) {
+    const errors = {};
+
+    // Username validation
+    if (!formData.username || formData.username.trim().length === 0) {
+        errors.username = "Username is required";
+    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.username)) {
+        errors.username = "Username must be 3-20 characters long and can only contain letters, numbers, and underscores";
+    } else {
+
+        //// check if username already used or not
+        if (isUsernameChanged) {
+            let usernameExistence = await checkUsernameExistence(formData.username)
+            if (usernameExistence) errors.username = "Username already used";
+        }
+    }
+
+    // FirstName validation
+    if (formData.firstname.trim().length > 0) {
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.firstname))
+            errors.firstname = "FirstName must be 3-20 characters long and can only contain letters, numbers, and underscores";
+    }
+    // LastName validation
+    if (formData.lastname.trim().length > 0) {
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.lastname))
+            errors.lastname = "LastName must be 3-20 characters long and can only contain letters, numbers, and underscores";
+    }
+
+    // Email validation
+    if (!formData.email || formData.email.trim().length === 0) {
+        errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+        errors.email = "Invalid email format";
+    }
+
+    // Phone validation
+    if (!formData.phone || formData.phone.trim().length === 0) {
+        errors.phone = "Phone number is required";
+    } else if (!/^\+\d{1,3}\d{10,14}$/.test(formData.phone)) {
+        errors.phone = "Invalid phone number format. Use international format (e.g., +1234567890)";
+    }
+
+    return {
+        isValid: Object.keys(errors).length === 0,
+        errors: errors
+    };
 }

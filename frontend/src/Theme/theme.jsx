@@ -44,7 +44,7 @@ export const getDesignTokens = (mode) => ({
                     main: "#479f00",
                 },
                 specialText2: {
-                    main: "#E91E63",
+                    main: "#a900ff",
                 },
             }
             : {
@@ -85,7 +85,7 @@ export const getDesignTokens = (mode) => ({
                     main: "#abff67",
                 },
                 specialText2: {
-                    main: "#cd0046",
+                    main: "#ff1b68",
                 },
 
             }),
