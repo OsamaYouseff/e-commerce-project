@@ -48,7 +48,9 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
             sx={{
                 bgcolor: theme.palette.natural.main,
                 px: { xs: 2, sm: 3 },
-                pt: 1.3,
+                py: 4,
+
+
                 borderRadius: "6px",
                 boxShadow: 1,
                 width: "100%",

@@ -72,12 +72,12 @@ const SelectAddressSection = ({ selectedAddressId }) => {
     }, []);
 
     return (
-        <Box>
+        <Box >
+
             <Accordion sx={{
                 bgcolor: theme.palette.sectionBgColor.main,
             }}>
                 <AccordionSummary
-                    className="border"
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel1-content"
                     id="panel1-header"

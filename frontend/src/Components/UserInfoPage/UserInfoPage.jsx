@@ -103,7 +103,7 @@ const UserInfoPage = () => {
                         flexDirection: { xs: "column", md: "row" },
                         width: "100%",
                         height: "100%",
-                        p: 1,
+                        p: { xs: 0, md: 1 },
                         alignItems: { xs: "center", md: "flex-start" },
                     }}
                 >

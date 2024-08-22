@@ -78,7 +78,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                 }}
                 sx={{
                     bgcolor: theme.palette.natural.main,
-                    px: { xs: 2, sm: 3 },
+                    px: { xs: 1.3, sm: 3 },
                     pt: { xs: 1, sm: 2 },
                     pb: 2,
                     borderRadius: "6px",

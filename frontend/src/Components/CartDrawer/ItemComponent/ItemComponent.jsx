@@ -98,7 +98,8 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         "&:hover": {
                             bgcolor: theme.palette.sectionBgColor.main,
                             borderColor: theme.palette.primary.main,
-                        }
+                        },
+                        overflowX: "hidden",
                     }}
                 >
                     <Box
@@ -119,16 +120,18 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             justifyContent: { xs: "space-between", sm: "flex-start" },
                         }}
                     >
-                        <img
-                            style={{
-                                minWidth: "100px",
-                                maxWidth: "100px",
-                                // maxHeight: "100px",
-                                borderRadius: "5px",
-                            }}
-                            src={item.img}
-                            alt="cart-item"
-                        />
+                        <Box className="flex-center" sx={{ maxWidth: "120px", minWidth: { xs: "70px", sm: "120px" } }}>
+                            <img
+                                style={{
+                                    minWidth: "70px",
+                                    maxWidth: "100%",
+                                    maxHeight: "100px",
+                                    borderRadius: "5px",
+                                }}
+                                src={item.img}
+                                alt="cart-item"
+                            />
+                        </Box>
                         <Typography
                             sx={{
                                 fontSize: { xs: "15px", sm: "18px" },
@@ -252,28 +255,32 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 cursor: "pointer",
                             }}
                         >
-                            <img
-                                style={{
-                                    maxWidth: "130%",
-                                    maxHeight: "90px",
-                                    borderRadius: "5px",
-                                }}
-                                src={item.img}
-                                alt="cart-item"
-                            />
+                            <Box className="flex-center" sx={{ maxWidth: "110px", minWidth: { xs: "60px", sm: "70px" } }}>
+                                <img
+                                    style={{
+                                        maxWidth: "100%",
+                                        maxHeight: "90px",
+                                        borderRadius: "5px",
+                                    }}
+                                    src={item.img}
+                                    alt="cart-item"
+                                />
+                            </Box>
+
                         </Box>
                         <Box
                             sx={{
                                 display: "flex",
                                 flex: 1,
                                 flexDirection: "column",
-                                gap: 1
+                                gap: 1,
+                                maxWidth: "75%"
                             }}
                             justifyContent={"space-between"}
                         >
                             <Stack direction="row" justifyContent={"space-between"}>
                                 <Typography
-                                    sx={{ pl: 2.7, fontSize: "17px", maxWidth: "155px" }}
+                                    sx={{ fontSize: "17px", maxWidth: "155px" }}
                                 >
                                     {item.title.slice(0, 20)}
                                 </Typography>
@@ -290,6 +297,9 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 direction="row"
                                 gap={2}
                                 justifyContent={"space-between"}
+                                sx={{
+                                    maxWidth: "80%"
+                                }}
                             >
 
                                 <ControlProductAmount

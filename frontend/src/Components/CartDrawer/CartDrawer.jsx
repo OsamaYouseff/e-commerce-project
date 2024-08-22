@@ -104,11 +104,13 @@ export default function CartDrawer() {
             className="flex-between-column"
             sx={{
                 width: { xs: "100vw", sm: "390px" },
-                p: { xs: 2, sm: 2 },
-                pr: 1,
+                p: { xs: 1, sm: 2 },
+                pr: { xs: 0, sm: 2 },
                 bgcolor: theme.palette.categoryColor.main,
                 height: "100vh",
                 overflow: "auto",
+                overflowX: "hidden",
+
             }}
             role="presentation"
         // onClick={toggleDrawer(anchor, false)}
@@ -116,6 +118,8 @@ export default function CartDrawer() {
         >
             {/* Close Button */}
             <Button
+                className="border"
+
                 size="small"
                 sx={{
                     position: "absolute", right: 0, top: -10, color: theme.palette.text.primary, marginTop: "15px", zIndex: 1, "&:hover": { bgcolor: "transparent" },
@@ -175,7 +179,7 @@ export default function CartDrawer() {
             </Box>
             {/*== Cart Items ==*/}
 
-            <Stack sx={{ width: "100%" }}>
+            <Stack sx={{ width: "100%", px: 0.8 }}>
                 {/* Apply Coupon */}
                 <Box
                     sx={{

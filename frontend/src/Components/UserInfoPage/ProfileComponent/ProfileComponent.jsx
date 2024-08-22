@@ -83,7 +83,7 @@ const ProfileComponent = ({ customerData }) => {
             <Container
                 maxWidth="xl"
                 sx={{
-                    width: { xs: "95%", md: "auto" },
+                    width: { xs: "100%", md: "auto" },
                     marginTop: "10px",
                     bgcolor: theme.palette.categoryColor.main,
                     borderRadius: "6px",
@@ -107,7 +107,7 @@ const ProfileComponent = ({ customerData }) => {
                     <Stack
                         sx={{
                             width: { xs: "100%", md: "80%" },
-                            p: 5,
+                            p: { xs: 1, md: 5 },
                             // bgcolor: "black",
                             flexGrow: 1,
                             borderRadius: "6px",

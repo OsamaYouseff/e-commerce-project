@@ -56,8 +56,8 @@ const AddressComponent = () => {
     };
 
     return (
-        <Stack sx={{ minWidth: "67vw", minHeight: "70vh" }}>
-            <Box sx={{ mb: 2, px: { xs: 0.5, md: 1 } }}>
+        <Stack sx={{ minWidth: "67vw", minHeight: "70vh", maxWidth: "100%", p: 0, m: 0 }}>
+            <Box sx={{ mb: 2, px: { xs: 1, md: 2 } }}>
                 <Typography
                     variant="h4"
                     sx={{
@@ -80,7 +80,7 @@ const AddressComponent = () => {
                     maxWidth: "200px",
                     fontWeight: "bolder",
                     mb: 2,
-                    mx: { xs: 0.5, md: 1 },
+                    mx: { xs: 1, md: 2 },
                     a: {
                         textDecoration: "none !important",
                         color: "inherit",

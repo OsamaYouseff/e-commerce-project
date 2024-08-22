@@ -127,7 +127,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                 }
             }}
         >
-            <Container sx={{ py: 2 }}>
+            <Container sx={{ py: 2, px: { xs: 0.5, md: 2 } }}>
                 {/* header */}
 
                 <Box>
@@ -179,7 +179,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                         sx={{
                             minWidth: { xs: "100%", md: "60%" },
                             flexGrow: 1,
-                            p: 2,
+                            p: { xs: 1, md: 2 },
                             borderRadius: "6px",
                             bgcolor: theme.palette.sectionBgColor.main,
                         }}

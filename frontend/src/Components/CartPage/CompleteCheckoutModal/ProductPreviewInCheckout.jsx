@@ -20,6 +20,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     md: "row !important",
                 },
                 mb: { xs: 2, sm: 2 },
+                p: { xs: 0, sm: 2 }
             }}
             gap={4}
         >
@@ -37,7 +38,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                         border: `1px solid ${theme.palette.primary.main} `,
                     },
                     borderRadius: "6px",
-                    p: 2,
+                    p: { xs: 1, sm: 2 },
                 }}
             >
                 <Typography
@@ -57,10 +58,10 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     }}
                 >
                     <Box
-                        className="flex-start"
+                        className="flex-center"
                         sx={{
-                            // width: "110px",
-                            height: "110px",
+                            width: "110px",
+                            minHeight: "110px",
                         }}
                     >
                         <img
@@ -68,7 +69,6 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                             alt="product-img"
                             style={{
                                 maxWidth: "100%",
-                                height: "100%",
                             }}
                         />
                     </Box>
