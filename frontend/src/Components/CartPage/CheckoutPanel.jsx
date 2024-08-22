@@ -12,13 +12,20 @@ import toast from 'react-hot-toast';
 const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
     const theme = useTheme(ColorModeContext);
 
-    const [discountCode, setDiscountCode] = useState("");
+    const isThereCoupon = localStorage.getItem("discountCode");
+
+    const [discountCode, setDiscountCode] = useState(localStorage.getItem("discountCode") || "");
+
     let { finalPrice, shippingCost, discount, shippingCalc } = CalcTotalCartPrice(totalPrice, discountCode);
-    const [isCouponFieldDisabled, setIsCouponFieldDisabled] = useState(false);
+    const [isCouponFieldDisabled, setIsCouponFieldDisabled] = useState(isThereCoupon);
 
 
     const handelChangeCouponCode = () => {
-        if (IsDiscountValid(discountCode)) setIsCouponFieldDisabled(true);
+        if (IsDiscountValid(discountCode)) {
+            setIsCouponFieldDisabled(true);
+            localStorage.setItem("discountCode", discountCode);
+            toast.success("Coupon code applied successfully");
+        }
         else {
             toast.error("Invalid Coupon Code");
         }
@@ -87,6 +94,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                     onClick={() => {
                         setDiscountCode("");
                         setIsCouponFieldDisabled(false);
+                        localStorage.removeItem("discountCode");
                     }}
                     sx={{
                         right: 2,
