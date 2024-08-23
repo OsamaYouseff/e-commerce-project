@@ -53,16 +53,16 @@ const OrderCard = ({ order }) => {
                     px: { xs: 2, sm: 3 },
                     pt: 2,
                     pb: 2,
-                    borderRadius: "6px",
+                    borderRadius: ".375rem",
                     boxShadow: 1,
                     transition: "all 0.45s ease",
-                    border: `1px solid transparent`,
+                    border: `.0625rem solid transparent`,
                     "&:hover": {
-                        border: `1px solid ${theme.palette.primary.main}`,
+                        border: `.0625rem solid ${theme.palette.primary.main}`,
                     },
                 }}
             >
-                <Box sx={{ fontSize: { xs: "15px", sm: "17px" } }} mb={2}>
+                <Box sx={{ fontSize: { xs: ".9375rem", sm: "1.0625rem" } }} mb={2}>
                     <span
                         style={{
                             fontWeight: "bold",
@@ -95,14 +95,14 @@ const OrderCard = ({ order }) => {
                                 sx={{
                                     gap: 2,
                                     flexGrow: 1,
-                                    minWidth: { xs: "100%", md: "120px" },
+                                    minWidth: { xs: "100%", md: "7.5rem" },
                                     transition: "all 0.35s ease",
                                     cursor: "pointer",
-                                    border: "1px solid transparent",
+                                    border: ".0625rem solid transparent",
                                     "&:hover": {
-                                        border: `1px solid ${theme.palette.primary.main} `,
+                                        border: `.0625rem solid ${theme.palette.primary.main} `,
                                     },
-                                    borderRadius: "6px",
+                                    borderRadius: ".375rem",
                                     p: 1,
                                     justifyContent: "flex-start",
                                 }}
@@ -110,13 +110,13 @@ const OrderCard = ({ order }) => {
                                 <img
                                     src={item.img}
                                     alt="product-img"
-                                    style={{ maxWidth: "100px" }}
+                                    style={{ maxWidth: "6.25rem" }}
                                 />
                                 <Typography
                                     sx={{
-                                        fontSize: { xs: "15px", sm: "21px" },
+                                        fontSize: { xs: ".9375rem", sm: "1.3125rem" },
                                         width: { xs: "100%" },
-                                        maxWidth: { xs: "100%", md: "300px" },
+                                        maxWidth: { xs: "100%", md: "18.75rem" },
                                         flexGrow: 1,
                                     }}
                                 >
@@ -128,7 +128,7 @@ const OrderCard = ({ order }) => {
                                 <Box
                                     sx={{
                                         gap: 2,
-                                        borderLeft: "1px solid grey",
+                                        borderLeft: ".0625rem solid grey",
                                         pl: 1,
                                         width: "100%",
                                         maxWidth: {
@@ -137,7 +137,7 @@ const OrderCard = ({ order }) => {
                                         },
                                     }}
                                 >
-                                    <Typography fontSize={"15px"}>
+                                    <Typography fontSize={".9375rem"}>
                                         Share your shopping experience
                                     </Typography>
                                     <Stack direction={"row"} gap={2} sx={{ mt: 1 }}>
@@ -154,7 +154,7 @@ const OrderCard = ({ order }) => {
                                 <Box
                                     sx={{
                                         textAlign: "start",
-                                        borderLeft: "1px solid grey",
+                                        borderLeft: ".0625rem solid grey",
                                         p: 2,
                                         width: {
                                             xs: "100%",
@@ -174,7 +174,7 @@ const OrderCard = ({ order }) => {
                 <Stack
                     className="flex-between"
                     sx={{
-                        fontSize: "12px",
+                        fontSize: ".75rem",
                         textAlign: "right",
                         flexDirection: {
                             xs: "column-reverse !important",

@@ -14,11 +14,11 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
     const theme = useTheme(ColorModeContext);
 
     const buttonStyles = {
-        width: "70px",
-        height: "35px",
-        border: ` 2px solid ${theme.palette.primary.main} `,
-        borderRadius: "6px",
-        fontSize: " 20px",
+        width: "4.375rem",
+        height: "2.1875rem",
+        border: ` .125rem solid ${theme.palette.primary.main} `,
+        borderRadius: ".375rem",
+        fontSize: " 1.25rem",
         p: 1,
         m: 0,
         fontWeight: "bolder",
@@ -31,7 +31,7 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                 gap={0.8}
                 alignItems={"flex-end"}
                 justifyContent={"center"}
-                sx={{ scale: scale, transform: scale == 1 ? "" : { xs: "translateX(-25px)", sm: "translateX(-15px)", md: "translateX(-12px)" } }}
+                sx={{ scale: scale, transform: scale == 1 ? "" : { xs: "translateX(-1.5625rem)", sm: "translateX(-0.9375rem)", md: "translateX(-0.75rem)" } }}
             >
                 <IconButton
                     color="primary"
@@ -68,12 +68,12 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
                         );
                     }}
                     style={{
-                        width: "60px",
-                        height: "35px",
-                        fontSize: "22px",
+                        width: "3.75rem",
+                        height: "2.1875rem",
+                        fontSize: "1.375rem",
                         fontWeight: "bold",
-                        borderRadius: "5px",
-                        border: `1px solid ${theme.palette.text.primary}`,
+                        borderRadius: ".3125rem",
+                        border: `.0625rem solid ${theme.palette.text.primary}`,
                         px: 2.5,
                         py: 0.3,
                         textAlign: "center",

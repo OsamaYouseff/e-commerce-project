@@ -12,9 +12,9 @@ const DeleteBtn = ({ handleDeleteProduct }) => {
         <IconButton
             onClick={() => handleDeleteProduct()}
             sx={{
-                width: "35px",
-                height: "35px",
-                border: `1px solid  ${theme.palette.text.primary}`,
+                width: "2.1875rem",
+                height: "2.1875rem",
+                border: `.0625rem solid  ${theme.palette.text.primary}`,
                 aspectRatio: "1 / 1 !important",
                 transition: "all 0.25s ease",
                 "&:hover": {

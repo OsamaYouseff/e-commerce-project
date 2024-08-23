@@ -47,16 +47,16 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
             sx={{
                 height: "100%",
                 width: { xs: "100%", md: "30%" },
-                borderRadius: "15px",
+                borderRadius: ".9375rem",
                 p: 2,
                 boxShadow: 2,
-                border: `1px solid ${theme.palette.footerBgColor.background}`,
+                border: `.0625rem solid ${theme.palette.footerBgColor.background}`,
                 bgcolor: theme.palette.bgColor.main,
             }}
         >
             <Typography
                 variant="h1"
-                fontSize={"20px"}
+                fontSize={"1.25rem"}
                 sx={{ mb: 2, fontWeight: "bolder" }}
             >
                 Order Summary
@@ -64,7 +64,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
 
             <Typography
                 variant="h1"
-                fontSize={"16px"}
+                fontSize={"1rem"}
                 sx={{ mb: 2, fontWeight: "bolder" }}
             >
                 Coupon Code
@@ -84,7 +84,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                     size="small"
                     sx={{
                         ".MuiOutlinedInput-root": {
-                            borderRadius: "25px",
+                            borderRadius: "1.5625rem",
                         },
                         width: "100%",
                     }}
@@ -100,7 +100,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         right: 2,
                         top: 1.75,
                         width: " 30%",
-                        borderRadius: "25px",
+                        borderRadius: "1.5625rem",
                         fontWeight: "bolder",
                         position: "absolute",
                     }}
@@ -113,7 +113,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 variant="contained"
                 sx={{
                     width: " 100%",
-                    borderRadius: "25px",
+                    borderRadius: "1.5625rem",
                     fontWeight: "bolder",
                     mb: 3,
                 }}
@@ -122,7 +122,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
             </Button>
             <Box
                 sx={{
-                    borderRadius: "15px",
+                    borderRadius: ".9375rem",
                     boxShadow: 1,
                     bgcolor: theme.palette.footerBgColor.accent,
                     p: 2,
@@ -131,7 +131,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
             >
                 <Typography
                     variant="h1"
-                    fontSize={"20px"}
+                    fontSize={"1.25rem"}
                     sx={{ mb: 2, fontWeight: "bolder" }}
                 >
                     Total Cart Price
@@ -139,7 +139,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 <Stack sx={{ fontWeight: "bolder" }}>
                     <Typography
                         variant="h2"
-                        fontSize={"14px"}
+                        fontSize={".875rem"}
                         sx={{
                             mb: 1,
                             display: "flex",
@@ -149,13 +149,13 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         }}
                     >
                         Cart Subtotal
-                        <span style={{ fontSize: "15px" }}>
+                        <span style={{ fontSize: ".9375rem" }}>
                             ${totalPrice.toFixed(2)}
                         </span>
                     </Typography>
                     <Typography
                         variant="h2"
-                        fontSize={"14px"}
+                        fontSize={".875rem"}
                         sx={{
                             mb: 1,
                             display: "flex",
@@ -165,11 +165,11 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         }}
                     >
                         Shipping
-                        <span style={{ fontSize: "15px" }}>{shippingCost}</span>
+                        <span style={{ fontSize: ".9375rem" }}>{shippingCost}</span>
                     </Typography>
                     <Typography
                         variant="h2"
-                        fontSize={"14px"}
+                        fontSize={".875rem"}
                         sx={{
                             mb: 1,
                             display: "flex",
@@ -179,11 +179,11 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         }}
                     >
                         Discount
-                        <span style={{ fontSize: "15px" }}>- ${discount}</span>
+                        <span style={{ fontSize: ".9375rem" }}>- ${discount}</span>
                     </Typography>
                     <Typography
                         variant="h2"
-                        fontSize={"14px"}
+                        fontSize={".875rem"}
                         sx={{
                             mb: 1,
                             display: "flex",
@@ -196,7 +196,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                         <span
                             style={{
                                 color: theme.palette.specialText.main,
-                                fontSize: "20px",
+                                fontSize: "1.25rem",
                             }}
                         >
                             ${finalPrice}
@@ -210,12 +210,12 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 variant="contained"
                 sx={{
                     width: " 100%",
-                    borderRadius: "25px",
+                    borderRadius: "1.5625rem",
                     fontWeight: "bolder",
                     mb: 1,
                     bgcolor: "#1d273b",
                     color: "white",
-                    border: `1px solid ${theme.palette.primary.main} `,
+                    border: `.0625rem solid ${theme.palette.primary.main} `,
                 }}
             >
                 Checkout

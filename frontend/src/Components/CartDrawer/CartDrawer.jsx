@@ -59,8 +59,8 @@ export default function CartDrawer() {
         "& .MuiBadge-badge": {
             right: -3,
             top: 13,
-            border: `2px solid ${theme.palette.background.paper}`,
-            padding: "0 4px",
+            border: `.125rem solid ${theme.palette.background.paper}`,
+            padding: "0 .25rem",
         },
     }));
 
@@ -103,7 +103,7 @@ export default function CartDrawer() {
         <Box
             className="flex-between-column"
             sx={{
-                width: { xs: "100vw", sm: "390px" },
+                width: { xs: "100vw", sm: "24.375rem" },
                 p: { xs: 1, sm: 2 },
                 pr: { xs: 0, sm: 2 },
                 bgcolor: theme.palette.categoryColor.main,
@@ -122,15 +122,15 @@ export default function CartDrawer() {
 
                 size="small"
                 sx={{
-                    position: "absolute", right: 0, top: -10, color: theme.palette.text.primary, marginTop: "15px", zIndex: 1, "&:hover": { bgcolor: "transparent" },
+                    position: "absolute", right: 0, top: -10, color: theme.palette.text.primary, marginTop: ".9375rem", zIndex: 1, "&:hover": { bgcolor: "transparent" },
                 }}
                 onClick={toggleDrawer("right", false)}
             >
                 <CloseRoundedIcon
                     sx={{
-                        fontSize: "45px", width: "35px", height: "35px", cursor: "pointer",
+                        fontSize: "2.8125rem", width: "2.1875rem", height: "2.1875rem", cursor: "pointer",
                         borderRadius: "50%", p: 0.2, color: theme.palette.text.primary,
-                        border: `2px solid ${theme.palette.text.primary}`,
+                        border: `.125rem solid ${theme.palette.text.primary}`,
                         "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", },
                         transition: "0.35s",
                     }}
@@ -142,7 +142,7 @@ export default function CartDrawer() {
             <Typography
                 variant="h5"
                 style={{
-                    marginBottom: "10px",
+                    marginBottom: ".625rem",
                     fontWeight: "bold",
                     width: "95%",
                     textAlign: "center",
@@ -161,15 +161,15 @@ export default function CartDrawer() {
                     pr: 1,
                     width: "100%",
                     // transform: {
-                    //     xs: "translateX(10px)",
-                    //     sm: "translateX(0px)",
+                    //     xs: "translateX(.625rem)",
+                    //     sm: "translateX(0rem)",
                     // },
                 }}
             >
                 <div
                     style={{
                         width: "100%",
-                        minHeight: "390px",
+                        minHeight: "24.375rem",
                         maxHeight: "90vh",
                         bgcolor: "red",
                     }}
@@ -187,7 +187,7 @@ export default function CartDrawer() {
                         flexDirection: "column",
                         gap: 1,
                         my: 2,
-                        fontSize: "17px",
+                        fontSize: "1.0625rem",
                     }}
                 >
                     <Typography variant="h6" sx={{ fontWeight: "bolder" }}>Got a coupon?</Typography>
@@ -197,10 +197,10 @@ export default function CartDrawer() {
                             placeholder="Enter your coupon code"
                             style={{
                                 width: "70%",
-                                height: "40px",
-                                borderRadius: "5px",
-                                border: `1px solid ${theme.palette.text.primary}`,
-                                padding: "10px",
+                                height: "2.5rem",
+                                borderRadius: ".3125rem",
+                                border: `.0625rem solid ${theme.palette.text.primary}`,
+                                padding: ".625rem",
                                 fontWeight: "bolder",
                             }}
                         />
@@ -208,9 +208,9 @@ export default function CartDrawer() {
                             variant="contained"
                             sx={{
                                 width: "30%",
-                                height: "40px",
-                                borderRadius: "5px",
-                                border: `1px solid ${theme.palette.primary.main}`,
+                                height: "2.5rem",
+                                borderRadius: ".3125rem",
+                                border: `.0625rem solid ${theme.palette.primary.main}`,
                                 cursor: "pointer",
                                 fontWeight: "bolder",
                             }}
@@ -227,18 +227,18 @@ export default function CartDrawer() {
                         display: "flex",
                         flexDirection: "column",
                         gap: 1,
-                        fontSize: "17px",
+                        fontSize: "1.0625rem",
                     }}
                 >
                     <Stack direction="row" justifyContent="space-between">
-                        <Typography sx={{ fontSize: "20px", fontWeight: "bolder" }}>
+                        <Typography sx={{ fontSize: "1.25rem", fontWeight: "bolder" }}>
                             Subtotal
                         </Typography>
                         <Typography
                             sx={{
                                 fontWeight: "bolder",
                                 color: "#ff4450",
-                                fontSize: "20px",
+                                fontSize: "1.25rem",
                             }}
                         >
                             ${totalPrice.toFixed(2)}
@@ -262,8 +262,8 @@ export default function CartDrawer() {
     return (
         <Box
             style={{
-                width: "38px",
-                height: "38px",
+                width: "2.375rem",
+                height: "2.375rem",
                 color: theme.palette.text.primary,
 
             }}
@@ -277,12 +277,12 @@ export default function CartDrawer() {
                     width: "100%",
                     height: "100%",
                     ".MuiBadge-badge.MuiBadge-standard": {
-                        transform: "translate(2px, -10px)",
+                        transform: "translate(.125rem, -0.625rem)",
                     },
                 }}
             >
                 <ShoppingCartIcon
-                    sx={{ transition: transitionDuration, height: "45px", fontSize: "35px", }}
+                    sx={{ transition: transitionDuration, height: "2.8125rem", fontSize: "2.1875rem", }}
                 />
             </StyledBadge>
             <Drawer

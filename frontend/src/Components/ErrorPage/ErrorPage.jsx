@@ -44,8 +44,8 @@ const ErrorPage = () => {
             <Box
                 sx={{
                     color: "#fff",
-                    maxWidth: "500px",
-                    margin: "0 20px",
+                    maxWidth: "31.25rem",
+                    margin: "0 1.25rem",
                 }}
             >
                 <Typography variant="h1" sx={{ fontSize: "6rem", margin: 0 }}>
@@ -53,20 +53,20 @@ const ErrorPage = () => {
                 </Typography>
                 <Typography
                     variant="h4"
-                    sx={{ fontSize: "2rem", margin: "10px 0" }}
+                    sx={{ fontSize: "2rem", margin: ".625rem 0" }}
                 >
                     Something went wrong
                 </Typography>
                 <Button
                     variant="contained"
                     sx={{
-                        marginTop: "20px",
-                        padding: "6px 20px",
+                        marginTop: "1.25rem",
+                        padding: ".375rem 1.25rem",
                         fontSize: "1.2rem",
                         color: "#fff",
                         backgroundColor: "#ff6f61",
                         border: "none",
-                        borderRadius: "5px",
+                        borderRadius: ".3125rem",
                         cursor: "pointer",
                         transition: "background-color 0.3s ease",
                         "&:hover": {

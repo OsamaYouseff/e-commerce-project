@@ -36,7 +36,7 @@ const SimpleListMenu = () => {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                maxHeight: "40px",
+                maxHeight: "2.5rem",
             }}
         >
             <List
@@ -44,12 +44,12 @@ const SimpleListMenu = () => {
                 aria-label="Device settings"
                 sx={{
                     p: 0,
-                    minWidth: "160px",
-                    borderTopRightRadius: "25px",
-                    borderBottomRightRadius: "25px",
+                    minWidth: "10rem",
+                    borderTopRightRadius: "1.5625rem",
+                    borderBottomRightRadius: "1.5625rem",
                     overflow: "hidden",
                     bgcolor: theme.palette.categoryColor.main,
-                    borderLeft: "1px solid #777",
+                    borderLeft: ".0625rem solid #777",
                 }}
             >
                 <ListItemButton
@@ -59,13 +59,13 @@ const SimpleListMenu = () => {
                     aria-label="when device is locked"
                     aria-expanded={open ? "true" : "false"}
                     onClick={handleClickListItem}
-                    sx={{ maxHeight: "40px", border: "1px solid #777" }}
+                    sx={{ maxHeight: "2.5rem", border: ".0625rem solid #777" }}
                 >
                     <ListItemText
                         secondary={options[selectedIndex]}
                         sx={{ textAlign: "center" }}
                     />
-                    <ExpandMoreIcon sx={{ fontSize: "24px", color: "#777" }} />
+                    <ExpandMoreIcon sx={{ fontSize: "1.5rem", color: "#777" }} />
                 </ListItemButton>
             </List>
             <Menu
@@ -77,7 +77,7 @@ const SimpleListMenu = () => {
                     "aria-labelledby": "lock-button",
                     role: "listbox",
                 }}
-                sx={{ transform: "translateY(3px)" }}
+                sx={{ transform: "translateY(.1875rem)" }}
             >
                 {options.map((option, index) => (
                     <MenuItem
@@ -85,8 +85,8 @@ const SimpleListMenu = () => {
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}
                         sx={{
-                            fontSize: "16px",
-                            minWidth: "145px",
+                            fontSize: "1rem",
+                            minWidth: "9.0625rem",
                             ".css-6hp17o-MuiList-root-MuiMenu-list": { py: 0 },
                         }}
                     >

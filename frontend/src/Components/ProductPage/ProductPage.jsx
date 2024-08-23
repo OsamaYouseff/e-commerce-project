@@ -45,18 +45,18 @@ const pageStyles = {
 const favIconStyle = {
     px: 1,
     py: 0.5,
-    border: "1px solid",
-    borderRadius: "6px",
+    border: ".0625rem solid",
+    borderRadius: ".375rem",
     width: "100%",
 };
 const buttonsStyle = {
-    p: "5px 15px !important",
+    p: ".3125rem .9375rem !important",
     fontWeight: "bold",
-    minWidth: "300px",
+    minWidth: "18.75rem",
     maxWidth: "100%",
     flex: 1,
 };
-const fontSizeClamp = "clamp(20px,calc(24px + (25 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
+const fontSizeClamp = "clamp(1.25rem,calc(1.5rem + (25 - 15) * (100vw - 62.5rem) / (1920 - 1000)),2rem) !important";
 
 //// custom component
 const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
@@ -83,7 +83,7 @@ const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
 const ColorCircle = ({ color }) => {
     const theme = useTheme(ColorModeContext);
 
-    return <Box sx={{ width: "22px", height: "22px", borderRadius: "50%", bgcolor: color, border: `2px solid ${theme.palette.specialText.main}`, cursor: "pointer" }}></Box>
+    return <Box sx={{ width: "1.375rem", height: "1.375rem", borderRadius: "50%", bgcolor: color, border: `.125rem solid ${theme.palette.specialText.main}`, cursor: "pointer" }}></Box>
 }
 
 
@@ -211,9 +211,9 @@ const ProductPage = () => {
         <Container sx={pageStyles} maxWidth="xl">
             <Box
                 sx={{
-                    paddingTop: "40px",
-                    maxWidth: { xs: 320, md: "500px" },
-                    minWidth: { xs: 320, md: "400px" },
+                    paddingTop: "2.5rem",
+                    maxWidth: { xs: 320, md: "31.25rem" },
+                    minWidth: { xs: 320, md: "25rem" },
                     height: "100%",
                     display: "flex",
                     justifyContent: "center",
@@ -224,7 +224,7 @@ const ProductPage = () => {
                     style={{
                         maxWidth: "100%",
                         maxHeight: "100%",
-                        borderRadius: "10px",
+                        borderRadius: ".625rem",
                     }}
                     src={productImg}
                     alt="product-img"
@@ -232,7 +232,7 @@ const ProductPage = () => {
             </Box>
             <Box
                 sx={{
-                    minHeight: "400px",
+                    minHeight: "25rem",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "start",
@@ -254,7 +254,7 @@ const ProductPage = () => {
                     {PreviewedProduct.title}
                 </Typography>
                 <Typography
-                    fontSize={"24px"}
+                    fontSize={"1.5rem"}
                     color={"crimson"}
                     variant="h6"
                     fontWeight={"bold"}
@@ -267,14 +267,14 @@ const ProductPage = () => {
                     alignItems={"center"}
                     direction={"row"}
                     sx={{
-                        fontSize: { xs: "16px", lg: "18px" },
+                        fontSize: { xs: "1rem", lg: "1.125rem" },
                         textAlign: { xs: "justify", md: "left" },
                         maxWidth: { xs: "100%", lg: "100%" },
                         width: "100%",
                         mb: 1,
                     }}
                 >
-                    <span style={{ fontWeight: "bold", minWidth: "110px" }}>Rating :</span> <Rating
+                    <span style={{ fontWeight: "bold", minWidth: "6.875rem" }}>Rating :</span> <Rating
                         name="read-only"
                         value={PreviewedProduct.rating}
                         readOnly
@@ -289,28 +289,28 @@ const ProductPage = () => {
                     direction={"row"}
                     alignItems={"center"}
                     sx={{
-                        fontSize: { xs: "16px", lg: "18px" },
+                        fontSize: { xs: "1rem", lg: "1.125rem" },
                         textAlign: { xs: "justify", md: "left" },
                         minWidth: { xs: "100%", lg: "100%" },
                         mb: 1
                     }}
                 >
-                    <span style={{ fontWeight: "bold", minWidth: "110px" }}>Colors :</span>
+                    <span style={{ fontWeight: "bold", minWidth: "6.875rem" }}>Colors :</span>
                     <ColorCircle color={PreviewedProduct.color} />
                 </Stack>
                 <Typography
                     sx={{
-                        fontSize: { xs: "16px", lg: "18px" },
+                        fontSize: { xs: "1rem", lg: "1.125rem" },
                         textAlign: { xs: "justify", md: "left" },
                         maxWidth: { xs: "100%", lg: "100%" },
                         width: "100%", mb: 1
                     }}
                 >
-                    <span style={{ display: "inline-block", fontWeight: "bold", minWidth: "110px" }}>Size :</span>{PreviewedProduct.size}
+                    <span style={{ display: "inline-block", fontWeight: "bold", minWidth: "6.875rem" }}>Size :</span>{PreviewedProduct.size}
                 </Typography>
 
                 <Stack className="flex-center" sx={{ mb: 4, width: "100%", justifyContent: "flex-start" }}>
-                    <Typography sx={{ fontSize: { xs: "16px", lg: "18px" }, minWidth: "110px", fontWeight: "bold" }}> Quantity : </Typography>
+                    <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "6.875rem", fontWeight: "bold" }}> Quantity : </Typography>
                     <ControlProductAmount
                         fieldQuantity={fieldQuantity}
                         setFieldQuantity={setFieldQuantity}
@@ -380,15 +380,15 @@ const ProductPage = () => {
 
                 <Typography
                     sx={{
-                        fontSize: "16px",
+                        fontSize: "1rem",
                         textAlign: { xs: "justify", md: "left" },
                         maxWidth: { xs: "100%", lg: "100%" },
                         lineHeight: "1.5",
-                        letterSpacing: ".5px",
+                        letterSpacing: ".0313rem",
                         mb: 4,
                     }}
                 >
-                    <span style={{ fontWeight: "bold", fontSize: "18px", }}>Description : </span>  <br /> {PreviewedProduct.desc}
+                    <span style={{ fontWeight: "bold", fontSize: "1.125rem", }}>Description : </span>  <br /> {PreviewedProduct.desc}
                 </Typography>
             </Box >
             {openCheckoutModal && (

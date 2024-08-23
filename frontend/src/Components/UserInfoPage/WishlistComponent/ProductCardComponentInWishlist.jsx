@@ -24,8 +24,8 @@ import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 const favIconStyle = {
     px: 0.6,
     py: 0.5,
-    border: "1px solid",
-    borderRadius: "6px",
+    border: ".0625rem solid",
+    borderRadius: ".375rem",
 };
 const ProductCardComponentInWishlist = ({
     productData,
@@ -99,7 +99,7 @@ const ProductCardComponentInWishlist = ({
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center",
                             backgroundSize: "contain",
-                            height: "175px",
+                            height: "10.9375rem",
                             width: "100%",
                             cursor: "pointer",
                             transition: "transform 0.35s ease-in-out",
@@ -123,7 +123,7 @@ const ProductCardComponentInWishlist = ({
                     >
                         <Typography
                             gutterBottom
-                            fontSize={"20px"}
+                            fontSize={"1.25rem"}
                             component="div"
                         >
                             {productData.title.slice(0, 30)}
@@ -131,7 +131,7 @@ const ProductCardComponentInWishlist = ({
 
                         <Stack className="flex-between">
                             <Typography
-                                fontSize={"18px"}
+                                fontSize={"1.125rem"}
                                 component="div"
                                 color={"crimson"}
                                 fontWeight={"bold"}
@@ -155,7 +155,7 @@ const ProductCardComponentInWishlist = ({
                     >
                         <Button
                             size="small"
-                            sx={{ fontSize: "14px", fontWeight: "bolder" }}
+                            sx={{ fontSize: ".875rem", fontWeight: "bolder" }}
                             onClick={() => {
                                 handelAddToCart();
                             }}
@@ -163,8 +163,8 @@ const ProductCardComponentInWishlist = ({
                         >
                             <AddShoppingCartOutlinedIcon
                                 sx={{
-                                    marginRight: "5px",
-                                    fontSize: "20px",
+                                    marginRight: ".3125rem",
+                                    fontSize: "1.25rem",
                                 }}
                             />
                             Add To Cart

@@ -80,7 +80,7 @@ const ProductCardComponent = ({
                         backgroundRepeat: "no-repeat",
                         backgroundPosition: "center",
                         backgroundSize: "contain",
-                        height: "245px",
+                        height: "15.3125rem",
                         width: "100%",
                         cursor: "pointer",
                         transition: "transform 0.35s ease-in-out",
@@ -105,21 +105,21 @@ const ProductCardComponent = ({
                     >
                         <Typography
                             gutterBottom
-                            fontSize={"18px"}
+                            fontSize={"1.125rem"}
                             component="div"
                         >
                             {productData.title.slice(0, 20)}...
                         </Typography>
                         <Typography
                             gutterBottom
-                            fontSize={"16px"}
+                            fontSize={"1rem"}
                             component="div"
                             sx={{ color: theme.palette.specialText2.main }}
                         >
                             ${productData.price}
                         </Typography>
                     </Stack>
-                    <Typography fontSize={"16px"} color="text.secondary">
+                    <Typography fontSize={"1rem"} color="text.secondary">
                         {productData.desc.slice(0, 120)}..
                     </Typography>
                 </CardContent>
@@ -131,7 +131,7 @@ const ProductCardComponent = ({
                 >
                     <Button
                         size="small"
-                        sx={{ fontSize: "14px", fontWeight: "bolder" }}
+                        sx={{ fontSize: ".875rem", fontWeight: "bolder" }}
                         onClick={() => {
                             handelAddToCart();
                         }}
@@ -139,8 +139,8 @@ const ProductCardComponent = ({
                     >
                         <AddShoppingCartOutlinedIcon
                             sx={{
-                                marginRight: "5px",
-                                fontSize: "20px",
+                                marginRight: ".3125rem",
+                                fontSize: "1.25rem",
                             }}
                         />
                         Add To Cart

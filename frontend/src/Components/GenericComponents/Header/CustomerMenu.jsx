@@ -71,7 +71,7 @@ const CustomerMenu = () => {
                             fontWeight: "bolder",
                         }}
                     >
-                        <span style={{ fontSize: "24px" }}>
+                        <span style={{ fontSize: "1.5rem" }}>
                             {userName.toUpperCase()[0]}
                         </span>
                     </Avatar>
@@ -87,7 +87,7 @@ const CustomerMenu = () => {
                     elevation: 0,
                     sx: {
                         overflow: "visible",
-                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        filter: "drop-shadow(0rem .125rem .5rem rgba(0,0,0,0.32))",
                         mt: 1.5,
                         "& .MuiAvatar-root": {
                             width: 32,
@@ -125,7 +125,7 @@ const CustomerMenu = () => {
                         <MenuItem
                             onClick={handleClose}
                             sx={{
-                                minWidth: { xs: "380px", sm: "260px" },
+                                minWidth: { xs: "23.75rem", sm: "16.25rem" },
                                 py: 1,
                                 color: "inherit",
                             }}

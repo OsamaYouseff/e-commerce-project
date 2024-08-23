@@ -12,10 +12,10 @@ import { ColorModeContext } from "../../../Theme/theme";
 const Features = () => {
     const theme = useTheme(ColorModeContext);
     return (
-        <Stack direction={"row"} alignItems={"center"} justifyContent={"space-center"} gap={1} marginTop={"15px"}
+        <Stack direction={"row"} alignItems={"center"} justifyContent={"space-center"} gap={1} marginTop={".9375rem"}
             flexWrap={"wrap"}
-            divider={(useMediaQuery("(min-width:900px) ")) ? (<Divider orientation="vertical" flexItem />) : null}
-            sx={{ bgcolor: theme.palette.categoryColor.main, borderRadius: "6px", px: "16px", py: "8px", boxShadow: 3, }}
+            divider={(useMediaQuery("(min-width:56.25rem) ")) ? (<Divider orientation="vertical" flexItem />) : null}
+            sx={{ bgcolor: theme.palette.categoryColor.main, borderRadius: ".375rem", px: "1rem", py: ".5rem", boxShadow: 3, }}
         >
             <BoxFeature icon={<ElectricBoltIcon />} title="Free Delivery" subtitle="Starts form $10" />
             <BoxFeature icon={<WorkspacePremiumIcon />} title="Payment" subtitle="Secure system" />
@@ -31,15 +31,15 @@ function BoxFeature({ icon, title, subtitle }) {
     const theme = useTheme();
     return (
         <Stack className="border" direction={"row"} alignItems={"center"} justifyContent={"center"} gap={2} sx={{
-            px: "16px", py: "8px", borderRadius: "6px", flexGrow: "1", border: "1px solid transparent", cursor: "pointer",
-            "&:hover": { border: `1px solid ${theme.palette.text.primary}` }, transition: "all 0.35s ease", width: "200px",
+            px: "1rem", py: ".5rem", borderRadius: ".375rem", flexGrow: "1", border: ".0625rem solid transparent", cursor: "pointer",
+            "&:hover": { border: `.0625rem solid ${theme.palette.text.primary}` }, transition: "all 0.35s ease", width: "12.5rem",
             [theme.breakpoints.down('sm')]: { justifyContent: "start", },
             [theme.breakpoints.down('md')]: { boxShadow: 1, }
         }}>
             {icon}
             <Box >
-                <Typography fontSize={"15px"}>{title}</Typography>
-                <Typography fontSize={"13px"} color={theme.palette.text.secondary}>{subtitle}</Typography>
+                <Typography fontSize={".9375rem"}>{title}</Typography>
+                <Typography fontSize={".8125rem"} color={theme.palette.text.secondary}>{subtitle}</Typography>
             </Box >
         </Stack >
     )

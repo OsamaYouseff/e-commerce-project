@@ -32,7 +32,7 @@ const Search = styled("div")(({ theme }) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    border: "1px solid #777",
+    border: ".0625rem solid #777",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -74,12 +74,12 @@ function ToggleCustomerAvatar(customerData) {
     ) : (
         <Stack
             className="flex-between"
-            sx={{ flexDirection: "row", gap: "5px", alignItems: "center" }}
+            sx={{ flexDirection: "row", gap: ".3125rem", alignItems: "center" }}
         >
             <Link to="/login">
                 <Button sx={{ fontWeight: "bold" }}>Login</Button>
             </Link>
-            <span style={{ fontSize: "16px" }}>/</span>
+            <span style={{ fontSize: "1rem" }}>/</span>
             <Link to="/register">
                 <Button sx={{ fontWeight: "bold" }}>Register</Button>
             </Link>
@@ -90,12 +90,12 @@ function ToggleCustomerAvatar(customerData) {
 const MidHeader = function () {
     const theme = useTheme(ColorModeContext.theme);
     const fontSizeClamp =
-        "clamp(11px,calc(12px + (14 - 12) * (100vw - 1000px) / (1920 - 1000)),14px) !important";
+        "clamp(.6875rem,calc(.75rem + (14 - 12) * (100vw - 62.5rem) / (1920 - 1000)),.875rem) !important";
 
     let customerData = GetUserInfo();
 
     return (
-        <Container maxWidth="xl" sx={{ marginTop: "8px" }}>
+        <Container maxWidth="xl" sx={{ marginTop: ".5rem" }}>
             <Stack
                 className=""
                 sx={{
@@ -104,7 +104,7 @@ const MidHeader = function () {
                     flexWrap: "wrap",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    gap: "10px",
+                    gap: ".625rem",
                 }}
             >
                 {/* Logo */}
@@ -118,7 +118,7 @@ const MidHeader = function () {
                         }}
                     >
 
-                        <img style={{ width: "38px", height: "38px" }} src="/images/shop-logo.png" alt="e-commerce website logo" />
+                        <img style={{ width: "2.375rem", height: "2.375rem" }} src="/images/shop-logo.png" alt="e-commerce website logo" />
                         <Typography
                             className="go-home"
                             variant="body"
@@ -138,14 +138,14 @@ const MidHeader = function () {
                 {/* Search */}
                 <Box
                     flexGrow={0.6}
-                    sx={{ p: 0, minWidth: { xs: "100%", md: "150px" } }}
+                    sx={{ p: 0, minWidth: { xs: "100%", md: "9.375rem" } }}
                 >
                     <Search
                         sx={{
                             p: 0,
-                            borderRadius: "25px",
+                            borderRadius: "1.5625rem",
                             bgcolor: theme.palette.bgColor.main,
-                            maxHeight: "40px !important",
+                            maxHeight: "2.5rem !important",
                             minWidth: "100%",
                             margin: "0 !important",
                         }}

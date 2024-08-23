@@ -20,13 +20,13 @@ import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThing
 
 const orderChildrenStyle = {
     fontSize: {
-        xs: "16px",
-        sm: "20px",
+        xs: "1rem",
+        sm: "1.25rem",
     },
     width: { xs: "100%" },
     maxWidth: {
         xs: "100%",
-        md: "300px",
+        md: "18.75rem",
     },
     flexGrow: {
         xs: 1,
@@ -94,15 +94,15 @@ const OrderSummary = () => {
                         sx={{
                             my: 0.5,
                             fontSize: {
-                                xs: "22px",
-                                md: "26px",
+                                xs: "1.375rem",
+                                md: "1.625rem",
                                 fontWeight: "bolder",
                             },
                         }}
                     >
                         Order summary
                     </Typography>
-                    <Typography variant="body" sx={{ my: 1, fontSize: "15px" }}>
+                    <Typography variant="body" sx={{ my: 1, fontSize: ".9375rem" }}>
                         Find order invoice, payment and shipping details here
                     </Typography>
                 </Box>
@@ -130,7 +130,7 @@ const OrderSummary = () => {
                         minWidth: { xs: "100%", md: "60%" },
                         flexGrow: 1,
                         p: 2,
-                        borderRadius: "6px",
+                        borderRadius: ".375rem",
                         bgcolor: theme.palette.sectionBgColor.main,
                     }}
                 >
@@ -152,7 +152,7 @@ const OrderSummary = () => {
                             Delivery Details
                         </Typography>
                         <Box
-                            sx={{ fontSize: { xs: "15px", sm: "16px" } }}
+                            sx={{ fontSize: { xs: ".9375rem", sm: "1rem" } }}
                             mb={2}
                         >
                             <span
@@ -190,15 +190,15 @@ const OrderSummary = () => {
                                             flexGrow: 1,
                                             minWidth: {
                                                 xs: "100%",
-                                                md: "120px",
+                                                md: "7.5rem",
                                             },
                                             transition: "all 0.35s ease",
                                             cursor: "pointer",
-                                            border: "1px solid transparent",
+                                            border: ".0625rem solid transparent",
                                             "&:hover": {
-                                                border: `1px solid ${theme.palette.primary.main} `,
+                                                border: `.0625rem solid ${theme.palette.primary.main} `,
                                             },
-                                            borderRadius: "6px",
+                                            borderRadius: ".375rem",
                                             p: 1,
                                             justifyContent: "flex-start",
                                         }}
@@ -206,8 +206,8 @@ const OrderSummary = () => {
                                         <Box
                                             className="flex-start"
                                             sx={{
-                                                width: "110px",
-                                                // height: "110px",
+                                                width: "6.875rem",
+                                                // height: "6.875rem",
                                             }}
                                         >
                                             <img
@@ -254,7 +254,7 @@ const OrderSummary = () => {
                             xs: "100%",
                             md: "33%",
                         },
-                        borderRadius: "6px",
+                        borderRadius: ".375rem",
                         overflow: "hidden",
                     }}
                 >
@@ -351,7 +351,7 @@ const OrderSummary = () => {
                         }}
                     >
                         <Typography variant="h6">Delivery address</Typography>
-                        <Typography sx={{ fontSize: "20px" }}>
+                        <Typography sx={{ fontSize: "1.25rem" }}>
                             ({shippingAddress?.label})
                         </Typography>
                         <Stack sx={{ gap: 0.5, fontSize: 15 }}>

@@ -16,7 +16,7 @@ E-commerece Notes
 
 7 - prevent user from going to [login / register]  pages if he's already logged in (done) ×××××××××××××××××××××××
 
-8 - don't forget to change all px to rem after finishing development.
+8 - don't forget to change all px to rem after finishing development. (done) ×××××××××××××××××××××××
 
 9 - do something to make user experience good when he trying to add to increase number of item or remove item (probably you need to use state) ×××××××××××××××××××××××
 

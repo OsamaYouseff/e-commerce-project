@@ -27,13 +27,13 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 //// styles
 const iconStyle = {
-    fontSize: "24px",
-    marginRight: "10px",
+    fontSize: "1.5rem",
+    marginRight: ".625rem",
 }
 const LinksStyles = {
-    padding: "4px 2px 2px 20px",
+    padding: ".25rem .125rem .125rem 1.25rem",
     cursor: "pointer",
-    borderRadius: "4px",
+    borderRadius: ".25rem",
     transition: "0.15s",
     "&:hover": { "backgroundColor": "#607D8B", color: "#f7f7f7" },
 }
@@ -93,15 +93,15 @@ const BottomHeader = function () {
             <Stack
                 className="flex-between"
                 sx={{
-                    marginTop: "15px",
+                    marginTop: ".9375rem",
                     width: "100%",
-                    height: "60px",
+                    height: "3.75rem",
                     color: "white",
                 }}
             >
                 <CategoryMenu />
-                {useMediaQuery("(min-width:1000px) ") && (<LinksMenus />)}
-                {useMediaQuery("(max-width:1000px) ") && (<Drawer />)}
+                {useMediaQuery("(min-width:62.5rem) ") && (<LinksMenus />)}
+                {useMediaQuery("(max-width:62.5rem) ") && (<Drawer />)}
 
             </Stack >
         </Container>
@@ -109,7 +109,7 @@ const BottomHeader = function () {
 }
 
 function CategoryMenu() {
-    const fontSizeClamp = "clamp(11px,calc(12px + (15 - 12) * (100vw - 1000px) / (1920 - 1000)),16px) !important";
+    const fontSizeClamp = "clamp(.6875rem,calc(.75rem + (15 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1rem) !important";
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
@@ -124,7 +124,7 @@ function CategoryMenu() {
     return (
         <Stack
             alignItems={"center"}
-            sx={{ bgcolor: theme.palette.categoryColor.main, minWidth: "150px", borderRadius: "5px", border: "1px solid #777" }}
+            sx={{ bgcolor: theme.palette.categoryColor.main, minWidth: "9.375rem", borderRadius: ".3125rem", border: ".0625rem solid #777" }}
         >
             <Button
                 className="flex-between"
@@ -149,12 +149,12 @@ function CategoryMenu() {
                     'aria-labelledby': 'basic-button',
                 }}
                 sx={{
-                    transform: "translateY(5px)",
+                    transform: "translateY(.3125rem)",
                     ".css-6hp17o-MuiList-root-MuiMenu-list": { backgroundColor: theme.palette.categoryColor.main }
                 }}
             >
                 {categoryData.map((item, index) => (
-                    <MenuItem key={index} sx={{ width: "190px", }} onClick={handleClose}>
+                    <MenuItem key={index} sx={{ width: "11.875rem", }} onClick={handleClose}>
                         {item.icon}
                         <Typography sx={{ fontSize: fontSizeClamp }}>{item.title}</Typography>
                     </MenuItem>
@@ -199,21 +199,21 @@ function Drawer() {
                 <Box className="flex-start" sx={{
                     minHeight: "100vh",
                     overflowY: "auto",
-                    border: "1px solid #777",
+                    border: ".0625rem solid #777",
                     bgcolor: theme.palette.categoryColor.main,
                     pb: 4
                 }}>
-                    <Box className="accordions-container flex-column-center " sx={{ width: "100%", minWidth: "350px", gap: "10px", p: 1, borderRadius: "5px" }}>
-                        <Button sx={{ color: theme.palette.text.primary, marginTop: "15px", }} onClick={toggleDrawer(openingLocation, false)}>
+                    <Box className="accordions-container flex-column-center " sx={{ width: "100%", minWidth: "21.875rem", gap: ".625rem", p: 1, borderRadius: ".3125rem" }}>
+                        <Button sx={{ color: theme.palette.text.primary, marginTop: ".9375rem", }} onClick={toggleDrawer(openingLocation, false)}>
                             <CloseRoundedIcon sx={{
-                                fontSize: "45px",
-                                width: "45px",
-                                height: "45px",
+                                fontSize: "2.8125rem",
+                                width: "2.8125rem",
+                                height: "2.8125rem",
                                 cursor: "pointer",
                                 borderRadius: "50%",
                                 p: 1,
                                 color: theme.palette.text.primary,
-                                border: `1px solid ${theme.palette.text.primary}`,
+                                border: `.0625rem solid ${theme.palette.text.primary}`,
                                 "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e" },
                                 transition: "0.35s"
                             }} onClick={toggleDrawer(openingLocation, false)} />
@@ -230,7 +230,7 @@ function AccordionComponents() {
     return (
         LinksData.map((item) => {
             return (
-                <Accordion key={item.id} sx={{ maxWidth: "380px", minWidth: "95% !important", m: 0 }}>
+                <Accordion key={item.id} sx={{ maxWidth: "23.75rem", minWidth: "95% !important", m: 0 }}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel1-content"

@@ -156,9 +156,9 @@ const VendorMenuData = [
 //// styles
 const ListItemButtonStyles = {
     px: 2,
-    fontSize: "15px",
+    fontSize: ".9375rem",
     m: 0,
-    borderRadius: "6px",
+    borderRadius: ".375rem",
 };
 
 const LinksMenus = () => {
@@ -200,7 +200,7 @@ function BaseMenu({ key, titleName, subMenu }) {
             sx={{
                 ".css-10hburv-MuiTypography-root": {
                     fontSize:
-                        "clamp(10px,calc(12px + (16 - 12) * (100vw - 1000px) / (1920 - 1000)),16px) !important",
+                        "clamp(.625rem,calc(.75rem + (16 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1rem) !important",
                 },
             }}
         >
@@ -208,7 +208,7 @@ function BaseMenu({ key, titleName, subMenu }) {
                 cursor="pointer"
                 className="flex-center"
                 sx={{
-                    maxWidth: "250px",
+                    maxWidth: "15.625rem",
                     position: "relative",
                     "&:hover": {
                         ".Base-List": {
@@ -217,7 +217,7 @@ function BaseMenu({ key, titleName, subMenu }) {
                             bgcolor: theme.palette.categoryColor.main,
                         },
                     },
-                    padding: "6px",
+                    padding: ".375rem",
                 }}
             >
                 <ListItemButton
@@ -228,8 +228,8 @@ function BaseMenu({ key, titleName, subMenu }) {
                         justifyContent: "center",
                         bgcolor: theme.palette.categoryColor.main,
                         color: theme.palette.text.primary,
-                        borderRadius: "4px",
-                        border: "1px solid #7777",
+                        borderRadius: ".25rem",
+                        border: ".0625rem solid #7777",
                     }}
                 >
                     <Typography
@@ -238,17 +238,17 @@ function BaseMenu({ key, titleName, subMenu }) {
                     >
                         {titleName}
                     </Typography>
-                    <ExpandMoreIcon sx={{ fontSize: "20px" }} />
+                    <ExpandMoreIcon sx={{ fontSize: "1.25rem" }} />
                 </ListItemButton>
 
                 {/* List Menu */}
                 <Paper
                     className="Base-List"
                     sx={{
-                        minWidth: "180px",
+                        minWidth: "11.25rem",
                         position: "absolute",
                         top: "100%",
-                        Padding: "4px",
+                        Padding: ".25rem",
                         display: "none",
                     }}
                 >
@@ -257,10 +257,10 @@ function BaseMenu({ key, titleName, subMenu }) {
                             <ListItem
                                 key={item.id}
                                 sx={{
-                                    borderRadius: "4px",
+                                    borderRadius: ".25rem",
                                     ".MuiListItemButton-root.MuiListItemButton-gutters":
-                                        { padding: "5px 4px 5px 15px  " },
-                                    padding: "0px !important",
+                                        { padding: ".3125rem .25rem .3125rem .9375rem  " },
+                                    padding: "0rem !important",
                                     color: theme.palette.text.primary,
                                     "&:hover": {
                                         // ".Products-List": { display: "block" },
@@ -278,7 +278,7 @@ function BaseMenu({ key, titleName, subMenu }) {
                                 <ListItemButton sx={ListItemButtonStyles}>
                                     <ListItemText primary={item.titleName} />
                                     {item.subMenu != null ? (
-                                        <KeyboardArrowRightIcon fontSize="16px" />
+                                        <KeyboardArrowRightIcon fontSize="1rem" />
                                     ) : null}
                                     {item.subMenu}
                                 </ListItemButton>
@@ -299,13 +299,13 @@ function SubMenu({ listClassName, subMenuLinks }) {
             // className="border"
             className={listClassName}
             sx={{
-                minWidth: "180px",
+                minWidth: "11.25rem",
                 position: "absolute",
                 top: "0%",
                 left: `-100%`,
                 backgroundColor: "transparent",
-                Padding: "4px",
-                paddingRight: "8px",
+                Padding: ".25rem",
+                paddingRight: ".5rem",
                 display: "none",
             }}
         >

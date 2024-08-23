@@ -20,7 +20,7 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 const options = ["AR", "EN"];
 
 const IconsStyles = {
-    fontSize: "20px",
+    fontSize: "1.25rem",
     color: "white",
     cursor: "pointer",
 };
@@ -29,14 +29,14 @@ const TopHeader = function () {
     const colorMode = useContext(ColorModeContext);
     const theme = useTheme();
     const fontSizeClamp =
-        "clamp(10px,calc(12px + (16 - 12) * (100vw - 1000px) / (1920 - 1000)),16px) !important";
+        "clamp(.625rem,calc(.75rem + (16 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1rem) !important";
 
     return (
         <Box
             sx={{
                 bgcolor: "#1d273b",
                 py: 0.3,
-                borderRadius: "0px 0px 7px 7px",
+                borderRadius: "0rem 0rem .4375rem .4375rem",
             }}
         >
             <Container direction={"row"} maxWidth="xl">
@@ -45,7 +45,7 @@ const TopHeader = function () {
                     direction={"row"}
                     gap={1}
                     sx={{
-                        paddingY: "0px",
+                        paddingY: "0rem",
                         alignItems: "center",
                         bgcolor: "#1d273b",
                     }}
@@ -58,8 +58,8 @@ const TopHeader = function () {
                             bgcolor: "#a80c41",
                             width: "fit-content",
                             color: "white",
-                            padding: "3px 15px",
-                            borderRadius: "10px",
+                            padding: ".1875rem .9375rem",
+                            borderRadius: ".625rem",
                         }}
                     >
                         HOT
@@ -95,7 +95,7 @@ const TopHeader = function () {
                                 color="inherit"
                                 aria-label="Switch to dark mode"
                             >
-                                <LightModeOutlined sx={{ fontSize: "20px" }} />
+                                <LightModeOutlined sx={{ fontSize: "1.25rem" }} />
                             </IconButton>
                         ) : (
                             <IconButton
@@ -109,7 +109,7 @@ const TopHeader = function () {
                                 color="inherit"
                                 aria-label="Switch to light mode"
                             >
-                                <DarkModeOutlined sx={{ fontSize: "20px" }} />
+                                <DarkModeOutlined sx={{ fontSize: "1.25rem" }} />
                             </IconButton>
                         )}
                     </Box>
@@ -154,7 +154,7 @@ function SimpleListMenu() {
                     aria-expanded={open ? "true" : "false"}
                     onClick={handleClickListItem}
                     sx={{
-                        padding: "0px 5px",
+                        padding: "0rem .3125rem",
                         color: "white !important",
                     }}
                 >
@@ -162,20 +162,20 @@ function SimpleListMenu() {
                         sx={{
                             ".css-mbfek": {
                                 color: "white !important",
-                                height: "18px",
+                                height: "1.125rem",
                             },
                             ".css-1ijlrmj-MuiTypography-root": {
                                 color: "white !important",
-                                height: "18px",
+                                height: "1.125rem",
                             },
                             ".css-83ijpv-MuiTypography-root": {
                                 color: "white !important",
-                                height: "18px",
+                                height: "1.125rem",
                             },
                         }}
                         secondary={options[selectedIndex]}
                     />
-                    <ExpandMoreIcon sx={{ color: "white", fontSize: "24px" }} />
+                    <ExpandMoreIcon sx={{ color: "white", fontSize: "1.5rem" }} />
                 </ListItemButton>
             </List>
             <Menu
@@ -190,7 +190,7 @@ function SimpleListMenu() {
             >
                 {options.map((option, index) => (
                     <MenuItem
-                        sx={{ fontSize: "16px", padding: "3px 18px" }}
+                        sx={{ fontSize: "1rem", padding: ".1875rem 1.125rem" }}
                         key={option}
                         // disabled={index === 0}
                         selected={index === selectedIndex}

@@ -80,7 +80,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
                 sx={{
                     p: 1.2,
                     mb: 1,
-                    borderRadius: "5px",
+                    borderRadius: ".3125rem",
                     boxShadow: 1,
                     gap: { xs: 2, sm: 1 },
                 }}
@@ -88,15 +88,15 @@ const ItemComponentDetails = ({ item, quantity }) => {
                 <Box
                     className="flex-center"
                     sx={{
-                        width: "100px",
-                        maxHeight: "100px",
+                        width: "6.25rem",
+                        maxHeight: "6.25rem",
                     }}
                 >
                     <img
                         style={{
-                            maxWidth: "100px",
-                            maxHeight: "100px",
-                            borderRadius: "5px",
+                            maxWidth: "6.25rem",
+                            maxHeight: "6.25rem",
+                            borderRadius: ".3125rem",
                         }}
                         src={item.img}
                         alt="cart-item"
@@ -115,7 +115,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
                     >
                         <Typography
                             sx={{
-                                fontSize: "18px",
+                                fontSize: "1.125rem",
                                 width: { xs: "100%", sm: "20%" },
                             }}
                         >
@@ -138,11 +138,11 @@ const ItemComponentDetails = ({ item, quantity }) => {
                             <IconButton
                                 color="primary"
                                 sx={{
-                                    width: "40px",
-                                    height: "25px",
-                                    border: ` 1px solid ${theme.palette.primary.main} `,
-                                    borderRadius: "6px",
-                                    fontSize: " 20px",
+                                    width: "2.5rem",
+                                    height: "1.5625rem",
+                                    border: ` .0625rem solid ${theme.palette.primary.main} `,
+                                    borderRadius: ".375rem",
+                                    fontSize: " 1.25rem",
                                     p: 0,
                                     m: 0,
                                     fontWeight: "bolder",
@@ -175,12 +175,12 @@ const ItemComponentDetails = ({ item, quantity }) => {
                                     );
                                 }}
                                 style={{
-                                    width: "40px",
-                                    height: "25px",
-                                    fontSize: "18px",
+                                    width: "2.5rem",
+                                    height: "1.5625rem",
+                                    fontSize: "1.125rem",
                                     fontWeight: "bold",
-                                    borderRadius: "5px",
-                                    border: `1px solid ${theme.palette.text.primary}`,
+                                    borderRadius: ".3125rem",
+                                    border: `.0625rem solid ${theme.palette.text.primary}`,
                                     px: 2.5,
                                     py: 0.3,
                                     textAlign: "center",
@@ -190,11 +190,11 @@ const ItemComponentDetails = ({ item, quantity }) => {
                             <IconButton
                                 color="primary"
                                 sx={{
-                                    width: "40px",
-                                    height: "25px",
-                                    border: ` 1px solid ${theme.palette.primary.main} `,
-                                    borderRadius: "6px",
-                                    fontSize: " 20px",
+                                    width: "2.5rem",
+                                    height: "1.5625rem",
+                                    border: ` .0625rem solid ${theme.palette.primary.main} `,
+                                    borderRadius: ".375rem",
+                                    fontSize: " 1.25rem",
                                     p: 0,
                                     m: 0,
                                     fontWeight: "bolder",
@@ -212,7 +212,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
                         <Stack
                             direction="row"
                             sx={{
-                                fontSize: "18px",
+                                fontSize: "1.125rem",
                                 fontWeight: "bolder",
                                 width: { xs: "75%", sm: "13%" },
                                 color: "#ff4450",
@@ -233,7 +233,7 @@ const ItemComponentDetails = ({ item, quantity }) => {
                         <IconButton
                             onClick={() => handleClickDelete()}
                             sx={{
-                                border: `1px solid  ${theme.palette.text.primary}`,
+                                border: `.0625rem solid  ${theme.palette.text.primary}`,
                                 aspectRatio: "1 / 1",
                                 "&:hover": {
                                     color: "#ff4450",

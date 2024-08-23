@@ -89,8 +89,8 @@ const MainContent = () => {
 
     if (isLoading && storedContent.length === 0) {
         return (
-            <Container maxWidth="xl" py={3} sx={{ marginTop: "75px" }}>
-                <Box sx={{ marginY: "15px" }}>
+            <Container maxWidth="xl" py={3} sx={{ marginTop: "4.6875rem" }}>
+                <Box sx={{ marginY: ".9375rem" }}>
                     <SkeletonFeedback numOfSkeletons={20} />
                 </Box>
             </Container>
@@ -99,10 +99,10 @@ const MainContent = () => {
 
     if (error || !products) {
         return (
-            <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
+            <Container maxWidth="xl" py={3} sx={{ marginTop: ".9375rem" }}>
                 <Box
                     className="flex-column-center"
-                    sx={{ minHeight: "50vh", gap: "15px" }}
+                    sx={{ minHeight: "50vh", gap: ".9375rem" }}
                 >
                     <Typography variant="h5">
                         There is something wrong 😢
@@ -120,7 +120,7 @@ const MainContent = () => {
     }
 
     return (
-        <Container maxWidth="xl" py={3} sx={{ marginTop: "15px" }}>
+        <Container maxWidth="xl" py={3} sx={{ marginTop: ".9375rem" }}>
             <Stack
                 direction={"row"}
                 alignItems={"center"}
@@ -129,10 +129,10 @@ const MainContent = () => {
                 gap={3}
             >
                 <Box>
-                    <Typography fontSize={"20px"} fontWeight={"bold"}>
+                    <Typography fontSize={"1.25rem"} fontWeight={"bold"}>
                         Selected Products
                     </Typography>
-                    <Typography fontSize={"15px"}>
+                    <Typography fontSize={".9375rem"}>
                         All our new arrival in a exclusive brand collection
                     </Typography>
                 </Box>
@@ -151,12 +151,7 @@ const MainContent = () => {
                 ></Box>
             </Stack>
             <Stack
-                // className="products border"
-                // sx={{ mt: "15px", py: "15px", gap: "25px 10px" }}
-                // direction={"row"}
-                // flexWrap={"wrap"}
-                // justifyContent={"space-between"}
-                sx={{ mt: "15px", py: "15px", gap: "15px 10px" }}
+                sx={{ mt: ".9375rem", py: ".9375rem", gap: ".9375rem .625rem" }}
                 direction={"row"}
                 flexWrap={"wrap"}
                 justifyContent={"space-between"}
@@ -197,7 +192,7 @@ const MainContent = () => {
                     />
                 )
             }
-            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "80px", scale: "0" }} onClick={handleNextPage} disabled={page >= totalPages}>Next</Button>
+            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "5rem", scale: "0" }} onClick={handleNextPage} disabled={page >= totalPages}>Next</Button>
         </Container>
     );
 

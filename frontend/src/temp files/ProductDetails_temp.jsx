@@ -16,11 +16,11 @@
 // //// styles
 // const CloseBtnStyles = {
 //     position: "absolute",
-//     top: { xs: "5px", md: "15px" },
-//     right: { xs: "5px", md: "15px" },
-//     fontSize: "55px",
-//     width: "45px",
-//     height: "45px",
+//     top: { xs: ".3125rem", md: ".9375rem" },
+//     right: { xs: ".3125rem", md: ".9375rem" },
+//     fontSize: "3.4375rem",
+//     width: "2.8125rem",
+//     height: "2.8125rem",
 //     cursor: "pointer",
 //     borderRadius: "50%",
 //     p: 1,
@@ -38,7 +38,7 @@
 //     transform: "translate(-50%, -50%)",
 //     width: 400,
 //     bgcolor: "background.paper",
-//     border: "2px solid #000",
+//     border: ".125rem solid #000",
 //     boxShadow: 24,
 //     p: 4,
 //     flexDirection: { xs: "column", sm: "row" },
@@ -84,10 +84,10 @@
 //                 aria-describedby="modal-modal-description"
 //                 sx={{
 //                     ".MuiStack-root": {
-//                         width: { xs: "95%", sm: "80%", md: "850px" },
-//                         maxHeight: { xs: "98%", sm: "550px", md: "600px" },
-//                         // minWidth: "380px",
-//                         borderRadius: "10px",
+//                         width: { xs: "95%", sm: "80%", md: "53.125rem" },
+//                         maxHeight: { xs: "98%", sm: "34.375rem", md: "37.5rem" },
+//                         // minWidth: "23.75rem",
+//                         borderRadius: ".625rem",
 //                         border: "none",
 //                         bgcolor: theme.palette.categoryColor.main,
 //                     },
@@ -102,17 +102,17 @@
 //                     <Box
 //                         sx={{
 //                             padding: "0",
-//                             maxWidth: { xs: 200, lg: "350px" },
-//                             minWidth: { xs: 200, lg: "320px" },
-//                             maxHeight: { xs: 200, lg: "320px" },
-//                             minHeight: { xs: 200, lg: "320px" },
+//                             maxWidth: { xs: 200, lg: "21.875rem" },
+//                             minWidth: { xs: 200, lg: "20rem" },
+//                             maxHeight: { xs: 200, lg: "20rem" },
+//                             minHeight: { xs: 200, lg: "20rem" },
 //                             display: "flex",
 //                             justifyContent: "center",
 //                             alignItems: "center",
 //                         }}
 //                     >
 //                         <img
-//                             style={{ maxWidth: "90%", borderRadius: "10px" }}
+//                             style={{ maxWidth: "90%", borderRadius: ".625rem" }}
 //                             src={previewImgUrl}
 //                             alt="product-img"
 //                         />
@@ -130,7 +130,7 @@
 //                     >
 //                         <Stack
 //                             sx={{
-//                                 fontSize: { xs: "18px", lg: "18px" },
+//                                 fontSize: { xs: "1.125rem", lg: "1.125rem" },
 //                                 flexDirection: { xs: "row", sm: "column" },
 //                                 alignItems: { xs: "center", sm: "start" },
 //                                 justifyContent: "center",
@@ -142,7 +142,7 @@
 //                             </Typography>
 //                             <Typography
 //                                 my={0.4}
-//                                 fontSize={"22px"}
+//                                 fontSize={"1.375rem"}
 //                                 color={"crimson"}
 //                                 variant="h6"
 //                             >
@@ -152,7 +152,7 @@
 
 //                         <Typography
 //                             sx={{
-//                                 fontSize: { xs: "14px", lg: "18px" },
+//                                 fontSize: { xs: ".875rem", lg: "1.125rem" },
 //                                 maxWidth: { xs: "100%", lg: "100%" },
 //                             }}
 //                         >
@@ -175,9 +175,9 @@
 //                                 sx={{
 //                                     ".Mui-selected": {
 //                                         opacity: "1",
-//                                         border: "1px solid #ff6e6e",
+//                                         border: ".0625rem solid #ff6e6e",
 //                                         background: "initial",
-//                                         borderRadius: "5px !important",
+//                                         borderRadius: ".3125rem !important",
 //                                     },
 //                                 }}
 //                             >
@@ -189,7 +189,7 @@
 //                                             sx={{
 //                                                 display: "flex",
 //                                                 p: 0,
-//                                                 border: "1px solid transparent",
+//                                                 border: ".0625rem solid transparent",
 //                                                 "&:hover": {
 //                                                     borderColor: "#ff6e6e",
 //                                                 },
@@ -197,9 +197,9 @@
 //                                                 cursor: "pointer",
 //                                                 transition: "0.35s",
 //                                                 overflow: "hidden",
-//                                                 margin: "0 2px",
+//                                                 margin: "0 .125rem",
 //                                                 opacity: 0.5,
-//                                                 marginX: "5px",
+//                                                 marginX: ".3125rem",
 //                                             }}
 //                                         >
 //                                             <img
@@ -223,7 +223,7 @@
 //                             sx={{
 //                                 mb: { xs: 1, sm: 0 },
 //                                 textTransform: "capitalize",
-//                                 p: "5px 15px !important",
+//                                 p: ".3125rem .9375rem !important",
 //                                 bgcolor: "#ff6e6e",
 //                                 fontWeight: "bold",
 //                             }}
@@ -236,7 +236,7 @@
 //                             Buy now
 //                         </Button>
 //                         <span
-//                             style={{ display: "inline-block", width: "10px" }}
+//                             style={{ display: "inline-block", width: ".625rem" }}
 //                         >
 //                             {" "}
 //                         </span>
@@ -247,7 +247,7 @@
 //                             sx={{
 //                                 mb: { xs: 1, sm: 0 },
 //                                 textTransform: "capitalize",
-//                                 p: "5px 15px !important",
+//                                 p: ".3125rem .9375rem !important",
 //                                 fontWeight: "bold",
 //                             }}
 //                             color="secondary"

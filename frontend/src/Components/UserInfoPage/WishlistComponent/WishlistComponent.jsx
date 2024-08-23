@@ -82,7 +82,7 @@ const WishlistComponent = () => {
                 py: 2,
                 minHeight: "70vh",
                 minWidth: "67vw",
-                borderRadius: "8px",
+                borderRadius: ".5rem",
             }}
         >
             <Link to="/home">
@@ -110,13 +110,13 @@ const WishlistComponent = () => {
             >
                 <Typography
                     variant="h1"
-                    fontSize={"24px"}
+                    fontSize={"1.5rem"}
                     sx={{
                         width: { xs: "100%", sm: "auto" },
                         pl: { sx: 0, sm: 1 },
                         textAlign: { xs: "center", sm: "start" },
                         fontWeight: "bolder",
-                        letterSpacing: "1px",
+                        letterSpacing: ".0625rem",
                     }}
                 >
                     Wishlist
@@ -124,11 +124,11 @@ const WishlistComponent = () => {
 
                 <Typography
                     variant="h2"
-                    fontSize={"20px"}
+                    fontSize={"1.25rem"}
                     sx={{
                         display: "flex",
                         alignItems: "center",
-                        gap: "6px",
+                        gap: ".375rem",
                         width: { xs: "100%", sm: "auto" },
                         justifyContent: {
                             xs: "center",
@@ -138,13 +138,13 @@ const WishlistComponent = () => {
                 >
                     <span
                         style={{
-                            width: "30px",
+                            width: "1.875rem",
                             textAlign: "center",
                             color: theme.palette.primary.main,
                             fontWeight: "bolder",
-                            fontSize: "24px",
+                            fontSize: "1.5rem",
                             background: theme.palette.bgColor.main,
-                            borderRadius: "6px",
+                            borderRadius: ".375rem",
                         }}
                     >
                         {productsCount}
@@ -155,7 +155,7 @@ const WishlistComponent = () => {
 
             <Stack
                 className="products"
-                sx={{ mt: "5px", py: "15px", gap: "25px 10px" }}
+                sx={{ mt: ".3125rem", py: ".9375rem", gap: "1.5625rem .625rem" }}
                 direction={"row"}
                 flexWrap={"wrap"}
                 justifyContent={"flex-start"}

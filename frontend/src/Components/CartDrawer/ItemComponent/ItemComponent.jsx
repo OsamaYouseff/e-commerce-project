@@ -90,11 +90,11 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         px: { xs: 0, sm: 2 },
                         py: { xs: 1, sm: 2 },
                         mb: 1,
-                        borderRadius: "5px",
+                        borderRadius: ".3125rem",
                         boxShadow: 1,
                         gap: { xs: 2, sm: 1 },
                         transition: "all 0.3s ease",
-                        border: "1px solid transparent",
+                        border: ".0625rem solid transparent",
                         "&:hover": {
                             bgcolor: theme.palette.sectionBgColor.main,
                             borderColor: theme.palette.primary.main,
@@ -120,13 +120,13 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             justifyContent: { xs: "space-between", sm: "flex-start" },
                         }}
                     >
-                        <Box className="flex-center" sx={{ maxWidth: "120px", minWidth: { xs: "70px", sm: "120px" } }}>
+                        <Box className="flex-center" sx={{ maxWidth: "7.5rem", minWidth: { xs: "4.375rem", sm: "7.5rem" } }}>
                             <img
                                 style={{
-                                    minWidth: "70px",
+                                    minWidth: "4.375rem",
                                     maxWidth: "100%",
-                                    maxHeight: "100px",
-                                    borderRadius: "5px",
+                                    maxHeight: "6.25rem",
+                                    borderRadius: ".3125rem",
                                 }}
                                 src={item.img}
                                 alt="cart-item"
@@ -134,7 +134,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         </Box>
                         <Typography
                             sx={{
-                                fontSize: { xs: "15px", sm: "18px" },
+                                fontSize: { xs: ".9375rem", sm: "1.125rem" },
                                 textAlign: { xs: "center", sm: "left" },
                             }}
                         >
@@ -160,7 +160,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 width: { xs: "auto%", sm: "20%" },
                                 fontWeight: "bold",
                                 textAlign: "center",
-                                fontSize: { xs: "20px", sm: "18px" },
+                                fontSize: { xs: "1.25rem", sm: "1.125rem" },
 
                             }}
                         >
@@ -184,13 +184,13 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             className="flex-center"
                             sx={{
 
-                                fontSize: "19px",
+                                fontSize: "1.1875rem",
                                 fontWeight: "bolder",
                                 width: {
                                     xs: "auto", sm: "22%",
                                 },
                                 color: theme.palette.specialText2.main,
-                                gap: "3px",
+                                gap: ".1875rem",
                             }}
                         >
                             <Typography
@@ -231,9 +231,9 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         sx={{
                             p: 1.2,
                             mb: 1,
-                            borderRadius: "5px",
+                            borderRadius: ".3125rem",
                             bgcolor: theme.palette.sectionBgColor.main,
-                            border: "1px solid transparent",
+                            border: ".0625rem solid transparent",
                             // borderBottomColor: `${theme.palette.footerBgColor.primary} `,
                             boxShadow: 1,
                             transition: "all 0.3s ease",
@@ -250,17 +250,17 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             }}
                             className="flex-center"
                             sx={{
-                                width: "90px",
+                                width: "5.625rem",
                                 maxHeight: "100%",
                                 cursor: "pointer",
                             }}
                         >
-                            <Box className="flex-center" sx={{ maxWidth: "110px", minWidth: { xs: "60px", sm: "70px" } }}>
+                            <Box className="flex-center" sx={{ maxWidth: "6.875rem", minWidth: { xs: "3.75rem", sm: "4.375rem" } }}>
                                 <img
                                     style={{
                                         maxWidth: "100%",
-                                        maxHeight: "90px",
-                                        borderRadius: "5px",
+                                        maxHeight: "5.625rem",
+                                        borderRadius: ".3125rem",
                                     }}
                                     src={item.img}
                                     alt="cart-item"
@@ -280,7 +280,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         >
                             <Stack direction="row" justifyContent={"space-between"}>
                                 <Typography
-                                    sx={{ fontSize: "17px", maxWidth: "155px" }}
+                                    sx={{ fontSize: "1.0625rem", maxWidth: "9.6875rem" }}
                                 >
                                     {item.title.slice(0, 20)}
                                 </Typography>

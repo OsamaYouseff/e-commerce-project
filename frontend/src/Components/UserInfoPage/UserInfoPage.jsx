@@ -85,11 +85,11 @@ const UserInfoPage = () => {
                 maxWidth="xl"
                 sx={{
                     width: { xs: "95%" },
-                    marginTop: "10px",
+                    marginTop: ".625rem",
                     bgcolor: theme.palette.categoryColor.main,
-                    borderRadius: "6px",
-                    px: "2px !important",
-                    py: "8px",
+                    borderRadius: ".375rem",
+                    px: ".125rem !important",
+                    py: ".5rem",
                     boxShadow: 3,
                     mb: 2,
                     alignItems: "space-between",
@@ -99,7 +99,7 @@ const UserInfoPage = () => {
                     className="flex-between "
                     sx={{
                         display: "flex",
-                        gap: "20px",
+                        gap: "1.25rem",
                         flexDirection: { xs: "column", md: "row" },
                         width: "100%",
                         height: "100%",
@@ -112,19 +112,19 @@ const UserInfoPage = () => {
                             width: "20%",
                             minWidth: {
                                 xs: "100%",
-                                md: "200px",
-                                lg: "250px",
+                                md: "12.5rem",
+                                lg: "15.625rem",
                             },
                             height: "100%",
                             p: 3,
-                            borderRadius: "6px",
+                            borderRadius: ".375rem",
                             px: 1,
                             display: { xs: "none", md: "block" },
                         }}
                     >
                         <Typography
                             sx={{
-                                fontSize: "18px",
+                                fontSize: "1.125rem",
                                 px: 2,
                                 fontWeight: "bolder",
                             }}
@@ -133,12 +133,12 @@ const UserInfoPage = () => {
                             Hello <span> {customerData.username} ✋</span>
                         </Typography>
                         <Typography
-                            sx={{ fontSize: "16px", px: 2 }}
+                            sx={{ fontSize: "1rem", px: 2 }}
                             variant="body"
                         >
                             {customerData.email}
                         </Typography>
-                        <Divider sx={{ m: "10px", width: "90%" }} />
+                        <Divider sx={{ m: ".625rem", width: "90%" }} />
                         <Box>
                             {CustomerMenuItems.map((item, index) => (
                                 <a
@@ -153,16 +153,16 @@ const UserInfoPage = () => {
                                     <MenuItem
                                         sx={{
                                             minWidth: {
-                                                xs: "380px",
+                                                xs: "23.75rem",
                                                 sm: "100%",
                                             },
                                             py: 1.2,
-                                            border: `1px solid ${item.title.toLowerCase() ==
+                                            border: `.0625rem solid ${item.title.toLowerCase() ==
                                                 section
                                                 ? theme.palette.text.primary
                                                 : "inherit"
                                                 }`,
-                                            borderRadius: "6px",
+                                            borderRadius: ".375rem",
                                             fontWeight: "bold",
                                             mb: 0.6,
                                         }}
@@ -186,7 +186,7 @@ const UserInfoPage = () => {
                     {/* Variable Page */}
                     <Box
                         sx={{
-                            minWidth: { xl: "1100px" },
+                            minWidth: { xl: "68.75rem" },
                             minHeight: { xs: "auto" },
                             height: "100%",
                             flexGrow: 1,

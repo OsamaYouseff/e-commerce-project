@@ -16,7 +16,7 @@ const SwitchButton = styled((props) => (
         margin: 2,
         transitionDuration: "300ms",
         "&.Mui-checked": {
-            transform: "translateX(16px)",
+            transform: "translateX(1rem)",
             color: "#fff",
             "& + .MuiSwitch-track": {
                 backgroundColor:
@@ -30,7 +30,7 @@ const SwitchButton = styled((props) => (
         },
         "&.Mui-focusVisible .MuiSwitch-thumb": {
             color: "#33cf4d",
-            border: "6px solid #fff",
+            border: ".375rem solid #fff",
         },
         "&.Mui-disabled .MuiSwitch-thumb": {
             color:

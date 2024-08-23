@@ -4,14 +4,14 @@ import Stack from "@mui/material/Stack";
 
 const SkeletonStyles = {
     flexGrow: 1,
-    minWidth: "280px",
+    minWidth: "17.5rem",
     height: 360,
-    borderRadius: "8px",
+    borderRadius: ".5rem",
 };
 const SkeletonFeedback = ({ numOfSkeletons = 10 }) => {
     return (
         <Stack
-            sx={{ mt: "15px", py: "15px", gap: "15px 10px" }}
+            sx={{ mt: ".9375rem", py: ".9375rem", gap: ".9375rem .625rem" }}
             direction={"row"}
             flexWrap={"wrap"}
             justifyContent={"space-between"}

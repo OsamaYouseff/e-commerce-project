@@ -7,22 +7,22 @@ import { useTheme } from "@emotion/react";
 
 const defaultStyle = {
     position: "absolute",
-    bottom: "10px",
-    right: "10px",
-    padding: "2px 10px",
-    borderRadius: "5px",
-    fontSize: "15px",
+    bottom: ".625rem",
+    right: ".625rem",
+    padding: ".125rem .625rem",
+    borderRadius: ".3125rem",
+    fontSize: ".9375rem",
     fontWeight: "bold",
     background: "#009688"
 }
 
 const selectedStyle = {
     position: "absolute",
-    top: "10px",
-    right: "10px",
-    padding: "2px 10px",
-    borderRadius: "5px",
-    fontSize: "15px",
+    top: ".625rem",
+    right: ".625rem",
+    padding: ".125rem .625rem",
+    borderRadius: ".3125rem",
+    fontSize: ".9375rem",
     fontWeight: "bold",
     background: "#673AB7"
 }
@@ -51,12 +51,12 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
                 py: 4,
 
 
-                borderRadius: "6px",
+                borderRadius: ".375rem",
                 boxShadow: 1,
                 width: "100%",
                 position: "relative",
                 transition: "all 0.3s ease",
-                border: `1px solid ${isSelectedAddress ? "#673AB7" : "transparent"}`,
+                border: `.0625rem solid ${isSelectedAddress ? "#673AB7" : "transparent"}`,
                 "&:hover": {
                     borderColor: `${!defaultAddress ? "#E91E63" : "transparent"}`,
                     transform: `${!defaultAddress ? "scale(1.01)" : ""}`,
@@ -80,9 +80,9 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
                     sx={{
                         fontWeight: "bolder",
                         width: { xs: "100%", sm: "50%" },
-                        fontSize: "18px",
+                        fontSize: "1.125rem",
                         paddingTop: "0",
-                        mb: "5px",
+                        mb: ".3125rem",
                     }}
                 >
                     {address.label} Address
@@ -91,7 +91,7 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
             </Stack>
 
             <Stack className="flex-start-row" gap={4}>
-                <p style={{ fontWeight: "bolder", minWidth: "70px" }}>Name</p>
+                <p style={{ fontWeight: "bolder", minWidth: "4.375rem" }}>Name</p>
                 <Box
                     className="flex-between"
                     sx={{ gap: 2, fontWeight: "bolder" }}
@@ -105,7 +105,7 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
                 className="flex-start-row"
                 gap={4}
                 sx={{
-                    maxWidth: { xs: "100%", md: "390px" },
+                    maxWidth: { xs: "100%", md: "24.375rem" },
                     alignItems: "flex-start",
                 }}
             >
@@ -113,7 +113,7 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
                     style={{
                         fontWeight: "bolder",
                         marginTop: 0,
-                        minWidth: "70px",
+                        minWidth: "4.375rem",
                     }}
                 >
                     Address
@@ -127,7 +127,7 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
             </Stack>
 
             <Stack className="flex-start-row" gap={4}>
-                <p style={{ fontWeight: "bolder", minWidth: "70px" }}>Phone</p>
+                <p style={{ fontWeight: "bolder", minWidth: "4.375rem" }}>Phone</p>
                 <Box
                     className="flex-between"
                     sx={{ gap: 2, fontWeight: "bolder" }}

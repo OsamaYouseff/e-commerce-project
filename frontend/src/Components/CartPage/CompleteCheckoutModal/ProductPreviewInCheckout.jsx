@@ -28,22 +28,22 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                 sx={{
                     minWidth: {
                         xs: "100%",
-                        md: "120px",
+                        md: "7.5rem",
                     },
                     flexGrow: 1,
                     transition: "all 0.35s ease",
                     cursor: "pointer",
-                    border: "1px solid transparent",
+                    border: ".0625rem solid transparent",
                     "&:hover": {
-                        border: `1px solid ${theme.palette.primary.main} `,
+                        border: `.0625rem solid ${theme.palette.primary.main} `,
                     },
-                    borderRadius: "6px",
+                    borderRadius: ".375rem",
                     p: { xs: 1, sm: 2 },
                 }}
             >
                 <Typography
                     variant="h6"
-                    sx={{ mb: 1, fontSize: "18px" }}
+                    sx={{ mb: 1, fontSize: "1.125rem" }}
                 >
                     Shipment [ {index + 1} of {productsCount} ] ( {product.quantity} item(s) )
                 </Typography>
@@ -60,8 +60,8 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     <Box
                         className="flex-center"
                         sx={{
-                            width: "110px",
-                            minHeight: "110px",
+                            width: "6.875rem",
+                            minHeight: "6.875rem",
                         }}
                     >
                         <img
@@ -75,7 +75,7 @@ const ProductPreviewInCheckout = ({ index, productsCount, product, estimatedDeli
                     <Box
                         className="flex-column-center"
                         sx={{
-                            minHeight: "110px",
+                            minHeight: "6.875rem",
                             alignItems: "flex-start",
                         }}
                     >
