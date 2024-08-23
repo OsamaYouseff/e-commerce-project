@@ -106,13 +106,15 @@ router.put('/:id/:addressId', verifyTokenAndAuthorization, async (req, res) => {
 
         let updatedAddress;
 
-        if (req.body.isDefault) {
+        if (req.body.isDefault && addressCount > 1) {
             // Set this address as default and unset all others
             await Address.updateMany(
                 { userId: req.user.id },
                 { $set: { isDefault: false } }
             );
             Object.assign(address, req.body, { isDefault: true });
+
+
         } else if (address.isDefault && !req.body.isDefault) {
             // Unsetting the current default address
             Object.assign(address, req.body, { isDefault: false });
@@ -179,7 +181,9 @@ router.put('/set-default/:id/:addressId', verifyTokenAndAuthorization, async (re
         if (addressCount === 1) {
             address.isDefault = true;
             await address.save();
-            return res.json({ message: 'Address set as default', address });
+
+            const addresses = await Address.find({ userId: userId }).sort({ isDefault: -1 }).exec();
+            return res.json({ message: 'Address set as default', addresses });
         }
 
         // Unset any existing default address
