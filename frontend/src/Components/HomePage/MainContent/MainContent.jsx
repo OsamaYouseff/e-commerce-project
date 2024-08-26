@@ -12,12 +12,10 @@ import ProductDetails from "../../CardComponent/ProductDetails/ProductDetails";
 import SkeletonFeedback from "../../GenericComponents/SkeletonFeedback/SkeletonFeedback";
 
 ///// Redux Actions
-import { getAllProductsPaginatedReducer } from "../../../redux/ProductSlice/ApiProductSlice";
+import { getFilteredProductsReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
-
-let storedContent = [];
 
 function ShowGreetingsMessage() {
     let prevPage = document.referrer.split("/").at(-1);
@@ -35,7 +33,6 @@ const MainContent = () => {
     const products = useSelector((state) => state.ProductsApiRequest.response);
     const error = useSelector((state) => state.ProductsApiRequest.error);
     const isLoading = useSelector((state) => state.ProductsApiRequest.isLoading);
-    const totalPagesNum = useSelector((state) => state.ProductsApiRequest.meta.totalPages)
 
     const handleSetPreviewedProduct = (newValue) => {
         setPreviewedProduct(newValue);
@@ -48,46 +45,17 @@ const MainContent = () => {
     const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {} });
 
 
-    //// pagination logic
-    const [page, setPage] = useState(1);
-    const totalPages = totalPagesNum || 1;
-    const limit = 8;
-
-
     useEffect(() => {
-        if (products.length > 0) {
-            storedContent.push(...products);
-        }
-
         (async function fetchData() {
-            await dispatch(getAllProductsPaginatedReducer({ page: page, limit: limit }));
+            await dispatch(getFilteredProductsReducer());
 
             if (IsUserLoggedIn()) ShowGreetingsMessage();
         })();
 
-    }, [page]);
-
-
-    const handleNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1);
-        }
-    };
-
-    const handleScroll = () => {
-
-        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 100) {
-            document.querySelector(".more").click();
-        }
-
-    };
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    if (isLoading && storedContent.length === 0) {
+
+    if (isLoading) {
         return (
             <Container maxWidth="xl" py={3} sx={{ marginTop: "4.6875rem" }}>
                 <Box sx={{ marginY: ".9375rem" }}>
@@ -120,7 +88,7 @@ const MainContent = () => {
     }
 
     return (
-        <Container maxWidth="xl" py={3} sx={{ marginTop: ".9375rem" }}>
+        <Container maxWidth="xl" py={3} sx={{ marginY: "2.8125rem" }}>
             <Stack
                 direction={"row"}
                 alignItems={"center"}
@@ -156,19 +124,6 @@ const MainContent = () => {
                 flexWrap={"wrap"}
                 justifyContent={"space-between"}
             >
-                {
-                    storedContent?.map((product) => (
-                        <ProductCardComponent
-                            key={product._id}
-                            productData={product}
-                            handelOpenModal={handleOpen}
-                            handleSetPreviewedProduct={
-                                handleSetPreviewedProduct
-                            }
-                        />
-                    ))
-                }
-
                 {products?.map((product) => (
                     <ProductCardComponent
                         key={product._id}
@@ -192,7 +147,6 @@ const MainContent = () => {
                     />
                 )
             }
-            <Button variant="outlined" className="more" size="small" sx={{ minWidth: "5rem", scale: "0" }} onClick={handleNextPage} disabled={page >= totalPages}>Next</Button>
         </Container>
     );
 

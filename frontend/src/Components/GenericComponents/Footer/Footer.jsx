@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme";
 const Footer = () => {
   const theme = useTheme(ColorModeContext);
-  const fontSizeClamp = "clamp(.9375rem,calc(.9375rem + (32 - 15) * (100vw - 62.5rem) / (1920 - 1000)),2rem) !important";
+  const fontSizeClamp = "clamp(.9375rem,calc(.9375rem + (32 - 15) * (100vw - 62.5rem) / (1920 - 1000)),1.5rem) !important";
 
   return (
     <Box className="footer flex-center" sx={{

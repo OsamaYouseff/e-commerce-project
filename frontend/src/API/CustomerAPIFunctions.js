@@ -49,7 +49,7 @@ export const registerACustomer = async (customerFromData) => {
     try {
         const response = await axios.request(config);
 
-        console.log('Customer created successfully:', response.data);
+        // console.log('Customer created successfully:', response.data);
 
         StoreDataAtLocalStorage('localStorage', response.data);
 

@@ -84,9 +84,21 @@ export function GetTokenAndUserId() {
     const accessToken = Cookies.get('token');
 
 
+    if (!customerData) {
+        toast("there are some data missing please login again");
+        setTimeout(() => {
+            ResetLocalStorage()
+            GoHome();
+        }, 1500)
+        return;
+    }
+
     if (!customerData || !accessToken) {
-        toast.error("there are some data missing please logout and login again");
-        GoHome();
+        toast.error("Your session has expired please login again");
+        setTimeout(() => {
+            ResetLocalStorage()
+            GoHome();
+        }, 1500)
         return;
     }
     const customerId = JSON.parse(customerData)["_id"];
