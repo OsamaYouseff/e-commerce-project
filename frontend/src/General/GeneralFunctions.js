@@ -134,7 +134,7 @@ export function FormatDate(dateString) {
     return `${dayOfWeek}, ${dayOfMonth}${daySuffix} ${month}, ${formattedHours}:${formattedMinutes} ${ampm}`;
 }
 
-export const GetStateColor = (state) => {
+export const GetStatusColor = (state) => {
     const stateColorDict = {
         delivered: "#38ae04",
         canceled: "#f44336",

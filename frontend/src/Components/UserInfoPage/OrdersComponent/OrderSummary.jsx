@@ -15,7 +15,7 @@ import toast from 'react-hot-toast';
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { getSpecificOrderForCustomerDetailedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
-import { convertCentsToDollars, FormatDate, GetOrderMessage, GetStateColor, IsUserLoggedIn, } from "../../../General/GeneralFunctions";
+import { convertCentsToDollars, FormatDate, GetOrderMessage, GetStatusColor, IsUserLoggedIn, } from "../../../General/GeneralFunctions";
 import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThingWrong";
 
 const orderChildrenStyle = {
@@ -73,10 +73,10 @@ const OrderSummary = () => {
     }
 
     return (
-        <Box>
+        <Box py={1}>
             {/* header */}
 
-            <Box>
+            <Box sx={{ px: 1 }}>
                 <Link to="/userInfo/orders">
                     <Button
                         size="small"
@@ -88,7 +88,7 @@ const OrderSummary = () => {
                     </Button>
                 </Link>
 
-                <Box sx={{ mb: 2, px: { xs: 0.5, md: 1 } }}>
+                <Box sx={{ mb: 2, px: 1 }}>
                     <Typography
                         variant="h4"
                         sx={{
@@ -122,6 +122,7 @@ const OrderSummary = () => {
                         xs: "center !important",
                         md: "flex-start !important",
                     },
+                    px: 1
                 }}
             >
                 {/* Order Details */}
@@ -131,7 +132,7 @@ const OrderSummary = () => {
                         flexGrow: 1,
                         p: 2,
                         borderRadius: ".375rem",
-                        bgcolor: theme.palette.sectionBgColor.main,
+                        bgcolor: theme.palette.bgColor.main,
                     }}
                 >
                     {/* order id & place date */}
@@ -158,7 +159,7 @@ const OrderSummary = () => {
                             <span
                                 style={{
                                     fontWeight: "bold",
-                                    color: GetStateColor(
+                                    color: GetStatusColor(
                                         orderStatus.toLowerCase()
                                     ),
                                 }}
@@ -262,7 +263,7 @@ const OrderSummary = () => {
 
                     <Box
                         sx={{
-                            bgcolor: theme.palette.sectionBgColor.main,
+                            bgcolor: theme.palette.bgColor.main,
                             p: 2,
                             mb: 1,
                         }}
@@ -318,7 +319,7 @@ const OrderSummary = () => {
                     {/* order payment */}
                     <Box
                         sx={{
-                            bgcolor: theme.palette.sectionBgColor.main,
+                            bgcolor: theme.palette.bgColor.main,
                             p: 2,
                             mb: 1,
                         }}
@@ -346,7 +347,7 @@ const OrderSummary = () => {
                     {/* Address info */}
                     <Box
                         sx={{
-                            bgcolor: theme.palette.sectionBgColor.main,
+                            bgcolor: theme.palette.bgColor.main,
                             p: 2,
                         }}
                     >

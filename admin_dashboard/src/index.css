@@ -1,0 +1,186 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
+/* @font-face {
+    font-family: "CascadiaCode";
+    src: url("../public/fonts/CascadiaCode-Light.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-ExtraLight.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-Bold.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCode-BoldItalic.ttf") format("ttf"),
+        url("../public/fonts/CascadiaCodeNF-Regular.ttf") format("ttf");
+} */
+
+/* scroll bar styles */
+
+/* for Firefox */
+/* html {
+    scrollbar-color: #a1a1a1 #3d4043;
+} */
+
+::-webkit-scrollbar {
+    width: 0.7rem;
+    height: 0.7rem;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: outset 0 0 0.1563rem 0.125rem rgba(255, 255, 255, 0.5);
+    background-color: #1d273b;
+    height: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #90caf9;
+    border-radius: 1.25rem;
+    border: 0.125rem solid #3d4043;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #80c2bb;
+}
+
+/* scroll bar styles */
+
+* {
+    /* font-family: "Cascadia" !important; */
+    font-family: "Open Sans" !important;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+.border {
+    border: 0.0625rem solid lime;
+}
+
+.border2 {
+    border: 0.1875rem solid red;
+}
+
+.flex-between {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-evenly {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.flex-between-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-column-center {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.flex-start-col {
+    display: flex;
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.flex-start-row {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.flex-row-start {
+    display: flex;
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: start;
+}
+
+.clamp14-20 {
+    font-size: clamp(
+        0.75rem,
+        calc(0.75rem + (20 - 14) * (100vw - 62.5rem) / (1920 - 1000)),
+        1.25rem
+    ) !important;
+}
+
+.main-content {
+    height: 31.25rem;
+    width: 100%;
+    background: purple;
+    margin-top: 0.9375rem;
+}
+
+.footer {
+    /* height: 6.25rem; */
+    width: 100%;
+    background: blue;
+}
+
+img {
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+}
+
+@media (max-width: 43.125rem) {
+    .banner-img {
+        scale: 0;
+    }
+
+    .banner-text {
+        width: 100% !important;
+        position: relative;
+        top: 0% !important;
+        left: 0% !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 37.5rem) {
+    .banner-text-child {
+        text-align: center;
+    }
+}
+
+.MuiToggleButtonGroup-grouped.Mui-selected {
+    color: #ef2323cb !important;
+    border-color: #ef2323cb !important;
+}
+
+@media (max-width: 31.25rem) {
+    .swiper-button-prev,
+    .swiper-button-next,
+    .swiper-pagination {
+        display: none !important;
+    }
+}
+
+.table-row {
+    transition: all 0.35s ease;
+    border-radius: 3px;
+}
+.table-row:hover {
+    box-shadow: inset 0px 0px 1px 1px #1595d0;
+}

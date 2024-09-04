@@ -38,7 +38,7 @@ export const getCustomerOrdersMinimized = async () => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${baseURL}/api/orders/${customerId}`,
+        url: `${baseURL}/api/orders/min/${customerId}`,
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -47,7 +47,7 @@ export const getCustomerOrdersMinimized = async () => {
     try {
         const response = await axios.request(config);
 
-        // console.log("XXXXXXXXXXXXX : ", response.data)
+        // console.log("XXXXXXXXXXXXX : ", response)
 
         return { status: true, response: response.data };
 
@@ -66,7 +66,7 @@ export const getSpecificOrderForCustomerDetailed = async (orderId) => {
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
-        url: `${baseURL}/api/orders/${customerId}/${orderId}`,
+        url: `${baseURL}/api/orders/detailed/${customerId}/${orderId}`,
         headers: {
             'Authorization': `Bearer ${accessToken}`
         }
@@ -112,7 +112,6 @@ export const createCustomerOrder = async (orderData) => {
         return { status: false, message: "Failed to place your order please confirm your address and payment method and try again later." };
     }
 };
-
 
 export const deleteOrder = async (orderId) => {
 

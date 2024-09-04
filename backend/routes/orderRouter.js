@@ -1,10 +1,5 @@
 const Order = require("../models/Order");
-const {
-  verifyToken,
-  verifyTokenAndAuthorization,
-  verifyTokenAndAdmin,
-} = require("./verifyToken");
-
+const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
 const router = require("express").Router();
 const mongoose = require('mongoose');
 
@@ -20,6 +15,7 @@ router.post("/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
+// -----------------------------
 //UPDATE
 router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
@@ -36,7 +32,34 @@ router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+// UPDATE ORDER STATUS FOR ADMINS
+router.patch("/:orderId/:status", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const validStatuses = ["pending", "processing", "delivered", "canceled"];
+    const { orderId, status } = req.params;
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json("Invalid order status");
+    }
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json("Order not found");
+    }
+
+    order.status = status;
+    await order.save();
+
+    res.status(200).json(order);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+});
+
+// -----------------------------
 //DELETE
+//// FOR ADMINS USERS
 router.delete("/:id/:orderId", verifyTokenAndAuthorization, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.orderId);
@@ -45,6 +68,17 @@ router.delete("/:id/:orderId", verifyTokenAndAuthorization, async (req, res) => 
     res.status(500).json(err);
   }
 });
+
+//// FOR ADMINS ADMINS
+router.delete("/:orderId", verifyTokenAndAdmin, async (req, res) => {
+  try {
+    await Order.findByIdAndDelete(req.params.orderId);
+    res.status(200).json("Order has been deleted successfully.");
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// -----------------------------
 
 //GET USER ORDERS
 router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
@@ -56,14 +90,83 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-// GET A SPECIFIC ORDER FOR USER WITH FULL DETAILS
-router.get('/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
+// -----------------------------
+// GET A SPECIFIC ORDER WITH FULL DETAILS
+//// FOR ADMINS ONLY
+router.get('/detailed/:orderId', verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const orderId = mongoose.Types.ObjectId(req.params.orderId);
+
+    const result = await Order.aggregate([
+      { $match: { _id: orderId } },
+      {
+        $lookup: {
+          from: "products",
+          localField: "items.productId",
+          foreignField: "_id",
+          as: "productDetails"
+        }
+      },
+      {
+        $addFields: {
+          items: {
+            $map: {
+              input: "$items",
+              as: "item",
+              in: {
+                _id: "$$item.productId",
+                title: {
+                  $arrayElemAt: [
+                    "$productDetails.title",
+                    { $indexOfArray: ["$productDetails._id", "$$item.productId"] }
+                  ]
+                },
+                img: {
+                  $arrayElemAt: [
+                    "$productDetails.img",
+                    { $indexOfArray: ["$productDetails._id", "$$item.productId"] }
+                  ]
+                },
+                priceAtOrderInCents: "$$item.priceAtOrderInCents",
+                quantity: "$$item.quantity"
+              }
+            }
+          }
+        }
+      },
+      {
+        $project: {
+          financials: 1,
+          shippingInfo: 1,
+          _id: 1,
+          userId: 1,
+          items: 1,
+          shippingAddress: 1,
+          status: 1,
+          paymentMethod: 1,
+          createdAt: 1
+        }
+      }
+    ]);
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Order not found for this user' });
+    }
+
+    res.json(result[0]);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+//// For USERS ONLY
+router.get('/detailed/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
+
   try {
     const userId = mongoose.Types.ObjectId(req.params.id);
     const orderId = mongoose.Types.ObjectId(req.params.orderId);
 
     const result = await Order.aggregate([
-      { $match: { userId: userId, _id: orderId } },
+      { $match: { _id: orderId, userId: userId } },
       {
         $lookup: {
           from: "products",
@@ -124,70 +227,61 @@ router.get('/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
   }
 });
 
-//GET ALL
+// -----------------------------
+
+// GET MINIMIZED ORDERS
+////GET ALL ORDERS MINIMIZED FOR ADMIN ONLY
 router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const orders = await Order.find();
-    res.status(200).json(orders);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const sorting = (req.query?.sorting?.toLowerCase() === "asc" ? 1 : -1) || 1;
 
-// GET MINIMIZED ORDER FOR USER
-router.get('/minimized/:id/:orderId', verifyTokenAndAuthorization, async (req, res) => {
-  try {
-    const orderId = mongoose.Types.ObjectId(req.params.orderId);
+    const skip = (page - 1) * limit;
 
-    const result = await Order.aggregate([
-      { $match: { _id: orderId } },
-      { $unwind: "$items" },
+    const items = await Order.aggregate([
       {
         $lookup: {
-          from: "products", // Assuming your Product model corresponds to a 'products' collection
-          localField: "items.productId",
-          foreignField: "_id",
-          as: "productDetails"
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user'
         }
       },
-      { $unwind: "$productDetails" },
-      {
-        $group: {
-          _id: "$_id",
-          status: { $first: "$status" },
-          estimatedDeliveryDate: { $first: "$shippingInfo.estimatedDeliveryDate" },
-          items: {
-            $push: {
-              _id: "$productDetails._id",
-              title: "$productDetails.title",
-              img: "$productDetails.img"
-            }
-          }
-        }
-      },
+      { $unwind: '$user' },
       {
         $project: {
-          orderId: "$_id",
-          items: 1,
+          _id: 1,
+          username: '$user.username',
+          totalAmountInCents: '$financials.totalAmountInCents',
           status: 1,
-          estimatedDeliveryDate: 1,
-          _id: 0
+          createdAt: 1
         }
-      }
+      },
+      { $sort: { createdAt: sorting } },
+      { $skip: skip },
+      { $limit: limit }
     ]);
 
-    if (result.length === 0) {
-      return res.status(404).json({ message: 'Order not found' });
-    }
+    const total = await Order.countDocuments();
+    const totalPages = Math.ceil(total / limit);
 
-    res.json(result[0]);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.json({
+      data: items,
+      meta: {
+        total,
+        page,
+        totalPages,
+        limit
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
-// GET ALL MINIMIZED ORDER FOR USER
-router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
+//// GET ALL ORDER MINIMIZED FOR USER ONLY
+router.get('/min/:id', verifyTokenAndAuthorization, async (req, res) => {
   try {
     const userId = mongoose.Types.ObjectId(req.params.id);
 
@@ -237,6 +331,8 @@ router.get('/:id', verifyTokenAndAuthorization, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+// -----------------------------
 
 module.exports = router;
 

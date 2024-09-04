@@ -12,11 +12,7 @@ import { useParams } from "react-router-dom";
 import { useTheme } from "@emotion/react";
 
 /// redux
-import {
-    GetUserInfo,
-    GoHome,
-    IsUserLoggedIn,
-} from "../../General/GeneralFunctions";
+import { GetUserInfo, GoHome, IsUserLoggedIn } from "../../General/GeneralFunctions";
 import { logoutCustomerAccountReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
@@ -84,13 +80,13 @@ const UserInfoPage = () => {
             <Container
                 maxWidth="xl"
                 sx={{
-                    width: { xs: "95%" },
+                    // width: { xs: "95%" },
                     marginTop: ".625rem",
                     bgcolor: theme.palette.categoryColor.main,
                     borderRadius: ".375rem",
                     px: ".125rem !important",
                     py: ".5rem",
-                    boxShadow: 3,
+                    // boxShadow: 3,
                     mb: 2,
                     alignItems: "space-between",
                 }}

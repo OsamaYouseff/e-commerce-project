@@ -95,7 +95,7 @@ const TopHeader = function () {
                                 color="inherit"
                                 aria-label="Switch to dark mode"
                             >
-                                <LightModeOutlined sx={{ fontSize: "1.25rem" }} />
+                                <DarkModeOutlined sx={{ fontSize: "1.25rem" }} />
                             </IconButton>
                         ) : (
                             <IconButton
@@ -109,7 +109,7 @@ const TopHeader = function () {
                                 color="inherit"
                                 aria-label="Switch to light mode"
                             >
-                                <DarkModeOutlined sx={{ fontSize: "1.25rem" }} />
+                                <LightModeOutlined sx={{ fontSize: "1.25rem" }} />
                             </IconButton>
                         )}
                     </Box>

@@ -2,7 +2,7 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../../Theme/theme";
-import { FormatDate, GetOrderMessage, GetStateColor, IsUserLoggedIn } from "../../../General/GeneralFunctions";
+import { FormatDate, GetOrderMessage, GetStatusColor, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
@@ -66,7 +66,7 @@ const OrderCard = ({ order }) => {
                     <span
                         style={{
                             fontWeight: "bold",
-                            color: GetStateColor(orderStatus.toLowerCase()),
+                            color: GetStatusColor(orderStatus.toLowerCase()),
                         }}
                     >
                         {" [ "}{orderStatus}{" ] - "}
@@ -206,7 +206,7 @@ const OrderCard = ({ order }) => {
                     </Box>
                     <Typography>
                         Order ID :{" "}
-                        <span>{order.orderId.slice(0, 20).toUpperCase()}</span>
+                        <span>{order.orderId?.slice(0, 20).toUpperCase()}</span>
                     </Typography>
                 </Stack>
                 {

@@ -32,7 +32,7 @@ import ProductPage from "./Components/ProductPage/ProductPage.jsx";
 
 const routeElement = (currentComponent, showMidHeader = false) => {
     return (
-        <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh" }}>
+        <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh", bgcolor: "natural.main" }}>
             <TopHeader />
             {showMidHeader && <MidHeader />}
             {currentComponent}

@@ -8,7 +8,7 @@ export const getCustomerOrdersMinimizedReducer = createAsyncThunk("getCustomerOr
 
     const response = await getCustomerOrdersMinimized();
 
-    // console.log("response.data : ", response);
+    console.log("response.data : ", response);
 
     return response;
 })
@@ -36,7 +36,6 @@ export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderA
             setTimeout(() => { document.location.reload(true) }, 1000)
         }
 
-
     } else {
         toast.error(response.message);
     }
@@ -51,8 +50,7 @@ export const deleteOrderReducer = createAsyncThunk("deleteCustomerOrderAPI/sendR
 
     if (response.status) {
         toast.success(response.message);
-
-        setTimeout(() => { document.location.reload(true); }, 1500)
+        setTimeout(() => { document.location.href = "userInfo/orders"; }, 1500)
 
     } else {
         toast.error(response.message);
