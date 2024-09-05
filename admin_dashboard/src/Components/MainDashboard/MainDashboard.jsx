@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Container, Stack, Typography, Box } from "@mui/material";
 import Divider from "@mui/material/Divider";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemIcon from "@mui/material/ListItemIcon";
 
 /// context
 import { ColorModeContext } from "../../Theme/theme.jsx";
@@ -25,17 +23,11 @@ import ProfileComponent from "../DashboardSections/ProfileComponent/ProfileCompo
 import SettingsComponent from "../DashboardSections/SettingsComponent/SettingsComponent.jsx";
 import ProductsPage from "../DashboardSections/ProductsPage/ProductsPage.jsx";
 import OrdersComponent from "../DashboardSections/OrdersComponent/OrdersComponent.jsx";
-import DashboardNavBarDrawer from "./DashboardNavBarDrawer/DashboardNavBarDrawer.jsx";
 import DashboardNavBar from "./DashboardNavBar/DashboardNavBar.jsx";
 import OrderSummary from "../DashboardSections/OrdersComponent/OrderSummary.jsx";
 import HomePage from "../DashboardSections/HomePage/HomePage.jsx";
 import CustomersPage from "../DashboardSections/CustomersPage/CustomersPage.jsx";
-// import PaymentsComponent from "../DashboardSections/PaymentsComponent/PaymentsComponent.jsx";
-// import AddressComponent from "../DashboardSections/AddressComponent/AddressComponent.jsx";
-// import WishlistComponent from "../DashboardSections/WishlistComponent/WishlistComponent.jsx";
-///// sub custom component
-// import AddAddressComponent from "./AddressComponent/AddAddressComponent.js";
-// import UpdateAddressComponent from "./AddressComponent/UpdateAddressComponent.js";
+
 
 
 
@@ -102,6 +94,7 @@ const MainDashboard = () => {
                 boxShadow: 3,
                 mb: 2,
                 alignItems: "space-between",
+                mt: { xs: 0, md: 10 },
             }}
         >
             <Stack

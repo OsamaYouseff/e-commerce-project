@@ -7,7 +7,7 @@ const SkeletonFeedbackRow = ({ numOfSkeletons = 10 }) => {
         flexGrow: 1,
         minWidth: "100%",
         height: "40px",
-        borderRadius: ".5rem",
+        borderRadius: "4px",
     };
     return (
         <Stack

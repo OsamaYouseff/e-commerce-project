@@ -93,18 +93,26 @@ const Header = function () {
     const colorMode = useContext(ColorModeContext);
     const theme = useTheme();
     const fontSizeClamp = "clamp(16px,calc(.75rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
-
     const customerData = ""
+
 
     return (
         <Box
             sx={{
-                bgcolor: "#1d273b",
-                py: 0.3,
-                borderRadius: "0rem 0rem .4375rem .4375rem",
+                width: "100vw",
+                position: "relative",
             }}
         >
-            <Container maxWidth="xl">
+            <Container
+                sx={{
+                    bgcolor: "#1d273b",
+                    borderRadius: "0rem 0rem .4375rem .4375rem",
+                    width: "inherit",
+                    position: { xs: "relative", md: "fixed" },
+                    zIndex: "200",
+                }}
+                maxWidth="xl"
+            >
                 <Stack
                     className="top-header flex-between"
                     gap={1}
@@ -218,7 +226,8 @@ const Header = function () {
                     {/*== Search ==*/}
                 </Stack>
             </Container>
-        </Box >
+        </Box>
+
     );
 };
 

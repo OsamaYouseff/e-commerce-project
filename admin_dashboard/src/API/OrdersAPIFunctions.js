@@ -5,7 +5,7 @@ import { ReportRounded } from "@mui/icons-material";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTIyOTU5NSwiZXhwIjoxNzI1NDg4Nzk1fQ.AR5paSazML92eOkDq5B82NbA3cZ_23mvQz7dkgCunak";
+const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTQ5NTc4MywiZXhwIjoxNzI1NzU0OTgzfQ.BQB4YZUl5t6n_ClBqK1HQL4cAFkNZAZFRZXT2YEwC1A";
 
 export const createCustomerOrder = async (orderData) => {
 

@@ -4,7 +4,8 @@ import Stack from "@mui/material/Stack";
 
 const SkeletonFeedbackCard = ({ numOfSkeletons = 10, minWidth = "280px" }) => {
     const SkeletonStyles = {
-        // flexGrow: 1,
+        flexGrow: 1,
+        maxWidth: { xs: "100%", sm: "calc(100% / 2)", md: "calc(100% / 3)", lg: "calc(100% / 5)" },
         minWidth: { minWidth },
         height: 350,
         borderRadius: ".5rem",

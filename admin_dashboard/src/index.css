@@ -41,11 +41,16 @@
 
 * {
     /* font-family: "Cascadia" !important; */
-    font-family: "Open Sans" !important;
+    /* font-family: "Open Sans" !important; */
 }
 
 body {
     overflow-x: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .border {

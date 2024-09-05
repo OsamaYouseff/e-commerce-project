@@ -92,11 +92,7 @@ const ProductsPage = () => {
             </Container>)
         }
         else if (isLoading) {
-            return (<Container maxWidth="xl" py={3} sx={{ marginTop: "4.6875rem" }}>
-                <Box sx={{ marginY: ".9375rem" }}>
-                    <SkeletonFeedbackCard numOfSkeletons={limit} minWidth="225px" />
-                </Box>
-            </Container>)
+            return (<Container maxWidth="xl" ><SkeletonFeedbackCard numOfSkeletons={limit} minWidth="225px" /> </Container>)
         } else {
             return (<>
                 <Stack
@@ -147,7 +143,6 @@ const ProductsPage = () => {
                 setLimit={setLimit}
                 setUiLimit={setUiLimit}
             />
-
             {handelShowContent()}
 
         </Container >

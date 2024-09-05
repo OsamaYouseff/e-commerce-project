@@ -46,11 +46,7 @@ const UserMenu = () => {
         <Fragment>
             <Tooltip
                 sx={{ textDecoration: "capitalize" }}
-                title={
-                    customerData.username !== ""
-                        ? userName.toUpperCase()
-                        : "User Account"
-                }
+                title={customerData.username !== "" ? userName.toUpperCase() : "User Account"}
             >
                 <IconButton
 

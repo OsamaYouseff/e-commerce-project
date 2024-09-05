@@ -50,7 +50,10 @@ const DashboardNavBar = ({ /*UserData*/ }) => {
                 position: "relative",
             }}
         >
-            <Box sx={{ position: "fixed", maxWidth: { xs: "200px", md: "180px" } }}>
+            <Box sx={{
+                position: "fixed",
+                maxWidth: { xs: "200px", md: "180px" }
+            }}>
                 <Typography
                     sx={{
                         fontSize: "1.125rem",
