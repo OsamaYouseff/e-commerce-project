@@ -89,15 +89,13 @@ export const addNewProduct = async (productData) => {
 }
 export const editProduct = async (productData) => {
 
-    console.log(productData);
-
-    const { adminId, accessToken } = GetTokenAndUserId();
+    const { accessToken } = GetTokenAndUserId();
 
 
     let config = {
         method: 'put',
         maxBodyLength: Infinity,
-        url: `${baseURL}/api/products/${adminId}`,
+        url: `${baseURL}/api/products/${productData._id}`,
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${accessToken}`
@@ -109,7 +107,7 @@ export const editProduct = async (productData) => {
     try {
         const response = await axios.request(config);
 
-        console.log(response)
+        // console.log(response)
 
         return { status: true, data: response.data, message: "Product updated successfully" };
 
@@ -157,7 +155,7 @@ export const toggleDisableProduct = async (productId) => {
     try {
         const response = await axios.request(config);
 
-        console.log(response)
+        // console.log(response)
 
         return { status: true, data: response.data, message: response.data.message };
 

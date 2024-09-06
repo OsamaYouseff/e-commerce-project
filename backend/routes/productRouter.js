@@ -1,12 +1,9 @@
 const Product = require("../models/Product");
 const { verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("./verifyToken");
-
-const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 require('dotenv').config();
 
 const router = require("express").Router();
-
 
 //// dashboard endpoints
 
@@ -15,31 +12,43 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
-const upload = multer({ dest: 'uploads/', limits: { fileSize: 5 * 1024 * 1024 } });
 
-//CREATE
-router.post("/", verifyTokenAndAdmin, upload.single('image'), async (req, res) => {
-  const cloudinaryResult = await cloudinary.uploader.upload(req.body.img);
+// Helper function to upload base64 image to Cloudinary
+const uploadBase64Image = async (base64String) => {
+  if (!base64String.startsWith('data:image')) {
+    throw new Error('Invalid image data');
+  }
 
-
-  const newProduct = new Product({
-    title: req.body.title,
-    desc: req.body.desc,
-    img: cloudinaryResult.secure_url, // This path is provided by Cloudinary after upload
-    categories: req.body.categories,
-    size: req.body.size,
-    color: req.body.color,
-    price: req.body.price,
-    rating: req.body.rating,
-    amount: req.body.amount,
-    isDeleted: req.body.isDeleted,
+  return await cloudinary.uploader.upload(base64String, {
+    resource_type: 'auto'
   });
+};
 
+// CREATE
+router.post("/", verifyTokenAndAdmin, async (req, res) => {
+
+  let cloudinaryResult;
   try {
+    if (req.body.img && req.body.img.startsWith('data:image')) {
+      cloudinaryResult = await uploadBase64Image(req.body.img);
+    }
+
+    const newProduct = new Product({
+      title: req.body.title,
+      desc: req.body.desc,
+      img: cloudinaryResult ? cloudinaryResult.secure_url : req.body.img,
+      categories: req.body.categories,
+      size: req.body.size,
+      color: req.body.color,
+      price: req.body.price,
+      rating: req.body.rating,
+      amount: req.body.amount,
+      isDeleted: req.body.isDeleted,
+    });
+
     const savedProduct = await newProduct.save();
     res.status(200).json(savedProduct);
   } catch (err) {
-    // If there was an error and we uploaded an image, delete it from Cloudinary
     if (cloudinaryResult && cloudinaryResult.public_id) {
       try {
         await cloudinary.uploader.destroy(cloudinaryResult.public_id);
@@ -50,12 +59,12 @@ router.post("/", verifyTokenAndAdmin, upload.single('image'), async (req, res) =
     }
     res.status(500).json(err);
   }
-})
+});
 
 // UPDATE
-router.put("/:id", verifyTokenAndAdmin, upload.single('image'), async (req, res) => {
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
-    const product = await Product.findById(req.body["_id"]);
+    const product = await Product.findById(req.params.id);
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
@@ -63,9 +72,8 @@ router.put("/:id", verifyTokenAndAdmin, upload.single('image'), async (req, res)
     let updateData = { ...req.body };
 
     // Handle image upload if a new image is provided
-    if (`${req.body.img}`.includes("data:image")) {
-      // Upload new image to Cloudinary
-      const result = await cloudinary.uploader.upload(req.body.img);
+    if (req.body.img && req.body.img.startsWith('data:image')) {
+      const result = await uploadBase64Image(req.body.img);
       updateData.img = result.secure_url;
 
       // Delete old image from Cloudinary if it exists
@@ -81,7 +89,7 @@ router.put("/:id", verifyTokenAndAdmin, upload.single('image'), async (req, res)
     }
 
     const updatedProduct = await Product.findByIdAndUpdate(
-      req.body._id,
+      req.params.id,
       { $set: updateData },
       { new: true }
     );
@@ -89,13 +97,6 @@ router.put("/:id", verifyTokenAndAdmin, upload.single('image'), async (req, res)
     res.status(201).json(updatedProduct);
   } catch (err) {
     res.status(500).json({ error: err.message });
-  } finally {
-    // Clean up the local file if it exists
-    if (req.file && req.file.path) {
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.error('Error deleting local file:', err);
-      });
-    }
   }
 });
 
@@ -226,6 +227,8 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+
 
 /// SEARCH FOR PRODUCT
 router.get('/search/:productName', async (req, res) => {

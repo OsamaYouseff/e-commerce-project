@@ -37,6 +37,8 @@ export const getAProductReducer = createAsyncThunk("getAProductAPI/sendRequest",
 
 export const addNewProductReducer = createAsyncThunk("addNewProductAPI/sendRequest", async (productData) => {
 
+    // console.log(productData)
+
     const response = await addNewProduct(productData);
 
     return response;
@@ -71,7 +73,7 @@ export const searchForProductReducer = createAsyncThunk("searchForProductAPI/sen
 
     const response = await searchForProduct(filter);
 
-    console.log(response)
+    // console.log(response)
 
     return response;
 
