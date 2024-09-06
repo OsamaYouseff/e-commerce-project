@@ -227,8 +227,6 @@ router.get('/all', async (req, res) => {
   }
 });
 
-
-
 /// SEARCH FOR PRODUCT
 router.get('/search/:productName', async (req, res) => {
   try {
