@@ -8,7 +8,7 @@ export const getCustomerOrdersMinimizedReducer = createAsyncThunk("getCustomerOr
 
     const response = await getCustomerOrdersMinimized();
 
-    console.log("response.data : ", response);
+    // console.log("response.data : ", response);
 
     return response;
 })

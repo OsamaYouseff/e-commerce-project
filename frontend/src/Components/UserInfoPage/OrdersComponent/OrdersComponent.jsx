@@ -21,7 +21,7 @@ const OrdersComponent = () => {
     const error = useSelector((state) => state.OrdersApiRequest.error);
     const isLoading = useSelector((state) => state.OrdersApiRequest.isLoading);
 
-    console.log(customerOrders);
+    // console.log(customerOrders);
 
 
     const handleChange = (event) => setHistoryDate(event.target.value);

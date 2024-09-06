@@ -20,7 +20,7 @@ export const getCustomerOrders = async () => {
     try {
         const response = await axios.request(config);
 
-        console.log("XXXXXXXXXXXXX : ", response.data[0].items)
+        // console.log("XXXXXXXXXXXXX : ", response.data[0].items)
 
         if (response.data[0].items.length == 0) return response.data[0]; //// order is empty
         else return response.data[0];
