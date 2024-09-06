@@ -13,23 +13,36 @@ import { useTheme } from "@emotion/react";
 //// General Vars & Functions
 import { DashboardMenuVar, UserMenuItems } from "../../../General/GeneralVariables.jsx";
 import { useParams } from "react-router-dom";
+import { GetUserInfo } from "../../../General/GeneralFunctions.js";
+
+const getActiveSection = (section) => {
+
+    switch (section) {
+        case "home":
+            return "dashboard";
+        case "product":
+        case "products":
+        case "edit-product":
+        case "add-product":
+            return "products";
+        case "orders":
+            return "orders";
+        case "customers":
+            return "customers";
+        case "profile":
+            return "profile";
+        case "settings":
+            return "settings";
+        default:
+            return "dashboard";
+    }
+};
 
 
-const DashboardNavBar = ({ /*UserData*/ }) => {
+const DashboardNavBar = () => {
     const theme = useTheme(ColorModeContext);
-
     const { section } = useParams();
-
-    let UserData = {
-        "_id": "66a4ecdc15e14384d8786e7c",
-        "username": "sama",
-        "email": "sama@gmail.com",
-        "isAdmin": false,
-        "gender": "female",
-        "phone": "+201022863287",
-        "firstname": "sama",
-        "lastname": "abdallah"
-    };
+    const userData = GetUserInfo();
 
     return (
         <Stack
@@ -56,19 +69,19 @@ const DashboardNavBar = ({ /*UserData*/ }) => {
             }}>
                 <Typography
                     sx={{
-                        fontSize: "1.125rem",
+                        fontSize: "1rem",
                         px: 2,
                         fontWeight: "bolder",
                     }}
                     variant="body"
                 >
-                    Hello <span> {UserData.username} ✋</span>
+                    Hello <span> {userData.username} ✋</span>
                 </Typography>
                 <Typography
                     sx={{ fontSize: "1rem", px: 2 }}
                     variant="body"
                 >
-                    {UserData.email}
+                    {userData.email}
                 </Typography>
                 <Divider sx={{ m: ".625rem", width: "95%" }} />
                 <Box sx={{ width: "100%" }}>
@@ -88,7 +101,7 @@ const DashboardNavBar = ({ /*UserData*/ }) => {
                                     minWidth: "100%",
                                     py: .75,
                                     borderLeft: `2px solid transparent`,
-                                    borderColor: `${item.title.toLowerCase() == section ? theme.palette.text.primary : "transparent"}`,
+                                    borderColor: `${item.title.toLowerCase() == getActiveSection(section) ? theme.palette.text.primary : "transparent"}`,
                                     fontWeight: "bold",
                                     mb: 0.6,
                                 }}

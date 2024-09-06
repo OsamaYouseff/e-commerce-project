@@ -13,7 +13,7 @@ import { useTheme } from "@emotion/react";
 ///// redux
 import { useDispatch } from "react-redux";
 import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
-import { logoutCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { logoutAdminReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 
 //// General Vars & Functions
 import { UserMenuItems } from "../../../General/GeneralVariables";
@@ -21,8 +21,8 @@ import { UserMenuItems } from "../../../General/GeneralVariables";
 const UserMenu = () => {
 
     const dispatch = useDispatch();
-    const customerData = GetUserInfo();
-    const userName = customerData.username || "A";
+    const userData = GetUserInfo();
+    const userName = userData.username || "A";
 
     const theme = useTheme(ColorModeContext);
 
@@ -36,7 +36,8 @@ const UserMenu = () => {
     };
 
     const handleLogout = () => {
-        if (IsUserLoggedIn()) dispatch(logoutCustomerAccountReducer());
+        if (IsUserLoggedIn()) dispatch(logoutAdminReducer());
+        else toast.error("You are already logged out");
     };
 
     //// adding logout function
@@ -46,7 +47,7 @@ const UserMenu = () => {
         <Fragment>
             <Tooltip
                 sx={{ textDecoration: "capitalize" }}
-                title={customerData.username !== "" ? userName.toUpperCase() : "User Account"}
+                title={userData.username !== "" ? userName.toUpperCase() : "User Account"}
             >
                 <IconButton
 

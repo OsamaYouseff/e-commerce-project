@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // redux
 import { useSelector, useDispatch } from "react-redux";
-import { getAllOrdersPaginatedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
+import { getAllOrdersPaginatedReducer, searchForOrderReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
 
 import { Box, Container, Stack, Typography, Button, } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -19,7 +19,7 @@ import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderCompo
 import SkeletonFeedbackRow from "../../GenericComponents/SkeletonFeedbackRow/SkeletonFeedbackRow";
 
 ///// General functions
-import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
+import { DoScrollToTop, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 
 
@@ -35,28 +35,40 @@ const OrdersComponent = () => {
     const isLoading = useSelector((state) => state.OrdersApiRequest.isLoading);
 
     /// pagination logic
-
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [UiLimit, setUiLimit] = useState(limit);
     const totalPages = totalPagesNum || 1;
 
 
-    const [search, setSearch] = useState("");
-    const [category, setCategory] = useState("All Category");
+    // const [category, setCategory] = useState("All Category");
     const [sorting, setSorting] = useState("Asc");
 
+    async function fetchData() {
+        await dispatch(getAllOrdersPaginatedReducer({ page, limit, sorting }));
+    }
 
     useEffect(() => {
-        (async function fetchData() {
-            await dispatch(getAllOrdersPaginatedReducer({ page, limit, sorting }));
+        if (IsUserLoggedIn()) {
+            fetchData();
+        }
+        else {
+            toast.error("Your not authorized to do this action🙂");
+            setTimeout(() => {
+                GoLoginPage();
 
-            if (IsUserLoggedIn()) ShowGreetingsMessage();
-        })();
+            }, 1000);
+        };
 
     }, [limit, page, sorting]);
 
 
+    DoScrollToTop();
+
+
+    const handelFilterSearch = (searchValue) => {
+        dispatch(searchForOrderReducer(searchValue.trim()));
+    }
     const handelShowContent = () => {
         if (isLoading) {
             return (<Container maxWidth="xl" sx={{ p: "0 !important" }}>
@@ -114,6 +126,9 @@ const OrdersComponent = () => {
                 UiLimit={UiLimit}
                 setLimit={setLimit}
                 setUiLimit={setUiLimit}
+                handelFilterSearch={handelFilterSearch}
+                searchName="Enter order ID"
+                resetSearch={fetchData}
             />
 
             {handelShowContent()}

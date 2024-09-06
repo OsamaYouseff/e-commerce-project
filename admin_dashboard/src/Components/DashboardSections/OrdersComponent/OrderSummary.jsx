@@ -36,8 +36,7 @@ const orderChildrenStyle = {
 
 
 let operationType = "cancel";
-let enableMessage = "Are you sure you want to enable this product again?"
-let disableMessage = "Are you sure you want to disable this product? i won't appear in your store."
+
 const OrderSummary = () => {
     const theme = useTheme(ColorModeContext);
 
@@ -70,46 +69,49 @@ const OrderSummary = () => {
     // console.log(currentStatusIndex)
 
     const handelOrderStatus = () => {
+        if (IsUserLoggedIn()) {
 
-        switch (operationType) {
-            case "update":
-                if (currentStatusIndex === 3) {
-                    toast.error("You can't update this order as it's status is already " + customerOrder.status)
-                    return;
-                }
-                if (currentStatusIndex >= 0 && currentStatusIndex < 2) {
-                    dispatch((updateOrderStatusReducer(
-                        {
-                            orderId: customerOrder._id,
-                            orderStatus: GetNextStatus(customerOrder.status)
-                        }
-                    )))
-                }
-                break;
-            case "cancel":
-                if (currentStatusIndex === 3) {
-                    toast.error("You can't cancel this order as it's status is already " + customerOrder.status)
-                    return;
-                }
-                dispatch((deleteOrderReducer(customerOrder._id)))
-                break;
-            default:
-                break;
-        }
+            switch (operationType) {
+                case "update":
+                    if (currentStatusIndex === 3) {
+                        toast.error("You can't update this order as it's status is already " + customerOrder.status)
+                        return;
+                    }
+                    if (currentStatusIndex >= 0 && currentStatusIndex < 2) {
+                        dispatch((updateOrderStatusReducer(
+                            {
+                                orderId: customerOrder._id,
+                                orderStatus: GetNextStatus(customerOrder.status)
+                            }
+                        )))
+                    }
+                    break;
+                case "cancel":
+                    if (currentStatusIndex === 3) {
+                        toast.error("You can't cancel this order as it's status is already " + customerOrder.status)
+                        return;
+                    }
+                    dispatch((deleteOrderReducer(customerOrder._id)))
+                    break;
+                default:
+                    break;
+            }
 
-        // if (IsUserLoggedIn() && ableToCancelOrder) {
-        //     //// switch
-        // }
+        } else {
+            toast.error("Your not authorized to do this action");
+            setTimeout(() => {
+                GoLoginPage();
+
+            }, 1000);
+        };
 
     }
 
 
 
     useEffect(() => {
-        dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
-        // if (IsUserLoggedIn())
-        // dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
-        // else toast.error("Please log in or sign up with new account🙂");
+        if (IsUserLoggedIn()) dispatch(getSpecificOrderForCustomerDetailedReducer(elementId));
+        else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
 

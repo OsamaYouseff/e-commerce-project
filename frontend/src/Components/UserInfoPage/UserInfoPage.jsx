@@ -80,13 +80,11 @@ const UserInfoPage = () => {
             <Container
                 maxWidth="xl"
                 sx={{
-                    // width: { xs: "95%" },
                     marginTop: ".625rem",
                     bgcolor: theme.palette.categoryColor.main,
                     borderRadius: ".375rem",
                     px: ".125rem !important",
                     py: ".5rem",
-                    // boxShadow: 3,
                     mb: 2,
                     alignItems: "space-between",
                 }}
@@ -105,7 +103,7 @@ const UserInfoPage = () => {
                 >
                     <Stack
                         sx={{
-                            width: "20%",
+                            width: "15%",
                             minWidth: {
                                 xs: "100%",
                                 md: "12.5rem",
@@ -173,11 +171,7 @@ const UserInfoPage = () => {
                         </Box>
                     </Stack>
 
-                    <Divider
-                        orientation="vertical"
-                        flexItem
-                        sx={{ display: { xs: "none", md: "block" } }}
-                    />
+                    <Divider orientation="vertical" flexItem sx={{ display: { xs: "none", md: "block" } }} />
 
                     {/* Variable Page */}
                     <Box

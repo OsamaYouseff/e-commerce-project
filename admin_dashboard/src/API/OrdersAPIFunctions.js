@@ -1,46 +1,14 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
 import { GetTokenAndUserId } from "../General/GeneralFunctions";
-import { ReportRounded } from "@mui/icons-material";
 
 const baseURL = import.meta.env.VITE_BASE_URL;
 
-const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTQ5NTc4MywiZXhwIjoxNzI1NzU0OTgzfQ.BQB4YZUl5t6n_ClBqK1HQL4cAFkNZAZFRZXT2YEwC1A";
-
-export const createCustomerOrder = async (orderData) => {
-
-    const { customerId, accessToken } = GetTokenAndUserId();
-
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: `${baseURL}/api/orders/${customerId}`,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${accessToken}`
-        },
-        data: orderData,
-    };
-
-    try {
-        const response = await axios.request(config);
-
-        console.log("ORDER RESPONSE : ", response.data)
-
-        return { status: true, message: "Your order has been placed successfully." };
-
-    } catch (error) {
-        console.log('Error Fetching order Data : ', error);
-        return { status: false, message: "Failed to place your order please confirm your address and payment method and try again later." };
-    }
-};
-
 //// admin dashboard functions
-
 
 export const getAllOrdersPaginated = async (filter) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
+    const { accessToken } = GetTokenAndUserId();
 
     const { page, limit, sorting } = filter;
 
@@ -65,7 +33,7 @@ export const getAllOrdersPaginated = async (filter) => {
 };
 
 export const getSpecificOrderForCustomerDetailed = async (orderId) => {
-    // const { customerId, accessToken } = GetTokenAndUserId();
+    const { accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'get',
@@ -91,7 +59,7 @@ export const getSpecificOrderForCustomerDetailed = async (orderId) => {
 
 export const deleteOrder = async (orderId) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
+    const { accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'delete',
@@ -117,7 +85,7 @@ export const deleteOrder = async (orderId) => {
 
 export const updateOrderStatus = async (orderData) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
+    const { accessToken } = GetTokenAndUserId();
 
     const { orderId, orderStatus } = orderData;
 
@@ -141,6 +109,34 @@ export const updateOrderStatus = async (orderData) => {
         return { status: false, message: "Failed to Update status for this order 😢" };
     }
 };
+
+export const searchForOrder = async (orderId) => {
+
+    const { accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/orders/search/${orderId}`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        // console.log("RESPONSE :::::: ", response.data);
+
+        return { status: true, response: response.data, message: "order was found🙂" };
+
+    } catch (error) {
+        console.log('Error Fetching order Data : ', error);
+        return { status: false, message: "can't find any order with id : " + orderId + " 😢" };
+    }
+};
+
+
 
 
 

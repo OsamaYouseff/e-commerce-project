@@ -58,3 +58,6 @@ export const UserMenuItems = [
 
 // // // // // // //  warning don't change the order of these Statuses  // // // // // // //
 export const orderStatuses = ["pending", "processing", "delivered", "canceled"];
+
+
+

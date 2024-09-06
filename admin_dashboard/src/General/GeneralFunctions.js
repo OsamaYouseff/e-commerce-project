@@ -1,68 +1,8 @@
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import axios from "axios";
-import { orderStatuses } from './GeneralVariables';
+
 const baseURL = import.meta.env.VITE_BASE_URL;
-
-export function GoHome() {
-    window.location.href = "/";
-}
-
-export function GetUserInfo() {
-    if (localStorage.getItem("customerInfo"))
-        return JSON.parse(localStorage.getItem("customerInfo"));
-    else if (sessionStorage.getItem("customerInfo"))
-        return JSON.parse(sessionStorage.getItem("customerInfo"));
-
-    return {
-        _id: null,
-        firstname: "",
-        lastname: "",
-        username: "",
-        email: "",
-        address: "",
-        gender: "",
-        phone: "",
-        createdAt: "",
-        updatedAt: "",
-    };
-}
-
-export function ResetLocalStorage() {
-    sessionStorage.removeItem("customerInfo");
-    localStorage.removeItem("customerInfo");
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-    Cookies.remove("token");
-}
-
-export function StoreDataAtLocalStorage(Type = "localStorage", data) {
-
-    if (!data) {
-        toast.error("there are some data missing please logout and login again");
-        GoHome();
-        return
-    }
-
-    if (Type === "localStorage") {
-        localStorage.setItem('customerInfo', JSON.stringify(data.userInfo));
-
-    } else if (Type === "sessionStorage") {
-        sessionStorage.setItem('customerInfo', JSON.stringify(data.userInfo));
-    }
-
-    Cookies.set('token', data.accessToken, { expires: 3 });
-
-
-}
-
-export function IsUserLoggedIn() {
-
-    if ((localStorage.getItem("customerInfo") || (sessionStorage.getItem("customerInfo")) && Cookies.get('token')))
-        return true;
-    else
-        return false;
-}
 
 export function GetAddressInfo() {
     if (sessionStorage.getItem("edited-address"))
@@ -77,34 +17,6 @@ export function GetAddressInfo() {
         phoneNumber: null,
         isDefault: null,
     };
-}
-
-export function GetTokenAndUserId() {
-    const customerData = localStorage.getItem('customerInfo') || sessionStorage.getItem('customerInfo');
-    const accessToken = Cookies.get('token');
-
-
-    if (!customerData) {
-        toast("there are some data missing please login again");
-        setTimeout(() => {
-            ResetLocalStorage()
-            GoHome();
-        }, 1500)
-        return;
-    }
-
-    if (!customerData || !accessToken) {
-        toast.error("Your session has expired please login again");
-        setTimeout(() => {
-            ResetLocalStorage()
-            GoHome();
-        }, 1500)
-        return;
-    }
-    const customerId = JSON.parse(customerData)["_id"];
-
-
-    return { customerId, accessToken };
 }
 
 export function FormatDate(dateString) {
@@ -319,7 +231,6 @@ export function CheckDuplicated(firstObject, secondObject) {
 
 }
 
-
 async function checkUsernameExistence(targetUsername) {
     let config = {
         method: 'get',
@@ -390,7 +301,6 @@ export async function ValidateProfileInfoForm(formData, isUsernameChanged) {
 }
 
 
-
 ////// new functions
 
 export function ValidateProductInfoForm(formData) {
@@ -433,8 +343,103 @@ export function GetNextStatus(currentStatus) {
     if (currentStatus === "delivered") return "canceled";
 }
 
+export function DoScrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+export function StoreDataAtLocalStorage(Type = "localStorage", data) {
+
+    if (!data) {
+        toast.error("there are some data missing please logout and login again");
+        GoHome();
+        return
+    }
+
+    if (Type === "localStorage") {
+        localStorage.setItem('adminInfo', JSON.stringify(data.userInfo));
+
+    } else if (Type === "sessionStorage") {
+        sessionStorage.setItem('adminInfo', JSON.stringify(data.userInfo));
+    }
+
+    Cookies.set('token', data.accessToken, { expires: 7 });
 
 
+}
 
+export function ResetLocalStorage() {
+    sessionStorage.removeItem("adminInfo");
+    localStorage.removeItem("adminInfo");
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    Cookies.remove("token");
+}
+
+export function GoHome() {
+    window.location.href = "/";
+}
+
+export function GoLoginPage() {
+    window.location.href = "/login";
+}
+
+export function IsUserLoggedIn() {
+
+    if ((localStorage.getItem("adminInfo") || (sessionStorage.getItem("adminInfo")) && Cookies.get('token')))
+        return true;
+    else
+        return false;
+}
+
+export function GetUserInfo() {
+    if (localStorage.getItem("adminInfo"))
+        return JSON.parse(localStorage.getItem("adminInfo"));
+    else if (sessionStorage.getItem("adminInfo"))
+        return JSON.parse(sessionStorage.getItem("adminInfo"));
+
+    return {
+        _id: null,
+        firstname: "",
+        lastname: "",
+        username: "",
+        email: "",
+        address: "",
+        gender: "",
+        phone: "",
+        createdAt: "",
+        updatedAt: "",
+    };
+}
+
+export function GetTokenAndUserId() {
+    const userData = localStorage.getItem('adminInfo') || sessionStorage.getItem('adminInfo');
+    const accessToken = Cookies.get('token');
+
+
+    if (!userData) {
+        toast("there are some data missing please login again");
+        setTimeout(() => {
+            ResetLocalStorage()
+            GoHome();
+        }, 1500)
+        return;
+    }
+
+    if (!userData || !accessToken) {
+        toast.error("Your session has expired please login again");
+        setTimeout(() => {
+            ResetLocalStorage()
+            GoHome();
+        }, 1500)
+        return;
+    }
+    const adminId = JSON.parse(userData)["_id"];
+
+
+    return { adminId, accessToken };
+}
 
 

@@ -19,35 +19,34 @@ import { useState } from "react";
 
 /// redux
 import { GetUserInfo, IsUserLoggedIn, CheckDuplicated, ValidateProfileInfoForm, PrintErrors } from "../../../General/GeneralFunctions";
-import { updateCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { updateAdminAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
-const ProfileComponent = ({ customerData }) => {
+const ProfileComponent = ({ userData }) => {
     const dispatch = useDispatch();
     const theme = useTheme(ColorModeContext);
 
     //// states
     const [formData, setFormData] = useState({
-        firstname: customerData.firstname || "",
-        lastname: customerData.lastname || "",
-        username: customerData.username,
-        email: customerData.email,
-        phone: customerData.phone,
-        gender: customerData.gender,
+        firstname: userData.firstname || "",
+        lastname: userData.lastname || "",
+        username: userData.username,
+        email: userData.email,
+        phone: userData.phone,
+        gender: userData.gender,
     });
     const [isDataChanged, setIsDataChanged] = useState(false);
 
     //// handlers
     const checkDataChanged = (formData) => {
-
-        if (CheckDuplicated(formData, customerData)) setIsDataChanged(false);
+        if (CheckDuplicated(formData, userData)) setIsDataChanged(false);
         else setIsDataChanged(true);
     };
 
     const handleUpdateData = async (e) => {
         e.preventDefault();
 
-        const isUsernameChanged = formData.username !== customerData.username;
+        const isUsernameChanged = formData.username !== userData.username;
 
         let errors = await ValidateProfileInfoForm(formData, isUsernameChanged);
 
@@ -58,22 +57,27 @@ const ProfileComponent = ({ customerData }) => {
         }
 
         if (IsUserLoggedIn()) {
-            await dispatch(updateCustomerAccountReducer(formData));
+            await dispatch(updateAdminAccountReducer(formData));
             setIsDataChanged(false);
-            customerData = GetUserInfo();
-        } else toast.error("Please log in or sign up with new account🙂");
+            userData = GetUserInfo();
+        } else {
+            toast.error("Your not authorized to do this action");
+            setTimeout(() => {
+                GoLoginPage();
+
+            }, 1000);
+        };
     };
 
     const handelGender = (event, newValue) => {
-        if (newValue !== null) {
-            const updatedFormData = {
-                ...formData,
-                gender: newValue,
-            };
-            setFormData(updatedFormData);
 
-            checkDataChanged(updatedFormData);
-        }
+        const updatedFormData = {
+            ...formData,
+            gender: newValue,
+        };
+        setFormData(updatedFormData);
+
+        checkDataChanged(updatedFormData);
     };
 
     const handelFormData = (key, value) => {
@@ -125,6 +129,7 @@ const ProfileComponent = ({ customerData }) => {
                                 type="text"
                                 colWidth={6}
                                 keyName="firstname"
+                                required={false}
                             />
                             <TextFieldComponent
                                 value={formData.lastname}
@@ -134,6 +139,7 @@ const ProfileComponent = ({ customerData }) => {
                                 type="text"
                                 colWidth={6}
                                 keyName="lastname"
+                                required={false}
                             />
                             <TextFieldComponent
                                 value={formData.username}

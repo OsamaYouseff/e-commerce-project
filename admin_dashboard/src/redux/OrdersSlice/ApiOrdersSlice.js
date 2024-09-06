@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getSpecificOrderForCustomerDetailed, createCustomerOrder, deleteOrder, getAllOrdersPaginated, updateOrderStatus } from '../../API/OrdersAPIFunctions';
-import { clearCart } from '../../API/CartAPIFunctions';
+import { getSpecificOrderForCustomerDetailed, deleteOrder, getAllOrdersPaginated, updateOrderStatus, searchForOrder } from '../../API/OrdersAPIFunctions';
 import toast from 'react-hot-toast';
 
 
@@ -9,29 +8,6 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
     const response = await getSpecificOrderForCustomerDetailed(orderId);
 
     // console.log(response)
-
-    return response;
-})
-
-export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (requestData) => {
-
-    const { orderData, clearCartAtEnd } = requestData;
-
-    const response = await createCustomerOrder(orderData);
-
-    if (response.status) {
-        toast.success(response.message);
-
-        if (clearCartAtEnd) {
-            await clearCart()
-            setTimeout(() => { document.location.reload(true) }, 1000)
-        }
-
-
-    } else {
-        toast.error(response.message);
-    }
-
 
     return response;
 })
@@ -62,6 +38,14 @@ export const updateOrderStatusReducer = createAsyncThunk("updateOrderAPI/sendReq
 
     const response = await updateOrderStatus(orderData);
 
+    return response;
+
+})
+
+
+export const searchForOrderReducer = createAsyncThunk("searchForOrderAPI/sendRequest", async (filter) => {
+
+    const response = await searchForOrder(filter);
     return response;
 
 })
@@ -134,26 +118,6 @@ export const CartApiSlice = createSlice({
                 toast.error(action.payload.message);
             })
 
-
-            // createCustomerOrderReducer cases
-            .addCase(createCustomerOrderReducer.pending, (currentState) => {
-                currentState.isLoading = true;
-            })
-            .addCase(createCustomerOrderReducer.fulfilled, (currentState, action) => {
-                currentState.isLoading = false;
-                if (action.payload.status) {
-                    // toast.success(action.payload.message);
-                } else {
-                    // toast.error(action.payload.message);
-                    currentState.error = true;
-                }
-            })
-            .addCase(createCustomerOrderReducer.rejected, (currentState) => {
-                currentState.isLoading = false;
-                currentState.error = true;
-                // toast.error(action.payload.message);
-            })
-
             // getAllOrdersPaginatedReducer cases
             .addCase(getAllOrdersPaginatedReducer.pending, (currentState) => {
                 currentState.isLoading = true;
@@ -194,7 +158,29 @@ export const CartApiSlice = createSlice({
                 currentState.isLoading = false;
                 currentState.error = true;
                 toast.error(action.payload.message);
-            });
+            })
+
+
+            // searchForOrderReducer cases
+            .addCase(searchForOrderReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            })
+            .addCase(searchForOrderReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+
+                if (action.payload.status) {
+                    currentState.minOrdersResponse = [action.payload.response];
+                    toast.success(action.payload.message);
+                } else {
+                    // currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+            })
+            .addCase(searchForOrderReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
+                currentState.error = true;
+                toast.error(action.payload.message);
+            })
 
 
     }

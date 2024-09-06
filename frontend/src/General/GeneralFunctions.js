@@ -2,7 +2,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import axios from "axios";
 const baseURL = import.meta.env.VITE_BASE_URL;
-
+import { coupons } from "./GeneralVariables.jsx"
 
 export function GoHome() {
     window.location.href = "/";
@@ -51,7 +51,7 @@ export function StoreDataAtLocalStorage(Type = "localStorage", data) {
         sessionStorage.setItem('customerInfo', JSON.stringify(data.userInfo));
     }
 
-    Cookies.set('token', data.accessToken, { expires: 3 });
+    Cookies.set('token', data.accessToken, { expires: 7 });
 
 
 }
@@ -182,10 +182,6 @@ export function convertCentsToDollars(cents) {
     return (cents / 100).toFixed(2);
 }
 
-const coupons = [
-    "10OFF", "15OFF", "20OFF", "25OFF", "50OFF"
-]
-
 export function CalcTotalCartPrice(subtotalPrice, couponCode = "") {
     const discount = couponCode ? Number((GetCouponDiscount(couponCode) * subtotalPrice).toFixed(2)) : 0;
     const shippingCalc = subtotalPrice !== 0 ? (subtotalPrice >= 50 ? 0 : 20) : 0;
@@ -308,7 +304,6 @@ export function CheckDuplicated(firstObject, secondObject) {
 
 }
 
-
 async function checkUsernameExistence(targetUsername) {
     let config = {
         method: 'get',
@@ -328,7 +323,6 @@ async function checkUsernameExistence(targetUsername) {
     }
 
 }
-
 
 export async function ValidateProfileInfoForm(formData, isUsernameChanged) {
     const errors = {};

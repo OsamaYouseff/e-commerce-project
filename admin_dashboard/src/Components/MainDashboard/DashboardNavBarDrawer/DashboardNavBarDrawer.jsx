@@ -5,64 +5,29 @@ import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import { Stack, Typography } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { useTheme, styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../Theme/theme.jsx";
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 
-import Badge from "@mui/material/Badge";
 import { Link } from "react-router-dom";
 
 //// hooks
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Custom components
 import LoaderComponent from "../../GenericComponents/LoaderComponent/LoaderComponent.jsx";
 import toast from 'react-hot-toast';
 import DashboardNavBar from "../DashboardNavBar/DashboardNavBar.jsx";
 
-/// General Vars & Functions
-import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
-
-//// redux
-import { useSelector, useDispatch } from "react-redux";
-import { getCustomerCartReducer } from "../../../redux/CartSlice/ApiCartSlice.js";
 
 
 export default function DashboardNavBarDrawer() {
     const [state, setState] = useState({ left: false });
     const theme = useTheme(ColorModeContext);
 
-    const { section } = useTheme();
-
-    //// redux
-    const dispatch = useDispatch();
-    const customerCart = useSelector((state) => state.CartApiRequest.response);
-    const isLoading = useSelector((state) => state.CartApiRequest.isLoading);
-    const error = useSelector((state) => state.CartApiRequest.error);
-    const message = useSelector((state) => state.CartApiRequest.message);
-
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const [PreviewedProduct, setPreviewedProduct] = useState({ id: 2, attributes: {}, });
-
-    const handleSetPreviewedProduct = (newValue) => {
-        setPreviewedProduct(newValue);
-    };
-
-    const productsCount = customerCart?.products?.length || "0";
-    const totalPrice = customerCart?.totalPrice || 0;
-
     /// styles
     const transitionDuration = "350ms";
-    const StyledBadge = styled(Badge)(({ theme }) => ({
-        "& .MuiBadge-badge": {
-            right: -3,
-            top: 13,
-            border: `.125rem solid ${theme.palette.background.paper}`,
-            padding: "0 .25rem",
-        },
-    }));
+
 
     //// handlers
     const toggleDrawer = (anchor, open) => (event) => {
@@ -75,11 +40,6 @@ export default function DashboardNavBarDrawer() {
         setState({ ...state, [anchor]: open });
     };
 
-
-    useEffect(() => {
-        if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        // else toast.error("Please log in or sign up with new account🙂");
-    }, []);
 
     const list = (anchor) => (
         <Box
@@ -119,8 +79,7 @@ export default function DashboardNavBarDrawer() {
             </Button>
             {/*== Close Button ==*/}
 
-            <DashboardNavBar section={section} />
-            {/* <DashboardNavBar UserData={UserData} section={section} /> */}
+            <DashboardNavBar />
 
 
         </Box>

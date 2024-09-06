@@ -333,7 +333,47 @@ router.get('/min/:id', verifyTokenAndAuthorization, async (req, res) => {
 });
 
 // -----------------------------
+// SEARCH FOR AN ORDER
+/// FOR ADMIN ONLY
+router.get('/search/:orderId', verifyTokenAndAdmin, async (req, res) => {
+  try {
+    const orderId = new mongoose.Types.ObjectId(req.params.orderId);
 
+    const result = await Order.aggregate([
+      { $match: { _id: orderId } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      { $unwind: '$user' },
+      {
+        $project: {
+          _id: 1,
+          username: '$user.username',
+          totalAmountInCents: '$financials.totalAmountInCents',
+          status: 1,
+          createdAt: 1
+        }
+      }
+    ]);
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: 'Cannot find order with id: ' + orderId });
+    }
+
+    res.json(result[0]);  // Return the first (and only) result
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// -----------------------------
 module.exports = router;
 
 

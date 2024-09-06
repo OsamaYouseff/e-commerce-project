@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { changeCustomerPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateCustomerAccount } from '../../API/CustomerAPIFunctions';
+import { adminLogin, changeAdminPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateAdminAccount } from '../../API/CustomerAPIFunctions';
 import { GetMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
 import { createCustomerCart } from '../../API/CartAPIFunctions';
 import { createCustomerWishlist } from '../../API/WishlistAPIFunctions';
@@ -32,9 +32,39 @@ export const registerACustomerReducer = createAsyncThunk("registerACustomerAPI/s
 
 })
 
-export const updateCustomerAccountReducer = createAsyncThunk("updateCustomerAccountAPI/sendRequest", async (formData) => {
 
-    const response = await updateCustomerAccount(formData);
+
+
+export const deleteCustomerAccountReducer = createAsyncThunk("DeleteCustomerAccountAPI/sendRequest", async () => {
+    const response = await deleteCustomerAccount();
+
+    // console.log("status :", response.status);
+    // console.log("Message :", response.message);
+
+    return response;
+})
+
+
+///// new for dashboard
+
+export const adminLoginReducer = createAsyncThunk("adminLoginAPI/sendRequest", async (data) => {
+
+    const { rememberMe, ...formFields } = data;
+
+    const response = await adminLogin(formFields, rememberMe);
+
+    return response;
+
+})
+
+export const logoutAdminReducer = createAsyncThunk("logoutAdminAPI/sendRequest", async () => {
+    ResetLocalStorage();
+    return true;
+})
+
+export const updateAdminAccountReducer = createAsyncThunk("updateAdminAccountAPI/sendRequest", async (formData) => {
+
+    const response = await updateAdminAccount(formData);
 
     // console.log(response.message)
 
@@ -42,27 +72,15 @@ export const updateCustomerAccountReducer = createAsyncThunk("updateCustomerAcco
 
 })
 
-export const logoutCustomerAccountReducer = createAsyncThunk("logoutCustomerAccountAPI/sendRequest", async () => {
+export const changePasswordReducer = createAsyncThunk("changeAdminPasswordAPI/sendRequest", async (formData) => {
 
-    ResetLocalStorage();
-    return true;
-})
+    const response = await changeAdminPassword(formData);
 
-export const changePasswordReducer = createAsyncThunk("ChangeCustomerPasswordAPI/sendRequest", async (formData) => {
-
-    const response = await changeCustomerPassword(formData);
-
-    // console.log("status :", response.status);
-    // console.log("Message :", response.message);
-
-    return response;
-})
-
-export const deleteCustomerAccountReducer = createAsyncThunk("DeleteCustomerAccountAPI/sendRequest", async () => {
-    const response = await deleteCustomerAccount();
-
-    // console.log("status :", response.status);
-    // console.log("Message :", response.message);
+    if (response.status) {
+        setTimeout(() => {
+            document.location.reload();
+        }, 1000)
+    }
 
     return response;
 })
@@ -83,119 +101,144 @@ export const CustomerApiSlice = createSlice({
     reducers: {},
 
     extraReducers(builder) {
-        builder.addCase(customerLoginReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
+        builder
+            .addCase(customerLoginReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
 
-            currentState.isLoading = false;
+                currentState.isLoading = false;
 
-            console.log("payload : ", action.payload);
+                console.log("payload : ", action.payload);
 
-            if (action.payload.status) {
-                // toast.success("Login successfully ,Welcome 😀");
-                GoHome();
-            }
-            else {
+                if (action.payload.status) {
+                    // toast.success("Login successfully ,Welcome 😀");
+                    GoHome();
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+
+
+
+            }).addCase(customerLoginReducer.rejected, (currentState) => {
+                currentState.isLoading = false;
                 currentState.error = true;
+            })
+
+            //// login an admin
+            .addCase(adminLoginReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(adminLoginReducer.fulfilled, (currentState, action) => {
+
+                currentState.isLoading = false;
+
+                console.log("payload : ", action.payload);
+
+                if (action.payload.status) {
+                    GoHome();
+                }
+
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+
+            }).addCase(adminLoginReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 toast.error(action.payload.message);
-            }
-
-
-
-        }).addCase(customerLoginReducer.rejected, (currentState) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-        })
-
-        //// register a customer
-        builder.addCase(registerACustomerReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(registerACustomerReducer.fulfilled, (currentState, action) => {
-
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                // toast.success("Registered successfully ,Welcome 😀");
-                GoHome();
-            }
-            else {
                 currentState.error = true;
+            })
+
+            //// register a customer
+            .addCase(registerACustomerReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(registerACustomerReducer.fulfilled, (currentState, action) => {
+
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    // toast.success("Registered successfully ,Welcome 😀");
+                    GoHome();
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(GetMessagesFromObject(action.payload.message));
+                }
+
+            }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 toast.error(GetMessagesFromObject(action.payload.message));
-            }
+                currentState.error = true;
 
-        }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            toast.error(GetMessagesFromObject(action.payload.message));
-            currentState.error = true;
+            })
 
-        })
+            ///// update customer account
+            .addCase(updateAdminAccountReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(updateAdminAccountReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Your account updated successfully 😀");
 
-        ///// update customer account
-        builder.addCase(updateCustomerAccountReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(updateCustomerAccountReducer.fulfilled, (currentState, action) => {
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Your account updated successfully 😀");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000)
-            }
-            else {
+            }).addCase(updateAdminAccountReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
+            })
 
-        }).addCase(updateCustomerAccountReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            ///// change customer's password
+            .addCase(changePasswordReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(changePasswordReducer.fulfilled, (currentState, action) => {
 
-        ///// change customer's password
-        builder.addCase(changePasswordReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(changePasswordReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Password changed successfully 😀");
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Password changed successfully 😀");
-            }
-            else {
+            }).addCase(changePasswordReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
-
-        }).addCase(changePasswordReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            })
 
 
-        ////// delete customer account
-        builder.addCase(deleteCustomerAccountReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(deleteCustomerAccountReducer.fulfilled, (currentState, action) => {
-            ResetLocalStorage();
+            ////// delete customer account
+            .addCase(deleteCustomerAccountReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(deleteCustomerAccountReducer.fulfilled, (currentState, action) => {
+                ResetLocalStorage();
 
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Your account deleted successfully 😑");
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Your account deleted successfully 😑");
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000)
-            }
-            else {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+
+            }).addCase(deleteCustomerAccountReducer.rejected, (currentState, action) => {
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
-
-        }).addCase(deleteCustomerAccountReducer.rejected, (currentState, action) => {
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            });
     }
 })
 

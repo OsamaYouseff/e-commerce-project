@@ -63,9 +63,7 @@ export const getAProduct = async (productId) => {
 };
 export const addNewProduct = async (productData) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
-
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTIyOTU5NSwiZXhwIjoxNzI1NDg4Nzk1fQ.AR5paSazML92eOkDq5B82NbA3cZ_23mvQz7dkgCunak";
+    const { accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'post',
@@ -93,10 +91,7 @@ export const editProduct = async (productData) => {
 
     console.log(productData);
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
-
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTIyOTU5NSwiZXhwIjoxNzI1NDg4Nzk1fQ.AR5paSazML92eOkDq5B82NbA3cZ_23mvQz7dkgCunak";
-    const adminId = "66a4ea4e7c23154806476b9b";
+    const { adminId, accessToken } = GetTokenAndUserId();
 
 
     let config = {
@@ -125,10 +120,7 @@ export const editProduct = async (productData) => {
 }
 export const deleteProduct = async (productId) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
-
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTIyOTU5NSwiZXhwIjoxNzI1NDg4Nzk1fQ.AR5paSazML92eOkDq5B82NbA3cZ_23mvQz7dkgCunak";
-    const adminId = "66a4ea4e7c23154806476b9b";
+    const { adminId, accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'delete',
@@ -151,10 +143,7 @@ export const deleteProduct = async (productId) => {
 }
 export const toggleDisableProduct = async (productId) => {
 
-    // const { customerId, accessToken } = GetTokenAndUserId();
-
-    const accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YTRlYTRlN2MyMzE1NDgwNjQ3NmI5YiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcyNTIyOTU5NSwiZXhwIjoxNzI1NDg4Nzk1fQ.AR5paSazML92eOkDq5B82NbA3cZ_23mvQz7dkgCunak";
-    const adminId = "66a4ea4e7c23154806476b9b";
+    const { adminId, accessToken } = GetTokenAndUserId();
 
     let config = {
         method: 'patch',
@@ -177,5 +166,31 @@ export const toggleDisableProduct = async (productId) => {
         return { status: false, message: "Failed to delete this product" };
     }
 }
+
+export const searchForProduct = async (productName) => {
+
+    const { accessToken } = GetTokenAndUserId();
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/products/search/${productName}`,
+        headers: {
+            'Authorization': `Bearer ${accessToken}`
+        },
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        // console.log("RESPONSE :::::: ", response.data);
+
+        return { status: true, response: response.data, message: "some products were found🙂" };
+
+    } catch (error) {
+        console.log('Error Fetching product Data : ', error);
+        return { status: false, message: "can't find any product with id : " + productName + " 😢" };
+    }
+};
 
 

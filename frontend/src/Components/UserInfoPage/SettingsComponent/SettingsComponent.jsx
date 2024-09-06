@@ -87,7 +87,7 @@ const SettingsComponent = () => {
         <Stack sx={{ minWidth: "67vw", height: "70vh" }}>
 
 
-            <Box sx={{ mb: 2, px: 1 }}>
+            <Box sx={{ mb: 2, px: 2 }}>
                 <Typography
                     variant="h4"
                     sx={{
@@ -105,7 +105,7 @@ const SettingsComponent = () => {
 
             <Box
                 sx={{
-                    px: { xs: 3, md: 2 },
+                    px: { xs: 3, md: 3 },
                     py: 3,
                     bgcolor: theme.palette.natural.main,
                     borderRadius: "6px",
@@ -146,7 +146,7 @@ const SettingsComponent = () => {
             </Box>
             <Box
                 sx={{
-                    px: { xs: 3, md: 2 },
+                    px: { xs: 3, md: 3 },
                     py: 3,
                     bgcolor: theme.palette.natural.main,
                     borderRadius: "6px",

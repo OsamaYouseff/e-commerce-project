@@ -25,13 +25,8 @@ import { ColorModeContext, useMode } from "./Theme/theme";
 // /// custom component
 import LoginPage from "./Components/LoginRegisterPages/LoginPage.jsx";
 // import RegisterPage from "./Components/LoginRegisterPages/RegisterPage.jsx";
-// import MidHeader from "./Components/GenericComponents/Header/MidHeader.jsx";
-// import UserInfoPage from "./Components/UserInfoPage/UserInfoPage.jsx";
-import ProductPage from "./Components/ProductPage/ProductPage.jsx";
-import AddProduct from "./Components/DashboardSections/ProductsPage/AddProduct/AddProduct.jsx";
-import EditProduct from "./Components/DashboardSections/ProductsPage/EditProduct/EditProduct.jsx";
 
-const routeElement = (currentComponent, showMidHeader = false) => {
+const routeElement = (currentComponent) => {
     return (
         <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh" }}>
             <Header />
@@ -84,18 +79,6 @@ const router = createBrowserRouter([
         element: routeElement(<App />),
     },
     {
-        path: "/product/:productId",
-        element: routeElement(<ProductPage />),
-    },
-    {
-        path: "/products/add-product",
-        element: routeElement(<AddProduct />),
-    },
-    {
-        path: "/products/edit-product/:productId",
-        element: routeElement(<EditProduct />),
-    },
-    {
         path: "/login",
         element: routeElement(<LoginPage />),
     },
@@ -112,8 +95,7 @@ function MainComponent() {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <Provider store={store}>
-                    <RouterProvider router={router}>
-                    </RouterProvider>
+                    <RouterProvider router={router} />
                 </Provider>
             </ThemeProvider>
         </ColorModeContext.Provider>

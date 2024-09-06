@@ -12,15 +12,16 @@ const TextFieldComponent = ({
     keyName,
     mb = 3,
     placeholder = "",
+    required = true
 }) => {
     function handelFormData(e) {
-        setFormData(keyName, e.target.value.trim());
+        setFormData(keyName, e.target.value);
     }
 
     return (
         <Grid item xs={12} sm={colWidth} mb={mb}>
             <TextField
-                required
+                required={required}
                 fullWidth
                 name={id}
                 label={label}

@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { getFilteredProducts, getAllProductsPaginated, getAProduct, addNewProduct, editProduct, deleteProduct, toggleDisableProduct } from '../../API/ProductAPIFunctions';
+import {
+    getFilteredProducts, getAllProductsPaginated, getAProduct, addNewProduct,
+    editProduct, deleteProduct, toggleDisableProduct, searchForProduct
+} from '../../API/ProductAPIFunctions';
 import toast from 'react-hot-toast';
 // import axios from 'axios'
 
@@ -63,6 +66,17 @@ export const toggleDisableProductReducer = createAsyncThunk("toggleDisableProduc
     return response;
 
 })
+
+export const searchForProductReducer = createAsyncThunk("searchForProductAPI/sendRequest", async (filter) => {
+
+    const response = await searchForProduct(filter);
+
+    console.log(response)
+
+    return response;
+
+})
+
 
 ///// state
 const initialState = {
@@ -245,6 +259,26 @@ export const ProductsApiSlice = createSlice({
                 state.isLoading = false;
                 state.error = true;
                 toast.error(action.payload.message);
+            })
+
+            ///// searchForProductReducer
+            .addCase(searchForProductReducer.pending, (state) => {
+                state.isLoading = true;
+            }).addCase(searchForProductReducer.fulfilled, (state, action) => {
+                state.isLoading = false;
+
+                if (action.payload.status) {
+                    state.response = action.payload.response;
+                    toast.success(action.payload.message);
+                } else {
+                    toast.error(action.payload.message);
+                    // state.error = true;
+                }
+            }).addCase(searchForProductReducer.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = true;
+                toast.error(action.payload.message);
+
             })
 
 

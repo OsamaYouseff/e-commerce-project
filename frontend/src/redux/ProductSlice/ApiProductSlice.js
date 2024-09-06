@@ -3,6 +3,9 @@ import { getFilteredProducts, getAllProductsPaginated, getAProduct } from '../..
 import toast from 'react-hot-toast';
 // import axios from 'axios'
 
+
+//// admin dashboard functions
+
 export const getFilteredProductsReducer = createAsyncThunk("getFilteredProductsAPI/sendRequest", async (filter = "") => {
     //const response = await axios.get("https://fakestoreapi.com/products");
 
@@ -22,7 +25,6 @@ export const getAllProductsPaginatedReducer = createAsyncThunk("getAllProductsPa
 
 })
 
-
 export const getAProductReducer = createAsyncThunk("getAProductAPI/sendRequest", async (productId) => {
 
     const response = await getAProduct(productId);
@@ -32,6 +34,7 @@ export const getAProductReducer = createAsyncThunk("getAProductAPI/sendRequest",
     return response;
 
 })
+
 
 
 

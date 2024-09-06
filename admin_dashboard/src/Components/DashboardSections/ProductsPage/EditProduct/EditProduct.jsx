@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { editProductReducer, getAProductReducer } from "../../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { PrintErrors, ValidateProductInfoForm } from "../../../../General/GeneralFunctions";
+import { IsUserLoggedIn, PrintErrors, ValidateProductInfoForm } from "../../../../General/GeneralFunctions";
 
 
 
@@ -21,12 +21,11 @@ const EditProduct = () => {
     const product = useSelector((state) => state.ProductsApiRequest.singleProduct);
     const isLoading = useSelector((state) => state.ProductsApiRequest.isLoading);
     const error = useSelector((state) => state.ProductsApiRequest.error);
-    const { productId } = useParams();
+    const { elementId } = useParams();
 
     useEffect(() => {
-        dispatch(getAProductReducer(productId));
+        dispatch(getAProductReducer(elementId));
     }, []);
-
 
     const handelEditProduct = async (formData) => {
 
@@ -38,13 +37,16 @@ const EditProduct = () => {
             return;
         }
 
-        await dispatch(editProductReducer(formData));
 
-        // if (IsUserLoggedIn()) {
-        // await dispatch(editProductReducer(formData));
-        // } else toast.error("Your not authorized to add new product");
-        //// TODO : after error redirect the user to login page
+        if (IsUserLoggedIn()) {
+            await dispatch(editProductReducer(formData));
+        } else {
+            toast.error("Your not authorized to do this action🙂");
+            setTimeout(() => {
+                GoLoginPage();
 
+            }, 1000);
+        }
     };
 
 

@@ -17,8 +17,10 @@ import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@emotion/react";
 import { useState } from "react";
 
-/// redux
+/// General Vars & Functions
 import { GetUserInfo, IsUserLoggedIn, CheckDuplicated, ValidateProfileInfoForm, PrintErrors } from "../../../General/GeneralFunctions";
+
+/// redux
 import { updateCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
 import { useDispatch } from "react-redux";
 
@@ -65,15 +67,13 @@ const ProfileComponent = ({ customerData }) => {
     };
 
     const handelGender = (event, newValue) => {
-        if (newValue !== null) {
-            const updatedFormData = {
-                ...formData,
-                gender: newValue,
-            };
-            setFormData(updatedFormData);
+        const updatedFormData = {
+            ...formData,
+            gender: newValue,
+        };
+        setFormData(updatedFormData);
 
-            checkDataChanged(updatedFormData);
-        }
+        checkDataChanged(updatedFormData);
     };
 
     const handelFormData = (key, value) => {
@@ -125,6 +125,7 @@ const ProfileComponent = ({ customerData }) => {
                                 type="text"
                                 colWidth={6}
                                 keyName="firstname"
+                                required={false}
                             />
                             <TextFieldComponent
                                 value={formData.lastname}
@@ -134,6 +135,7 @@ const ProfileComponent = ({ customerData }) => {
                                 type="text"
                                 colWidth={6}
                                 keyName="lastname"
+                                required={false}
                             />
                             <TextFieldComponent
                                 value={formData.username}

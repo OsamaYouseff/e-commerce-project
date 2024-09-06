@@ -2,46 +2,31 @@
 /* eslint-disable react/prop-types */
 import { Box, Container, Stack, Typography, Button, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
-import Pagination from '@mui/material/Pagination';
 
 
 //// custom component
 import ProductCardComponent from "../../CardComponent/ProductCardComponent";
-import toast from 'react-hot-toast';
-import SelectMenu from "../../GenericComponents/SelectMenu/SelectMenu"
-
 
 /// Icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SkeletonFeedbackCard from "../../GenericComponents/SkeletonFeedbackCard/SkeletonFeedbackCard";
 
 ///// Redux Actions
-import { getAllProductsPaginatedReducer } from "../../../redux/ProductSlice/ApiProductSlice";
+import { getAllProductsPaginatedReducer, searchForProductReducer } from "../../../redux/ProductSlice/ApiProductSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
-import TextFieldComponent from "../../GenericComponents/TextFieldComponent/TextFieldComponent";
+import { DoScrollToTop, IsUserLoggedIn } from "../../../General/GeneralFunctions";
 import { Link } from "react-router-dom";
 import FilterBar from "../../GenericComponents/FilterBar/FilterBar";
 import PaginationBar from "../../GenericComponents/PaginationBar/PaginationBar";
-
 
 
 const categoryOptions = ["All Category", "Clothes", "Electronics", "Furniture"];
 const sortingOptions = ["Asc", "Desc"];
 
 
-
-function ShowGreetingsMessage() {
-    let prevPage = document.referrer.split("/").at(-1);
-    if (prevPage === "login") {
-        toast.success("Login successfully ,Welcome Back !😀");
-    } else if (prevPage === "register") {
-        toast.success("Registered successfully ,Welcome !😀");
-    }
-}
-
-
 const ProductsPage = () => {
+
+    DoScrollToTop();
 
     const dispatch = useDispatch();
     const products = useSelector((state) => state.ProductsApiRequest.response);
@@ -56,17 +41,22 @@ const ProductsPage = () => {
     const totalPages = totalPagesNum || 1;
 
 
-    const [search, setSearch] = useState("");
-    const [category, setCategory] = useState("All Category");
+    // const [category, setCategory] = useState("All Category");
     const [sorting, setSorting] = useState("Asc");
 
-
+    async function fetchData() {
+        await dispatch(getAllProductsPaginatedReducer({ page, limit, sorting }));
+    }
     useEffect(() => {
-        (async function fetchData() {
-            await dispatch(getAllProductsPaginatedReducer({ page, limit, sorting }));
+        if (IsUserLoggedIn()) {
+            fetchData();
+        } else {
+            toast.error("Your not authorized to do this action🙂");
+            setTimeout(() => {
+                GoLoginPage();
 
-            if (IsUserLoggedIn()) ShowGreetingsMessage();
-        })();
+            }, 1000);
+        };
 
     }, [limit, page, sorting]);
 
@@ -113,12 +103,13 @@ const ProductsPage = () => {
         }
     }
 
+    const handelFilterSearch = (searchValue) => {
+        dispatch(searchForProductReducer(searchValue.trim()));
+    }
 
     return (
-        <Container maxWidth="xl" py={3} sx={{
-            marginY: 3
-        }}>
-            <Link to="/products/add-product"
+        <Container maxWidth="xl" py={3} sx={{ mb: 3 }}>
+            <Link to="/add-product"
                 style={{ position: "fixed", left: 30, bottom: 30, zIndex: 120 }}
             >
                 <Button className="flex-center" variant="contained" color="success"
@@ -142,6 +133,9 @@ const ProductsPage = () => {
                 UiLimit={UiLimit}
                 setLimit={setLimit}
                 setUiLimit={setUiLimit}
+                handelFilterSearch={handelFilterSearch}
+                searchName="Enter Product Name"
+                resetSearch={fetchData}
             />
             {handelShowContent()}
 

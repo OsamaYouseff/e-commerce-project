@@ -13,8 +13,9 @@ import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { Button } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import UserMenu from "./UserMenu";
+import { GetUserInfo } from "../../../General/GeneralFunctions";
 
 const transitionDuration = "350ms";
 
@@ -60,8 +61,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-function ToggleCustomerAvatar(customerData) {
-    return customerData._id !== null ? (
+function ToggleCustomerAvatar(userData) {
+    return userData._id !== null ? (
         <IconButton
 
             aria-label="cart"
@@ -75,7 +76,10 @@ function ToggleCustomerAvatar(customerData) {
     ) : (
         <Stack
             className="flex-between"
-            sx={{ flexDirection: "row", gap: ".3125rem", alignItems: "center" }}
+            sx={{
+                flexDirection: "row", gap: ".3125rem", alignItems: "center",
+                minHeight: { xs: "1rem", md: "2.5rem" },
+            }}
         >
             <Link to="/login">
                 <Button sx={{ fontWeight: "bold" }}>Login</Button>
@@ -92,9 +96,10 @@ function ToggleCustomerAvatar(customerData) {
 const Header = function () {
     const colorMode = useContext(ColorModeContext);
     const theme = useTheme();
-    const fontSizeClamp = "clamp(16px,calc(.75rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
-    const customerData = ""
+    const fontSizeClamp = "clamp(16px,calc(1.5rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
+    const userData = GetUserInfo();
 
+    const currentPath = location.pathname;
 
     return (
         <Box
@@ -103,28 +108,30 @@ const Header = function () {
                 position: "relative",
             }}
         >
-            <Container
+            <Box
                 sx={{
                     bgcolor: "#1d273b",
                     borderRadius: "0rem 0rem .4375rem .4375rem",
-                    width: "inherit",
+                    width: "100vw !important",
                     position: { xs: "relative", md: "fixed" },
                     zIndex: "200",
+                    px: { xs: 2, sm: 3, md: 4 },
+                    py: 1,
+                    // py: { xs: 1, sm: 0 },
                 }}
-                maxWidth="xl"
+            // maxWidth="xl"
             >
                 <Stack
-                    className="top-header flex-between"
+                    className="flex-between"
                     gap={1}
                     sx={{
-                        paddingBottom: { xs: "1rem", md: ".2rem" },
                         alignItems: "center",
                         bgcolor: "#1d273b",
                         flexDirection: "row",
                         flexWrap: "wrap",
                     }}
                 >
-                    <Link to={"/dashboard"} style={{ textDecoration: "none" }}>
+                    <Link to={"/dashboard"} style={{ textDecoration: "none", textAlign: "center" }}>
                         <Typography
                             variant="body"
                             sx={{
@@ -132,20 +139,21 @@ const Header = function () {
                                 fontWeight: "bolder",
                                 width: "fit-content",
                                 color: "white",
+                                flexGrow: 1,
                             }}
                         >
                             EVO MARKET DASHBOARD
                         </Typography>
                     </Link>
 
-                    <Box className="flex-between" sx={{ order: { xs: 0, md: 2 } }}>
+                    <Box className="flex-center" sx={{ order: { xs: 0, md: 2 }, flexGrow: { xs: 1, md: 0 } }}>
                         {/* User Icon */}
                         <Stack
                             alignItems={"center"}
                             direction={"row"}
                             spacing={1}
                         >
-                            {ToggleCustomerAvatar(customerData)}
+                            {ToggleCustomerAvatar(userData)}
 
                         </Stack>
                         {/*== User Icon ==*/}
@@ -188,16 +196,20 @@ const Header = function () {
                         {/*== Theme Icon==*/}
                     </Box>
 
-
-
                     {/* Search */}
                     <Box
-                        className="flex-between"
+                        className="flex-center"
                         flexGrow={0.6}
-                        sx={{ p: 0, minWidth: { xs: "100%", md: "9.375rem" } }}
+                        sx={{
+                            p: 0,
+                            minWidth: { xs: "100%", md: "9.375rem" },
+                        }}
                     >
-                        <Box sx={{ display: { xs: "block", md: "none" }, maxWidth: "fit-content", mr: 1 }}>
-                            <DashboardNavBarDrawer />
+                        <Box sx={{
+                            display: { xs: (currentPath === "/login" ? "none" : "block"), md: "none" },
+                            maxWidth: "fit-content", mr: 1
+                        }}>
+                            <DashboardNavBarDrawer userData={userData} />
                         </Box>
 
                         <Search
@@ -208,6 +220,7 @@ const Header = function () {
                                 maxHeight: "2.5rem !important",
                                 flexGrow: 1,
                                 margin: "0 !important",
+                                display: (currentPath === "/login" ? "none" : "block"),
                             }}
                         >
                             <SearchIconWrapper>
@@ -225,8 +238,8 @@ const Header = function () {
                     </Box>
                     {/*== Search ==*/}
                 </Stack>
-            </Container>
-        </Box>
+            </Box >
+        </Box >
 
     );
 };

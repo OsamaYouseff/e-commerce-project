@@ -22,7 +22,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 ///// Redux Actions
-import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
+import { adminLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 import { GoHome, IsUserLoggedIn, PrintErrors, ValidateLoginForm } from "../../General/GeneralFunctions";
 
 //// styles
@@ -42,10 +42,10 @@ export default function LoginPage() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        // username: "sama",
-        // password: "Os123@.seto2",
-        username: "",
-        password: "",
+        username: "admin",
+        password: "Os123@.seto4",
+        // username: "",
+        // password: "",
         rememberMe: false,
     });
     const [showPassword, setShowPassword] = useState(true);
@@ -62,7 +62,7 @@ export default function LoginPage() {
             return;
         }
 
-        if (!IsUserLoggedIn()) dispatch(customerLoginReducer(formData));
+        if (!IsUserLoggedIn()) dispatch(adminLoginReducer(formData));
         else {
             toast.error("You are already logged in");
             setTimeout(() => { GoHome(); }, 1500)
@@ -91,7 +91,11 @@ export default function LoginPage() {
             <Container
                 component="main"
                 maxWidth="sm"
-                sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 } }}
+                sx={{
+                    boxShadow: 6,
+                    borderRadius: 3, p: { xs: 2, md: 4 },
+                    mt: 8
+                }}
             >
                 <CssBaseline />
                 <Box
@@ -186,13 +190,6 @@ export default function LoginPage() {
                                 mb: 3,
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                sx={{ width: "100%", fontWeight: "bolder" }}
-                            >
-                                Back To Shopping
-                            </Button>
                         </Link>
                         <Grid container>
                             {/* <Grid item xs>

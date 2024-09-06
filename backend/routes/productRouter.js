@@ -228,4 +228,16 @@ router.get('/all', async (req, res) => {
 });
 
 
+
+/// SEARCH FOR PRODUCT
+router.get('/search/:productName', async (req, res) => {
+  try {
+    const products = await Product.find({ title: { $regex: req.params.productName, $options: 'i' } });
+    res.status(200).json(products);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 module.exports = router;

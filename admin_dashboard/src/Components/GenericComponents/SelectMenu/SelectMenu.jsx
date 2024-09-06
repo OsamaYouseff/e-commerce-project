@@ -44,7 +44,7 @@ const SelectMenu = ({ minWidth = "150px", options, selectedOption, setSelectedOp
                     p: 0,
                     minWidth: minWidth,
                     bgcolor: "transparent",
-
+                    flexGrow: 1,
                 }}
             >
                 <ListItemButton

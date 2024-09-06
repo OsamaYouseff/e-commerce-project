@@ -28,7 +28,7 @@ router.post('/register', checkUserFields, async (req, res) => {
         const accessToken = jwt.sign(
             { id: savedUser._id, isAdmin: savedUser.isAdmin },
             process.env.JWT_SEC,
-            { expiresIn: "3d" }
+            { expiresIn: "7d" }
         );
 
         res.status(201).json({ accessToken, userInfo });
@@ -61,6 +61,45 @@ router.post('/login', async (req, res) => {
         const accessToken = jwt.sign(
             { id: user._id, isAdmin: user.isAdmin },
             process.env.JWT_SEC,
+            { expiresIn: "7d" }
+        );
+
+        res.status(200).json({ accessToken, userInfo });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ message: "An error occurred" });
+    }
+});
+
+
+//// LOGIN AN ADMIN
+router.post('/admin-login', async (req, res) => {
+    try {
+        const user = await User.findOne({ username: req.body.username });
+
+        if (!user) {
+            return res.status(401).json({ message: "Invalid username or password" });
+        }
+
+
+        const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid username or password" });
+        }
+
+
+        if (!user.isAdmin) {
+            return res.status(401).json({ message: "Only admins can login" });
+        }
+
+
+        const { password, passwordHistory, updatedAt, createdAt, __v, ...userInfo } = user._doc;
+
+        // Create access token
+        const accessToken = jwt.sign(
+            { id: user._id, isAdmin: user.isAdmin },
+            process.env.JWT_SEC,
             { expiresIn: "3d" }
         );
 
@@ -70,5 +109,7 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ message: "An error occurred" });
     }
 });
+
+
 
 module.exports = router

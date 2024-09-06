@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { addNewProductReducer } from "../../../../redux/ProductSlice/ApiProductSlice";
 
 //// General functions
-import { PrintErrors, ValidateProductInfoForm } from "../../../../General/GeneralFunctions";
+import { GoLoginPage, IsUserLoggedIn, PrintErrors, ValidateProductInfoForm } from "../../../../General/GeneralFunctions";
 
 
 const AddProduct = () => {
@@ -38,13 +38,16 @@ const AddProduct = () => {
             return;
         }
 
-        await dispatch(addNewProductReducer(formData));
 
-        // if (IsUserLoggedIn()) {
-        // await dispatch(addNewProductReducer(formData));
-        // } else toast.error("Your not authorized to add new product");
-        //// TODO : after error redirect the user to login page
+        if (IsUserLoggedIn()) {
+            await dispatch(addNewProductReducer(formData));
+        } else {
+            toast.error("Your not authorized to do this action🙂");
+            setTimeout(() => {
+                GoLoginPage();
 
+            }, 1000);
+        }
     };
 
 

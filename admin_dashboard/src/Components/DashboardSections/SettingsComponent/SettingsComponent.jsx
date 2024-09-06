@@ -62,13 +62,24 @@ const SettingsComponent = () => {
         }
         // toast.error("password changed successfully");
         if (IsUserLoggedIn()) await dispatch(changePasswordReducer(formData));
-        else toast.error("Please log in or sign up with new account🙂");
+        else {
+            toast.error("Your not authorized to do this action");
+            setTimeout(() => {
+                GoLoginPage();
+            }, 1000);
+        };
     };
 
 
     const confirmDeleteAccount = () => {
         if (IsUserLoggedIn()) dispatch(deleteCustomerAccountReducer());
-        else toast.error("Please log in or sign up with new account🙂");
+        else {
+            toast.error("Your not authorized to do this action");
+            setTimeout(() => {
+                GoLoginPage();
+
+            }, 1000);
+        };
     };
 
     const handleDeleteAccount = () => {
@@ -105,7 +116,7 @@ const SettingsComponent = () => {
 
             <Box
                 sx={{
-                    px: { xs: 3, md: 2 },
+                    px: { xs: 3, md: 3 },
                     py: 3,
                     bgcolor: theme.palette.natural.main,
                     borderRadius: "6px",
@@ -146,7 +157,7 @@ const SettingsComponent = () => {
             </Box>
             <Box
                 sx={{
-                    px: { xs: 3, md: 2 },
+                    px: { xs: 3, md: 3 },
                     py: 3,
                     bgcolor: theme.palette.natural.main,
                     borderRadius: "6px",

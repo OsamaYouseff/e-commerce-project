@@ -83,119 +83,122 @@ export const CustomerApiSlice = createSlice({
     reducers: {},
 
     extraReducers(builder) {
-        builder.addCase(customerLoginReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
+        builder
 
-            currentState.isLoading = false;
+            .addCase(customerLoginReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
 
-            console.log("payload : ", action.payload);
+                currentState.isLoading = false;
 
-            if (action.payload.status) {
-                // toast.success("Login successfully ,Welcome 😀");
-                GoHome();
-            }
-            else {
-                currentState.error = true;
+                // console.log("payload : ", action.payload);
+
+                if (action.payload.status) {
+                    // toast.success("Login successfully ,Welcome 😀");
+                    GoHome();
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+
+
+
+            }).addCase(customerLoginReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 toast.error(action.payload.message);
-            }
-
-
-
-        }).addCase(customerLoginReducer.rejected, (currentState) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-        })
-
-        //// register a customer
-        builder.addCase(registerACustomerReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(registerACustomerReducer.fulfilled, (currentState, action) => {
-
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                // toast.success("Registered successfully ,Welcome 😀");
-                GoHome();
-            }
-            else {
                 currentState.error = true;
+            })
+
+            //// register a customer
+            .addCase(registerACustomerReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(registerACustomerReducer.fulfilled, (currentState, action) => {
+
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    // toast.success("Registered successfully ,Welcome 😀");
+                    GoHome();
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(GetMessagesFromObject(action.payload.message));
+                }
+
+            }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 toast.error(GetMessagesFromObject(action.payload.message));
-            }
+                currentState.error = true;
 
-        }).addCase(registerACustomerReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            toast.error(GetMessagesFromObject(action.payload.message));
-            currentState.error = true;
+            })
 
-        })
+            ///// update customer account
+            .addCase(updateCustomerAccountReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(updateCustomerAccountReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Your account updated successfully 😀");
 
-        ///// update customer account
-        builder.addCase(updateCustomerAccountReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(updateCustomerAccountReducer.fulfilled, (currentState, action) => {
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Your account updated successfully 😀");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000)
-            }
-            else {
+            }).addCase(updateCustomerAccountReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
+            })
 
-        }).addCase(updateCustomerAccountReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            ///// change customer's password
+            .addCase(changePasswordReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(changePasswordReducer.fulfilled, (currentState, action) => {
 
-        ///// change customer's password
-        builder.addCase(changePasswordReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(changePasswordReducer.fulfilled, (currentState, action) => {
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Password changed successfully 😀");
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
 
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Password changed successfully 😀");
-            }
-            else {
+            }).addCase(changePasswordReducer.rejected, (currentState, action) => {
+                currentState.isLoading = false;
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
-
-        }).addCase(changePasswordReducer.rejected, (currentState, action) => {
-            currentState.isLoading = false;
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            })
 
 
-        ////// delete customer account
-        builder.addCase(deleteCustomerAccountReducer.pending, (currentState) => {
-            currentState.isLoading = true;
-        }).addCase(deleteCustomerAccountReducer.fulfilled, (currentState, action) => {
-            ResetLocalStorage();
+            ////// delete customer account
+            .addCase(deleteCustomerAccountReducer.pending, (currentState) => {
+                currentState.isLoading = true;
+            }).addCase(deleteCustomerAccountReducer.fulfilled, (currentState, action) => {
+                ResetLocalStorage();
 
-            currentState.isLoading = false;
-            if (action.payload.status) {
-                toast.success("Your account deleted successfully 😑");
+                currentState.isLoading = false;
+                if (action.payload.status) {
+                    toast.success("Your account deleted successfully 😑");
 
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1000)
-            }
-            else {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000)
+                }
+                else {
+                    currentState.error = true;
+                    toast.error(action.payload.message);
+                }
+
+            }).addCase(deleteCustomerAccountReducer.rejected, (currentState, action) => {
                 currentState.error = true;
                 toast.error(action.payload.message);
-            }
-
-        }).addCase(deleteCustomerAccountReducer.rejected, (currentState, action) => {
-            currentState.error = true;
-            toast.error(action.payload.message);
-        })
+            })
     }
 })
 

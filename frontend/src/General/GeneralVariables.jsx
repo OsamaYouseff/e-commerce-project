@@ -58,3 +58,7 @@ export const CustomerMenuItemsVar = [
         action: null,
     },
 ];
+
+export const coupons = [
+    "10OFF", "15OFF", "20OFF", "25OFF", "50OFF"
+]

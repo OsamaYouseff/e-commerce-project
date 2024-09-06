@@ -57,25 +57,28 @@ const ProductCardComponent = ({ productData }) => {
 
     const confirmChangeProductStatus = () => {
 
-        switch (operationType) {
-            case "enable":
-                dispatch(toggleDisableProductReducer(productData._id));
-                break;
-            case "disable":
-                dispatch(toggleDisableProductReducer(productData._id));
-                break;
-            case "delete":
-                dispatch(deleteProductReducer(productData._id));
-                break;
-            default:
-                break;
-        }
 
-        // if (IsUserLoggedIn()) {
-        //      dispatch(deleteProductReducer(productData._id));
-        // } else {
-        //     toast.error("Please log in or sign up with new account to do this action🙂");
-        // }
+        if (IsUserLoggedIn()) {
+
+            switch (operationType) {
+                case "enable":
+                    dispatch(toggleDisableProductReducer(productData._id));
+                    break;
+                case "disable":
+                    dispatch(toggleDisableProductReducer(productData._id));
+                    break;
+                case "delete":
+                    dispatch(deleteProductReducer(productData._id));
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            toast.error("Your not authorized to do this action🙂");
+            setTimeout(() => {
+                GoLoginPage();
+            }, 1000);
+        }
     };
 
     return (
@@ -189,7 +192,7 @@ const ProductCardComponent = ({ productData }) => {
                             sx={productButtonStyle}
                             variant="contained"
                             onClick={() => {
-                                document.location.href = `/products/edit-product/${productData._id}`
+                                document.location.href = `/edit-product/${productData._id}`
                             }}
                         >
                             <EditRoundedIcon sx={{ fontSize: "1.25rem" }} />

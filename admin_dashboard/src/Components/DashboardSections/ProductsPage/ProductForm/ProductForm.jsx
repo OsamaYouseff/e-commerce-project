@@ -9,9 +9,6 @@ import { useTheme } from "@emotion/react";
 /// redux
 import { useSelector } from "react-redux";
 
-//// General functions
-import { GetUserInfo, IsUserLoggedIn } from "../../../../General/GeneralFunctions";
-
 
 //// custom components
 import TextFieldComponent from "../../../GenericComponents/TextFieldComponent/TextFieldComponent";
@@ -19,6 +16,8 @@ import { ColorModeContext } from "../../../../Theme/theme";
 import SelectComponent from "./SelectComponent/SelectComponent";
 import ImageUploader from "./ImageUploader/ImageUploader";
 import LoaderComponent from "../../../GenericComponents/LoaderComponent/LoaderComponent";
+import toast from 'react-hot-toast';
+
 
 const mainBorderColor = "#7a7a7acc"
 
@@ -57,8 +56,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
 
 
     return (
-        <Container maxWidth="xl" sx={{ p: 0 }}>
-            <Stack sx={{ minWidth: "100%", p: 1, px: 2, flex: 1, overflowX: "hidden", mb: 6, mt: 1 }} >
+        <Container maxWidth="xl" sx={{ p: { xs: 2, md: "0 !important" } }}>
+            <Stack sx={{ minWidth: "100%", flexGrow: 1, overflowX: "hidden", mb: 6, mt: 2 }} >
                 <Link style={{ maxWidth: "fit-content", mb: 1 }} to="/products">
                     <Button
                         size="small"
@@ -74,16 +73,25 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
 
                 <Stack className="flex-between"
                     sx={{
-                        gap: 3, mt: 2,
-                        flexDirection: { xs: "column-reverse !important ", md: "row !important" }, width: "100%", p: 0,
-                        alignItems: { xs: "center", sm: "flex-start" }
+                        gap: 3,
+                        mt: 2,
+                        flexDirection: {
+                            xs: "column-reverse !important ",
+                            md: "row !important"
+                        },
+                        width: "100%", p: 0,
+                        alignItems: { xs: "center", sm: "flex-start" },
+                        minHeight: "90vh"
                     }} >
 
                     {/* Left Section */}
                     <Box sx={{ flexGrow: 1, minWidth: { xs: "100%", md: "49%" } }} >
 
                         <Typography variant="h1" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Description</Typography>
-                        <Box sx={{ borderRadius: "10px", p: 2, mb: 3, border: `1px solid ${mainBorderColor}` }}>
+                        <Box sx={{
+                            borderRadius: "10px", p: 2, mb: 3, border: `1px solid ${mainBorderColor}`,
+                            bgcolor: "bgColor.main",
+                        }}>
                             <Typography variant="h2" sx={{ fontSize: ".9rem", fontWeight: "bold", mb: 1 }} >Product Name</Typography>
                             <TextFieldComponent colWidth={4}
                                 setFormData={handelFormData}
@@ -100,7 +108,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     maxWidth: "100%",
                                     padding: "10px", minHeight: "180px",
                                     borderRadius: "6px",
-                                    backgroundColor: theme.palette.background.paper,
+                                    backgroundColor: "transparent",
                                     color: `${theme.palette.text.primary}`,
                                     border: `1px solid ${mainBorderColor}`,
                                 }} colWidth={4}
@@ -117,12 +125,16 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                 gap: 2, borderRadius: "10px",
                                 p: 2, border: `1px solid ${mainBorderColor}`, width: "100%",
                                 flexWrap: "wrap",
-                                minHeight: "150px"
+                                minHeight: "150px",
+                                bgcolor: "bgColor.main",
+
                             }}>
 
                             <Box className="flex-center" gap={2}>
                                 <Typography variant="h2" sx={{ fontSize: "1rem", fontWeight: "bold", minWidth: "65px" }} >Price</Typography>
-                                <Box className="flex-center" sx={{ position: "relative" }}>
+                                <Box className="flex-center" sx={{
+                                    position: "relative",
+                                }}>
                                     <span
                                         style={{
                                             fontSize: "1.3rem",
@@ -196,8 +208,11 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                 </Typography>
                                 <TextField type="number" size="small"
 
-                                    onMouseLeave={(e) => {
-                                        if (e.target.value <= 0) handelFormData("amount", 1)
+                                    onBlur={(e) => {
+                                        if (e.target.value <= 0) {
+                                            toast.error("Invalid amount");
+                                            handelFormData("amount", 1);
+                                        }
                                     }}
                                     onChange={(e) => { handelFormData("amount", e.target.value) }}
                                     sx={{
@@ -209,42 +224,45 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     }}
                                     value={formData.amount} />
                             </Box>
-                            <Button
-                                onClick={resetOperation}
-                                type="submit"
-                                fullWidth
-                                color="error"
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                    fontWeight: "bolder",
-                                    width: { xs: "100%", md: "140px" },
-                                }}
-                            >
-                                {cancelBtnName}
-                            </Button>
-                            <Button
-                                onClick={() => handelSubmitForm(formData)}
-                                type="submit"
-                                fullWidth
-                                color="success"
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                    fontWeight: "bolder",
-                                    width: { xs: "100%", md: "140px" },
-                                }}
-                            >
-                                {handelBtnName}
-                            </Button>
 
+
+                            <Box sx={{ width: "100%", display: "flex", gap: 4 }} >
+                                <Button
+                                    onClick={resetOperation}
+                                    type="submit"
+                                    fullWidth
+                                    color="error"
+                                    variant="outlined"
+                                    size="small"
+                                    sx={{
+                                        fontWeight: "bolder",
+                                        width: { xs: "100%", md: "140px" },
+                                    }}
+                                >
+                                    {cancelBtnName}
+                                </Button>
+                                <Button
+                                    onClick={() => handelSubmitForm(formData)}
+                                    type="submit"
+                                    fullWidth
+                                    color="success"
+                                    variant="outlined"
+                                    size="small"
+                                    sx={{
+                                        fontWeight: "bolder",
+                                        width: { xs: "100%", md: "140px" },
+                                    }}
+                                >
+                                    {handelBtnName}
+                                </Button>
+                            </Box>
                         </Box>
 
                     </Box>
                     {/*== Left Section ==*/}
 
                     {/* Right Section */}
-                    <Box sx={{ flexGrow: 1, minWidth: { xs: "100%", md: "49%" } }}>
+                    <Box sx={{ flexGrow: 1, minWidth: { xs: "100%", md: "45%" }, }}>
                         <Typography variant="h2" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Product Image</Typography>
                         <Box className="flex-center" sx={{
                             borderRadius: "10px",
@@ -253,6 +271,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                             cursor: "pointer",
                             maxWidth: "100%",
                             position: "relative",
+                            bgcolor: "bgColor.main",
+
                         }}>
                             <Box className="flex-center" sx={{
                                 width: "70px",
@@ -277,7 +297,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                         <Typography variant="h1" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Category</Typography>
                         <Box sx={{
                             borderRadius: "10px", p: 2,
-                            border: `1px solid ${mainBorderColor}`, width: "100%", minHeight: "150px"
+                            border: `1px solid ${mainBorderColor}`, width: "100%", minHeight: { xs: "100px", md: "170px" },
+                            bgcolor: "bgColor.main",
                         }}>
                             <Typography variant="h2" sx={{ fontSize: ".9rem", fontWeight: "bold", mb: 1 }} >Product Category</Typography>
                             <SelectComponent category={formData.categories} handelFormData={handelFormData} />
