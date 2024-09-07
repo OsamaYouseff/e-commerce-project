@@ -143,7 +143,7 @@ export const deleteCustomerAccount = async () => {
 
     try {
         const response = await axios.request(config);
-        // console.log('Customer deleted successfully:', response.data);
+        console.log('Customer deleted successfully:', response.data);
         return { status: true, message: response.data };
 
     } catch (error) {

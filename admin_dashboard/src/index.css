@@ -24,7 +24,7 @@
 ::-webkit-scrollbar-track {
     box-shadow: outset 0 0 0.1563rem 0.125rem rgba(255, 255, 255, 0.5);
     background-color: #1d273b;
-    height: 30px;
+    height: 1.875rem;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -184,8 +184,8 @@ img {
 
 .table-row {
     transition: all 0.35s ease;
-    border-radius: 3px;
+    border-radius: .1875rem;
 }
 .table-row:hover {
-    box-shadow: inset 0px 0px 1px 1px #1595d0;
+    box-shadow: inset 0rem 0rem .0625rem .0625rem #1595d0;
 }

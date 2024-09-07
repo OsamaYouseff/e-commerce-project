@@ -3,11 +3,15 @@
 
 2 - make token expire after 7 days instead of 3 days. (done)
 
-3 - don't forget to allow login with usermane or with email for login endpoint.
+3 - don't forget to allow login with usermane or with email for login endpoint. (cancel)
 
 4 - don't forget to fix TextFieldComponent issue with the witespace writing. (done)
 
-5 - Move coupons to general variables in both frontend projects.
+5 - Move coupons to general variables in both frontend projects. (done)
 
 6 - when customer deletes his account you must also delete his cart and hist withlisths and his orders clear every thing blongs to the customer
+
+7 - don't forget to change all px to rem after finishing development.
+
+
 

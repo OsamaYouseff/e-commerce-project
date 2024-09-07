@@ -97,7 +97,7 @@ const ProfileComponent = ({ userData }) => {
             <Stack
                 sx={{
                     display: "flex",
-                    gap: "20px",
+                    gap: "1.25rem",
                     flexDirection: { xs: "column", md: "row" },
                     width: "100%",
                     height: "100%",
@@ -110,7 +110,7 @@ const ProfileComponent = ({ userData }) => {
                         p: { xs: 1, md: 5 },
                         // bgcolor: "black",
                         flexGrow: 1,
-                        borderRadius: "6px",
+                        borderRadius: ".375rem",
                     }}
                 >
                     <Typography variant="h5">Profile Info</Typography>
@@ -241,7 +241,7 @@ const ProfileComponent = ({ userData }) => {
                                 mt: 3,
                                 mb: 2,
                                 fontWeight: "bolder",
-                                width: { xs: "100%", md: "200px" },
+                                width: { xs: "100%", md: "12.5rem" },
                             }}
                         >
                             Update Profile

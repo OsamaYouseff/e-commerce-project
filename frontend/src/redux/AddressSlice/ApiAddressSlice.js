@@ -16,30 +16,26 @@ export const getCustomerAddressesReducer = createAsyncThunk("getCustomerAddresse
 }
 );
 
-export const deleteCustomerAddressReducer = createAsyncThunk(
-    "deleteCustomerAddressAPI/sendRequest",
-    async (addressId) => {
-        const response = await deleteCustomerAddress(addressId);
+export const deleteCustomerAddressReducer = createAsyncThunk("deleteCustomerAddressAPI/sendRequest", async (addressId) => {
+    const response = await deleteCustomerAddress(addressId);
 
-        // console.log(response)
+    // console.log(response)
 
-        // console.log("########### : ", response.data.updatedAddresses
-        //     , response.data.message);
-        return response;
+    // console.log("########### : ", response.data.updatedAddresses
+    //     , response.data.message);
+    return response;
 
-    }
+}
 );
 
-export const getCustomerAddressReducer = createAsyncThunk(
-    "getCustomerAddressAPI/sendRequest",
-    async (addressId) => {
+export const getCustomerAddressReducer = createAsyncThunk("getCustomerAddressAPI/sendRequest", async (addressId) => {
 
-        const response = await getCustomerAddress(addressId);
+    const response = await getCustomerAddress(addressId);
 
-        // console.log("%%%%%%%%%%%% : ", response)
+    // console.log("%%%%%%%%%%%% : ", response)
 
-        return response;
-    }
+    return response;
+}
 );
 
 export const getCustomerDefaultAddressReducer = createAsyncThunk("getCustomerDefaultAddressAPI/sendRequest", async () => {
@@ -54,7 +50,7 @@ export const getCustomerDefaultAddressReducer = createAsyncThunk("getCustomerDef
 export const addNewCustomerAddressReducer = createAsyncThunk("addNewCustomerAddressAPI/sendRequest", async (addressData) => {
     const response = await addNewCustomerAddress(addressData);
 
-    if (response.status) history.back();
+    if (response.status) document.location.href = "/userInfo/address";
 
     return response;
 }

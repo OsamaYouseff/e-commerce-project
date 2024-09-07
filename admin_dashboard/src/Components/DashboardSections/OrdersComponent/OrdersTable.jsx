@@ -6,24 +6,24 @@ import { convertCentsToDollars, GetStatusColor, FormatDateToSimpleDate } from ".
 let cellStyle = {
   // flexGrow: 1,
   // maxWidth: "calc(100% / 5)",
-  minWidth: "100px",
-  fontSize: "14px",
+  minWidth: "6.25rem",
+  fontSize: ".875rem",
 }
 let cellStyleBolder = {
   fontWeight: "bolder",
-  minWidth: "100px",
-  fontSize: "14px",
+  minWidth: "6.25rem",
+  fontSize: ".875rem",
 }
 
 const OrdersTable = ({ orders }) => {
 
   return (
-    <Box sx={{ bgcolor: "sectionBgColor.main", borderRadius: "4px", p: .6, overflowX: "auto", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;" }} >
+    <Box sx={{ bgcolor: "sectionBgColor.main", borderRadius: ".25rem", p: .6, overflowX: "auto", boxShadow: "rgba(0, 0, 0, 0.24) 0rem .1875rem .5rem;" }} >
       <TableContainer sx={{ mb: 2, width: "100%", }}>
         <Table style={{ width: "100%", }}>
           <TableHeader style={{ width: "100%" }}>
-            <tr className="flex-between" style={{ width: "100%", padding: "5px 10px" }}>
-              <TableCell style={{ ...cellStyleBolder, width: "220px" }}>ORDER ID</TableCell>
+            <tr className="flex-between" style={{ width: "100%", padding: ".3125rem .625rem" }}>
+              <TableCell style={{ ...cellStyleBolder, width: "13.75rem" }}>ORDER ID</TableCell>
               <TableCell style={cellStyleBolder}>CLIENT </TableCell>
               <TableCell style={cellStyleBolder}>PRICE</TableCell>
               <TableCell style={cellStyleBolder}>STATUS</TableCell>
@@ -36,12 +36,12 @@ const OrdersTable = ({ orders }) => {
                 <Divider key={index} />
                 <TableBody onClick={() => { window.location.href = `/order-summary/${order._id}` }}
                   key={order} className="table-row" style={{ cursor: "pointer", }} >
-                  <TableRow className="flex-between" style={{ width: "100%", padding: "10px" }} key={"324234"} >
-                    <TableCell style={{ ...cellStyle, width: "220px" }}>
+                  <TableRow className="flex-between" style={{ width: "100%", padding: ".625rem" }} key={"324234"} >
+                    <TableCell style={{ ...cellStyle, width: "13.75rem" }}>
                       <span className="text-sm">{order._id}</span>
                     </TableCell>
-                    <TableCell style={{ ...cellStyle, width: "100px", }}>
-                      <span style={{ fontSize: "15px" }}>{order.username.slice(0, 10)}</span>
+                    <TableCell style={{ ...cellStyle, width: "6.25rem", }}>
+                      <span style={{ fontSize: ".9375rem" }}>{order.username.slice(0, 10)}</span>
                     </TableCell>
                     <TableCell style={{ ...cellStyle, }}>
                       <span>$ {convertCentsToDollars(order.totalAmountInCents)}</span>
@@ -49,8 +49,8 @@ const OrdersTable = ({ orders }) => {
                     <TableCell style={{ ...cellStyle, }}>
                       <span style={{
                         backgroundColor: GetStatusColor(order.status),
-                        color: "#f9f9f9", padding: "2px 7px",
-                        borderRadius: "5px",
+                        color: "#f9f9f9", padding: ".125rem .4375rem",
+                        borderRadius: ".3125rem",
                         fontWeight: "bold"
                       }}>{order.status}</span>
                     </TableCell>

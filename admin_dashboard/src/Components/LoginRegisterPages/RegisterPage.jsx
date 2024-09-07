@@ -45,7 +45,7 @@ const eyeStyles = {
     zIndex: 10,
     color: "white",
     borderRadius: "50%",
-    height: "25px",
+    height: "1.5625rem",
 };
 
 export default function RegisterPage() {

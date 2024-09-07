@@ -15,7 +15,7 @@ const NoItemsComponent = ({ message, minHeight, fontSize }) => {
                 bgcolor: theme.palette.sectionBgColor.main,
                 color: theme.palette.text.primary,
                 textAlign: "center",
-                borderRadius: "10px",
+                borderRadius: ".625rem",
                 fontWeight: "bolder",
                 fontSize: fontSize,
                 width: "100%",

@@ -45,7 +45,7 @@ export default function DashboardNavBarDrawer() {
         <Box
             className="flex-between-column"
             sx={{
-                width: { xs: "300px", sm: "260px" },
+                width: { xs: "18.75rem", sm: "16.25rem" },
                 p: { xs: 1, sm: 2 },
                 // pr: { xs: 0, sm: 2 },
                 bgcolor: theme.palette.categoryColor.main,
@@ -88,8 +88,8 @@ export default function DashboardNavBarDrawer() {
     return (
         <Box
             style={{
-                width: "36px",
-                height: "36px",
+                width: "2.25rem",
+                height: "2.25rem",
                 color: theme.palette.text.primary,
             }}
         >

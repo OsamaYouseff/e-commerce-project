@@ -49,7 +49,7 @@ const DashboardNavBar = () => {
             sx={{
                 width: {
                     xs: "100%",
-                    md: "200px",
+                    md: "12.5rem",
                 },
                 maxWidth: {
                     xs: "100%",
@@ -65,7 +65,7 @@ const DashboardNavBar = () => {
         >
             <Box sx={{
                 position: "fixed",
-                maxWidth: { xs: "200px", md: "180px" }
+                maxWidth: { xs: "12.5rem", md: "11.25rem" }
             }}>
                 <Typography
                     sx={{
@@ -100,7 +100,7 @@ const DashboardNavBar = () => {
                                 sx={{
                                     minWidth: "100%",
                                     py: .75,
-                                    borderLeft: `2px solid transparent`,
+                                    borderLeft: `.125rem solid transparent`,
                                     borderColor: `${item.title.toLowerCase() == getActiveSection(section) ? theme.palette.text.primary : "transparent"}`,
                                     fontWeight: "bold",
                                     mb: 0.6,
@@ -130,7 +130,7 @@ const DashboardNavBar = () => {
                                 sx={{
                                     minWidth: "100%",
                                     py: .75,
-                                    borderLeft: `2px solid ${item.title.toLowerCase() ==
+                                    borderLeft: `.125rem solid ${item.title.toLowerCase() ==
                                         section
                                         ? theme.palette.text.primary
                                         : "inherit"

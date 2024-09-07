@@ -12,7 +12,7 @@ const FilterBar = ({ title, sorting, setSorting, sortingOptions, UiLimit, setLim
             justifyContent={"space-between"}
             flexWrap={"wrap"}
             gap={3}
-            sx={{ bgcolor: "sectionBgColor.main", p: 2, borderRadius: "10px", boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px;" }}
+            sx={{ bgcolor: "sectionBgColor.main", p: 2, borderRadius: ".625rem", boxShadow: "rgba(0, 0, 0, 0.24) 0rem .1875rem .5rem;" }}
         >
             <Box sx={{ display: "flex", alignItems: "center", width: "100%", gap: 2, flexWrap: "wrap" }}>
 
@@ -20,7 +20,7 @@ const FilterBar = ({ title, sorting, setSorting, sortingOptions, UiLimit, setLim
                     variant="h4"
                     sx={{
                         fontWeight: "bold",
-                        fontSize: { xs: "1.25rem", sm: "20px" },
+                        fontSize: { xs: "1.25rem", sm: "1.25rem" },
                         width: { xs: "100%", sm: "auto" },
                     }}
                 >
@@ -28,7 +28,7 @@ const FilterBar = ({ title, sorting, setSorting, sortingOptions, UiLimit, setLim
                 </Typography>
 
                 <Box className="flex-between" sx={{ gap: 2, flexGrow: { xs: 1, sm: 0 } }}>
-                    <SelectMenu minWidth="140px" options={sortingOptions} selectedOption={sorting} setSelectedOption={setSorting} />
+                    <SelectMenu minWidth="8.75rem" options={sortingOptions} selectedOption={sorting} setSelectedOption={setSorting} />
                     <TextField
                         fullWidth
                         label={"---- items num ----"}
@@ -46,14 +46,14 @@ const FilterBar = ({ title, sorting, setSorting, sortingOptions, UiLimit, setLim
                         size="small"
                         placeholder={"items num"}
                         sx={{
-                            width: "140px",
+                            width: "8.75rem",
                             flexGrow: 1,
                             maxHeight: "2.2rem",
                             "input": {
                                 textAlign: "center", p: .76,
                             },
                             ".MuiOutlinedInput-notchedOutline.css-9425fu-MuiOutlinedInput-notchedOutline": {
-                                borderRadius: "8px",
+                                borderRadius: ".5rem",
                             }
                         }}
                     />

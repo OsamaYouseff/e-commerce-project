@@ -9,7 +9,7 @@ import { ColorModeContext } from "../../../Theme/theme";
 import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
-const SelectMenu = ({ minWidth = "150px", options, selectedOption, setSelectedOption }) => {
+const SelectMenu = ({ minWidth = "9.375rem", options, selectedOption, setSelectedOption }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     // const [selectedIndex, setSelectedIndex] = useState(0);
     const open = Boolean(anchorEl);
@@ -55,7 +55,7 @@ const SelectMenu = ({ minWidth = "150px", options, selectedOption, setSelectedOp
                     aria-expanded={open ? "true" : "false"}
                     onClick={handleClickListItem}
                     sx={{
-                        maxHeight: "2.2rem", border: ".0625rem solid #777", borderRadius: "8px",
+                        maxHeight: "2.2rem", border: ".0625rem solid #777", borderRadius: ".5rem",
                     }}
                 >
                     <ListItemText

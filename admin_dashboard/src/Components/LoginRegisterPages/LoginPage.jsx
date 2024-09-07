@@ -35,17 +35,17 @@ const eyeStyles = {
     zIndex: 10,
     color: "white",
     borderRadius: "50%",
-    height: "25px",
+    height: "1.5625rem",
 };
 
 export default function LoginPage() {
     const dispatch = useDispatch();
 
     const [formData, setFormData] = useState({
-        username: "admin",
-        password: "Os123@.seto4",
-        // username: "",
-        // password: "",
+        // username: "admin",
+        // password: "Os123@.seto4",
+        username: "",
+        password: "",
         rememberMe: false,
     });
     const [showPassword, setShowPassword] = useState(true);

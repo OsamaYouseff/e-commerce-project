@@ -35,7 +35,7 @@ const SearchBar = ({ handelFilterSearch, searchName, resetSearch }) => {
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
                 sx={{
-                    width: { xs: "100%", sm: "240px", md: "300px" },
+                    width: { xs: "100%", sm: "15rem", md: "18.75rem" },
                     maxHeight: "2.2rem",
                     flexGrow: { xs: 1, sm: 0 },
                     "input": {
@@ -43,12 +43,12 @@ const SearchBar = ({ handelFilterSearch, searchName, resetSearch }) => {
                         pl: 5
                     },
                     ".MuiOutlinedInput-notchedOutline.css-9425fu-MuiOutlinedInput-notchedOutline": {
-                        borderRadius: "8px",
+                        borderRadius: ".5rem",
                     },
                 }}
             />
             <SearchIcon sx={{
-                position: "absolute", top: "50%", left: "10px", transform: "translateY(-50%)",
+                position: "absolute", top: "50%", left: ".625rem", transform: "translateY(-50%)",
                 color: "gray",
             }} />
             <CloseIcon onClick={() => handelResetSearch()} sx={{
@@ -58,7 +58,7 @@ const SearchBar = ({ handelFilterSearch, searchName, resetSearch }) => {
 
             <Button variant="outlined"
                 sx={{
-                    fontWeight: "bolder", maxHeight: "2.2rem", borderRadius: "8px"
+                    fontWeight: "bolder", maxHeight: "2.2rem", borderRadius: ".5rem"
                 }}
                 onClick={() => applySearch(searchValue)}
             >

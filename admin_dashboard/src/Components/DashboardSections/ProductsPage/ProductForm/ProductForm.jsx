@@ -89,7 +89,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
 
                         <Typography variant="h1" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Description</Typography>
                         <Box sx={{
-                            borderRadius: "10px", p: 2, mb: 3, border: `1px solid ${mainBorderColor}`,
+                            borderRadius: ".625rem", p: 2, mb: 3, border: `.0625rem solid ${mainBorderColor}`,
                             bgcolor: "bgColor.main",
                         }}>
                             <Typography variant="h2" sx={{ fontSize: ".9rem", fontWeight: "bold", mb: 1 }} >Product Name</Typography>
@@ -106,11 +106,11 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     overflowY: "auto",
                                     minWidth: "100%",
                                     maxWidth: "100%",
-                                    padding: "10px", minHeight: "180px",
-                                    borderRadius: "6px",
+                                    padding: ".625rem", minHeight: "11.25rem",
+                                    borderRadius: ".375rem",
                                     backgroundColor: "transparent",
                                     color: `${theme.palette.text.primary}`,
-                                    border: `1px solid ${mainBorderColor}`,
+                                    border: `.0625rem solid ${mainBorderColor}`,
                                 }} colWidth={4}
                                 defaultValue={formData.desc}
                                 value={formData.desc}
@@ -122,16 +122,16 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                         <Typography variant="h2" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >More Details</Typography>
                         <Box className="flex-between"
                             sx={{
-                                gap: 2, borderRadius: "10px",
-                                p: 2, border: `1px solid ${mainBorderColor}`, width: "100%",
+                                gap: 2, borderRadius: ".625rem",
+                                p: 2, border: `.0625rem solid ${mainBorderColor}`, width: "100%",
                                 flexWrap: "wrap",
-                                minHeight: "150px",
+                                minHeight: "9.375rem",
                                 bgcolor: "bgColor.main",
 
                             }}>
 
                             <Box className="flex-center" gap={2}>
-                                <Typography variant="h2" sx={{ fontSize: "1rem", fontWeight: "bold", minWidth: "65px" }} >Price</Typography>
+                                <Typography variant="h2" sx={{ fontSize: "1rem", fontWeight: "bold", minWidth: "4.0625rem" }} >Price</Typography>
                                 <Box className="flex-center" sx={{
                                     position: "relative",
                                 }}>
@@ -139,8 +139,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                         style={{
                                             fontSize: "1.3rem",
                                             fontWeight: "bold", position: "absolute", left: 0,
-                                            border: `1px solid #494949`, padding: "0px 8px",
-                                            borderRadius: "6px",
+                                            border: `.0625rem solid #494949`, padding: "0rem .5rem",
+                                            borderRadius: ".375rem",
                                         }}>$</span>
                                     <TextField type="number" size="small"
 
@@ -149,7 +149,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                         }}
                                         onChange={(e) => { handelFormData("price", e.target.value) }}
                                         sx={{
-                                            minWidth: "120px", maxWidth: "140px",
+                                            minWidth: "7.5rem", maxWidth: "8.75rem",
                                             "input": {
                                                 textAlign: "center",
                                                 fontSize: "1rem", px: 1, pl: 3.8, py: .8
@@ -163,14 +163,14 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                             <Box className="flex-between" gap={2}>
                                 <Typography variant="h2" sx={{
                                     fontSize: "1rem",
-                                    fontWeight: "bold", minWidth: "65px"
+                                    fontWeight: "bold", minWidth: "4.0625rem"
                                 }} >
                                     Size
                                 </Typography>
                                 <TextField type="text" size="small"
                                     onChange={(e) => handelFormData("size", e.target.value)}
                                     sx={{
-                                        minWidth: "120px", maxWidth: "140px",
+                                        minWidth: "7.5rem", maxWidth: "8.75rem",
                                         "input": { textAlign: "center", fontSize: ".8rem", p: .7 }
                                     }}
                                     value={formData.size} />
@@ -180,7 +180,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                             <Box className="flex-center" gap={2}>
                                 <Typography variant="h2" sx={{
                                     fontSize: "1rem",
-                                    fontWeight: "bold", minWidth: "65px"
+                                    fontWeight: "bold", minWidth: "4.0625rem"
                                 }} >
                                     Color
                                 </Typography>
@@ -188,8 +188,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     type="color"
                                     defaultValue={formData.color}
                                     style={{
-                                        width: "33px",
-                                        height: "33px",
+                                        width: "2.0625rem",
+                                        height: "2.0625rem",
                                         cursor: "pointer",
                                         background: "transparent",
                                         border: "none"
@@ -202,7 +202,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                             <Box className="flex-between" gap={2} >
                                 <Typography variant="h2" sx={{
                                     fontSize: "1rem",
-                                    fontWeight: "bold", minWidth: "65px"
+                                    fontWeight: "bold", minWidth: "4.0625rem"
                                 }} >
                                     Amount
                                 </Typography>
@@ -216,7 +216,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     }}
                                     onChange={(e) => { handelFormData("amount", e.target.value) }}
                                     sx={{
-                                        minWidth: "100px", maxWidth: "140px",
+                                        minWidth: "6.25rem", maxWidth: "8.75rem",
                                         "input": {
                                             textAlign: "center",
                                             fontSize: "1rem", px: 1, pl: 2.5, py: .8
@@ -236,7 +236,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     size="small"
                                     sx={{
                                         fontWeight: "bolder",
-                                        width: { xs: "100%", md: "140px" },
+                                        width: { xs: "100%", md: "8.75rem" },
                                     }}
                                 >
                                     {cancelBtnName}
@@ -250,7 +250,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     size="small"
                                     sx={{
                                         fontWeight: "bolder",
-                                        width: { xs: "100%", md: "140px" },
+                                        width: { xs: "100%", md: "8.75rem" },
                                     }}
                                 >
                                     {handelBtnName}
@@ -265,9 +265,9 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                     <Box sx={{ flexGrow: 1, minWidth: { xs: "100%", md: "45%" }, }}>
                         <Typography variant="h2" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Product Image</Typography>
                         <Box className="flex-center" sx={{
-                            borderRadius: "10px",
+                            borderRadius: ".625rem",
                             p: 2, mb: 3,
-                            border: `1px dashed ${mainBorderColor}`,
+                            border: `.0625rem dashed ${mainBorderColor}`,
                             cursor: "pointer",
                             maxWidth: "100%",
                             position: "relative",
@@ -275,18 +275,18 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
 
                         }}>
                             <Box className="flex-center" sx={{
-                                width: "70px",
-                                height: "300px",
+                                width: "4.375rem",
+                                height: "18.75rem",
                             }}>
                                 <img
                                     style={{
                                         width: "100%",
                                         maxWidth: "100%",
-                                        borderRadius: "10px",
+                                        borderRadius: ".625rem",
                                         filter: "invert(76%) sepia(76%) saturate(3451%) hue-rotate(180deg) brightness(55%) contrast(20%)",
                                         display: formData.img ? "none" : "block",
                                     }}
-                                    src="/src/assets/images/placeholder-images-image_large.svg"
+                                    src="/images/placeholder-images-image_large.svg"
                                     alt="product-img"
                                 />
                             </Box>
@@ -296,8 +296,8 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
 
                         <Typography variant="h1" sx={{ fontSize: "1.25rem", fontWeight: "bold", mb: 1 }} >Category</Typography>
                         <Box sx={{
-                            borderRadius: "10px", p: 2,
-                            border: `1px solid ${mainBorderColor}`, width: "100%", minHeight: { xs: "100px", md: "170px" },
+                            borderRadius: ".625rem", p: 2,
+                            border: `.0625rem solid ${mainBorderColor}`, width: "100%", minHeight: { xs: "6.25rem", md: "10.625rem" },
                             bgcolor: "bgColor.main",
                         }}>
                             <Typography variant="h2" sx={{ fontSize: ".9rem", fontWeight: "bold", mb: 1 }} >Product Category</Typography>

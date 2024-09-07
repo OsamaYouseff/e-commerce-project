@@ -3,7 +3,6 @@ import { IconButton, Stack, Typography, useTheme } from "@mui/material";
 import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
 import { useContext } from "react";
 import { ColorModeContext } from "../../../Theme/theme";
-import Container from "@mui/material/Container";
 import { Box } from "@mui/material";
 
 import DashboardNavBarDrawer from "../../MainDashboard/DashboardNavBarDrawer/DashboardNavBarDrawer"
@@ -96,7 +95,7 @@ function ToggleCustomerAvatar(userData) {
 const Header = function () {
     const colorMode = useContext(ColorModeContext);
     const theme = useTheme();
-    const fontSizeClamp = "clamp(16px,calc(1.5rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
+    const fontSizeClamp = "clamp(1.25rem,calc(1.5rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
     const userData = GetUserInfo();
 
     const currentPath = location.pathname;
@@ -117,9 +116,7 @@ const Header = function () {
                     zIndex: "200",
                     px: { xs: 2, sm: 3, md: 4 },
                     py: 1,
-                    // py: { xs: 1, sm: 0 },
                 }}
-            // maxWidth="xl"
             >
                 <Stack
                     className="flex-between"
@@ -131,22 +128,25 @@ const Header = function () {
                         flexWrap: "wrap",
                     }}
                 >
-                    <Link to={"/dashboard"} style={{ textDecoration: "none", textAlign: "center" }}>
-                        <Typography
-                            variant="body"
-                            sx={{
-                                fontSize: fontSizeClamp,
-                                fontWeight: "bolder",
-                                width: "fit-content",
-                                color: "white",
-                                flexGrow: 1,
-                            }}
-                        >
-                            EVO MARKET DASHBOARD
-                        </Typography>
-                    </Link>
+                    <Box className="flex-center" sx={{ flexGrow: { xs: 1, sm: 0 }, textAlign: "center", }}>
+                        <Link to={"/dashboard"} style={{ textDecoration: "none", flexGrow: 1 }}>
+                            <Typography
+                                variant="body"
+                                sx={{
+                                    fontSize: fontSizeClamp,
+                                    fontWeight: "bolder",
+                                    width: "fit-content",
+                                    color: "white",
+                                }}
+                            >
+                                EVO MARKET DASHBOARD
+                            </Typography>
+                        </Link>
+                    </Box>
 
-                    <Box className="flex-center" sx={{ order: { xs: 0, md: 2 }, flexGrow: { xs: 1, md: 0 } }}>
+                    <Box className="flex-center" sx={{
+                        order: { xs: 0, md: 2 }, flexGrow: { xs: 1, sm: 0 },
+                    }}>
                         {/* User Icon */}
                         <Stack
                             alignItems={"center"}
@@ -160,7 +160,7 @@ const Header = function () {
 
 
                         {/*  Theme Icon */}
-                        <Box sx={{ color: "white",/*border: "1px solid #ffff",*/  borderRadius: "8px", ml: 1 }}>
+                        <Box sx={{ color: "white",/*border: ".0625rem solid #ffff",*/  borderRadius: ".5rem", ml: 1 }}>
                             {theme.palette.mode === "light" ? (
                                 <IconButton
                                     onClick={() => {

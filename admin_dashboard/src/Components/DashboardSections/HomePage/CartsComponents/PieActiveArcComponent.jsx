@@ -9,7 +9,7 @@ const PieActiveArcComponent = () => {
     ];
 
     return (
-        <Box className="flex-center" sx={{ backgroundColor: "bgColor.main", borderRadius: 2, width: "100%", height: { xs: "200px", sm: "300px" } }}
+        <Box className="flex-center" sx={{ backgroundColor: "bgColor.main", borderRadius: 2, width: "100%", height: { xs: "12.5rem", sm: "18.75rem" } }}
         >
             <PieChart
                 series={[

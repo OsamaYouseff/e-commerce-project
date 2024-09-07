@@ -49,7 +49,7 @@ const eyeStyles = {
 };
 
 export default function RegisterPage() {
-    const [confirmPassword, setConfirmPassword] = useState("Os123@.seto");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(true);
 
     const dispatch = useDispatch();

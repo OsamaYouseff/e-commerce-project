@@ -21,7 +21,7 @@ export const registerACustomerReducer = createAsyncThunk("registerACustomerAPI/s
 
     const response = await registerACustomer(formData);
 
-    console.log("response : ", response);
+    // console.log("response : ", response);
 
     if (response.status) {
         await createCustomerCart();
