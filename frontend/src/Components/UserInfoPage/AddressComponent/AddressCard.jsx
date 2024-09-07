@@ -1,7 +1,5 @@
 /* eslint-disable react/prop-types */
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { useTheme } from "@emotion/react";
-import { ColorModeContext } from "../../../Theme/theme";
 import { FormControlLabel } from "@mui/material";
 import SwitchButton from "../../GenericComponents/SwitchButton/SwitchButton";
 import toast from 'react-hot-toast';
@@ -19,7 +17,6 @@ import { useState } from "react";
 import ConfirmComponent from "../../GenericComponents/ConfirmComponent/ConfirmComponent";
 
 const AddressCard = ({ address, numOfAddresses }) => {
-    const theme = useTheme(ColorModeContext);
     const navigate = useNavigate();
 
     /// redux
@@ -77,7 +74,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                     stiffness: 40,
                 }}
                 sx={{
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     px: { xs: 1.3, sm: 3 },
                     pt: { xs: 1, sm: 2 },
                     pb: 2,

@@ -28,7 +28,7 @@ export default function CustomerMenuDrawer() {
                 width: { xs: "100vw", sm: "24.375rem" },
                 p: { xs: 2, sm: 2 },
                 pr: 1,
-                bgcolor: theme.palette.categoryColor.main,
+                bgcolor: "categoryColor.main",
                 height: "100vh",
                 overflow: "auto",
             }}
@@ -42,7 +42,7 @@ export default function CustomerMenuDrawer() {
                     position: "absolute",
                     left: 8,
                     top: -10,
-                    color: theme.palette.text.primary,
+                    color: "text.primary",
                     marginTop: ".9375rem",
                     zIndex: 1,
                     "&:hover": { bgcolor: "transparent" },
@@ -51,7 +51,7 @@ export default function CustomerMenuDrawer() {
             >
                 <CloseRoundedIcon
                     sx={{
-                        fontSize: "2.8125rem", width: "2.1875rem", height: "2.1875rem", cursor: "pointer", borderRadius: "50%", p: 0.2, color: theme.palette.text.primary, border: `.125rem solid ${theme.palette.text.primary}`, "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", }, transition: "0.35s",
+                        fontSize: "2.8125rem", width: "2.1875rem", height: "2.1875rem", cursor: "pointer", borderRadius: "50%", p: 0.2, color: "text.primary", border: `.125rem solid ${theme.palette.text.primary}`, "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", }, transition: "0.35s",
                     }}
                     onClick={toggleDrawer("left", false)}
                 />

@@ -78,7 +78,7 @@ const WishlistComponent = () => {
         <Container
             maxWidth="xl"
             sx={{
-                bgcolor: theme.palette.sectionBgColor.main,
+                bgcolor: "sectionBgColor.main",
                 py: 2,
                 minHeight: "70vh",
                 minWidth: "67vw",

@@ -78,14 +78,21 @@ function ToggleCustomerAvatar(userData) {
             sx={{
                 flexDirection: "row", gap: ".3125rem", alignItems: "center",
                 minHeight: { xs: "1rem", md: "2.5rem" },
+                color: "#f9f9f9"
             }}
         >
             <Link to="/login">
-                <Button sx={{ fontWeight: "bold" }}>Login</Button>
+                <Button sx={{
+                    fontWeight: "bold", color: "#f9f9f9"
+                }}
+                >Login</Button>
             </Link>
             <span style={{ fontSize: "1rem" }}>/</span>
             <Link to="/register">
-                <Button sx={{ fontWeight: "bold" }}>Register</Button>
+                <Button sx={{
+                    fontWeight: "bold", color: "#f9f9f9"
+                }}
+                >Register</Button>
             </Link>
         </Stack>
     );
@@ -95,7 +102,7 @@ function ToggleCustomerAvatar(userData) {
 const Header = function () {
     const colorMode = useContext(ColorModeContext);
     const theme = useTheme();
-    const fontSizeClamp = "clamp(1.25rem,calc(1.5rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
+    const fontSizeClamp = "clamp(1.1rem,calc(1.5rem + (30 - 12) * (100vw - 62.5rem) / (1920 - 1000)),1.4rem) !important";
     const userData = GetUserInfo();
 
     const currentPath = location.pathname;
@@ -116,6 +123,8 @@ const Header = function () {
                     zIndex: "200",
                     px: { xs: 2, sm: 3, md: 4 },
                     py: 1,
+                    pb: { xs: 0, md: 1 }
+
                 }}
             >
                 <Stack
@@ -126,10 +135,11 @@ const Header = function () {
                         bgcolor: "#1d273b",
                         flexDirection: "row",
                         flexWrap: "wrap",
+                        justifyContent: { xs: "center", sm: "space-between" },
                     }}
                 >
-                    <Box className="flex-center" sx={{ flexGrow: { xs: 1, sm: 0 }, textAlign: "center", }}>
-                        <Link to={"/dashboard"} style={{ textDecoration: "none", flexGrow: 1 }}>
+                    <Box className="flex-center" sx={{ flexGrow: { xs: 0, sm: 0 }, textAlign: "center" }}>
+                        <Link to={"/dashboard"} style={{ textDecoration: "none", flexGrow: 0 }}>
                             <Typography
                                 variant="body"
                                 sx={{
@@ -145,7 +155,7 @@ const Header = function () {
                     </Box>
 
                     <Box className="flex-center" sx={{
-                        order: { xs: 0, md: 2 }, flexGrow: { xs: 1, sm: 0 },
+                        order: { xs: 0, md: 2 }, flexGrow: { xs: 0, sm: 0 },
                     }}>
                         {/* User Icon */}
                         <Stack

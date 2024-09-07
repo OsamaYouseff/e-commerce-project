@@ -19,7 +19,7 @@ import { useState } from "react";
 
 /// redux
 import { GetUserInfo, IsUserLoggedIn, CheckDuplicated, ValidateProfileInfoForm, PrintErrors } from "../../../General/GeneralFunctions";
-import { updateAdminAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { updateAdminAccountReducer } from "../../../redux/AdminSlice/ApiAdminSlice.js";
 import { useDispatch } from "react-redux";
 
 const ProfileComponent = ({ userData }) => {

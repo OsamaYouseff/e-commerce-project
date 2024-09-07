@@ -17,7 +17,7 @@ const HeroSection = () => {
         <Box
             sx={{
                 mt: "15px",
-                bgcolor: theme.palette.sectionBgColor.main,
+                bgcolor: "sectionBgColor.main",
                 py: 2,
             }}
         >

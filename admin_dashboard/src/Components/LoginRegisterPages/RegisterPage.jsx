@@ -17,7 +17,7 @@ import { toast } from "react-hot-toast";
 
 //// Redux
 import { useDispatch } from "react-redux";
-import { registerACustomerReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
+import { registerACustomerReducer } from "../../redux/AdminSlice/ApiAdminSlice.js";
 import { GoHome, IsUserLoggedIn, ValidateSignUpForm, PrintErrors } from "../../General/GeneralFunctions";
 
 //// functions

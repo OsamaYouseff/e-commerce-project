@@ -109,13 +109,13 @@ const SwiperComponent = () => {
 										mt: { sm: "20px", xs: "0px" },
 										maxHeight: AdjustFontWithClamp(25, 50),
 										fontSize: AdjustFontWithClamp(10, 22),
-										color: theme.palette.bgColor.main,
-										bgcolor: theme.palette.bgColor2.main,
+										color: "bgColor.main",
+										bgcolor: "bgColor2.main",
 										border: "1px solid",
 										"&: hover": {
-											color: theme.palette.bgColor2.main,
-											borderColor: theme.palette.bgColor2.main,
-											bgcolor: theme.palette.bgColor.main,
+											color: "bgColor2.main",
+											borderColor: "bgColor2.main",
+											bgcolor: "bgColor.main",
 										}
 									}}
 								>Shop now

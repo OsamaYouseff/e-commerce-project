@@ -22,7 +22,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 ///// Redux Actions
-import { adminLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
+import { adminLoginReducer } from "../../redux/AdminSlice/ApiAdminSlice.js";
 import { GoHome, IsUserLoggedIn, PrintErrors, ValidateLoginForm } from "../../General/GeneralFunctions";
 
 //// styles

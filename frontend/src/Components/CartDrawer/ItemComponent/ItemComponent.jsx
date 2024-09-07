@@ -1,9 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Stack, Box, Typography } from "@mui/material";
-import { ColorModeContext } from "../../../Theme/theme.jsx";
 
 //// hooks
-import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 
 //// custom components
@@ -21,8 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUpdateProductInCartReducer, removeProductFromCartReducer } from "../../../redux/CartSlice/ApiCartSlice.js";
 
 const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, handleSetPreviewedProduct, }) => {
-    const theme = useTheme(ColorModeContext);
-
     //// state
     const [fieldQuantity, setFieldQuantity] = useState(quantity);
 
@@ -96,8 +92,8 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                         transition: "all 0.3s ease",
                         border: ".0625rem solid transparent",
                         "&:hover": {
-                            bgcolor: theme.palette.sectionBgColor.main,
-                            borderColor: theme.palette.primary.main,
+                            bgcolor: "sectionBgColor.main",
+                            borderColor: "primary.main",
                         },
                         overflowX: "hidden",
                     }}
@@ -189,7 +185,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 width: {
                                     xs: "auto", sm: "22%",
                                 },
-                                color: theme.palette.specialText2.main,
+                                color: "specialText2.main",
                                 gap: ".1875rem",
                             }}
                         >
@@ -198,7 +194,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                     display: { xs: "block", sm: "none" },
                                     fontWeight: "bolder",
                                     fontSize: "inherit",
-                                    color: theme.palette.primary.main,
+                                    color: "primary.main",
                                 }}
                             >
                                 Total {" "}
@@ -232,14 +228,13 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                             p: 1.2,
                             mb: 1,
                             borderRadius: ".3125rem",
-                            bgcolor: theme.palette.sectionBgColor.main,
+                            bgcolor: "sectionBgColor.main",
                             border: ".0625rem solid transparent",
-                            // borderBottomColor: `${theme.palette.footerBgColor.primary} `,
                             boxShadow: 1,
                             transition: "all 0.3s ease",
                             "&:hover": {
-                                bgcolor: theme.palette.sectionBgColor.main,
-                                borderColor: theme.palette.primary.main,
+                                bgcolor: "sectionBgColor.main",
+                                borderColor: "primary.main",
                             }
                         }}
                     >

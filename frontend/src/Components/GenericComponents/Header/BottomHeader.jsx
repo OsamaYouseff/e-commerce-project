@@ -124,7 +124,7 @@ function CategoryMenu() {
     return (
         <Stack
             alignItems={"center"}
-            sx={{ bgcolor: theme.palette.categoryColor.main, minWidth: "9.375rem", borderRadius: ".3125rem", border: ".0625rem solid #777" }}
+            sx={{ bgcolor: "categoryColor.main", minWidth: "9.375rem", borderRadius: ".3125rem", border: ".0625rem solid #777" }}
         >
             <Button
                 className="flex-between"
@@ -133,7 +133,7 @@ function CategoryMenu() {
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
-                sx={{ gap: 1, color: theme.palette.text.primary, width: "100%" }}
+                sx={{ gap: 1, color: "text.primary", width: "100%" }}
             >
                 <WidgetsIcon fontSize="small" />
                 <Typography className="clamp14-20">Category</Typography>
@@ -188,7 +188,7 @@ function Drawer() {
 
     return (
         <Fragment>
-            <MenuIcon onClick={toggleDrawer(openingLocation, true)} sx={{ color: theme.palette.text.primary, cursor: "pointer" }} />
+            <MenuIcon onClick={toggleDrawer(openingLocation, true)} sx={{ color: "text.primary", cursor: "pointer" }} />
 
             <SwipeableDrawer SwipeableDrawer
                 anchor={openingLocation}
@@ -200,11 +200,11 @@ function Drawer() {
                     minHeight: "100vh",
                     overflowY: "auto",
                     border: ".0625rem solid #777",
-                    bgcolor: theme.palette.categoryColor.main,
+                    bgcolor: "categoryColor.main",
                     pb: 4
                 }}>
                     <Box className="accordions-container flex-column-center " sx={{ width: "100%", minWidth: "21.875rem", gap: ".625rem", p: 1, borderRadius: ".3125rem" }}>
-                        <Button sx={{ color: theme.palette.text.primary, marginTop: ".9375rem", }} onClick={toggleDrawer(openingLocation, false)}>
+                        <Button sx={{ color: "text.primary", marginTop: ".9375rem", }} onClick={toggleDrawer(openingLocation, false)}>
                             <CloseRoundedIcon sx={{
                                 fontSize: "2.8125rem",
                                 width: "2.8125rem",
@@ -212,7 +212,7 @@ function Drawer() {
                                 cursor: "pointer",
                                 borderRadius: "50%",
                                 p: 1,
-                                color: theme.palette.text.primary,
+                                color: "text.primary",
                                 border: `.0625rem solid ${theme.palette.text.primary}`,
                                 "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e" },
                                 transition: "0.35s"

@@ -18,8 +18,7 @@ import { ChangePasswordDialog } from "./ChangePasswordDialog";
 
 /// redux
 import { useDispatch } from "react-redux";
-import { changePasswordReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
-import { deleteCustomerAccountReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { changePasswordReducer, deleteCustomerAccountReducer } from "../../../redux/AdminSlice/ApiAdminSlice.js";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const SettingsComponent = () => {
@@ -118,7 +117,7 @@ const SettingsComponent = () => {
                 sx={{
                     px: { xs: 3, md: 3 },
                     py: 3,
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     borderRadius: "6px",
                     mb: 2,
                 }}
@@ -159,7 +158,7 @@ const SettingsComponent = () => {
                 sx={{
                     px: { xs: 3, md: 3 },
                     py: 3,
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     borderRadius: "6px",
                 }}
             >

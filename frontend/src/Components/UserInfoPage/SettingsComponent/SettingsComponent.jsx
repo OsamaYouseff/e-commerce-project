@@ -5,16 +5,12 @@ import { TextField } from "@mui/material";
 //// custom Components
 import toast from 'react-hot-toast';
 import ConfirmComponent from "../../GenericComponents/ConfirmComponent/ConfirmComponent"
-
-
-
-/// context
-import { ColorModeContext } from "../../../Theme/theme";
-
-///// hooks
-import { useTheme } from "@emotion/react";
-import { useState } from "react";
 import { ChangePasswordDialog } from "./ChangePasswordDialog";
+
+
+
+//// hooks
+import { useState } from "react";
 
 /// redux
 import { useDispatch } from "react-redux";
@@ -24,7 +20,6 @@ import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
 const SettingsComponent = () => {
     const dispatch = useDispatch();
-    const theme = useTheme(ColorModeContext);
 
     //// states
     const [formData, setFormData] = useState({
@@ -107,7 +102,7 @@ const SettingsComponent = () => {
                 sx={{
                     px: { xs: 3, md: 3 },
                     py: 3,
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     borderRadius: "6px",
                     mb: 2,
                 }}
@@ -148,7 +143,7 @@ const SettingsComponent = () => {
                 sx={{
                     px: { xs: 3, md: 3 },
                     py: 3,
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     borderRadius: "6px",
                 }}
             >

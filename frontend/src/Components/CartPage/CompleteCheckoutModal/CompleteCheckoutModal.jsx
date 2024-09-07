@@ -120,7 +120,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             aria-labelledby="complete-checkout-modal"
             aria-describedby="complete-checkout-modal-description"
             sx={{
-                bgcolor: theme.palette.modalBgColor.main,
+                bgcolor: "modalBgColor.main",
                 overflowY: "auto", minHeight: "100vh",
                 ".MuiModal-backdrop": {
                     bgcolor: "rgba(0,0,0,00)"
@@ -181,7 +181,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                             flexGrow: 1,
                             p: { xs: 1, md: 2 },
                             borderRadius: "6px",
-                            bgcolor: theme.palette.sectionBgColor.main,
+                            bgcolor: "sectionBgColor.main",
                         }}
                     >
                         {/* Selecting Address Section */}
@@ -234,7 +234,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                         {/* order invoice */}
                         <Box
                             sx={{
-                                bgcolor: theme.palette.sectionBgColor.main,
+                                bgcolor: "sectionBgColor.main",
                                 p: 2,
                                 mb: 2,
                             }}

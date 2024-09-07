@@ -49,7 +49,7 @@ const OrderCard = ({ order }) => {
                 }}
                 key={order.orderId}
                 sx={{
-                    bgcolor: theme.palette.natural.main,
+                    bgcolor: "natural.main",
                     px: { xs: 2, sm: 3 },
                     pt: 2,
                     pb: 2,

@@ -11,7 +11,7 @@ import { useTheme } from "@emotion/react";
 
 /// redux
 import { DoScrollToTop, GetUserInfo, GoLoginPage, IsUserLoggedIn, } from "../../General/GeneralFunctions.js";
-import { logoutAdminReducer } from "../../redux/CustomerSlice/ApiCustomerSlice.js";
+import { logoutAdminReducer } from "../../redux/AdminSlice/ApiAdminSlice.js";
 import { useDispatch } from "react-redux";
 
 //// General Vars & Functions
@@ -109,7 +109,7 @@ const MainDashboard = () => {
                     minWidth: "99vw",
                     width: { xs: "95%", md: "100%" },
                     marginTop: ".625rem",
-                    bgcolor: theme.palette.categoryColor.main,
+                    bgcolor: "categoryColor.main",
                     borderRadius: ".375rem",
                     px: ".125rem !important",
                     py: ".5rem",

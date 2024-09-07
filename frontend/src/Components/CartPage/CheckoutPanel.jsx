@@ -51,7 +51,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 p: 2,
                 boxShadow: 2,
                 border: `.0625rem solid ${theme.palette.footerBgColor.background}`,
-                bgcolor: theme.palette.bgColor.main,
+                bgcolor: "bgColor.main",
             }}
         >
             <Typography
@@ -124,7 +124,7 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
                 sx={{
                     borderRadius: ".9375rem",
                     boxShadow: 1,
-                    bgcolor: theme.palette.footerBgColor.accent,
+                    bgcolor: "footerBgColor.accent",
                     p: 2,
                     mb: 3,
                 }}

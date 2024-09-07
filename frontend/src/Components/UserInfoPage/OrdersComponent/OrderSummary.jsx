@@ -132,7 +132,7 @@ const OrderSummary = () => {
                         flexGrow: 1,
                         p: 2,
                         borderRadius: ".375rem",
-                        bgcolor: theme.palette.bgColor.main,
+                        bgcolor: "bgColor.main",
                     }}
                 >
                     {/* order id & place date */}
@@ -263,7 +263,7 @@ const OrderSummary = () => {
 
                     <Box
                         sx={{
-                            bgcolor: theme.palette.bgColor.main,
+                            bgcolor: "bgColor.main",
                             p: 2,
                             mb: 1,
                         }}
@@ -319,7 +319,7 @@ const OrderSummary = () => {
                     {/* order payment */}
                     <Box
                         sx={{
-                            bgcolor: theme.palette.bgColor.main,
+                            bgcolor: "bgColor.main",
                             p: 2,
                             mb: 1,
                         }}
@@ -347,7 +347,7 @@ const OrderSummary = () => {
                     {/* Address info */}
                     <Box
                         sx={{
-                            bgcolor: theme.palette.bgColor.main,
+                            bgcolor: "bgColor.main",
                             p: 2,
                         }}
                     >

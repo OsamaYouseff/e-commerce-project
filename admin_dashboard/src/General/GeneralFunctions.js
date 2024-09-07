@@ -138,9 +138,9 @@ export function StoreDataAtLocalStorage(Type = "localStorage", data) {
 export function ResetLocalStorage() {
     sessionStorage.removeItem("adminInfo");
     localStorage.removeItem("adminInfo");
-    localStorage.removeItem("token");
-    sessionStorage.removeItem("token");
-    Cookies.remove("token");
+    localStorage.removeItem("admin-token");
+    sessionStorage.removeItem("admin-token");
+    Cookies.remove("admin-token");
 }
 
 export function GoHome() {

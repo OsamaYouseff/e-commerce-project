@@ -68,7 +68,7 @@ export function ChangePasswordDialog({
                         py: 4,
                         minWidth: { xs: "300px", md: "400px" },
                         maxWidth: "100%",
-                        bgcolor: theme.palette.sectionBgColor.main,
+                        bgcolor: "sectionBgColor.main",
                     }}
                     spacing={4}
                 >

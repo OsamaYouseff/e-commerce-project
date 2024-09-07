@@ -114,7 +114,7 @@ const MidHeader = function () {
                         sx={{
                             order: { md: -1 },
                             textDecoration: "none",
-                            color: theme.palette.text.primary,
+                            color: "text.primary",
                         }}
                     >
 
@@ -144,7 +144,7 @@ const MidHeader = function () {
                         sx={{
                             p: 0,
                             borderRadius: "1.5625rem",
-                            bgcolor: theme.palette.bgColor.main,
+                            bgcolor: "bgColor.main",
                             maxHeight: "2.5rem !important",
                             minWidth: "100%",
                             margin: "0 !important",

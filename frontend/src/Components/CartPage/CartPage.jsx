@@ -126,7 +126,7 @@ const CartPage = () => {
             <Container
                 maxWidth="xl"
                 sx={{
-                    bgcolor: theme.palette.sectionBgColor.main,
+                    bgcolor: "sectionBgColor.main",
                     py: 2,
                     mt: 2,
                     minHeight: "88vh",
@@ -222,7 +222,7 @@ const CartPage = () => {
                             sx={{
                                 my: 2,
                                 boxShadow: 1,
-                                bgcolor: theme.palette.bgColor.main,
+                                bgcolor: "bgColor.main",
                                 py: 2,
                                 px: 2,
                                 borderRadius: "6px",

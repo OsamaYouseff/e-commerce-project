@@ -69,7 +69,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                     </Button>
                 </Link>
 
-                <Typography variant="h1" sx={{ fontSize: "1.25rem", my: 2, fontWeight: "bolder" }} color={theme.palette.secondary.main}>{mainTitle}</Typography>
+                <Typography variant="h1" sx={{ fontSize: "1.25rem", my: 2, fontWeight: "bolder" }} color={"secondary.main"}>{mainTitle}</Typography>
 
                 <Stack className="flex-between"
                     sx={{
@@ -109,7 +109,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     padding: ".625rem", minHeight: "11.25rem",
                                     borderRadius: ".375rem",
                                     backgroundColor: "transparent",
-                                    color: `${theme.palette.text.primary}`,
+                                    color: "text.primary",
                                     border: `.0625rem solid ${mainBorderColor}`,
                                 }} colWidth={4}
                                 defaultValue={formData.desc}

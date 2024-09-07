@@ -5,8 +5,6 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ColorModeContext } from "../../../Theme/theme";
-import { useTheme } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
 const SimpleListMenu = () => {
@@ -28,8 +26,6 @@ const SimpleListMenu = () => {
         setAnchorEl(null);
     };
 
-    const theme = useTheme(ColorModeContext.theme);
-
     return (
         <Box
             style={{
@@ -48,7 +44,7 @@ const SimpleListMenu = () => {
                     borderTopRightRadius: "1.5625rem",
                     borderBottomRightRadius: "1.5625rem",
                     overflow: "hidden",
-                    bgcolor: theme.palette.categoryColor.main,
+                    bgcolor: "categoryColor.main",
                     borderLeft: ".0625rem solid #777",
                 }}
             >

@@ -17,9 +17,6 @@ import { SomeThingWrong } from "../../GenericComponents/SomeThingWrong/SomeThing
 //// General Vars & Functions
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions";
 
-import { useTheme } from "@emotion/react";
-import { ColorModeContext } from "../../../Theme/theme";
-
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { getCustomerAddressesReducer, getCustomerAddressReducer } from "../../../redux/AddressSlice/ApiAddressSlice";
@@ -33,9 +30,6 @@ const SelectAddressSection = ({ selectedAddressId }) => {
     const error = useSelector((state) => state.AddressesApiRequest.error);
     const message = useSelector((state) => state.AddressesApiRequest.message);
     // console.log(customerAddresses)
-
-    const theme = useTheme(ColorModeContext);
-
 
     const handelSelectedAddress = (newSelectedAddressId) => {
 
@@ -75,7 +69,7 @@ const SelectAddressSection = ({ selectedAddressId }) => {
         <Box >
 
             <Accordion sx={{
-                bgcolor: theme.palette.sectionBgColor.main,
+                bgcolor: "sectionBgColor.main",
             }}>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}

@@ -13,7 +13,7 @@ import { useTheme } from "@emotion/react";
 ///// redux
 import { useDispatch } from "react-redux";
 import { GetUserInfo, IsUserLoggedIn } from "../../../General/GeneralFunctions";
-import { logoutAdminReducer } from "../../../redux/CustomerSlice/ApiCustomerSlice";
+import { logoutAdminReducer } from "../../../redux/AdminSlice/ApiAdminSlice.js";
 
 //// General Vars & Functions
 import { UserMenuItems } from "../../../General/GeneralVariables";
@@ -62,9 +62,8 @@ const UserMenu = () => {
                         sx={{
                             width: 32,
                             height: 32,
-
-                            color: theme.palette.sectionBgColor.main,
-                            bgcolor: theme.palette.text.primary,
+                            color: "sectionBgColor.main",
+                            bgcolor: "text.primary",
                             fontWeight: "bolder",
                         }}
                     >

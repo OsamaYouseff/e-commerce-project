@@ -48,7 +48,7 @@ export default function DashboardNavBarDrawer() {
                 width: { xs: "18.75rem", sm: "16.25rem" },
                 p: { xs: 1, sm: 2 },
                 // pr: { xs: 0, sm: 2 },
-                bgcolor: theme.palette.categoryColor.main,
+                bgcolor: "categoryColor.main",
                 height: "100vh",
                 overflow: "auto",
                 overflowX: "hidden",
@@ -62,14 +62,14 @@ export default function DashboardNavBarDrawer() {
 
                 size="small"
                 sx={{
-                    position: "absolute", right: 0, top: -10, color: theme.palette.text.primary, marginTop: ".9375rem", zIndex: 1, "&:hover": { bgcolor: "transparent" },
+                    position: "absolute", right: 0, top: -10, color: "text.primary", marginTop: ".9375rem", zIndex: 1, "&:hover": { bgcolor: "transparent" },
                 }}
                 onClick={toggleDrawer("left", false)}
             >
                 <CloseRoundedIcon
                     sx={{
                         fontSize: "2.8125rem", width: "2.1875rem", height: "2.1875rem", cursor: "pointer",
-                        borderRadius: "50%", p: 0.2, color: theme.palette.text.primary,
+                        borderRadius: "50%", p: 0.2, color: "text.primary",
                         border: `.125rem solid ${theme.palette.text.primary}`,
                         "&:hover": { rotate: "180deg", color: "#ff6e6e", borderColor: "#ff6e6e", },
                         transition: "0.35s",

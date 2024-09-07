@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Box, Stack, Typography } from "@mui/material";
 
-import { ColorModeContext } from "../../../Theme/theme";
-import { useTheme } from "@emotion/react";
 
 
 const defaultStyle = {
@@ -28,7 +26,6 @@ const selectedStyle = {
 }
 
 const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, handelSelectedAddress }) => {
-    const theme = useTheme(ColorModeContext);
 
     const isSelectedAddress = selectedAddressId === address._id;
 
@@ -46,7 +43,7 @@ const AddressCardMin = ({ address, defaultAddress = false, selectedAddressId, ha
         <Box
             onClick={() => handelChangeSelectedAddress()}
             sx={{
-                bgcolor: theme.palette.natural.main,
+                bgcolor: "natural.main",
                 px: { xs: 2, sm: 3 },
                 py: 4,
 

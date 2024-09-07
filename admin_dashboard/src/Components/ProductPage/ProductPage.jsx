@@ -241,9 +241,9 @@ const ProductPage = () => {
 
                         {
                             PreviewedProduct.amount === 0
-                                ? <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem", fontWeight: "bold", color: theme.palette.specialText2.main } }}>Out of stock</Typography>
+                                ? <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem", fontWeight: "bold", color: "specialText2.main" } }}>Out of stock</Typography>
                                 : <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem" } }}>
-                                    ( <span style={{ fontWeight: "bold", color: theme.palette.specialText.main }}>{PreviewedProduct.amount}</span> ) items in stock
+                                    ( <span style={{ fontWeight: "bold", color: "specialText.main" }}>{PreviewedProduct.amount}</span> ) items in stock
                                 </Typography>
                         }
 

@@ -114,7 +114,7 @@ const ProductCardComponent = ({
                             gutterBottom
                             fontSize={"1rem"}
                             component="div"
-                            sx={{ color: theme.palette.specialText2.main }}
+                            sx={{ color: "specialText2.main" }}
                         >
                             ${productData.price}
                         </Typography>

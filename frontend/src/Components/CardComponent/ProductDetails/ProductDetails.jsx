@@ -209,14 +209,14 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                         // minHeight: "18.75rem",
                         borderRadius: ".625rem",
                         border: "none",
-                        bgcolor: theme.palette.categoryColor.main,
+                        bgcolor: "categoryColor.main",
                         p: { xs: 1, sm: 2, md: 2 },
                     },
                 }}
             >
                 <Stack sx={modalStyles} direction={"row"} alignItems={"center"}>
                     <CloseRoundedIcon
-                        color={theme.palette.text.primary}
+                        color={"text.primary"}
                         sx={CloseBtnStyles}
                         onClick={handleCloseModal}
                     />

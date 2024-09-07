@@ -7,16 +7,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
-import { useTheme } from '@emotion/react';
-import { ColorModeContext } from '../../../Theme/theme';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function ConfirmComponent({ openConfirmDialog, confirmAction, handleCloseConfirmDialog, message }) {
-    const theme = useTheme(ColorModeContext);
-
 
     return (
         <React.Fragment >
@@ -29,7 +25,7 @@ export default function ConfirmComponent({ openConfirmDialog, confirmAction, han
                 aria-describedby="alert-dialog-slide-description"
                 sx={{
                     ".MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper": {
-                        bgcolor: theme.palette.bgColor.main,
+                        bgcolor: "bgColor.main",
                         p: 2,
                     }
                 }}

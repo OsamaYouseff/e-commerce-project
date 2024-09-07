@@ -1,14 +1,6 @@
-import {
-    ListItem,
-    ListItemButton,
-    ListItemText,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { ListItem, ListItemButton, ListItemText, Stack, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { ColorModeContext } from "../../../Theme/theme";
-import { useTheme } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 
 //// icons
@@ -192,7 +184,6 @@ const LinksMenus = () => {
 
 // eslint-disable-next-line react/prop-types
 function BaseMenu({ key, titleName, subMenu }) {
-    const theme = useTheme(ColorModeContext);
     return (
         <Box
             key={key}
@@ -214,7 +205,7 @@ function BaseMenu({ key, titleName, subMenu }) {
                         ".Base-List": {
                             display: "block",
                             zIndex: "99",
-                            bgcolor: theme.palette.categoryColor.main,
+                            bgcolor: "categoryColor.main",
                         },
                     },
                     padding: ".375rem",
@@ -226,8 +217,8 @@ function BaseMenu({ key, titleName, subMenu }) {
                         px: 1.5,
                         py: 0.31,
                         justifyContent: "center",
-                        bgcolor: theme.palette.categoryColor.main,
-                        color: theme.palette.text.primary,
+                        bgcolor: "categoryColor.main",
+                        color: "text.primary",
                         borderRadius: ".25rem",
                         border: ".0625rem solid #7777",
                     }}
@@ -261,15 +252,14 @@ function BaseMenu({ key, titleName, subMenu }) {
                                     ".MuiListItemButton-root.MuiListItemButton-gutters":
                                         { padding: ".3125rem .25rem .3125rem .9375rem  " },
                                     padding: "0rem !important",
-                                    color: theme.palette.text.primary,
+                                    color: "text.primary",
                                     "&:hover": {
                                         // ".Products-List": { display: "block" },
                                         ...(`${item.listClassName}` != null && {
                                             [`.${item.listClassName}`]: {
                                                 display: "block",
                                                 zIndex: "100",
-                                                color: theme.palette
-                                                    .categoryColor.main,
+                                                color: "categoryColor.main",
                                             },
                                         }),
                                     },
@@ -293,7 +283,6 @@ function BaseMenu({ key, titleName, subMenu }) {
 }
 // eslint-disable-next-line react/prop-types
 function SubMenu({ listClassName, subMenuLinks }) {
-    const theme = useTheme(ColorModeContext);
     return (
         <Box
             // className="border"
@@ -313,7 +302,7 @@ function SubMenu({ listClassName, subMenuLinks }) {
             <Paper
                 sx={{
                     width: "100%",
-                    bgcolor: theme.palette.categoryColor.main,
+                    bgcolor: "categoryColor.main",
                 }}
             >
                 {[...subMenuLinks].map((item, index) => {
@@ -322,7 +311,7 @@ function SubMenu({ listClassName, subMenuLinks }) {
                             key={index}
                             sx={{
                                 padding: "0",
-                                color: theme.palette.text.primary,
+                                color: "text.primary",
                             }}
                         >
                             <ListItemButton sx={ListItemButtonStyles}>

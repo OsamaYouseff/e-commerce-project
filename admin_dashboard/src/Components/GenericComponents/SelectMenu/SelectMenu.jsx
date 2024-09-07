@@ -85,7 +85,6 @@ const SelectMenu = ({ minWidth = "9.375rem", options, selectedOption, setSelecte
                             fontSize: "1rem",
                             minWidth: minWidth,
                             ".css-6hp17o-MuiList-root-MuiMenu-list": { py: 0 },
-                            // bgcolor: theme.palette.categoryColor.main,
                         }}
                     >
                         {option}

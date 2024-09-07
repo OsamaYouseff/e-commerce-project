@@ -65,9 +65,8 @@ const CustomerMenu = () => {
                         sx={{
                             width: 32,
                             height: 32,
-
-                            color: theme.palette.sectionBgColor.main,
-                            bgcolor: theme.palette.text.primary,
+                            color: "sectionBgColor.main",
+                            bgcolor: "text.primary",
                             fontWeight: "bolder",
                         }}
                     >

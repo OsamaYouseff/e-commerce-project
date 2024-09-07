@@ -9,9 +9,6 @@ import FormControl from "@mui/material/FormControl";
 import Dialog from "@mui/material/Dialog";
 import { Button, Stack } from "@mui/material";
 
-import { ColorModeContext } from "../../../Theme/theme";
-
-import { useTheme } from "@emotion/react";
 import { Fragment, useState } from "react";
 
 export function ChangePasswordDialog({
@@ -19,7 +16,6 @@ export function ChangePasswordDialog({
     handleChangePassword,
     formData,
 }) {
-    const theme = useTheme(ColorModeContext);
     const [open, setOpen] = useState(false);
 
     const handleChangeField = (key, value) => {
@@ -68,7 +64,7 @@ export function ChangePasswordDialog({
                         py: 4,
                         minWidth: { xs: "300px", md: "400px" },
                         maxWidth: "100%",
-                        bgcolor: theme.palette.sectionBgColor.main,
+                        bgcolor: "sectionBgColor.main",
                     }}
                     spacing={4}
                 >

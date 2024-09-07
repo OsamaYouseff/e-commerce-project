@@ -101,7 +101,7 @@ const DashboardNavBar = () => {
                                     minWidth: "100%",
                                     py: .75,
                                     borderLeft: `.125rem solid transparent`,
-                                    borderColor: `${item.title.toLowerCase() == getActiveSection(section) ? theme.palette.text.primary : "transparent"}`,
+                                    borderColor: `${item.title.toLowerCase() == getActiveSection(section) ? "text.primary" : "transparent"}`,
                                     fontWeight: "bold",
                                     mb: 0.6,
                                 }}

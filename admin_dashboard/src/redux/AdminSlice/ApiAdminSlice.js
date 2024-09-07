@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { adminLogin, changeAdminPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateAdminAccount } from '../../API/CustomerAPIFunctions';
+import { adminLogin, changeAdminPassword, customerLogin, deleteCustomerAccount, registerACustomer, updateAdminAccount } from '../../API/AdminApiFunctions';
 import { GetMessagesFromObject, GoHome, ResetLocalStorage } from '../../General/GeneralFunctions';
 import { createCustomerCart } from '../../API/CartAPIFunctions';
 import { createCustomerWishlist } from '../../API/WishlistAPIFunctions';
@@ -17,7 +17,7 @@ export const customerLoginReducer = createAsyncThunk("customerLoginAPI/sendReque
 
 })
 
-export const registerACustomerReducer = createAsyncThunk("registerACustomerAPI/sendRequest", async (formData) => {
+export const registerACustomerReducer = createAsyncThunk("registerAAdminApi/sendRequest", async (formData) => {
 
     const response = await registerACustomer(formData);
 
@@ -31,9 +31,6 @@ export const registerACustomerReducer = createAsyncThunk("registerACustomerAPI/s
     return response;
 
 })
-
-
-
 
 export const deleteCustomerAccountReducer = createAsyncThunk("DeleteCustomerAccountAPI/sendRequest", async () => {
     const response = await deleteCustomerAccount();
@@ -94,7 +91,7 @@ const initialState = {
     message: null,
 }
 
-export const CustomerApiSlice = createSlice({
+export const AdminApiSlice = createSlice({
     name: "ProductsApiRequest",
     initialState: initialState,
 
@@ -243,4 +240,4 @@ export const CustomerApiSlice = createSlice({
 })
 
 
-export default CustomerApiSlice.reducer;
+export default AdminApiSlice.reducer;

@@ -81,7 +81,7 @@ const UserInfoPage = () => {
                 maxWidth="xl"
                 sx={{
                     marginTop: ".625rem",
-                    bgcolor: theme.palette.categoryColor.main,
+                    bgcolor: "categoryColor.main",
                     borderRadius: ".375rem",
                     px: ".125rem !important",
                     py: ".5rem",
