@@ -109,7 +109,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     padding: ".625rem", minHeight: "11.25rem",
                                     borderRadius: ".375rem",
                                     backgroundColor: "transparent",
-                                    color: "text.primary",
+                                    color: theme.palette.text.primary,
                                     border: `.0625rem solid ${mainBorderColor}`,
                                 }} colWidth={4}
                                 defaultValue={formData.desc}

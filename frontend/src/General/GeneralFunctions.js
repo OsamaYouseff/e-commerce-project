@@ -371,3 +371,10 @@ export async function ValidateProfileInfoForm(formData, isUsernameChanged) {
         errors: errors
     };
 }
+
+export function DoScrollToTop() {
+    window.scrollTo({
+        top: 0,
+        // behavior: 'smooth'
+    });
+}

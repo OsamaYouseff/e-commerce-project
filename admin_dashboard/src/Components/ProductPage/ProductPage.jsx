@@ -35,19 +35,19 @@ const pageStyles = {
     width: "100%",
     flexGrow: 1,
     // bgcolor: "background.paper",
-    borderRadius: "8px",
+    borderRadius: ".5rem",
     flexDirection: { xs: "column", md: "row" },
     gap: { xs: 1, md: 2, lg: 4 },
     justifyContent: { sx: "center", md: "space-between" },
     alignItems: { xs: "center", md: "flex-start" },
 };
 const productButtonStyle = {
-    minWidth: "120px ",
+    minWidth: "7.5rem ",
     width: { xs: "100%", sm: "31%" },
-    fontSize: "16px",
+    fontSize: "1rem",
     fontWeight: "bolder ",
     px: 1,
-    borderRadius: "8px",
+    borderRadius: ".5rem",
 }
 const fontSizeClamp = "clamp(1.25rem,calc(1.5rem + (25 - 15) * (100vw - 62.5rem) / (1920 - 1000)),2rem) !important";
 const ColorCircle = ({ color }) => {
@@ -138,11 +138,10 @@ const ProductPage = () => {
                 <Box
                     className="flex-center"
                     sx={{
-                        paddingTop: "2.5rem",
+                        // paddingTop: "2.5rem",
                         width: "100%",
-                        maxWidth: { xs: "390px", md: "270px", lg: "320px" },
-                        // minWidth: { xs: 390, md: "300px" },
-                        height: "400px",
+                        maxWidth: { xs: "24.375rem", md: "16.875rem", lg: "20rem" },
+                        height: { xs: "18.75rem", sm: "25rem" },
                     }}
                 >
                     <img
@@ -237,13 +236,12 @@ const ProductPage = () => {
                     </Typography>
 
                     <Stack className="flex-center" sx={{ mb: 4, width: "100%", justifyContent: "flex-start" }}>
-                        <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "6.875rem", fontWeight: "bold" }}> amount : </Typography>
-
+                        <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "6.875rem", fontWeight: "bold" }}> Amount : </Typography>
                         {
                             PreviewedProduct.amount === 0
-                                ? <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem", fontWeight: "bold", color: "specialText2.main" } }}>Out of stock</Typography>
+                                ? <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem", fontWeight: "bold", color: theme.palette.specialText2.main } }}>Out of stock</Typography>
                                 : <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem" } }}>
-                                    ( <span style={{ fontWeight: "bold", color: "specialText.main" }}>{PreviewedProduct.amount}</span> ) items in stock
+                                    ( <span style={{ fontWeight: "bold", color: theme.palette.specialText.main }}>{PreviewedProduct.amount}</span> ) items in stock
                                 </Typography>
                         }
 

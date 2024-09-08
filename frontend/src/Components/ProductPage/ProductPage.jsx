@@ -25,7 +25,7 @@ import { CalcTotalCartPrice, IsUserLoggedIn } from "../../General/GeneralFunctio
 //// custom components
 import { isProductInWishlist } from "../../API/WishlistAPIFunctions.js";
 import CompleteCheckoutModal from "../CartPage/CompleteCheckoutModal/CompleteCheckoutModal.jsx";
-import ControlProductAmount from "../CartDrawer/ItemComponent/ControlProductAmount.jsx"
+import ControlProductAmount from "./ControlProductAmount.jsx"
 import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponent.jsx";
 import NoItemComponent from "../../Components/GenericComponents/NoItemsComponent/NoItemsComponent.jsx"
 
@@ -34,7 +34,7 @@ const pageStyles = {
     display: "flex",
     minHeight: "60vh",
     width: "100%",
-    bgcolor: "background.paper",
+    bgcolor: "categoryColor.main",
     p: { xs: 2, md: 4 },
     mt: 2,
     flexDirection: { xs: "column", md: "row" },
@@ -138,10 +138,6 @@ const ProductPage = () => {
                 currency: "USD",
             }
         }
-
-        console.log("############ : ", checkoutInfo);
-
-
         handleOpenCheckoutModal();
 
     }
@@ -194,7 +190,6 @@ const ProductPage = () => {
 
         const getProduct = async () => {
             await dispatch(getAProductReducer(productId));
-
             if (IsUserLoggedIn()) await checkWishlistStatus();
 
         };
@@ -211,13 +206,12 @@ const ProductPage = () => {
         <Container sx={pageStyles} maxWidth="xl">
             <Box
                 sx={{
-                    paddingTop: "2.5rem",
                     maxWidth: { xs: 320, md: "31.25rem" },
                     minWidth: { xs: 320, md: "25rem" },
-                    height: "100%",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
+                    height: { xs: "18.75rem", sm: "25rem" },
                 }}
             >
                 <img
@@ -309,14 +303,30 @@ const ProductPage = () => {
                     <span style={{ display: "inline-block", fontWeight: "bold", minWidth: "6.875rem" }}>Size :</span>{PreviewedProduct.size}
                 </Typography>
 
-                <Stack className="flex-center" sx={{ mb: 4, width: "100%", justifyContent: "flex-start" }}>
-                    <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "6.875rem", fontWeight: "bold" }}> Quantity : </Typography>
+                <Stack className="flex-center" sx={{
+                    mb: 1.5, width: "100%", justifyContent: "flex-start",
+                    opacity: PreviewedProduct.amount === 0 ? 0.5 : 1,
+                    pointerEvents: PreviewedProduct.amount === 0 ? "none" : "all",
+                }}>
+                    <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "7.5rem", fontWeight: "bold" }}> Quantity : </Typography>
                     <ControlProductAmount
                         fieldQuantity={fieldQuantity}
                         setFieldQuantity={setFieldQuantity}
                         quantity={fieldQuantity}
-                        scale="1"
+                        maxRange={PreviewedProduct.amount}
                     />
+                </Stack>
+
+                <Stack className="flex-center" sx={{ mb: 4, width: "100%", justifyContent: "flex-start" }}>
+                    <Typography sx={{ fontSize: { xs: "1rem", lg: "1.125rem" }, minWidth: "6.875rem", fontWeight: "bold" }}> In Stock : </Typography>
+                    {
+                        PreviewedProduct.amount === 0
+                            ? <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem", fontWeight: "bold", color: theme.palette.specialText2.main } }}>Out of stock</Typography>
+                            : <Typography variant="body" sx={{ fontSize: { xs: "1rem", lg: "1.125rem" } }}>
+                                ( <span style={{ fontWeight: "bold", color: theme.palette.specialText.main }}>{PreviewedProduct.amount}</span> ) items in stock
+                            </Typography>
+                    }
+
                 </Stack>
 
                 <Stack
@@ -333,6 +343,7 @@ const ProductPage = () => {
                             onClick={handelBuyNow}
                             sx={{ ...buttonsStyle, bgcolor: "#ff6e6e" }}
                             variant="contained"
+                            disabled={PreviewedProduct.amount === 0}
                         >
                             Buy now
                         </Button>
@@ -342,6 +353,7 @@ const ProductPage = () => {
                             sx={buttonsStyle}
                             color="secondary"
                             variant="contained"
+                            disabled={PreviewedProduct.amount === 0}
                         >
                             <AddShoppingCartOutlinedIcon sx={{ mr: 1 }} fontSize="small" />
                             Add To Cart

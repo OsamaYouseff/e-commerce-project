@@ -213,6 +213,7 @@ const Header = function () {
                         sx={{
                             p: 0,
                             minWidth: { xs: "100%", md: "9.375rem" },
+                            mb: 2
                         }}
                     >
                         <Box sx={{

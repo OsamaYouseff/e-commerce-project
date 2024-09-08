@@ -19,7 +19,6 @@ import LoaderComponent from "../GenericComponents/LoaderComponent/LoaderComponen
 import ItemComponent from "./ItemComponent/ItemComponent";
 import { SomeThingWrong } from "../GenericComponents/SomeThingWrong/SomeThingWrong";
 import ProductDetails from "../CardComponent/ProductDetails/ProductDetails";
-import toast from 'react-hot-toast';
 
 /// General Vars & Functions
 import { IsUserLoggedIn } from "../../General/GeneralFunctions";
@@ -113,8 +112,6 @@ export default function CartDrawer() {
 
             }}
             role="presentation"
-        // onClick={toggleDrawer(anchor, false)}
-        // onKeyDown={toggleDrawer(anchor, false)}
         >
             {/* Close Button */}
             <Button
@@ -160,10 +157,7 @@ export default function CartDrawer() {
                     minHeight: "58vh",
                     pr: 1,
                     width: "100%",
-                    // transform: {
-                    //     xs: "translateX(.625rem)",
-                    //     sm: "translateX(0rem)",
-                    // },
+
                 }}
             >
                 <div
