@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 
 
 //// custom components
-import TextFieldComponent from "../../../../../../shared_files/TextFieldComponent/TextFieldComponent.jsx";
+import TextFieldComponent from "../../../GenericComponents/TextFieldComponent/TextFieldComponent.jsx";
 import { ColorModeContext } from "../../../../../../shared_files/Theme/theme.jsx";
 import SelectComponent from "./SelectComponent/SelectComponent";
 import ImageUploader from "./ImageUploader/ImageUploader";

@@ -3,7 +3,7 @@ import { Box, Stack, TextField, Typography } from "@mui/material";
 
 /* eslint-disable react/prop-types */
 import Grid from "@mui/material/Grid";
-import TextFieldComponent from "../../../../../shared_files/TextFieldComponent/TextFieldComponent.jsx";
+import TextFieldComponent from "../../GenericComponents/TextFieldComponent/TextFieldComponent.jsx";
 import FormControl from "@mui/material/FormControl";
 import Divider from "@mui/material/Divider";
 import Radio from "@mui/material/Radio";

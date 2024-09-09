@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import { useState } from "react";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import TextFieldComponent from "../../../../shared_files/TextFieldComponent/TextFieldComponent.jsx";
+import TextFieldComponent from "../GenericComponents/TextFieldComponent/TextFieldComponent.jsx";
 
 import { toast } from "react-hot-toast";
 

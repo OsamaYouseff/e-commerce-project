@@ -6,7 +6,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Man2RoundedIcon from "@mui/icons-material/Man2Rounded";
 import Woman2RoundedIcon from "@mui/icons-material/Woman2Rounded";
-import TextFieldComponent from "../../../../../shared_files/TextFieldComponent/TextFieldComponent.jsx";
+import TextFieldComponent from "../../GenericComponents/TextFieldComponent/TextFieldComponent.jsx";
 import toast from 'react-hot-toast';
 
 
