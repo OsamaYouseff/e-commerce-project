@@ -106,9 +106,6 @@ const CartPage = () => {
 
     useEffect(() => {
         let prevPage = document.referrer.split("/").at(-1);
-
-        console.log(prevPage)
-
         if (prevPage === "login" || prevPage === "register")
             dispatch(getCustomerCartReducer());
 

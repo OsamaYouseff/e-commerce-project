@@ -111,12 +111,12 @@ const OrderCard = ({ order }) => {
                                 <img
                                     src={item.img}
                                     alt="product-img"
-                                    style={{ maxWidth: "6.25rem" }}
+                                    style={{ maxHeight: "70px" }}
                                 />
                                 <Typography
                                     sx={{
-                                        fontSize: { xs: ".9375rem", sm: "1.3125rem" },
-                                        width: { xs: "100%" },
+                                        fontSize: { xs: ".9375rem", sm: "18px" },
+                                        width: { xs: "100%", },
                                         maxWidth: { xs: "100%", md: "18.75rem" },
                                         flexGrow: 1,
                                     }}
@@ -131,7 +131,7 @@ const OrderCard = ({ order }) => {
                                         gap: 2,
                                         borderLeft: ".0625rem solid grey",
                                         pl: 1,
-                                        width: "100%",
+                                        width: "70%",
                                         maxWidth: {
                                             xs: "100%",
                                             md: "60%",

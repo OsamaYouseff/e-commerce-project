@@ -50,7 +50,7 @@ export const deleteOrderReducer = createAsyncThunk("deleteCustomerOrderAPI/sendR
 
     if (response.status) {
         toast.success(response.message);
-        setTimeout(() => { document.location.href = "userInfo/orders"; }, 1500)
+        setTimeout(() => { document.location.reload() }, 1500)
 
     } else {
         toast.error(response.message);

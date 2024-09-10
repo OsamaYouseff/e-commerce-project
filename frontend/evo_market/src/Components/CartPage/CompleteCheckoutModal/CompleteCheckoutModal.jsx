@@ -61,7 +61,7 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             return {
                 productId: product.productId,
                 quantity: product.quantity,
-                priceAtOrderInCents: product.productDetails.price * 100,
+                priceAtOrderInCents: Number((product.productDetails.price * 100).toFixed(2)),
             };
         });
 
@@ -89,7 +89,8 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             },
         };
 
-        // console.log(orderData)
+
+
 
         const orderValidationRes = isOrderInfoValid(orderData)
 

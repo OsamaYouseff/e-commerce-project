@@ -271,7 +271,12 @@ export const ProductsApiSlice = createSlice({
 
                 if (action.payload.status) {
                     state.response = action.payload.response;
-                    toast.success(action.payload.message);
+
+                    if (action.payload.response.length > 0)
+                        toast.success(action.payload.message);
+                    else
+                        toast.error(action.payload.message);
+
                 } else {
                     toast.error(action.payload.message);
                     // state.error = true;

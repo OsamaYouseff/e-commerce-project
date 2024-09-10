@@ -1,3 +1,7 @@
+const baseURL = import.meta.env.VITE_BASE_URL;
+import axios from 'axios'
+
+
 //// shared
 export function GetMessagesFromObject(errors) {
     let message = '';

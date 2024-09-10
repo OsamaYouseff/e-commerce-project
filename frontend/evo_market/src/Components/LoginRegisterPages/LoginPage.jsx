@@ -34,7 +34,7 @@ const eyeStyles = {
     top: "58%",
     transform: "translate(-50%,-50%)",
     zIndex: 10,
-    color: "white",
+    color: "secondary.main",
     borderRadius: "50%",
     height: "25px",
 };

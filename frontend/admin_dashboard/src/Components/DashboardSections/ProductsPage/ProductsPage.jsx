@@ -84,7 +84,30 @@ const ProductsPage = () => {
         }
         else if (isLoading) {
             return (<Container maxWidth="xl" ><SkeletonFeedbackCard numOfSkeletons={limit} minWidth="225px" /> </Container>)
-        } else {
+        }
+        else if (products.length === 0) {
+            return (
+                <Container maxWidth="xl" py={3} sx={{ marginTop: ".9375rem" }}>
+                    <Box
+
+                        className="flex-column-center"
+                        sx={{ minHeight: "50vh", gap: ".9375rem" }}
+                    >
+                        <Typography variant="h5">
+                            No Products Found 😢
+                        </Typography>
+                        <Button
+                            variant="contained"
+                            onClick={() => window.location.reload()}
+                            sx={{ fontWeight: "bold" }}
+                        >
+                            Reload Page
+                        </Button>
+                    </Box>
+                </Container>
+            );
+        }
+        else {
             return (<>
                 <Stack
                     sx={{ mt: ".9375rem", py: ".9375rem", gap: ".9375rem .625rem" }}

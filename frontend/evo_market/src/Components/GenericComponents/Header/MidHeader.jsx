@@ -1,14 +1,19 @@
 import { Box, Stack, Typography } from "@mui/material";
 import Container from "@mui/material/Container";
 import { styled, alpha, useTheme } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-import IconButton from "@mui/material/IconButton";
 import { ColorModeContext } from "../../../../../shared_files/Theme/theme.jsx";
 import CartDrawer from "../../CartDrawer/CartDrawer";
-import SimpleListMenu from "./SimpleListMenu";
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
+
+
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from '@mui/icons-material/Close';
+import SearchIcon from '@mui/icons-material/Search';
+
+////redux
+import { useDispatch } from "react-redux";
 
 ///// custom components
 import CustomerMenu from "./CustomerMenu";
@@ -135,36 +140,7 @@ const MidHeader = function () {
                 </a>
                 {/*== Logo ==*/}
 
-                {/* Search */}
-                <Box
-                    flexGrow={0.6}
-                    sx={{ p: 0, minWidth: { xs: "100%", md: "9.375rem" } }}
-                >
-                    <Search
-                        sx={{
-                            p: 0,
-                            borderRadius: "1.5625rem",
-                            bgcolor: "bgColor.main",
-                            maxHeight: "2.5rem !important",
-                            minWidth: "100%",
-                            margin: "0 !important",
-                        }}
-                    >
-                        <SearchIconWrapper>
-                            <SearchIcon sx={{ color: "#777" }} />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            value={"Search…"}
-                            // readOnly={true}
-                            autoComplete="off"
-                            inputProps={{ "aria-label": "search" }}
-                            sx={{ flex: 1 }}
-                        />
-                        <SimpleListMenu />
-                    </Search>
-                </Box>
-                {/*== Search ==*/}
+                <SearchBar />
 
                 {/* Icons */}
                 <Stack
@@ -188,5 +164,103 @@ const MidHeader = function () {
         </Container>
     );
 };
+
+
+import { useState } from "react"
+import { searchForProductReducer, getFilteredProductsReducer } from "../../../../../admin_dashboard/src/redux/ProductSlice/ApiProductSlice.js";
+
+const SearchBar = () => {
+    const [searchValue, setSearchValue] = useState("");
+
+    const dispatch = useDispatch();
+
+    const handelFilterSearch = (searchValue) => {
+
+        if (searchValue.trim() === "") return;
+
+        dispatch(searchForProductReducer(searchValue.trim()));
+
+        window.scroll({
+            top: 850,
+            behavior: "smooth",
+        });
+    }
+    const resetSearch = () => {
+        dispatch(getFilteredProductsReducer(""));
+    }
+
+    const handelResetSearch = async () => {
+        if (`${searchValue}`.trim() === "") return;
+        setSearchValue("");
+        resetSearch();
+    }
+
+    return (<Box Box
+        flexGrow={0.6}
+        sx={{ p: 0, minWidth: { xs: "100%", md: "9.375rem" } }
+        }
+    >
+        <Search
+            sx={{
+                p: 0,
+                borderRadius: "1.5625rem",
+                bgcolor: "bgColor.main",
+                maxHeight: "2.5rem !important",
+                minWidth: "100%",
+                margin: "0 !important",
+                overflow: "hidden",
+                borderRight: "none"
+            }}
+        >
+            <SearchIconWrapper>
+                <SearchIcon sx={{ color: "#777" }} />
+            </SearchIconWrapper>
+            <StyledInputBase
+                placeholder="Search"
+                value={searchValue}
+                autoComplete="off"
+                onChange={(e) => {
+                    setSearchValue(e.target.value);
+                }}
+                inputProps={{ "aria-label": "search" }}
+                sx={{ flex: 1 }}
+            />
+
+            <Button variant="outlined"
+                onClick={() => handelFilterSearch(searchValue)}
+                sx={{
+                    minWidth: "1.875rem", height: "2.5rem",
+                    borderRadius: ".3rem 1.5625rem 1.5625rem .3rem",
+                    fontWeight: "bolder",
+                    borderColor: "gray",
+                    borderWidth: "2px",
+                    px: { xs: 2, sm: 3, md: 4 },
+                    color: "gray",
+                    ":hover": {
+                        color: "primary.main", borderColor: "primary.main", borderWidth: "2px"
+                    },
+                    textTransform: "none",
+                    fontSize: "1rem",
+                    zIndex: 99
+                }}
+            >
+                Search
+            </Button>
+
+            <CloseIcon onClick={() => handelResetSearch()} sx={{
+                display: (`${searchValue}`.trim() === "") ? "none" : "block",
+                position: "absolute", top: "50%", left: { xs: "calc(100% - 120px)", sm: "calc(100% - 140px)", md: "calc(100% - 155px)" }, transform: "translateY(-50%)",
+                color: "gray",
+                cursor: "pointer",
+                transition: "all .1s linear",
+                border: " 1px solid transparent", borderRadius: ".3rem",
+                ":hover": { color: "#E91E63", borderColor: "#E91E63" }
+            }} />
+        </Search>
+    </Box>
+    )
+
+}
+
 
 export default MidHeader;

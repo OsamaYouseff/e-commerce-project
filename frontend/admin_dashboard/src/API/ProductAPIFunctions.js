@@ -167,15 +167,11 @@ export const toggleDisableProduct = async (productId) => {
 
 export const searchForProduct = async (productName) => {
 
-    const { accessToken } = GetTokenAndUserId();
-
     let config = {
         method: 'get',
         maxBodyLength: Infinity,
         url: `${baseURL}/api/products/search/${productName}`,
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        },
+        headers: {},
     };
 
     try {
@@ -183,11 +179,14 @@ export const searchForProduct = async (productName) => {
 
         // console.log("RESPONSE :::::: ", response.data);
 
-        return { status: true, response: response.data, message: "some products were found🙂" };
+        if (response.data.length === 0)
+            return { status: true, response: response.data, message: "can't find any products with name : " + productName + " 😢" };
+        else
+            return { status: true, response: response.data, message: "some products were found🙂" };
 
     } catch (error) {
         console.log('Error Fetching product Data : ', error);
-        return { status: false, message: "can't find any product with id : " + productName + " 😢" };
+        return { status: false, message: "can't find any product with name : " + productName + " 😢" };
     }
 };
 

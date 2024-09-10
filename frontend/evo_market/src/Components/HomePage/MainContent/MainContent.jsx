@@ -87,6 +87,30 @@ const MainContent = () => {
         );
     }
 
+    if (products.length === 0) {
+        return (
+            <Container maxWidth="xl" py={3} sx={{ marginTop: ".9375rem" }}>
+                <Box
+
+                    className="flex-column-center"
+                    sx={{ minHeight: "50vh", gap: ".9375rem" }}
+                >
+                    <Typography variant="h5">
+                        No Products Found 😢
+                    </Typography>
+                    <Button
+                        variant="contained"
+                        onClick={() => window.location.reload()}
+                        sx={{ fontWeight: "bold" }}
+                    >
+                        Reload Page
+                    </Button>
+                </Box>
+            </Container>
+        );
+    }
+
+
     return (
         <Container maxWidth="xl" py={3} sx={{ marginY: "2.8125rem" }}>
             <Stack

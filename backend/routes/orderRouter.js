@@ -69,7 +69,7 @@ router.delete("/:id/:orderId", verifyTokenAndAuthorization, async (req, res) => 
   }
 });
 
-//// FOR ADMINS ADMINS
+//// FIND ORDER FOR ADMINS
 router.delete("/:orderId", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.orderId);
@@ -319,8 +319,9 @@ router.get('/min/:id', verifyTokenAndAuthorization, async (req, res) => {
           estimatedDeliveryDate: 1,
           _id: 0
         }
-      }
-    ]);
+      },
+      { $sort: { estimatedDeliveryDate: -1 } }
+    ])
 
     // if (result.length === 0) {
     //   return res.status(404).json({ message: 'No orders found for this user' });

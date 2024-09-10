@@ -62,3 +62,27 @@ export const getAProduct = async (productId) => {
 };
 
 
+export const searchForProduct = async (productName) => {
+
+    let config = {
+        method: 'get',
+        maxBodyLength: Infinity,
+        url: `${baseURL}/api/products/search/${productName}`,
+        headers: {},
+    };
+
+    try {
+        const response = await axios.request(config);
+
+        // console.log("RESPONSE :::::: ", response.data);
+
+        if (response.data.length === 0)
+            return { status: true, response: response.data, message: "can't find any products with name : " + productName + " 😢" };
+        else
+            return { status: true, response: response.data, message: "some products were found🙂" };
+
+    } catch (error) {
+        console.log('Error Fetching product Data : ', error);
+        return { status: false, message: "can't find any product with name : " + productName + " 😢" };
+    }
+};
