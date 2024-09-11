@@ -19,12 +19,16 @@ import toast from 'react-hot-toast';
 import { useState } from "react";
 
 ///// Redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 ///// Redux Actions
 import { customerLoginReducer } from "../../redux/CustomerSlice/ApiCustomerSlice";
 import { IsUserLoggedIn } from "../../General/GeneralFunctions.js";
 import { GoHome, PrintErrors, ValidateLoginForm } from "../../../../shared_files/General/GeneralFunctions.js";
+
+
+//// custom components
+import LoaderComponent from "../../../../shared_files/LoaderComponent/LoaderComponent.jsx";
 
 //// styles
 const eyeStyles = {
@@ -42,8 +46,11 @@ const eyeStyles = {
 export default function LoginPage() {
     const dispatch = useDispatch();
 
+
+    const isLoading = useSelector((state) => state.CustomerApiRequest.isLoading);
+
     const [formData, setFormData] = useState({
-        // username: "sama",
+        // username: "osama",
         // password: "Os123@.seto2",
         username: "",
         password: "",
@@ -86,138 +93,142 @@ export default function LoginPage() {
 
     //// prevent user from accessing login page if he is already logged in
     if (IsUserLoggedIn()) {
-        GoHome();
-    } else {
-        return (
-            <Container
-                component="main"
-                maxWidth="sm"
-                sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 } }}
+        return GoHome();
+    }
+
+    if (isLoading) {
+        return (<LoaderComponent />);
+    }
+
+    return (
+        <Container
+            component="main"
+            maxWidth="sm"
+            sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 } }}
+        >
+            <CssBaseline />
+            <Box
+                sx={{
+                    marginTop: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                }}
             >
-                <CssBaseline />
+                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                    <LockOutlinedIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                    Sign in
+                </Typography>
                 <Box
-                    sx={{
-                        marginTop: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
+                    component="form"
+                    onSubmit={handleSubmit}
+                    noValidate
+                    sx={{ mt: 1, width: "100%" }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{ mt: 1, width: "100%" }}
-                    >
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="username"
+                        label="Username"
+                        name="username"
+                        autoComplete="username"
+                        autoFocus
+                        size="small"
+                        value={formData.username}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                username: e.target.value.trim(),
+                            })
+                        }
+                    />
+                    <Grid item xs={12} sx={{ position: "relative" }}>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
-                            label="Username"
-                            name="username"
-                            autoComplete="username"
-                            autoFocus
+                            name="password"
+                            label="Password"
+                            type={showPassword ? "password" : "text"}
+                            id="password"
+                            autoComplete="current-password"
                             size="small"
-                            value={formData.username}
+                            value={formData.password}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    username: e.target.value.trim(),
+                                    password: e.target.value.trim(),
                                 })
                             }
                         />
-                        <Grid item xs={12} sx={{ position: "relative" }}>
-                            <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type={showPassword ? "password" : "text"}
-                                id="password"
-                                autoComplete="current-password"
-                                size="small"
-                                value={formData.password}
-                                onChange={(e) =>
-                                    setFormData({
-                                        ...formData,
-                                        password: e.target.value.trim(),
-                                    })
-                                }
-                            />
-                            {handlePasswordVisibility(
-                                showPassword,
-                                setShowPassword
-                            )}
-                        </Grid>
-                        <FormControlLabel
-                            control={
-                                <Checkbox value="remember" color="primary" />
-                            }
-                            label="Remember me"
-                            checked={formData.rememberMe}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    rememberMe: e.target.checked,
-                                })
-                            }
-                        />
+                        {handlePasswordVisibility(
+                            showPassword,
+                            setShowPassword
+                        )}
+                    </Grid>
+                    <FormControlLabel
+                        control={
+                            <Checkbox value="remember" color="primary" />
+                        }
+                        label="Remember me"
+                        checked={formData.rememberMe}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                rememberMe: e.target.checked,
+                            })
+                        }
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
+                    >
+                        Sign In
+                    </Button>
+                    <Link
+                        href="/"
+                        className="flex-center go-home"
+                        sx={{
+                            width: "100%",
+                            textDecoration: "none",
+                            mb: 3,
+                        }}
+                    >
                         <Button
-                            type="submit"
-                            fullWidth
                             variant="contained"
-                            sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
+                            color="secondary"
+                            sx={{ width: "100%", fontWeight: "bolder" }}
                         >
-                            Sign In
+                            Back To Shopping
                         </Button>
-                        <Link
-                            href="/"
-                            className="flex-center go-home"
-                            sx={{
-                                width: "100%",
-                                textDecoration: "none",
-                                mb: 3,
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                sx={{ width: "100%", fontWeight: "bolder" }}
+                    </Link>
+                    <Grid container>
+                        {/* <Grid item xs>
+                            <Link
+                                href="#"
+                                variant="body2"
+                                sx={{ fontWeight: "bolder" }}
                             >
-                                Back To Shopping
-                            </Button>
-                        </Link>
-                        <Grid container>
-                            {/* <Grid item xs>
-                                <Link
-                                    href="#"
-                                    variant="body2"
-                                    sx={{ fontWeight: "bolder" }}
-                                >
-                                    Forgot password?
-                                </Link>
-                            </Grid> */}
-                            <Grid item>
-                                <Link
-                                    href="/register"
-                                    variant="body2"
-                                    sx={{ fontWeight: "bolder" }}
-                                >
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
+                                Forgot password?
+                            </Link>
+                        </Grid> */}
+                        <Grid item>
+                            <Link
+                                href="/register"
+                                variant="body2"
+                                sx={{ fontWeight: "bolder" }}
+                            >
+                                {"Don't have an account? Sign Up"}
+                            </Link>
                         </Grid>
-                    </Box>
+                    </Grid>
                 </Box>
-            </Container>
-        );
-    }
+            </Box>
+        </Container>
+    );
 }

@@ -97,14 +97,10 @@ export function ValidateLoginForm(formData) {
     // Username validation
     if (!formData.username || formData.username.trim().length === 0) {
         errors.username = "Username is required";
-    } else if (!/^[a-zA-Z0-9_]{3,20}$/.test(formData.username)) {
-        errors.username = "Username must be 3-20 characters long and can only contain letters, numbers, and underscores";
     }
     // Password validation
     if (!formData.password || formData.password.length === 0) {
         errors.password = "Password is required";
-    } else if (!/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/.test(formData.password)) {
-        errors.password = "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character";
     }
 
     return {

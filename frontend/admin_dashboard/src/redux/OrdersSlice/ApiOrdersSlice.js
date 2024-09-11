@@ -90,8 +90,8 @@ const initialState = {
 
 }
 
-export const CartApiSlice = createSlice({
-    name: "CartsApiRequest",
+export const OrdersApiSlice = createSlice({
+    name: "OrdersApiRequest",
     initialState: initialState,
     reducers: {},
     extraReducers: (builder) => {
@@ -187,6 +187,6 @@ export const CartApiSlice = createSlice({
 });
 
 
-export default CartApiSlice.reducer;
+export default OrdersApiSlice.reducer;
 
 

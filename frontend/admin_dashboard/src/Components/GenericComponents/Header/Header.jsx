@@ -5,8 +5,8 @@ import { useContext } from "react";
 import { ColorModeContext } from "../../../../../shared_files/Theme/theme.jsx";
 import { Box } from "@mui/material";
 
+//// custom components
 import DashboardNavBarDrawer from "../../MainDashboard/DashboardNavBarDrawer/DashboardNavBarDrawer"
-
 
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
@@ -123,8 +123,6 @@ const Header = function () {
                     zIndex: "200",
                     px: { xs: 2, sm: 3, md: 4 },
                     py: 1,
-                    pb: { xs: 0, md: 1 }
-
                 }}
             >
                 <Stack
@@ -206,48 +204,7 @@ const Header = function () {
                         {/*== Theme Icon==*/}
                     </Box>
 
-                    {/* Search */}
-                    <Box
-                        className="flex-center"
-                        flexGrow={0.6}
-                        sx={{
-                            p: 0,
-                            minWidth: { xs: "100%", md: "9.375rem" },
-                            mb: 2
-                        }}
-                    >
-                        <Box sx={{
-                            display: { xs: (currentPath === "/login" ? "none" : "block"), md: "none" },
-                            maxWidth: "fit-content", mr: 1
-                        }}>
-                            <DashboardNavBarDrawer userData={userData} />
-                        </Box>
 
-                        <Search
-                            sx={{
-                                p: 0,
-                                borderRadius: "1.5625rem",
-                                bgcolor: theme.palette.bgColor.main,
-                                maxHeight: "2.5rem !important",
-                                flexGrow: 1,
-                                margin: "0 !important",
-                                display: (currentPath === "/login" ? "none" : "block"),
-                            }}
-                        >
-                            <SearchIconWrapper>
-                                <SearchIcon sx={{ color: "#777" }} />
-                            </SearchIconWrapper>
-                            <StyledInputBase
-                                placeholder="Search…"
-                                value={"Search…"}
-                                // readOnly={true}
-                                autoComplete="off"
-                                inputProps={{ "aria-label": "search" }}
-                                sx={{ flex: 1 }}
-                            />
-                        </Search>
-                    </Box>
-                    {/*== Search ==*/}
                 </Stack>
             </Box >
         </Box >

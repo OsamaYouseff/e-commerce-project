@@ -78,7 +78,7 @@ const initialState = {
 }
 
 export const CustomerApiSlice = createSlice({
-    name: "ProductsApiRequest",
+    name: "CustomerApiRequest",
     initialState: initialState,
 
     reducers: {},
@@ -91,8 +91,6 @@ export const CustomerApiSlice = createSlice({
             }).addCase(customerLoginReducer.fulfilled, (currentState, action) => {
 
                 currentState.isLoading = false;
-
-                // console.log("payload : ", action.payload);
 
                 if (action.payload.status) {
                     // toast.success("Login successfully ,Welcome 😀");

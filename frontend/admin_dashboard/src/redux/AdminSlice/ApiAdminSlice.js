@@ -59,7 +59,7 @@ const initialState = {
 }
 
 export const AdminApiSlice = createSlice({
-    name: "ProductsApiRequest",
+    name: "AdminApiRequest",
     initialState: initialState,
 
     reducers: {},

@@ -70,18 +70,16 @@ export const updateCustomerAddressReducer = createAsyncThunk("updateCustomerAddr
 }
 );
 
-export const setDefaultAddressReducer = createAsyncThunk(
-    "setDefaultAddressAPI/sendRequest",
-    async (addressId) => {
-        const response = await setAddressDefault(addressId);
+export const setDefaultAddressReducer = createAsyncThunk("setDefaultAddressAPI/sendRequest", async (addressId) => {
+    const response = await setAddressDefault(addressId);
 
-        // if (!response.status) {
-        //     toast.error(response.message);
-        // }
-        // console.log(response)
+    // if (!response.status) {
+    //     toast.error(response.message);
+    // }
+    // console.log(response)
 
-        return response;
-    }
+    return response;
+}
 );
 
 ///// state
