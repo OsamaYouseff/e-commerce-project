@@ -99,7 +99,6 @@ export function ChangePasswordDialog({
                     <Button
                         variant="contained"
                         onClick={handleChangePassword}
-                        // type="submit"
                         fullWidth
                         disabled={
                             formData.currentPassword.trim() === "" ||
@@ -119,15 +118,7 @@ export function ChangePasswordDialog({
     );
 }
 
-const PasswordField = ({
-    value,
-    handleClickShowPassword,
-    handleMouseDownPassword,
-    showPassword,
-    label,
-    handleChangeField,
-    title,
-}) => {
+const PasswordField = ({ value, handleClickShowPassword, handleMouseDownPassword, showPassword, label, handleChangeField, title }) => {
     return (
         <FormControl sx={{ m: 1, width: "100%" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">

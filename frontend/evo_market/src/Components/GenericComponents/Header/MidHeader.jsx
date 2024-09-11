@@ -170,7 +170,7 @@ import { useState } from "react"
 import { searchForProductReducer, getFilteredProductsReducer } from "../../../../../admin_dashboard/src/redux/ProductSlice/ApiProductSlice.js";
 
 const SearchBar = () => {
-    const [searchValue, setSearchValue] = useState("");
+    const [searchValue, setSearchValue] = useState("Search");
 
     const dispatch = useDispatch();
 

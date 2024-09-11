@@ -13,8 +13,8 @@ const NoItemsComponent = ({ message, minHeight, fontSize }) => {
             className="flex-center"
             sx={{
                 p: 2,
-                bgcolor: theme.palette.sectionBgColor.main,
-                color: theme.palette.text.main,
+                // bgcolor: theme.palette.sectionBgColor.main,
+                // color: theme.palette.text.main,
                 textAlign: "center",
                 borderRadius: "10px",
                 fontWeight: "bolder",

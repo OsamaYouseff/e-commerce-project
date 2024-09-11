@@ -27,7 +27,7 @@ export default function ConfirmComponent({ openConfirmDialog, confirmAction, han
                 aria-describedby="alert-dialog-slide-description"
                 sx={{
                     ".MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper": {
-                        bgcolor: "bgColor.main",
+                        // bgcolor: theme.palette.bgColor.main,
                         p: {
                             xs: 1,
                             sm: 2
