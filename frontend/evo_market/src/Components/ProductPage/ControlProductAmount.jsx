@@ -45,7 +45,7 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, quantity, scale
                 </IconButton>
 
                 <input
-                    type="text"
+                    type="number"
                     value={fieldQuantity}
                     onChange={(e) => {
                         let value = e.target.value;

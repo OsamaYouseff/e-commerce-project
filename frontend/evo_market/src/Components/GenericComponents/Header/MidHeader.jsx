@@ -216,6 +216,7 @@ const SearchBar = () => {
                 <SearchIcon sx={{ color: "#777" }} />
             </SearchIconWrapper>
             <StyledInputBase
+                onClick={() => searchValue === "Search" && setSearchValue("")}
                 placeholder="Search"
                 value={searchValue}
                 autoComplete="off"

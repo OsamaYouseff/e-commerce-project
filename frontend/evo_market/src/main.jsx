@@ -40,7 +40,7 @@ const routeElement = (currentComponent, showMidHeader = false) => {
             <ScrollToTop />
 
             <Toaster
-                position="bottom-left"
+                position="top-left"
                 reverseOrder={false}
                 gutter={8}
                 containerClassName=""
