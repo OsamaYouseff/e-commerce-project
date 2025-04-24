@@ -38,7 +38,7 @@ const ControlProductAmount = ({ fieldQuantity, setFieldQuantity, handleClickIncr
             </IconButton>
 
             <input
-                type="text"
+                type="number"
                 value={fieldQuantity}
                 onChange={(e) => {
                     let value = e.target.value;
