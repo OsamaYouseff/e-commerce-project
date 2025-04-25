@@ -176,7 +176,7 @@ const SearchBar = () => {
 
     const handelFilterSearch = (searchValue) => {
 
-        if (searchValue.trim() === "") return;
+        if (searchValue.trim() === "" || searchValue.trim() === "Search") return;
 
         dispatch(searchForProductReducer(searchValue.trim()));
 
