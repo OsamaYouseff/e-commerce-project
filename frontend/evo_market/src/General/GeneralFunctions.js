@@ -145,7 +145,7 @@ export function ValidateSignUpForm(formData, confirmPassword) {
         // Password validation
         if (!formData.password || formData.password.length === 0) {
             errors.password = "Password is required";
-        } else if (!/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*\W)(?!.* ).{8,16}$/.test(formData.password)) {
+        } else if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*[\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,64}$/.test(formData.password)) {
             errors.password = "Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character";
         }
     }
@@ -153,8 +153,8 @@ export function ValidateSignUpForm(formData, confirmPassword) {
     // Phone validation
     if (!formData.phone || formData.phone.trim().length === 0) {
         errors.phone = "Phone number is required";
-    } else if (!/^\+\d{1,3}\d{10,14}$/.test(formData.phone)) {
-        errors.phone = "Invalid phone number format. Use international format (e.g., +1234567890)";
+    } else if (!/^(01)[0-2,5]{1}[0-9]{8}$/.test(formData.phone)) {
+        errors.phone = "Invalid phone number format. Use international format (e.g., 01(0-2,5)XXXXXXXXX)";
     }
 
     return {

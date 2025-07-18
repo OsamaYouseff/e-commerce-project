@@ -54,7 +54,7 @@ const isPasswordValid = (password) => {
 };
 
 const isPhoneValid = (phone) => {
-    const phoneRegex = /^\+?(?:[0-9]●?){6,14}[0-9]$/;
+    const phoneRegex = /^(01)[0-2,5]{1}[0-9]{8}$/;
     return phone && phoneRegex.test(phone);
 };
 
