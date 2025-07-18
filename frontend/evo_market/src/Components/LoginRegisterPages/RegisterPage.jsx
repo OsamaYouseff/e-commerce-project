@@ -44,7 +44,7 @@ const eyeStyles = {
     top: "65%",
     transform: "translate(-50%,-50%)",
     zIndex: 10,
-    color: "white",
+    color: "secondary.main",
     borderRadius: "50%",
     height: "25px",
 };
@@ -95,152 +95,159 @@ export default function RegisterPage() {
         GoHome();
     } else {
         return (
-            <Container
-                component="main"
-                maxWidth="sm"
-                sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 }, my: 1 }}
-            >
-                <CssBaseline />
-                <Box
+            <Box sx={{
+                display: "flex", justifyContent: "center", alignItems: "center", flexGrow: 1,
+            }}>
+                <Container
+                    component="main"
+                    maxWidth="sm"
                     sx={{
-                        marginTop: 1,
-                        marginBottom: 2,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
+                        boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 }, my: 1,
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign up
-                    </Typography>
+                    <CssBaseline />
                     <Box
-                        component="form"
-                        noValidate
-                        onSubmit={handleSubmit}
-                        sx={{ mt: 3, width: "100%" }}
+                        sx={{
+                            marginTop: 1,
+                            marginBottom: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
                     >
-                        <Grid container spacing={2}>
-                            <TextFieldComponent
-                                value={formData.username}
-                                setFormData={handelFormData}
-                                label="Username"
-                                id="username"
-                                type="text"
-                                colWidth={12}
-                                keyName="username"
-                                mb={1}
-                            />
-                            <TextFieldComponent
-                                value={formData.email}
-                                setFormData={handelFormData}
-                                label="Email Address"
-                                id="email"
-                                type="email"
-                                colWidth={12}
-                                keyName="email"
-                                mb={1}
-                            />
-                            <Grid item xs={12} sx={{ position: "relative" }}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    type={showPassword ? "password" : "text"}
-                                    id="password"
-                                    label="Password"
-                                    name="password"
-                                    autoComplete="new-password"
-                                    value={formData.password}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            password: e.target.value.trim(),
-                                        })
-                                    }
-                                    size="small"
-                                />
-                                {handlePasswordVisibility(
-                                    showPassword,
-                                    setShowPassword
-                                )}
-                            </Grid>
-                            <Grid item xs={12} sx={{ position: "relative" }}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    id="password"
-                                    type={showPassword ? "password" : "text"}
-                                    label="Confirm Password"
-                                    name="password"
-                                    autoComplete="confirm-password"
-                                    value={confirmPassword}
-                                    onChange={(e) =>
-                                        setConfirmPassword(
-                                            e.target.value.trim()
-                                        )
-                                    }
-                                    size="small"
-                                />
-                                {handlePasswordVisibility(
-                                    showPassword,
-                                    setShowPassword
-                                )}
-                            </Grid>
-                            <TextFieldComponent
-                                value={formData.phone}
-                                setFormData={handelFormData}
-                                label="Phone Number"
-                                id="phone-number"
-                                type="Phone Number"
-                                colWidth={12}
-                                keyName="phone"
-                                mb={1}
-                            />
-                        </Grid>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
+                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign up
+                        </Typography>
+                        <Box
+                            component="form"
+                            noValidate
+                            onSubmit={handleSubmit}
+                            sx={{ mt: 3, width: "100%" }}
                         >
-                            Sign Up
-                        </Button>
-                        <Link
-                            href="/"
-                            className="flex-center go-home"
-                            sx={{
-                                width: "100%",
-                                textDecoration: "none",
-                                mb: 3,
-                            }}
-                        >
+                            <Grid container spacing={2}>
+                                <TextFieldComponent
+                                    value={formData.username}
+                                    setFormData={handelFormData}
+                                    label="Username"
+                                    id="username"
+                                    type="text"
+                                    colWidth={12}
+                                    keyName="username"
+                                    mb={1}
+                                />
+                                <TextFieldComponent
+                                    value={formData.email}
+                                    setFormData={handelFormData}
+                                    label="Email Address"
+                                    id="email"
+                                    type="email"
+                                    colWidth={12}
+                                    keyName="email"
+                                    mb={1}
+                                />
+                                <Grid item xs={12} sx={{ position: "relative" }}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        type={showPassword ? "password" : "text"}
+                                        id="password"
+                                        label="Password"
+                                        name="password"
+                                        autoComplete="new-password"
+                                        value={formData.password}
+                                        onChange={(e) =>
+                                            setFormData({
+                                                ...formData,
+                                                password: e.target.value.trim(),
+                                            })
+                                        }
+                                        size="small"
+                                    />
+                                    {handlePasswordVisibility(
+                                        showPassword,
+                                        setShowPassword
+                                    )}
+                                </Grid>
+                                <Grid item xs={12} sx={{ position: "relative" }}>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        id="password"
+                                        type={showPassword ? "password" : "text"}
+                                        label="Confirm Password"
+                                        name="password"
+                                        autoComplete="confirm-password"
+                                        value={confirmPassword}
+                                        onChange={(e) =>
+                                            setConfirmPassword(
+                                                e.target.value.trim()
+                                            )
+                                        }
+                                        size="small"
+                                    />
+                                    {handlePasswordVisibility(
+                                        showPassword,
+                                        setShowPassword
+                                    )}
+                                </Grid>
+                                <TextFieldComponent
+                                    value={formData.phone}
+                                    setFormData={handelFormData}
+                                    label="Phone Number"
+                                    id="phone-number"
+                                    type="Phone Number"
+                                    colWidth={12}
+                                    keyName="phone"
+                                    mb={1}
+                                />
+                            </Grid>
                             <Button
+                                type="submit"
+                                fullWidth
                                 variant="contained"
-                                color="secondary"
-                                sx={{ width: "100%", fontWeight: "bolder" }}
+                                sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
                             >
-                                Back To Shopping
+                                Sign Up
                             </Button>
-                        </Link>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link
-                                    href="/login"
-                                    variant="body2"
-                                    sx={{
-                                        cursor: "pointer",
-                                        fontWeight: "bold",
-                                    }}
+                            <Link
+                                href="/"
+                                className="flex-center go-home"
+                                sx={{
+                                    width: "100%",
+                                    textDecoration: "none",
+                                    mb: 3,
+                                }}
+                            >
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{ width: "100%", fontWeight: "bolder" }}
                                 >
-                                    Already have an account? Sign in
-                                </Link>
+                                    Back To Shopping
+                                </Button>
+                            </Link>
+                            <Grid container justifyContent="flex-end">
+                                <Grid item>
+                                    <Link
+                                        href="/login"
+                                        variant="body2"
+                                        sx={{
+                                            cursor: "pointer",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Already have an account? Sign in
+                                    </Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
-            </Container >
+                </Container >
+            </Box>
+
         );
     }
 }

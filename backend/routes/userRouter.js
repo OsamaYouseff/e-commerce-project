@@ -131,8 +131,6 @@ router.post("/change-password/:id", verifyTokenAndAuthorization, async (req, res
         return res.status(400).json({ message: "Password does not meet strength requirements" });
     }
 
-
-
     try {
         const user = await User.findById(userId);
         if (!user) {

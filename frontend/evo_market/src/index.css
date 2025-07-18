@@ -188,6 +188,7 @@ img {
     }
 }
 
-.modal-wrapper {
-    background: #000 !important;
+.eye-icon.svg {
+    cursor: pointer;
+    fill: red !important;
 }

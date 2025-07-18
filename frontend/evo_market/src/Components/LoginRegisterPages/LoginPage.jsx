@@ -101,114 +101,122 @@ export default function LoginPage() {
     }
 
     return (
-        <Container
-            component="main"
-            maxWidth="sm"
-            sx={{ boxShadow: 6, borderRadius: 3, p: { xs: 2, md: 4 } }}
-        >
-            <CssBaseline />
-            <Box
+        <Box sx={{
+            display: "flex", justifyContent: "center", alignItems: "center", flexGrow: 1,
+        }}>
+            <Container
+                component="main"
+                maxWidth="sm"
                 sx={{
-                    marginTop: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    boxShadow: 6,
+                    borderRadius: 3,
+                    p: { xs: 2, md: 4 },
+                    flexGrow: 1,
                 }}
             >
-                <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h5">
-                    Sign in
-                </Typography>
+                <CssBaseline />
                 <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1, width: "100%" }}
+                    sx={{
+                        marginTop: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
                 >
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="username"
-                        label="Username"
-                        name="username"
-                        autoComplete="username"
-                        autoFocus
-                        size="small"
-                        value={formData.username}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                username: e.target.value.trim(),
-                            })
-                        }
-                    />
-                    <Grid item xs={12} sx={{ position: "relative" }}>
+                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{ mt: 1, width: "100%" }}
+                    >
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            name="password"
-                            label="Password"
-                            type={showPassword ? "password" : "text"}
-                            id="password"
-                            autoComplete="current-password"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
+                            autoFocus
                             size="small"
-                            value={formData.password}
+                            value={formData.username}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
-                                    password: e.target.value.trim(),
+                                    username: e.target.value.trim(),
                                 })
                             }
                         />
-                        {handlePasswordVisibility(
-                            showPassword,
-                            setShowPassword
-                        )}
-                    </Grid>
-                    <FormControlLabel
-                        control={
-                            <Checkbox value="remember" color="primary" />
-                        }
-                        label="Remember me"
-                        checked={formData.rememberMe}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                rememberMe: e.target.checked,
-                            })
-                        }
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
-                    >
-                        Sign In
-                    </Button>
-                    <Link
-                        href="/"
-                        className="flex-center go-home"
-                        sx={{
-                            width: "100%",
-                            textDecoration: "none",
-                            mb: 3,
-                        }}
-                    >
+                        <Grid item xs={12} sx={{ position: "relative" }}>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type={showPassword ? "password" : "text"}
+                                id="password"
+                                autoComplete="current-password"
+                                size="small"
+                                value={formData.password}
+                                onChange={(e) =>
+                                    setFormData({
+                                        ...formData,
+                                        password: e.target.value.trim(),
+                                    })
+                                }
+                            />
+                            {handlePasswordVisibility(
+                                showPassword,
+                                setShowPassword
+                            )}
+                        </Grid>
+                        <FormControlLabel
+                            control={
+                                <Checkbox value="remember" color="primary" />
+                            }
+                            label="Remember me"
+                            checked={formData.rememberMe}
+                            onChange={(e) =>
+                                setFormData({
+                                    ...formData,
+                                    rememberMe: e.target.checked,
+                                })
+                            }
+                        />
                         <Button
+                            type="submit"
+                            fullWidth
                             variant="contained"
-                            color="secondary"
-                            sx={{ width: "100%", fontWeight: "bolder" }}
+                            sx={{ mt: 3, mb: 2, fontWeight: "bolder" }}
                         >
-                            Back To Shopping
+                            Sign In
                         </Button>
-                    </Link>
-                    <Grid container>
-                        {/* <Grid item xs>
+                        <Link
+                            href="/"
+                            className="flex-center go-home"
+                            sx={{
+                                width: "100%",
+                                textDecoration: "none",
+                                mb: 3,
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                sx={{ width: "100%", fontWeight: "bolder" }}
+                            >
+                                Back To Shopping
+                            </Button>
+                        </Link>
+                        <Grid container>
+                            {/* <Grid item xs>
                             <Link
                                 href="#"
                                 variant="body2"
@@ -217,18 +225,19 @@ export default function LoginPage() {
                                 Forgot password?
                             </Link>
                         </Grid> */}
-                        <Grid item>
-                            <Link
-                                href="/register"
-                                variant="body2"
-                                sx={{ fontWeight: "bolder" }}
-                            >
-                                {"Don't have an account? Sign Up"}
-                            </Link>
+                            <Grid item>
+                                <Link
+                                    href="/register"
+                                    variant="body2"
+                                    sx={{ fontWeight: "bolder" }}
+                                >
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </Box>
                 </Box>
-            </Box>
-        </Container>
+            </Container>
+        </Box>
     );
 }

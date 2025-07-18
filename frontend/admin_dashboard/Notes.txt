@@ -21,6 +21,7 @@
 -   Try to use @ at paths in the hole project after you finish the target goals.
 -   Fix the the problem in production when the the is not working well.
 -   Make validation for profile input and other stuff.
+-   Fix fetal mistake of saving user data in the local storage and replace it with cookies or hide it.
 
 
 
