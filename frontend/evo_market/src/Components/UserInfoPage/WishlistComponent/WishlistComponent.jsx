@@ -81,7 +81,7 @@ const WishlistComponent = () => {
                 bgcolor: "sectionBgColor.main",
                 py: 2,
                 minHeight: "70vh",
-                minWidth: "67vw",
+                flexGrow: 1,
                 borderRadius: ".5rem",
             }}
         >
@@ -155,10 +155,14 @@ const WishlistComponent = () => {
 
             <Stack
                 className="products"
-                sx={{ mt: ".3125rem", py: ".9375rem", gap: "1.5625rem .625rem" }}
-                direction={"row"}
-                flexWrap={"wrap"}
-                justifyContent={"flex-start"}
+                sx={{ mt: ".3125rem", py: ".9375rem", gap: "20px 10px" }}
+                display={"grid"}
+                gridTemplateColumns={{
+                    xs: "repeat(1, minmax(0, 1fr))",
+                    sm: "repeat(2, minmax(0, 1fr))",
+                    lg: "repeat(4, minmax(0, 1fr))",
+                }}
+
             >
                 {isLoading ? <LoaderComponent /> : handelShowWishlistProducts()}
             </Stack>

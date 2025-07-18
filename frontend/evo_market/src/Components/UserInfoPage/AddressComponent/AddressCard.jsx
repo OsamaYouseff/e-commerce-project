@@ -80,7 +80,7 @@ const AddressCard = ({ address, numOfAddresses }) => {
                     pb: 2,
                     borderRadius: "6px",
                     boxShadow: 1,
-                    maxWidth: "100%",
+                    flexGrow: 1,
                 }}
             >
                 <Stack

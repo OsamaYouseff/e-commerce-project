@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { ColorModeContext } from "../../../../../shared_files/Theme/theme.jsx";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 // import ToggleButton from "@mui/material/ToggleButton";
 // import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 
@@ -31,11 +31,11 @@ import { Link } from "react-router-dom";
 //// styles
 const CloseBtnStyles = {
     position: "absolute",
-    top: { xs: ".3125rem", md: ".9375rem" },
-    right: { xs: ".3125rem", md: ".9375rem" },
-    fontSize: "3.4375rem",
-    width: "2.8125rem",
-    height: "2.8125rem",
+    top: { xs: "5px", md: "15px" },
+    right: { xs: "5px", md: "15px" },
+    fontSize: "55px",
+    width: "45px",
+    height: "45px",
     cursor: "pointer",
     borderRadius: "50%",
     p: 1,
@@ -51,9 +51,9 @@ const modalStyles = {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 400,
+    width: { xs: "95% !important", md: "fit-content !important" },
     bgcolor: "background.paper",
-    border: ".125rem solid #000",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
     flexDirection: { xs: "column", md: "row" },
@@ -63,11 +63,11 @@ const modalStyles = {
 const favIconStyle = {
     px: 0.6,
     py: 0.5,
-    border: ".0625rem solid",
-    borderRadius: ".375rem",
+    border: "1px solid",
+    borderRadius: "6px",
     width: "100%",
 };
-const fontSizeClamp = "clamp(1.25rem,calc(1.5rem + (32 - 15) * (100vw - 62.5rem) / (1920 - 1000)),2rem) !important";
+const fontSizeClamp = "clamp(20px,calc(24px + (32 - 15) * (100vw - 1000px) / (1920 - 1000)),32px) !important";
 
 //// custom component
 const WishlistIcon = ({ title, color, favIconStyle, icons, handler }) => {
@@ -115,6 +115,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     const handleOpenCheckoutModal = () => setOpenCheckoutModal(true);
     const handleCloseCheckoutModal = () => setOpenCheckoutModal(false);
 
+
+
     const handelBuyNow = () => {
 
         if (!IsUserLoggedIn()) {
@@ -145,8 +147,6 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         handleOpenCheckoutModal();
 
     }
-
-
     const handleClickAddToCart = () => {
         if (IsUserLoggedIn()) {
             dispatch(
@@ -161,7 +161,6 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
         }
         //// else make state changing only
     };
-
     const handelAddToWishlist = async () => {
         if (IsUserLoggedIn()) {
             await dispatch(
@@ -196,7 +195,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
     }, [PreviewedProduct._id]);
 
     return (
-        <Box>
+        <Fragment>
             <Modal
                 open={open}
                 onClose={handleCloseModal}
@@ -204,9 +203,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                 aria-describedby="modal-modal-description"
                 sx={{
                     ".MuiStack-root": {
-                        width: { xs: "95%", md: "80%", lg: "70%", xl: "60%" },
-                        maxHeight: { xs: "98%", md: "100%", lg: "62.5rem" },
-                        // minHeight: "18.75rem",
+                        width: "fit-content",
                         borderRadius: ".625rem",
                         border: "none",
                         bgcolor: "categoryColor.main",
@@ -223,11 +220,10 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     <Box
                         sx={{
                             padding: "0",
-                            height: "18.75rem",
-                            maxWidth: { xs: 320, lg: "21.875rem" },
-                            minWidth: { xs: 300, lg: "20rem" },
+                            height: "300px",
+                            maxWidth: { xs: 320, lg: "350px" },
+                            minWidth: { xs: 300, lg: "320px" },
                             maxHeight: { xs: 200, lg: "100%" },
-                            // minHeight: { xs: 200, lg: "20rem" },
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
@@ -237,7 +233,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                             style={{
                                 maxWidth: "100%",
                                 maxHeight: "100%",
-                                borderRadius: ".625rem",
+                                borderRadius: "10px",
                             }}
                             src={productImg}
                             alt="product-img"
@@ -245,7 +241,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     </Box>
                     <Box
                         sx={{
-                            minHeight: "25rem",
+                            minHeight: "400px",
                             display: "flex",
                             flexDirection: "column",
                             alignItems: "start",
@@ -258,7 +254,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     >
                         <Stack
                             sx={{
-                                fontSize: { xs: "1.125rem", lg: "1.125rem" },
+                                fontSize: { xs: "18px", lg: "18px" },
                                 flexDirection: { xs: "row", md: "column" },
                                 alignItems: { xs: "center", md: "start" },
                                 justifyContent: "center",
@@ -266,7 +262,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 mb: { xs: 1, md: 0 },
                                 minWidth: "100%",
                                 py: { xs: 1, sm: "0 !important" },
-                                px: ".5rem !important",
+                                px: "8px !important",
                             }}
                         >
                             <Typography
@@ -279,7 +275,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                 {PreviewedProduct.title.slice(0, 20)}
                             </Typography>
                             <Typography
-                                fontSize={"1.375rem"}
+                                fontSize={"22px"}
                                 color={"crimson"}
                                 variant="h6"
                                 fontWeight={"bold"}
@@ -291,37 +287,39 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                         <Typography
                             sx={{
                                 fontSize: {
-                                    xs: "1rem",
-                                    lg: "1.125rem",
+                                    xs: "16px",
+                                    lg: "18px",
                                     textAlign: { xs: "justify", md: "left" },
                                 },
-                                maxWidth: { xs: "100%", lg: "100%" },
+                                minWidth: { xs: "100%", md: "500px", lg: "700px" },
+                                maxWidth: "100%",
                                 px: 1,
                             }}
                         >
                             {PreviewedProduct.desc.slice(0, 300)}
-                            {/* {PreviewedProduct.desc} */}
                         </Typography>
 
+                        {/* Action buttons */}
                         <Stack
                             sx={{
                                 width: "100% !important",
                                 flexDirection: { xs: "column", md: "row" },
                                 gap: { xs: 1, md: 2 },
-                                px: ".5rem !important",
+                                px: "8px !important",
                                 flexWrap: "wrap",
                             }}
                         >
-                            <Box className="flex-between" gap={1} sx={{ maxHeight: "2.5rem" }}  >
+
+                            <Box className="flex-between" gap={1} sx={{ maxHeight: "40px" }}  >
                                 <Button
                                     onClick={handelBuyNow}
                                     sx={{
                                         textTransform: "capitalize",
-                                        p: ".3125rem .9375rem !important",
+                                        p: "5px 15px !important",
                                         bgcolor: "#ff6e6e",
                                         fontWeight: "bold",
-                                        minWidth: { xs: "49%", md: "7.8125rem" },
-                                        maxWidth: { xs: "49%", md: "9.6875rem" },
+                                        minWidth: { xs: "49%", md: "125px" },
+                                        maxWidth: { xs: "49%", md: "155px" },
 
                                     }}
                                     variant="contained"
@@ -340,10 +338,10 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                     sx={{
                                         // mb: { xs: 1, md: 0 },
                                         textTransform: "capitalize",
-                                        p: ".3125rem .9375rem !important",
+                                        p: "5px 15px !important",
                                         fontWeight: "bold",
-                                        minWidth: { xs: "49%", md: "9.0625rem" },
-                                        maxWidth: { xs: "50%", md: "11.5625rem" },
+                                        minWidth: { xs: "49%", md: "145px" },
+                                        maxWidth: { xs: "50%", md: "185px" },
 
                                     }}
                                     color="secondary"
@@ -382,6 +380,7 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                                     />
                                 )}
                             </Box>
+
                             <Link to={`/product/${PreviewedProduct._id}`}>
                                 <Button sx={{ fontWeight: "bold", width: { xs: "100%", md: "100%" } }} color="secondary" variant="outlined">More Details</Button>
                             </Link>
@@ -398,7 +397,8 @@ const ProductDetails = ({ PreviewedProduct, handleCloseModal, open }) => {
                     clearCartAtEnd={false}
                 />
             )}
-        </Box >
+        </Fragment >
+
     );
 };
 

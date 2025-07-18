@@ -95,26 +95,24 @@ export default function CartDrawer() {
 
     useEffect(() => {
         if (IsUserLoggedIn() && !isLoading) dispatch(getCustomerCartReducer());
-        // else toast.error("Please log in or sign up with new account🙂");
     }, []);
 
     const list = (anchor) => (
         <Box
-            className="flex-between-column"
+            className="drawer flex-between-column"
             sx={{
                 width: { xs: "100vw", sm: "24.375rem" },
                 p: { xs: 1, sm: 2 },
                 pr: { xs: 0, sm: 2 },
-                bgcolor: "categoryColor.main",
                 height: "100vh",
                 overflow: "auto",
                 overflowX: "hidden",
-
-            }}
+            }
+            }
             role="presentation"
         >
             {/* Close Button */}
-            <Button
+            < Button
                 className="border"
 
                 size="small"
@@ -133,9 +131,7 @@ export default function CartDrawer() {
                     }}
                     onClick={toggleDrawer("right", false)}
                 />
-            </Button>
-            {/*== Close Button ==*/}
-
+            </Button >
             <Typography
                 variant="h5"
                 style={{
@@ -171,50 +167,8 @@ export default function CartDrawer() {
                     {isLoading ? <LoaderComponent /> : handelShowCartProduct()}
                 </div>
             </Box>
-            {/*== Cart Items ==*/}
 
             <Stack sx={{ width: "100%", px: 0.8 }}>
-                {/* Apply Coupon */}
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 1,
-                        my: 2,
-                        fontSize: "1.0625rem",
-                    }}
-                >
-                    <Typography variant="h6" sx={{ fontWeight: "bolder" }}>Got a coupon?</Typography>
-                    <Stack direction="row" gap={1}>
-                        <input
-                            type="text"
-                            placeholder="Enter your coupon code"
-                            style={{
-                                width: "70%",
-                                height: "2.5rem",
-                                borderRadius: ".3125rem",
-                                border: `.0625rem solid ${theme.palette.text.primary}`,
-                                padding: ".625rem",
-                                fontWeight: "bolder",
-                            }}
-                        />
-                        <Button
-                            variant="contained"
-                            sx={{
-                                width: "30%",
-                                height: "2.5rem",
-                                borderRadius: ".3125rem",
-                                border: `.0625rem solid ${theme.palette.primary.main}`,
-                                cursor: "pointer",
-                                fontWeight: "bolder",
-                            }}
-                        >
-                            Apply
-                        </Button>
-                    </Stack>
-                </Box>
-                {/*== Apply Coupon ==*/}
-
                 {/* Checkout Button */}
                 <Box
                     sx={{
@@ -250,7 +204,7 @@ export default function CartDrawer() {
                 </Box>
                 {/*== Checkout Button ==*/}
             </Stack>
-        </Box>
+        </Box >
     );
 
     return (

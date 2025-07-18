@@ -56,7 +56,7 @@ const AddressComponent = () => {
     };
 
     return (
-        <Stack sx={{ minWidth: "67vw", minHeight: "70vh", maxWidth: "100%", p: 0, m: 0 }}>
+        <Stack sx={{ flexGrow: 1, minHeight: "70vh", maxWidth: "100%", p: 0, m: 0 }}>
             <Box sx={{ mb: 2, px: { xs: 1, md: 2 } }}>
                 <Typography
                     variant="h4"
@@ -93,10 +93,11 @@ const AddressComponent = () => {
             <Stack
                 sx={{
                     px: { xs: 0.5, md: 2 },
-                    gap: 2,
+                    gap: { xs: 3, xl: 2 },
                     mb: 2,
                     overflowY: "auto",
-                    // maxHeight: { xs: "auto", md: "70vh", lg: "60vh" },
+                    display: "grid",
+                    gridTemplateColumns: { xs: "repeat(1, 1fr)", xl: "repeat(2, 1fr)" },
                 }}
             >
                 {isLoading ? <LoaderComponent /> : showAddresses()}

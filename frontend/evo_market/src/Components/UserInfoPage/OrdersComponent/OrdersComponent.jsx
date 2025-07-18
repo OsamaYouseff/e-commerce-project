@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Stack, Typography, Button } from "@mui/material";
-import OrderCard from "./OrderCard";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -8,11 +7,12 @@ import { useEffect, useState } from "react";
 
 /// custom component
 import LoaderComponent from "../../../../../shared_files/LoaderComponent/LoaderComponent.jsx";
+import NoItemsComponent from "../../../../../shared_files/NoItemsComponent/NoItemsComponent.jsx";
+import OrderCard from "./OrderCard";
 
 // redux
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomerOrdersMinimizedReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice";
-import NoItemsComponent from "../../../../../shared_files/NoItemsComponent/NoItemsComponent.jsx";
 
 const OrdersComponent = () => {
     const [historyDate, setHistoryDate] = useState("Last 3 months");
@@ -60,7 +60,7 @@ const OrdersComponent = () => {
     }, []);
 
     return (
-        <Stack sx={{ minWidth: "60vw" }}>
+        <Stack sx={{ minHeight: "50vh" }}>
             <Box sx={{ mb: 2, px: { xs: 0.5, md: 1 } }}>
                 <Typography
                     variant="h4"
@@ -131,6 +131,7 @@ const OrdersComponent = () => {
                     px: { xs: 0.5, md: 1 },
                     gap: 2,
                     mb: 2,
+
                 }}
             >
                 {/* Order Card */}

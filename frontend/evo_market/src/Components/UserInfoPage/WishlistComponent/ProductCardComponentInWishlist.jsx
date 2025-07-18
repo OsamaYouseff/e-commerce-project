@@ -76,17 +76,12 @@ const ProductCardComponentInWishlist = ({
                     }}
                     sx={{
                         flexGrow: 1,
-                        maxWidth: {
-                            xs: "100%",
-                            sm: "48%",
-                            md: "32%",
-                            lg: "24%",
-                            xl: 250,
-                        },
                         boxShadow: 3,
                         display: "flex",
                         flexDirection: "column",
                         justifyContent: "space-between",
+                        pt: 4,
+                        px: 2
                     }}
                 >
                     <Box
@@ -99,7 +94,7 @@ const ProductCardComponentInWishlist = ({
                             backgroundRepeat: "no-repeat",
                             backgroundPosition: "center",
                             backgroundSize: "contain",
-                            height: "10.9375rem",
+                            minHeight: "10.9375rem",
                             width: "100%",
                             cursor: "pointer",
                             transition: "transform 0.35s ease-in-out",
@@ -199,7 +194,7 @@ const ProductCardComponentInWishlist = ({
                         </Box>
                     </Stack>
                 </Card>
-            </AnimatePresence>
+            </AnimatePresence >
         );
     }
 };

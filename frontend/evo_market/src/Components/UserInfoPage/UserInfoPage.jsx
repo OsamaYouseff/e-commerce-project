@@ -78,6 +78,7 @@ const UserInfoPage = () => {
         GoHome();
     } else {
         return (
+            // user info container
             <Container
                 maxWidth="xl"
                 sx={{
@@ -86,7 +87,8 @@ const UserInfoPage = () => {
                     borderRadius: ".375rem",
                     px: ".125rem !important",
                     py: ".5rem",
-                    mb: 2,
+                    mb: 4,
+                    flexGrow: 1,
                     alignItems: "space-between",
                 }}
             >
@@ -176,10 +178,10 @@ const UserInfoPage = () => {
 
                     {/* Variable Page */}
                     <Box
+                        className="variable-page-container"
                         sx={{
                             minWidth: { xl: "68.75rem" },
                             minHeight: { xs: "auto" },
-                            height: "100%",
                             flexGrow: 1,
                         }}
                     >

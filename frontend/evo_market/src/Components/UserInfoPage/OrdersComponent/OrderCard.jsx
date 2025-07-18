@@ -4,7 +4,7 @@ import { useTheme } from "@emotion/react";
 import { ColorModeContext } from "../../../../../shared_files/Theme/theme.jsx";
 import { FormatDate, GetOrderMessage, GetStatusColor } from "../../../../../shared_files/General/GeneralFunctions.js";
 import { IsUserLoggedIn } from "../../../General/GeneralFunctions.js";
-import { Link } from "react-router-dom";
+import { Link, Router, useNavigate, useRoutes } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 
@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { deleteOrderReducer } from "../../../redux/OrdersSlice/ApiOrdersSlice.js"
 
 const OrderCard = ({ order }) => {
+    const navigate = useNavigate();
     const theme = useTheme(ColorModeContext);
     const { orderStatus, message } = GetOrderMessage(order.status, FormatDate(order.estimatedDeliveryDate));
     const ableToCancelOrder = order.status === "pending" || order.status === "processing"
@@ -28,8 +29,8 @@ const OrderCard = ({ order }) => {
 
     const dispatch = useDispatch();
 
+    // handlers
     const confirmCancelOrder = () => {
-
         if (IsUserLoggedIn() && ableToCancelOrder) {
             dispatch((deleteOrderReducer(order.orderId)))
         }
@@ -90,9 +91,12 @@ const OrderCard = ({ order }) => {
                             }}
                             gap={4}
                         >
+                            {/* order item */}
                             <Box
                                 className="flex-row-start"
-                                // onClick
+                                onClick={() => {
+                                    navigate(`/product/${item._id}`)
+                                }}
                                 sx={{
                                     gap: 2,
                                     flexGrow: 1,
@@ -109,6 +113,7 @@ const OrderCard = ({ order }) => {
                                 }}
                             >
                                 <img
+
                                     src={item.img}
                                     alt="product-img"
                                     style={{ maxHeight: "70px" }}
@@ -125,53 +130,51 @@ const OrderCard = ({ order }) => {
                                 </Typography>
                             </Box>
 
-                            {order.status === "delivered" ? (
-                                <Box
-                                    sx={{
-                                        gap: 2,
-                                        borderLeft: ".0625rem solid grey",
-                                        pl: 1,
-                                        width: "70%",
-                                        maxWidth: {
-                                            xs: "100%",
-                                            md: "60%",
-                                        },
-                                    }}
-                                >
-                                    <Typography fontSize={".9375rem"}>
-                                        Share your shopping experience
-                                    </Typography>
-                                    <Stack direction={"row"} gap={2} sx={{ mt: 1 }}>
-                                        <Button sx={{ flexGrow: 1 }}>SELLER</Button>
-                                        <Button sx={{ flexGrow: 1 }}>
-                                            PRODUCT
-                                        </Button>
-                                        <Button sx={{ flexGrow: 1 }}>
-                                            DELIVERY
-                                        </Button>
-                                    </Stack>
-                                </Box>
-                            ) : (
-                                <Box
-                                    sx={{
-                                        textAlign: "start",
-                                        borderLeft: ".0625rem solid grey",
-                                        p: 2,
-                                        width: {
-                                            xs: "100%",
-                                            md: "60%",
-                                        },
-                                    }}
-                                >
-                                    You can share your shopping experience after
-                                    delivering the order
-                                </Box>
-                            )}
+                            {/* delivered order actions */}
+                            {
+                                order.status === "delivered" ? (
+                                    <Box
+                                        sx={{
+                                            gap: 2,
+                                            borderLeft: ".0625rem solid grey",
+                                            pl: 1,
+                                            flexGrow: 1,
+                                            width: { xs: "100%", md: "fill-available" },
+                                            maxWidth: { xs: "100%", md: "300px", lg: "400px" },
+                                        }}
+                                    >
+                                        <Typography fontSize={".9375rem"}>
+                                            Share your shopping experience
+                                        </Typography>
+                                        <Stack direction={"row"} gap={2} sx={{ mt: 1 }}>
+                                            <Button sx={{ flexGrow: 1 }}>SELLER</Button>
+                                            <Button sx={{ flexGrow: 1 }}>
+                                                PRODUCT
+                                            </Button>
+                                            <Button sx={{ flexGrow: 1 }}>
+                                                DELIVERY
+                                            </Button>
+                                        </Stack>
+                                    </Box>
+                                ) : (
+                                    <Box
+                                        sx={{
+                                            textAlign: "start",
+                                            borderLeft: ".0625rem solid grey",
+                                            p: 2,
+                                            flexGrow: 1,
+                                        }}
+                                    >
+                                        You can share your shopping experience after
+                                        delivering the order
+                                    </Box>
+                                )
+                            }
                         </Stack>
                     );
                 })}
-                {/*== item boxes ==*/}
 
+                {/* Action buttons */}
                 <Stack
                     className="flex-between"
                     sx={{
@@ -210,6 +213,8 @@ const OrderCard = ({ order }) => {
                         <span>{order.orderId?.slice(0, 20).toUpperCase()}</span>
                     </Typography>
                 </Stack>
+
+                {/* == confirm dialog */}
                 {
                     openConfirmDialog && <ConfirmComponent
                         openConfirmDialog={openConfirmDialog}
@@ -219,7 +224,7 @@ const OrderCard = ({ order }) => {
                     />
                 }
             </Box>
-        </AnimatePresence>
+        </AnimatePresence >
     );
 };
 

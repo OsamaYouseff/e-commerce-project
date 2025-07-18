@@ -20,7 +20,7 @@ import TopHeader from "./Components/GenericComponents/Header/TopHeader.jsx";
 import ErrorPage from "./../../shared_files/ErrorPage/ErrorPage.jsx";;
 
 /// Theme
-import { CssBaseline, Stack, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline, Stack, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "../../shared_files/Theme/theme.jsx";
 
 /// custom component
@@ -32,7 +32,8 @@ import ProductPage from "./Components/ProductPage/ProductPage.jsx";
 
 const routeElement = (currentComponent, showMidHeader = false) => {
     return (
-        <Stack justifyContent={"space-between"} sx={{ minHeight: "100vh", bgcolor: "natural.main" }}>
+        // Main Layout
+        <Stack direction={"column"} sx={{ minHeight: "100vh", bgcolor: "natural.main" }}>
             <TopHeader />
             {showMidHeader && <MidHeader />}
             {currentComponent}

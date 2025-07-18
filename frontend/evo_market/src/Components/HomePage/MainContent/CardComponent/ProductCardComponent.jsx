@@ -56,17 +56,11 @@ const ProductCardComponent = ({
                 }}
                 sx={{
                     flexGrow: 1,
-                    maxWidth: {
-                        xs: "100%",
-                        sm: "48%",
-                        md: "32%",
-                        lg: "24%",
-                        xl: 275,
-                    },
                     boxShadow: 3,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
+                    pt: 2
                 }}
             >
 
@@ -81,10 +75,10 @@ const ProductCardComponent = ({
                         backgroundPosition: "center",
                         backgroundSize: "contain",
                         height: "15.3125rem",
-                        width: "100%",
                         cursor: "pointer",
                         transition: "transform 0.35s ease-in-out",
-                        "&:hover": { transform: "scale(1.03) " },
+                        "&:hover": { transform: "scale(1.03)" },
+                        mx: 1,
                     }}
                 ></Box>
                 <CardContent

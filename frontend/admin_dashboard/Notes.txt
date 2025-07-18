@@ -1,0 +1,26 @@
+-   Replace all theme var in the files of front end with simple using of it because you're already using theme provider.(done)
+-   don't forget to fix TextFieldComponent issue with the whitespace writing. (done)
+-   make token expire after 7 days instead of 3 days. (done)
+-   Move coupons to general variables in both frontend projects. (done)
+-   don't forget to make change password and delete account for admin because i deleted them . (done)
+-   when customer deletes his account you must also delete his cart and hist wishlist and his orders clear every thing belongs to the customer (done)
+
+-   don't forget to allow login with username or with email for login endpoint. (cancel)
+-   don't forget to change all px to rem after finishing development.
+
+-   add link to product details page in product image in order card. (done)
+-   Fix the design of the website in input component and change the design to fit more the stylish design. (done)
+
+
+
+-   Redesign Cart Page to make it more modern.
+-   don't forget to change regex of password of creating a new account make it more easy.
+-   change user actions in the website to work with local data and then send the request and reflect the result.
+-   make localization for the website (adding arabic language) maybe later.
+-   make user experience more professional in the website.
+-   Try to use @ at paths in the hole project after you finish the target goals.
+-   Fix the the problem in production when the the is not working well.
+-   Make validation for profile input and other stuff.
+
+
+

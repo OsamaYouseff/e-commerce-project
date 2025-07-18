@@ -187,3 +187,7 @@ img {
         display: none !important;
     }
 }
+
+.modal-wrapper {
+    background: #000 !important;
+}

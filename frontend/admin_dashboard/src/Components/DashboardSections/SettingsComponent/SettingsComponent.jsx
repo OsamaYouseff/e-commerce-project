@@ -94,7 +94,7 @@ const SettingsComponent = () => {
     };
 
     return (
-        <Stack sx={{ minWidth: "67vw", height: "70vh" }}>
+        <Stack sx={{ flexGrow: 1, height: "70vh" }}>
 
 
             <Box sx={{ mb: 2, px: 1 }}>

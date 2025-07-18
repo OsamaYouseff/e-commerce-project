@@ -64,7 +64,7 @@ const AddAddressComponent = () => {
 
     return (
         <Stack
-            sx={{ minWidth: "67vw", p: 1, px: 2, flex: 1, overflowX: "hidden" }}
+            sx={{ flexGrow: 1, p: 1, px: 2, flex: 1, overflowX: "hidden" }}
         >
             <Box sx={{ mb: 6 }}>
                 <Link to="/userInfo/address">
