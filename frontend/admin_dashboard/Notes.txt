@@ -10,11 +10,10 @@
 
 -   add link to product details page in product image in order card. (done)
 -   Fix the design of the website in input component and change the design to fit more the stylish design. (done)
+-   don't forget to change regex of password of creating a new account make it more easy.(done)
 
 
 
--   Redesign Cart Page to make it more modern.
--   don't forget to change regex of password of creating a new account make it more easy.
 -   change user actions in the website to work with local data and then send the request and reflect the result.
 -   make localization for the website (adding arabic language) maybe later.
 -   make user experience more professional in the website.
@@ -22,6 +21,7 @@
 -   Fix the the problem in production when the the is not working well.
 -   Make validation for profile input and other stuff.
 -   Fix fetal mistake of saving user data in the local storage and replace it with cookies or hide it.
+-   Redesign Cart Page to make it more modern.
 
 
 
