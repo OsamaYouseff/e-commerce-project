@@ -96,20 +96,11 @@ const ProductCardComponent = ({ productData }) => {
                 }}
                 sx={{
                     flexGrow: 1,
-                    maxWidth: {
-                        xs: "100%",
-                        sm: "48%",
-                        md: "32%",
-                        lg: "24%",
-                        xl: 275,
-                    },
                     boxShadow: 3,
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-between",
-                    position: "relative",
-                    opacity: isDeleted ? 0.35 : 1,
-
+                    pt: 2
                 }}
             >
 
@@ -240,7 +231,7 @@ const ProductCardComponent = ({ productData }) => {
                     />
                 }
             </Card>
-        </AnimatePresence>
+        </AnimatePresence >
     );
 };
 

@@ -110,10 +110,12 @@ const ProductsPage = () => {
         else {
             return (<>
                 <Stack
-                    sx={{ mt: ".9375rem", py: ".9375rem", gap: ".9375rem .625rem" }}
-                    direction={"row"}
-                    flexWrap={"wrap"}
-                    justifyContent={"space-between"}
+                    sx={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(auto-fill,minmax(285px,1fr))",
+                        mt: ".9375rem", py: ".9375rem", gap: "20px",
+                    }}
+
                 >
                     {products?.map((product) => (
                         <ProductCardComponent

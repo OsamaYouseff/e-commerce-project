@@ -87,13 +87,6 @@ function ToggleCustomerAvatar(userData) {
                 }}
                 >Login</Button>
             </Link>
-            <span style={{ fontSize: "1rem" }}>/</span>
-            <Link to="/register">
-                <Button sx={{
-                    fontWeight: "bold", color: "#f9f9f9"
-                }}
-                >Register</Button>
-            </Link>
         </Stack>
     );
 }

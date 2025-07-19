@@ -202,17 +202,6 @@ export default function LoginPage() {
                         }}
                     >
                     </Link>
-                    <Grid container>
-                        <Grid item>
-                            <Link
-                                href="/register"
-                                variant="body2"
-                                sx={{ fontWeight: "bolder" }}
-                            >
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                        </Grid>
-                    </Grid>
                 </Box>
             </Box>
         </Container>
