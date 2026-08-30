@@ -32,7 +32,7 @@ import NoItemComponent from "../../../../shared_files/NoItemsComponent/NoItemsCo
 //// styles
 const pageStyles = {
     display: "flex",
-    minHeight: "60vh",
+    minHeight: "80.8vh",
     width: "100%",
     bgcolor: "categoryColor.main",
     p: { xs: 2, md: 4 },
@@ -276,8 +276,6 @@ const ProductPage = () => {
                         precision={0.5}
                     />
                 </Stack>
-
-
 
                 <Stack
                     direction={"row"}

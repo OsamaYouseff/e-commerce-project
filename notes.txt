@@ -1,4 +1,21 @@
 
 ######################################## TODO ########################################
+- Start Adding unit testing to the entire project.
 - when user creates his account for the fist time you must create his related entities like [cart, whish list].
 - Fix allow creating two products with the same name because it's not allowed now.
+- Fix toast dark mode in the light mode.
+- Add localization for the website for arabic layout and make sure the direction is working.
+- Rebuild the hole auth in the project to make sure that there is not sensitive data exposed from local storage or cookie.
+- Work on payment gateway like strapi and local providers to make sure that you understand the logic of this content.
+- Add pagination to home page products.
+- Take the design of the zossar project pages and replace the current UI with it.
+- Adding multiple images to single product.
+- Change the backend stack to NestJS and postgreql for more powerful backend control.
+- Make sure to rebuild the admin dashboard to make sure that works correctly.
+- Consider replace redux toolkit with zustand according to project specification to make local state changing for more fast response for the website.
+- Make separate search product page.
+- Adding category section.
+- Adding real stats for the backend according to sales like a mini PRD system.
+- Enhance performance of the website (SEO, Compress images, accessability).
+- 
+
