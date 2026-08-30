@@ -83,6 +83,6 @@ EVO MARKET is a full-featured E-commerce platform built with modern web technolo
 
 ![Preview Image](/preview_images/16.png)
 
-## Live Demo : https://evo-market.netlify.app/
+## Live Demo : https://evo-market-topaz.vercel.app/
 
 #### Enjoy😉
