@@ -1,0 +1,4 @@
+
+######################################## TODO ########################################
+- when user creates his account for the fist time you must create his related entities like [cart, whish list].
+- Fix allow creating two products with the same name because it's not allowed now.
