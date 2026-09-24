@@ -1,5 +1,7 @@
 
 ######################################## TODO ########################################
+- To make recruiter review the project easily make sure to give him an account.
+- Disable ability to delete admin account if anyone tried to do this.
 - Start Adding unit testing to the entire project.
 - when user creates his account for the fist time you must create his related entities like [cart, whish list].
 - Fix allow creating two products with the same name because it's not allowed now.
