@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "6a93563f58481dbcf41eeb3e"
+  },
+  "userId": "6a934f1bb5f8898e47c00945",
+  "products": [
+    {
+      "productId": "6a941397c772a26904d38cc5",
+      "quantity": 1,
+      "_id": {
+        "$oid": "6a9419bbe0c8f99ad18755fb"
+      }
+    }
+  ],
+  "totalPrice": 3499,
+  "createdAt": {
+    "$date": "2026-08-29T21:59:27.557Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:53:31.504Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6a941d9ec772a26904d38dbf"
+  },
+  "userId": "6a941d9dc772a26904d38dbc",
+  "products": [
+    {
+      "productId": "6a941397c772a26904d38cc5",
+      "quantity": 1,
+      "_id": {
+        "$oid": "6a941db6c772a26904d38dd1"
+      }
+    }
+  ],
+  "totalPrice": 3499,
+  "createdAt": {
+    "$date": "2026-08-30T12:10:06.197Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T12:10:30.394Z"
+  },
+  "__v": 1
+},
+{
+  "_id": {
+    "$oid": "6ab5947144504e0f40425fd9"
+  },
+  "userId": "6ab5947144504e0f40425fd6",
+  "products": [],
+  "totalPrice": 0,
+  "createdAt": {
+    "$date": "2026-09-24T21:21:53.688Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-24T21:21:53.688Z"
+  },
+  "__v": 0
+}]

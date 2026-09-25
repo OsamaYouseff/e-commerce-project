@@ -1,0 +1,612 @@
+[{
+  "_id": {
+    "$oid": "6a941310c772a26904d38cb1"
+  },
+  "title": "iPhone 15 Pro Max",
+  "desc": "The iPhone 15 Pro Max represents the pinnacle of Apple's smartphone engineering, combining cutting-edge performance, professional-grade camera capabilities, and a sophisticated design crafted from aerospace-grade titanium. Built with the groundbreaking A17 Pro chip featuring a 6-core GPU, it delivers console-level mobile gaming and blazing-fast processing speeds while maximizing energy efficiency. The stunning 6.7-inch Super Retina XDR display with ProMotion technology offers adaptive refresh rates up to 120Hz, ensuring buttery-smooth scrolling, vibrant color accuracy, and incredible outdoor peak brightness, all protected by the latest-generation Ceramic Shield front cover.\n\nPhotography enthusiasts and content creators will find an advanced pro camera system equipped with a massive 48MP main sensor, ultra-wide lens, and an unprecedented 5x telephoto zoom lens featuring a tetraprism design—the longest optical zoom ever in an iPhone. This system excels in low-light environments through advanced computational photography, Smart HDR 5, and Night mode enhancements, while supporting Apple ProRes video recording, Log encoding, and Academy Color Encoding System (ACES) standards for seamless professional workflows.\n\nDurability meets elegance with the contoured titanium chassis, making this model the lightest Pro Max device ever produced while significantly improving structural strength. The introduction of the versatile Action button replaces the traditional ring/silent switch, allowing instant access to your favorite shortcut, whether that's launching the camera, turning on the flashlight, or running custom shortcuts. Connectivity gets a massive upgrade with USB 3 speeds supporting USB-C, enabling lightning-fast data transfers and external drive recording. Powered by an all-day battery life that keeps up with intensive tasks, alongside MagSafe wireless charging, Wi-Fi 6E, and 5G cellular capabilities, the iPhone 15 Pro Max is designed for users who demand absolute excellence without compromise.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674158/iPhone_15_Pro_Mockup_Front_and_Back_View_1_tuywwr.png",
+  "categories": [
+    "electronics",
+    "phones",
+    "smartphones",
+    "apple",
+    "mobile devices"
+  ],
+  "size": "159.9 x 76.7 x 8.25 mm",
+  "color": "natural titanium",
+  "price": 1199.99,
+  "rating": 4.9,
+  "amount": 500,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:25:04.088Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:25:04.088Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a94137dc772a26904d38cc3"
+  },
+  "title": "Classic Oversized Black Sweatshirt",
+  "desc": "Elevate your everyday comfort and casual streetwear style with this premium classic black sweatshirt, meticulously designed for modern versatility and all-day wearability. Crafted from an exceptionally soft, heavyweight mid-weight blend of combed ringspun cotton and recycled polyester fleece, this fabric delivers a plush, luxurious hand-feel while maintaining outstanding durability and thermal retention through countless washes. The brushed interior lining traps body heat efficiently, keeping you warm and cozy during chilly mornings and crisp evening outings, whereas the breathable exterior weave prevents overheating during active daily routines.\n\nThe silhouette features a relaxed, contemporary oversized fit with dropped shoulders that effortlessly duces a laid-back, modern aesthetic without compromising on freedom of movement. Ribbed knit cuffs along the collar, hem, and wrist bands offer structural integrity and snug retention, effectively blocking out drafts while preserving the clean lines of the garment over extended use. Reinforced double-needle stitching throughout high-stress stress points—such as the armholes and neckline—ensures long-lasting structural resilience, preventing sagging or tearing even with rigorous everyday wear.\n\nDeeply versatile and effortlessly style-agnostic, this solid black staple serves as the ultimate layering canvas. Whether paired with distressed denim and minimalist sneakers for a casual urban look, layered over crisp collars for a smart-casual office transition, or matched with joggers for relaxed lounging at home, it adapts seamlessly to your lifestyle. Easy to care for with machine-washable resilience that resists fading and pilling, this essential sweatshirt bridges the gap between high-end comfort and timeless wardrobe utility.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674135/vecteezy_black-sweatshirt-isolated-on-transparent-background_47242017_adcqqe.png",
+  "categories": [
+    "apparel",
+    "clothing",
+    "men fashion",
+    "women fashion",
+    "hoodies and sweatshirts",
+    "activewear",
+    "casual wear"
+  ],
+  "size": "700 x 550 x 20 mm",
+  "color": "matte black",
+  "price": 49.99,
+  "rating": 4.7,
+  "amount": 750,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:26:53.912Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:40:13.966Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941397c772a26904d38cc5"
+  },
+  "title": "Apple Vision Pro",
+  "desc": "The Apple Vision Pro is a revolutionary spatial computing headset that seamlessly blends digital content with your physical space, allowing you to stay connected and productive while being fully immersed in your digital experiences. Featuring an ultra-high-resolution micro-OLED custom display system packing a staggering 23 million pixels across two displays—more than a 4K TV for each eye—it delivers breathtaking visual clarity, vibrant colors, and text that appears razor-sharp from any viewing angle. Driven by Apple's dual-chip performance architecture powered by the advanced M-series processor alongside the custom R1 chip, the device processes input from 12 cameras, 5 sensors, and 6 microphones to execute lightning-fast, lag-free interactions.\n\nNavigation is entirely intuitive and natural, relying solely on your eyes, hands, and voice. You can effortlessly browse applications simply by looking at them, tapping your fingers together to select, scrolling with a flick of your wrist, or using voice dictation to search and write. The revolutionary EyeSight feature helps you stay connected to people around you by revealing your eyes when someone approaches and displaying shimmering visual cues when you are fully immersed in an app or environment. Spatial Audio dynamically blends sounds into your physical space, creating an acoustic environment that matches real-world spatial acoustics using dual-driver audio pods positioned right next to your ears.\n\nCrafted with a polished three-dimensionally formed laminated glass visor that flows smoothly into a custom aerospace-grade aluminum alloy frame, the headset is engineered for a modular, comfortable fit. The flexible Light Seal gently conforms to your facial contours, while the interchangeable Knit Bands provide breathable cushioning and stretch support. Backed by visionOS—the world's first spatial operating system—it transforms any room into your personal infinite canvas for work, entertainment, gaming, and memories, redefining how we interact with technology forever.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674133/Apple_Vision_Pro_Mockup_Poster_1_gdkx41.png",
+  "categories": [
+    "electronics",
+    "virtual reality",
+    "augmented reality",
+    "spatial computing",
+    "apple",
+    "wearable tech",
+    "smart devices"
+  ],
+  "size": "200 x 140 x 90 mm",
+  "color": "silver",
+  "price": 3499,
+  "rating": 4.6,
+  "amount": 250,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:27:19.299Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:39:29.142Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9413cdc772a26904d38cd3"
+  },
+  "title": "ADATA SU650 240GB 3D NAND SATA III 2.5-Inch Internal SSD",
+  "desc": "The ADATA Ultimate SU650 solid-state drive breathes new life into your desktop PC or laptop, offering a high-performance, cost-effective storage upgrade that dramatically accelerates system responsiveness, boot times, and application loading speeds. Powered by advanced 3D NAND Flash memory, this drive delivers higher storage efficiency, enhanced reliability, and superior durability compared to traditional legacy mechanical hard drives. With no moving mechanical parts inside, it operates completely silently, runs significantly cooler, and resists shocks and vibrations, making it an ideal choice for both stationary desktop setups and mobile laptop environments.\n\nEngineered with an intelligent SLC caching algorithm, the SU650 optimizes data writing performance by allowing NAND Flash memory to operate in single-level cell mode, boosting peak read and write speeds to ensure seamless multitasking and rapid file transfers. Advanced Error Correction Code (ECC) technology is integrated to automatically detect and correct data errors, ensuring data integrity and extending the overall operational lifespan of the drive. Whether you are booting up your operating system, launching heavy productivity software, or loading game levels, this drive eliminates bottlenecks for a fluid user experience.\n\nEncased in a sleek, ultra-slim 7mm form factor, the drive slips effortlessly into standard 2.5-inch laptop drive bays and desktop mounting brackets without requiring adapters. Backed by ADATA's proprietary SSD Toolbox and Migration Utility software suite, users can easily monitor drive health, wear status, operating temperature, and clone existing operating systems with minimal effort. Combining energy-efficient operation with robust reliability, the ADATA 240GB SSD is the ultimate balanced storage solution to modernize aging hardware.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674133/Solid-State-Drive-PNG-High-Quality-Image_xqwdg1.png",
+  "categories": [
+    "electronics",
+    "computer hardware",
+    "storage devices",
+    "ssds",
+    "adata",
+    "internal drives"
+  ],
+  "size": "100.45 x 69.85 x 7 mm",
+  "color": "black",
+  "price": 29.99,
+  "rating": 4.6,
+  "amount": 1200,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:28:13.827Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:40:57.250Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9413dcc772a26904d38cd9"
+  },
+  "title": "Classic Athletic Men's Baseball Jersey",
+  "desc": "Upgrade your casual wardrobe and athletic streetwear collection with this premium men's baseball jersey, expertly crafted for a winning combination of timeless sporty style and modern everyday comfort. Engineered from a high-performance, lightweight polyester mesh fabric, this jersey features an advanced moisture-wicking weave that actively pulls sweat away from your skin to keep you cool, dry, and fresh whether you are hitting the batting cages, attending a summer ballpark game, or hanging out with friends on a warm afternoon. The breathable construction ensures maximum airflow, preventing overheating during active movement while maintaining a soft, comfortable touch against the skin.\n\nThe silhouette is designed with a classic athletic cut that offers a relaxed, unrestrictive fit through the chest and torso, allowing full freedom of motion for throwing, batting, or casual layering. Traditional full-button front closure paired with a clean contrasting placket piping delivers an authentic vintage aesthetic, complemented by a tailored shirt-tail hem that looks great whether worn untucked for a streetwear look or tucked in for a polished athletic uniform appearance. The reinforced ribbed collar and armhole trim prevent stretching and fraying, ensuring the garment retains its structural integrity and sharp look through countless machine washes.\n\nVersatile and effortlessly stylish, this baseball jersey serves as an ideal standalone statement piece or a great layering option over hoodies, long-sleeve tees, or graphic shirts. Fade-resistant dyes ensure the bold team-style colors and crisp details stay vibrant over time, making it a durable, low-maintenance staple for any modern wardrobe. Combining classic sporting heritage with contemporary comfort, it is the ultimate go-to jersey for casual wear and sports enthusiasts alike.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674158/Men_Baseball_Jersey_Mockup_1_atiovk.png",
+  "categories": [
+    "apparel",
+    "clothing",
+    "men fashion",
+    "sports apparel",
+    "activewear",
+    "jerseys",
+    "casual wear"
+  ],
+  "size": "750 x 580 x 15 mm",
+  "color": "white with navy stripes",
+  "price": 39.99,
+  "rating": 4.6,
+  "amount": 600,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:28:28.524Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:41:28.982Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941413c772a26904d38cdb"
+  },
+  "title": "Samsung Galaxy S24 Ultra",
+  "desc": "The Samsung Galaxy S24 Ultra is a powerhouse flagship smartphone that redefines mobile innovation, seamlessly integrating advanced artificial intelligence capabilities into an ultra-durable titanium-armored chassis. Powered by the elite Snapdragon 8 Gen 3 for Galaxy processor, it delivers desktop-grade processing speeds, exceptional graphical rendering for heavy gaming, and maximized energy efficiency. The breathtaking 6.8-inch Dynamic AMOLED 2X flat display features a smooth 120Hz adaptive refresh rate and an astonishing peak brightness of 2600 nits, protected by the revolutionary Corning Gorilla Armor glass that drastically reduces reflections and enhances scratch resistance under direct sunlight.\n\nAt the core of its creative capability is a state-of-the-art pro-grade quad camera system headlined by a massive 200MP wide sensor, a 50MP periscope telephoto lens with 5x optical zoom, a 10MP 3x telephoto lens, and a 12MP ultra-wide lens. Supported by ProVisual Engine AI technology, it captures breathtaking detail in low-light environments (Nightography) and lets you perform studio-quality cinematic edits effortlessly. The integrated S Pen provides ultra-low latency precision for note-taking, sketching, and navigating your device with intuitive ease.\n\nEmpowered by Galaxy AI, the S24 Ultra introduces groundbreaking tools like Live Translate for real-time voice calls, Interpreter for face-to-face conversations, Chat Assist to refine message tones, and Circle to Search with Google, making complex queries instantaneous. Backed by a robust 5000mAh all-day battery with intelligent power management, fast charging, and wireless capabilities, this smartphone sets an uncompromising standard for professional performance and intelligent connectivity.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674136/Samsung-Galaxy-S24-Ultra-Violet-PNG_rnritt.png",
+  "categories": [
+    "electronics",
+    "phones",
+    "smartphones",
+    "samsung",
+    "android",
+    "mobile devices"
+  ],
+  "size": "162.3 x 79.0 x 8.6 mm",
+  "color": "titanium gray",
+  "price": 1299.99,
+  "rating": 4.8,
+  "amount": 450,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:29:23.373Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:41:57.159Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941430c772a26904d38ce1"
+  },
+  "title": "Pro Wireless Gaming & Audio Headset",
+  "desc": "Immerse yourself completely in your favorite media, competitive gaming sessions, or professional audio calls with this premium over-ear wireless headset, meticulously engineered for exceptional acoustic fidelity and all-day comfort. Equipped with custom-tuned 50mm dynamic neodymium audio drivers, it delivers a richly detailed soundstage featuring crisp, transparent highs, articulate mid-range clarity, and deep, resonant bass response that brings every game world and musical track to life. Advanced Active Noise Cancellation (ANC) technology isolates you from ambient background distractions, allowing you to focus entirely on your audio landscape whether you are working in a bustling office, traveling, or gaming at home.\n\nCrafted with ergonomic excellence in mind, the headset features plush memory foam ear cushions wrapped in ultra-soft, breathable protein leather that gently conform to the contours of your head without generating uncomfortable pressure points. The lightweight yet durable aluminum-reinforced headband provides flexible adjustability and structural resilience, ensuring a secure yet relaxed fit during marathon listening sessions. Integrated dual beamforming microphones effectively filter out wind and environmental chatter, guaranteeing your voice is transmitted with crystal-clear precision during conference calls or tactical team chat.\n\nVersatility meets modern convenience with seamless multi-platform connectivity, supporting ultra-low-latency 2.4GHz wireless via USB transmitter, high-speed Bluetooth 5.3, and a wired 3.5mm auxiliary backup option. An impressive battery life of up to 50 hours on a single charge keeps you powered through days of heavy use, while fast USB-C charging ensures you spend less time tethered to an outlet. Finished in a sleek, matte black aesthetic with subtle minimalist accents, this headset is the ultimate audio companion for audiophiles, gamers, and professionals alike.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674136/vecteezy_headphones-design-3d-rendering-for-product-mockup_17054078_nb6z0x.png",
+  "categories": [
+    "electronics",
+    "audio",
+    "headphones",
+    "headsets",
+    "gaming accessories",
+    "wireless devices"
+  ],
+  "size": "190 x 180 x 85 mm",
+  "color": "matte black",
+  "price": 89.99,
+  "rating": 4.7,
+  "amount": 650,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:29:52.193Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:42:27.964Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941449c772a26904d38ce7"
+  },
+  "title": "Sony PlayStation 5 Console",
+  "desc": "Experience lightning-fast loading with an ultra-high speed SSD, deeper immersion with support for haptic feedback, adaptive triggers, and 3D Audio, and an all-new generation of incredible PlayStation games. The custom integration of the CPU, GPU, and SSD with Integrated I/O reinvents what a PlayStation console can do. Maximize your play sessions with near-instant load times for installed PS5 games. The custom-integrated I/O of the PS5 system pulls data from the SSD so quickly that creators can design games in ways never before possible. Immerse yourself in soundscapes where it feels as though the sound comes from every direction. Through your headphones or TV speakers your surroundings truly come alive with Tempest 3D AudioTech in supported games. Experience haptic feedback via the DualSense wireless controller in select PS5 titles and feel the effects and impact of your in-game actions through dynamic sensory feedback. Get to grips with immersive adaptive triggers, featuring dynamic resistance which simulates the physical impact of in-game activities in select PS5 games.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674156/toppng.com-ps5-official-console-and-controller-1824x1302_bkhkpz.png",
+  "categories": [
+    "electronics",
+    "gaming",
+    "consoles",
+    "playstation",
+    "sony",
+    "entertainment"
+  ],
+  "size": "390 x 104 x 260 mm",
+  "color": "white and black",
+  "price": 499.99,
+  "rating": 4.9,
+  "amount": 350,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:30:17.760Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:42:52.018Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941479c772a26904d38ced"
+  },
+  "title": "Advanced Fitness & Sport Smartwatch",
+  "desc": "Take total control of your health, fitness goals, and daily connectivity with this premium black smartwatch, engineered to seamlessly blend rugged durability with sleek, modern aesthetics. Featuring a vibrant, edge-to-edge AMOLED touch display with crystal-clear outdoor visibility and customizable watch faces, it delivers a stunning visual experience whether you are tracking your morning workout or reviewing notifications on the go. Built with an aerospace-grade aluminum alloy case and scratch-resistant protective glass, this smartwatch is designed to withstand intense daily wear, sweat, and elements while remaining featherlight and comfortable on your wrist 24/7.\n\nEquipped with a comprehensive suite of advanced health sensors, the device continuously monitors your heart rate, blood oxygen levels (SpO2), sleep quality stages, stress levels, and skin temperature to provide deep insights into your overall well-being. Over 100 built-in sports modes—ranging from running and cycling to swimming and yoga—automatically track your performance, mapping your routes with high-precision multi-system GPS while measuring calories burned, pace, and recovery time. Water-resistant up to 50 meters, it is fully equipped to handle rainy commutes, intense sweat sessions, and aquatic workouts without missing a beat.\n\nStay effortlessly connected to your digital life without constantly reaching for your phone. Receive real-time smartphone notifications, manage incoming calls, reply to messages, control your music playback right from your wrist, and utilize contactless payment support. Powered by an optimized operating system and a high-efficiency battery that delivers up to 14 days of typical usage on a single charge, this smartwatch eliminates battery anxiety. Finished in a versatile matte black design with a breathable, skin-friendly silicone strap, it is the ultimate intelligent companion for an active lifestyle.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674155/vecteezy_smartwatch-clipart-design-illustration_9379846_wyd7vi.png",
+  "categories": [
+    "electronics",
+    "wearable tech",
+    "smartwatches",
+    "fitness trackers",
+    "accessories"
+  ],
+  "size": "44 x 38 x 10.5 mm",
+  "color": "matte black",
+  "price": 199.99,
+  "rating": 4.7,
+  "amount": 500,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:31:05.396Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:43:24.446Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9414a3c772a26904d38cef"
+  },
+  "title": "Microsoft Xbox Series X Console",
+  "desc": "Discover the fastest, most powerful Xbox ever created with the Microsoft Xbox Series X, designed for a console generation that puts you, the player, squarely at the center. Powered by a custom-designed processor leveraging AMD's advanced Zen 2 and RDNA 2 architectures, the console delivers a staggering 12 teraflops of raw graphic processing power, enabling native 4K gaming at up to 120 frames per second. At the heart of this performance is the Xbox Velocity Architecture, which pairs a custom 1TB NVMe SSD with integrated software and hardware compression to drastically reduce load times, eliminate stutter, and allow seamless switching between multiple games through Quick Resume.\n\nImmerse yourself in deeply realistic worlds with hardware-accelerated DirectX Raytracing, rendering lifelike lighting, shadows, and accurate reflections that bring virtual environments to life. Spatial Audio technology utilizes advanced algorithms to create rich, multidimensional soundscapes that place you precisely inside the action, whether using compatible headphones or spatial-aware TV systems. The sleek, monolithic tower design features an innovative parallel cooling architecture with a split motherboard and a central thermal chamber, ensuring optimal airflow, whisper-quiet operation, and elite thermal management even during marathon gaming sessions.\n\nBackward compatibility is unmatched, allowing you to play thousands of your favorite games spanning four generations of Xbox—from original Xbox classics to Xbox 360 and Xbox One titles—all benefiting from improved load times, higher resolutions, and stable frame rates via Auto HDR enhancement. Equipped with the refined Xbox Wireless Controller featuring a textured grip, hybrid D-pad, and a dedicated Share button, the Xbox Series X is the ultimate entertainment and gaming powerhouse.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674155/toppng.com-standing-white-xbox-series-s-console-with-controller-1200x800_imagvg.png",
+  "categories": [
+    "electronics",
+    "gaming",
+    "consoles",
+    "xbox",
+    "microsoft",
+    "entertainment"
+  ],
+  "size": "301 x 151 x 151 mm",
+  "color": "matte black",
+  "price": 499.99,
+  "rating": 4.8,
+  "amount": 400,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:31:47.663Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:43:49.127Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9414aac772a26904d38cf1"
+  },
+  "title": "Nikon Z8 Full-Frame Mirrorless Camera",
+  "desc": "The Nikon Z8 packs the powerhouse performance and professional capabilities of Nikon's flagship Z9 into a significantly smaller, lighter, and more agile body designed for hybrid creators, wildlife photographers, and advanced cinematographers. At its core lies a 45.7-megapixel stacked CMOS sensor paired with the ultra-fast EXPEED 7 image processing engine, delivering breathtaking image clarity, staggering dynamic range, and burst shooting speeds up to 120 frames per second without blackout. The sophisticated deep-learning autofocus system boasts advanced subject detection capable of simultaneously tracking people, animals, birds, and various vehicles with pin-point precision, even in challenging low-light conditions down to -9 EV.\n\nVideographers will find a professional-grade cinema machine capable of internal 8K recording at up to 30p and 4K UHD video up to 120p, supporting 12-bit RAW formats and high-efficiency codecs like Apple ProRes RAW and N-RAW directly on the memory card. The camera's bright, blackout-free Real-Live viewfinder and a versatile 4-axis vertical and horizontal tilting touchscreen monitor provide exceptional framing flexibility from any high or low angle. Furthermore, the complete absence of a mechanical shutter eliminates shutter shock entirely, ensuring absolute silent operation and crystal-clear captures.\n\nCrafted from durable magnesium alloy and high-grade carbon-fiber composites, the Z8 body offers weather-sealing that equals the legendary D850, protecting against harsh dust and moisture during outdoor shoots. Dual card slots (CFexpress Type B and SD), USB-C Power Delivery, and built-in Wi-Fi and Bluetooth connectivity streamline professional studio workflows. Compact, lightweight, and relentlessly capable, the Nikon Z8 is the ultimate tool for visual storytellers who demand uncompromising quality.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674161/5bbf792c89802-f7d84c8c6f4e23ccaf645a538169f377_lhjnni.png",
+  "categories": [
+    "electronics",
+    "cameras",
+    "mirrorless cameras",
+    "photography",
+    "nikon",
+    "video equipment"
+  ],
+  "size": "144 x 118.5 x 83 mm",
+  "color": "black",
+  "price": 3999.95,
+  "rating": 4.9,
+  "amount": 180,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:31:54.375Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:44:41.242Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9414d0c772a26904d38cf7"
+  },
+  "title": "Versatile Daily Urban Blue Backpack",
+  "desc": "Conquer your daily commute, campus schedule, or weekend travel adventures with this durable and stylish urban blue backpack, thoughtfully engineered to balance high-capacity storage with ergonomic comfort. Crafted from a high-density, water-resistant ballistic nylon fabric, this backpack shields your essentials from unexpected downpours and everyday wear, ensuring your gear stays clean, dry, and protected in any weather condition. The robust construction is complemented by heavy-duty zippers, reinforced stitching at high-stress load points, and a structured panel base that allows the bag to stand upright independently when placed on the ground.\n\nOrganization is effortless with a cleverly partitioned interior layout. The spacious main compartment features a dedicated, padded laptop sleeve designed to safely secure devices up to 15.6 inches, protecting your tech from bumps and scratches. Additional internal mesh pockets, pen slots, and zippered compartments keep your chargers, notebooks, and accessories neatly arranged, eliminating clutter. On the exterior, dual side water bottle pockets and a quick-access front zipper pocket provide instant convenience for items you need to grab on the move.\n\nCarrying comfort is prioritized through an ergonomic system featuring thick, breathable mesh shoulder padding and an airflow-channeling padded back panel that prevents heat buildup during long walks or crowded commutes. An adjustable chest sternum strap helps distribute weight evenly across your shoulders and back, reducing strain during extended wear. Finished in a rich, sophisticated shade of navy blue with minimalist hardware accents, this backpack bridges the gap between professional polish and casual everyday utility.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674158/clipart810924_p3eczm.png",
+  "categories": [
+    "apparel",
+    "bags",
+    "backpacks",
+    "travel gear",
+    "accessories",
+    "school supplies"
+  ],
+  "size": "450 x 300 x 150 mm",
+  "color": "navy blue",
+  "price": 59.99,
+  "rating": 4.8,
+  "amount": 550,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:32:32.506Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:45:12.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9414eec772a26904d38cf9"
+  },
+  "title": "Samsung Odyssey 27-Inch Curved Gaming Monitor",
+  "desc": "Immerse yourself completely in your favorite gaming worlds, cinematic movies, and expansive multitasking workflows with this premium Samsung curved monitor, expertly engineered to deliver breathtaking visual depth and fluid performance. Featuring an immersive 1000R curvature that closely matches the natural field of vision of the human eye, the display wraps around your peripheral vision to draw you directly into the center of the action, reducing eye fatigue during marathon viewing sessions. The vibrant QLED panel brings visuals to life with stunning color accuracy, deeper contrast levels, and expansive HDR support, ensuring that every shadow and highlight is rendered with striking realism.\n\nDesigned with competitive gamers and power users in mind, the monitor boasts a high refresh rate and an ultra-low response time that eliminate motion blur, stutter, and screen tearing, allowing for seamless visual clarity during fast-paced movement. Advanced AMD FreeSync Premium technology synchronizes the display's refresh rate with your graphics card's frame output, guaranteeing uninterrupted, buttery-smooth gameplay. The ergonomic stand offers full height, tilt, swivel, and pivot adjustments, allowing you to tailor your viewing angle perfectly, while VESA mount compatibility provides easy wall-mounting flexibility for clean desk setups.\n\nConnectivity is versatile and robust, featuring multiple HDMI ports, DisplayPort inputs, and an integrated USB hub to easily connect your PC, gaming consoles, and peripherals without cable clutter. Eye Saver Mode and Flicker-Free technology actively reduce blue light emissions and screen flicker to protect your eyes over long hours of work or play. Encased in a sleek, modern matte black chassis with ambient rear lighting accents, this Samsung curved monitor elevates both the performance and aesthetic of any desktop workspace.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674161/predator-x34-curved-gaming-monitor-acer-predator-z-computer-monitors-acer-aspire-predator-nvidia-g-sync-others-ac22dfa3f9c84d7341132855bf60eb27_kt2p5s.png",
+  "categories": [
+    "electronics",
+    "computer hardware",
+    "monitors",
+    "gaming monitors",
+    "samsung",
+    "displays"
+  ],
+  "size": "614.6 x 576.0 x 311.1 mm",
+  "color": "matte black",
+  "price": 349.99,
+  "rating": 4.8,
+  "amount": 320,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:33:02.834Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:45:47.052Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a94150ec772a26904d38cfb"
+  },
+  "title": "Nike Air Force 1 '07 Classic Low-Top Sneaker",
+  "desc": "The Nike Air Force 1 '07 stands as an absolute cultural icon, bridging the worlds of hardwood performance and timeless streetwear heritage since its debut in 1982. This legendary low-top sneaker retains the legendary silhouette that changed sneaker history forever, offering a clean, crisp aesthetic that pairs effortlessly with any wardrobe. Crafted with a premium leather upper featuring stitched overlays, it delivers classic durability, structured support, and a rich, premium hand-feel that only gets better with age. Perforations strategically placed across the toe box enhance ventilation, keeping your feet cool and comfortable during all-day wear.\n\nAt the core of its legendary comfort is Nike's revolutionary encapsulated Air-Sole unit embedded within the foam midsole, providing lightweight, cloud-like cushioning and responsive impact absorption with every step you take. Whether you are walking through city streets, hanging out with friends, or styling a polished casual outfit, the padded low-cut collar feels soft and comfortable around the ankle while maintaining a sleek, streamlined look. The non-marking solid rubber outsole features heritage pivot circles borrowed from basketball performance designs, ensuring exceptional multi-surface traction, grip, and long-lasting durability.\n\nFinished in an iconic triple-white colorway with subtle metallic deubré hardware stamped with 'AF1', this sneaker is the ultimate versatile canvas for self-expression. Easy to clean and eternally stylish, the Nike Air Force 1 remains an essential cornerstone of modern sneaker culture, appealing to athletes, trendsetters, and daily commuters alike.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674161/Nike_Air_Force_1_Mockup__Floating__3_-removebg-preview_cqkrik.png",
+  "categories": [
+    "apparel",
+    "footwear",
+    "sneakers",
+    "nike",
+    "streetwear",
+    "casual shoes",
+    "men fashion"
+  ],
+  "size": "320 x 200 x 120 mm",
+  "color": "white",
+  "price": 115,
+  "rating": 4.9,
+  "amount": 850,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:33:34.812Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:46:12.848Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a94152cc772a26904d38d01"
+  },
+  "title": "Classic Adjustable Cotton Baseball Cap",
+  "desc": "Complete your casual everyday look and shield yourself from the sun in style with this classic green baseball cap, designed for effortless versatility and all-day comfort. Crafted from a premium, durable 100% washed cotton twill fabric, this cap offers a soft, broken-in feel right out of the box while maintaining its structured profile through everyday adventures. Embroidered eyelets positioned across the crown enhance airflow and breathability, keeping your head cool and comfortable during warm outdoor activities, running errands, or enjoying weekend outings.\n\nThe unstructured, six-panel curved brim silhouette delivers a timeless low-profile aesthetic that complements a wide variety of face shapes and casual wardrobes. A built-in interior sweatband actively wicks away moisture to prevent forehead perspiration, ensuring maximum comfort during long hours of wear. Tailored for a customizable fit, the cap features an adjustable rear strap equipped with a sleek metal slider buckle, allowing you to secure your preferred tightness effortlessly.\n\nFinished in a versatile, earthy forest green shade with clean, reinforced stitching, this cap bridges the gap between utilitarian outdoor gear and modern streetwear style. Whether you are hitting the hiking trails, heading to a sports game, or simply completing a laid-back weekend outfit, it is an essential, low-maintenance accessory for any wardrobe.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674163/Cap_Mockup_2_p6mxgi.jpg",
+  "categories": [
+    "apparel",
+    "accessories",
+    "hats and caps",
+    "headwear",
+    "casual wear",
+    "outdoor gear"
+  ],
+  "size": "250 x 200 x 120 mm",
+  "color": "forest green",
+  "price": 24.99,
+  "rating": 4.6,
+  "amount": 900,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:34:04.573Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:46:44.834Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941555c772a26904d38d03"
+  },
+  "title": "LEGO Technic Bugatti Chiron Advanced Building Set",
+  "desc": "Experience the pinnacle of automotive engineering and design excellence with the LEGO Technic Bugatti Chiron, an extraordinary collector's building set that faithfully captures the magic and majesty of the legendary hyper sports car. Developed in active partnership with Bugatti Automobiles S.A.S., this 1:8 scale replica mirrors the aerodynamic curves, iconic dual-color paint scheme, and breathtaking luxury of the real-life vehicle. Comprising a staggering 3,599 precision pieces, the building process offers an immersive, rewarding challenge for experienced builders, automotive enthusiasts, and LEGO fans alike, resulting in an elite display centerpiece that commands attention in any room.\n\nBeneath the sleek, aerodynamic exterior lies an astonishing array of authentic, working mechanical features powered by Technic engineering. Lift the rear hood to reveal a meticulously detailed W16 engine complete with moving pistons that cycle as the crankshaft turns. Engage the fully functional 8-speed gearbox operated by a movable paddle gearshift, or test the active rear wing using the top-speed key included in the trunk to switch between handling and high-speed configurations. All-wheel drive is driven by a central differential and transferred through independent suspension and low-profile tires mounted on stylish spoke rims with brake discs, delivering unmatched mechanical fidelity.\n\nEvery detail has been thoughtfully crafted to honor Bugatti's luxury heritage, down to the classic signature horseshoe grille, detailed cockpit featuring the Bugatti steering wheel with the iconic emblem, and a unique serial number hidden under the hood that unlocks exclusive online content. The set also includes a stylish collector's bag and a comprehensive coffee-table-style booklet featuring building instructions and exclusive interviews. Measuring over 5 inches high, 22 inches long, and 9 inches wide, the LEGO Technic Bugatti Chiron is the ultimate tribute to automotive mastery and creative construction.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674140/PngItem_366716_tk27qq.png",
+  "categories": [
+    "toys",
+    "lego",
+    "building sets",
+    "technic",
+    "collectibles",
+    "hobbies",
+    "cars"
+  ],
+  "size": "560 x 250 x 140 mm",
+  "color": "classic blue and black",
+  "price": 349.99,
+  "rating": 4.9,
+  "amount": 200,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:34:45.642Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:47:26.914Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a94189ec772a26904d38d4c"
+  },
+  "title": "Classic 18K Yellow Gold Timeless Wedding Band",
+  "desc": "Celebrate your lifelong commitment and eternal bond with this exquisite 18K yellow gold wedding band, meticulously handcrafted to symbolize enduring love, elegance, and timeless devotion. Forged from solid, ethically sourced 18K yellow gold, this ring radiates a warm, brilliant luster that catches the light gracefully from every angle. The design embraces a classic comfort-fit profile, featuring a slightly rounded interior edge that glides smoothly over the knuckle and rests effortlessly against the finger, ensuring supreme, irritation-free wearability during 24 hours of daily use. Whether you are working, exercising, or sleeping, its ergonomic contours eliminate friction and deliver unmatched long-term comfort.\n\nThe exterior showcases a polished, mirror-like finish with clean, minimalist lines that celebrate understated sophistication, making it an ideal standalone piece or a seamless companion to an engagement ring. Expertly engineered for life's everyday adventures, the dense metallic structure provides exceptional resistance against scratching, bending, and everyday wear, ensuring the ring retains its structural integrity and breathtaking shine across generations. Hypoallergenic and nickel-free, it is exceptionally gentle on sensitive skin, offering peace of mind alongside luxurious beauty.\n\nVersatile, elegant, and deeply meaningful, this timeless band serves as a daily reminder of your most cherished promises. Presented in a luxurious velvet presentation box, it is ready for your special ceremony, anniversary celebration, or as a thoughtful token of everlasting affection.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1723674146/wedding-ring-jewellery-engagement-ring-wedding-ring-a53e0affb17a998dc9f709a82b4ae1ad_jwb7z9.png",
+  "categories": [
+    "jewelry",
+    "rings",
+    "wedding bands",
+    "fine jewelry",
+    "accessories",
+    "luxury"
+  ],
+  "size": "20 x 20 x 4 mm",
+  "color": "yellow gold",
+  "price": 450,
+  "rating": 4.9,
+  "amount": 400,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:48:46.918Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:48:46.918Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9418c1c772a26904d38d4e"
+  },
+  "title": "4K UHD Professional Foldable GPS Drone",
+  "desc": "Capture breathtaking aerial cinematic footage and explore the skies with absolute confidence using this professional-grade foldable GPS drone, expertly engineered for both aspiring creators and seasoned videographers. Equipped with an ultra-high-definition 4K camera mounted on a motorized 3-axis mechanical gimbal, it delivers remarkably stable, jitter-free video recordings and crystal-clear 48MP aerial photographs even when flying in windy conditions. The advanced Sony CMOS sensor captures vibrant colors and exceptional dynamic range across sunlit landscapes or low-light evening horizons, while supporting real-time FPV (First Person View) transmission straight to your smartphone over long operational ranges.\n\nFlight intelligence is powered by a dual-satellite GPS and GLONASS navigation system that ensures pinpoint hovering stability, automated return-to-home safety features, and intelligent flight modes including follow-me tracking, waypoint navigation, and orbital circle shots. Safety is further enhanced by 360-degree obstacle avoidance sensors that actively detect and bypass trees, walls, and structures during flight, preventing accidental collisions. The aerodynamic, lightweight foldable frame collapses into a compact footprint that slips effortlessly into the included travel backpack, making it the ultimate portable companion for hiking trips, vacations, and outdoor adventures.\n\nPowered by a high-capacity intelligent lithium battery, the drone delivers an impressive flight time of up to 35 minutes per charge, minimizing downtime between shoots. The ergonomic remote controller features precision joysticks, an integrated phone clamp, and a dedicated telemetry display for effortless piloting. Combining elite aerial performance with rugged reliability, this drone opens up endless creative possibilities from above.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1724401985/drone-png-47015_ujguhm.png",
+  "categories": [
+    "electronics",
+    "drones",
+    "aerial photography",
+    "cameras",
+    "gadgets",
+    "outdoor equipment"
+  ],
+  "size": "350 x 300 x 70 mm",
+  "color": "matte gray",
+  "price": 699.99,
+  "rating": 4.8,
+  "amount": 250,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:49:21.385Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:49:21.385Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a9418e3c772a26904d38d50"
+  },
+  "title": "NVIDIA GeForce RTX 3090 24GB GDDR6X Graphics Card",
+  "desc": "The NVIDIA GeForce RTX 3090 is a ferocious big ferocious GPU (BFGPU) with TITAN-class performance, built for hardcore gamers, 3D artists, data scientists, and professional content creators who demand extreme computing power. Powered by NVIDIA's second-generation RTX architecture, Ampere, it features enhanced Ray Tracing Cores, Tensor Cores, and new streaming multiprocessors that deliver breathtaking real-time ray tracing effects and AI-accelerated performance. Equipped with a massive 24GB of high-speed GDDR6X VRAM, this graphics card effortlessly tackles memory-intensive workloads such as complex 3D rendering in Blender or Maya, massive video editing timelines in 8K resolution, and local execution of large language models and deep learning workflows without running into memory bottlenecks.\n\nThe thermal management system is engineered to handle extreme loads efficiently, featuring a dual-axial flow-through cooling design that pulls air through the card's fin stacks and vents hot air out of the chassis exhaust, keeping temperatures and acoustic noise remarkably low during extended rendering or gaming sessions. Support for NVIDIA DLSS (Deep Learning Super Sampling) leverages dedicated AI Tensor Cores on the GeForce RTX to boost frame rates with uncompromised image quality, allowing you to crank up game settings and resolutions to unprecedented levels. HDMI 2.1 support enables 8K gaming and high refresh rate 4K displays, ensuring your hardware setup remains future-proofed against cutting-edge display standards.\n\nEncased in a sturdy die-cast aluminum body with sleek gunmetal contours, the RTX 3090 combines heavy-duty industrial design with exquisite aesthetic appeal. Whether you are pushing graphic settings to the absolute max in triple-A gaming titles, training neural networks, or producing cinematic visual effects, this flagship graphics card delivers uncompromising performance across every professional and entertainment frontier.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1724401989/3d_Video_Graphics_Card_-8-removebg-preview1_qbmrqg.png",
+  "categories": [
+    "electronics",
+    "computer hardware",
+    "graphics cards",
+    "gpus",
+    "nvidia",
+    "gaming pc components"
+  ],
+  "size": "313 x 138 x 55 mm",
+  "color": "gunmetal gray and black",
+  "price": 1499.99,
+  "rating": 4.8,
+  "amount": 150,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:49:55.581Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:49:55.581Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a94190bc772a26904d38d52"
+  },
+  "title": "Redragon K579 Manyu RGB Mechanical Gaming Keyboard",
+  "desc": "The Redragon K579 Manyu is a feature-packed full-size mechanical gaming keyboard engineered to deliver precision, durability, and high performance for competitive gamers and power users alike. Equipped with custom clicky mechanical switches (equivalent to Cherry MX Blue), it provides crisp tactile feedback and rapid response times designed for both intensive gaming sessions and high-speed typing. The layout incorporates a dedicated row of 5 programmable macro keys (G1–G5) and a convenient dedicated volume control wheel, giving you instant command over your media and custom shortcuts without interrupting your workflow.\n\nBuilt for striking visual customization, the keyboard features dynamic RGB backlighting with 18 distinct lighting modes, 9 different colors, adjustable brightness levels, and breathing speed controls. The double-shot injection-molded keycaps ensure crystal-clear, uniform backlighting that will never rub off or fade over time. Designed with 100% anti-ghosting and full N-key rollover across all 114 keys, every single keystroke registers accurately even during high-intensity multi-key combat sequences.\n\nConstructed with a durable, high-grade ABS frame and plate-mounted mechanical switches rated for 50 million keystrokes, the K579 stands up to rigorous daily wear. It also features a splash-proof design, 12 accessible multimedia hotkeys, and a corrosion-free gold-plated USB connector for a stable, ultra-low-latency wired connection. Combining professional utility, ergonomic comfort, and brilliant aesthetics, it is an essential peripheral for any competitive desktop setup.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1724401990/429-4290320_redragon-k579-mechanical-gaming-keyboard-wired-rgb-iball_z5ogpt.png",
+  "categories": [
+    "electronics",
+    "computer accessories",
+    "keyboards",
+    "gaming keyboards",
+    "redragon",
+    "peripherals"
+  ],
+  "size": "440 x 135 x 35 mm",
+  "color": "black",
+  "price": 69.99,
+  "rating": 4.7,
+  "amount": 280,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:50:35.900Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:50:35.900Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941932c772a26904d38d54"
+  },
+  "title": "Apple AirPods Pro (2nd Generation)",
+  "desc": "Immerse yourself in pure acoustic brilliance with the Apple AirPods Pro (2nd Generation), engineered with the advanced H2 chip to deliver smarter noise cancellation and superior three-dimensional sound. Upgraded Active Noise Cancellation (ANC) blocks out twice as much environmental chatter and commuting noise, ensuring absolute quiet when you want to focus on your music or calls. Switch effortlessly to Transparency mode with Adaptive Audio, which dynamically blends ANC and ambient sound to keep you aware of your surroundings when walking through busy city streets. Personalized Spatial Audio with dynamic head tracking places sound all around you, creating a theater-like listening experience for movies, shows, and songs.\n\nDesigned for all-day comfort, the earbuds come with four pairs of flexible silicone tips (including an extra-small size) to create an acoustic seal and secure fit for every ear shape. Touch control on the stem lets you easily adjust volume with a simple swipe, manage media playback, or toggle listening modes. The redesigned MagSafe charging case is packed with convenience features, including a built-in speaker for Find My alerts, a lanyard loop, and sweat and water resistance for both the earbuds and the case.\n\nDelivering up to 6 hours of listening time with ANC enabled on a single charge, and up to 30 hours total using the robust charging case, the AirPods Pro keep your soundtrack going from morning to night. Seamlessly pairing across all your Apple devices with effortless setup, automatic switching, and Audio Sharing, they represent the pinnacle of wireless personal audio.",
+  "img": "https://res.cloudinary.com/doqwzxenw/image/upload/v1724401986/2112.i211.002.S.m012.c13.headphones_wireless_realistic_composition_5-removebg-preview_dzghjy.png",
+  "categories": [
+    "electronics",
+    "audio",
+    "headphones",
+    "wireless earbuds",
+    "apple",
+    "accessories"
+  ],
+  "size": "60.6 x 45.2 x 21.7 mm",
+  "color": "glossy white",
+  "price": 249,
+  "rating": 4.9,
+  "amount": 750,
+  "isDeleted": false,
+  "createdAt": {
+    "$date": "2026-08-30T11:51:14.265Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:51:14.265Z"
+  },
+  "__v": 0
+}]

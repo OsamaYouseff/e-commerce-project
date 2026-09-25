@@ -1,0 +1,48 @@
+[{
+  "_id": {
+    "$oid": "6a9411e9c772a26904d38c95"
+  },
+  "userId": {
+    "$oid": "6a934f1bb5f8898e47c00945"
+  },
+  "items": [
+    {
+      "productId": {
+        "$oid": "6a93561a58481dbcf41eeb31"
+      },
+      "quantity": 1,
+      "priceAtOrderInCents": 79999,
+      "_id": {
+        "$oid": "6a9411e9c772a26904d38c96"
+      }
+    }
+  ],
+  "financials": {
+    "subtotalInCents": 79999,
+    "discount": 16000,
+    "shippingCostInCents": 0,
+    "totalAmountInCents": 63999,
+    "currency": "USD"
+  },
+  "shippingAddress": {
+    "fullAddress": "Egypt,street one on the of the first floor",
+    "phoneNumber": "+20 01234567890",
+    "firstName": "Osama",
+    "lastName": "Youseff",
+    "label": "Home"
+  },
+  "status": "pending",
+  "paymentMethod": "cash_on_delivery",
+  "shippingInfo": {
+    "estimatedDeliveryDate": {
+      "$date": "2026-09-01T11:20:09.528Z"
+    }
+  },
+  "createdAt": {
+    "$date": "2026-08-30T11:20:09.927Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T11:20:09.927Z"
+  },
+  "__v": 0
+}]

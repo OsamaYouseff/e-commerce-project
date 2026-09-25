@@ -1,0 +1,92 @@
+[{
+  "_id": {
+    "$oid": "6a934f1bb5f8898e47c00945"
+  },
+  "firstname": "admin",
+  "lastname": null,
+  "username": "admin",
+  "email": "admin@mail.com",
+  "password": "$2b$10$A5XbKZuRWTJbGz2Qlxw7BuMTcPFnXNLtOhkR/nOgGfXdhOBohu2rq",
+  "passwordHistory": [
+    "$2b$10$A5XbKZuRWTJbGz2Qlxw7BuMTcPFnXNLtOhkR/nOgGfXdhOBohu2rq"
+  ],
+  "isAdmin": true,
+  "gender": null,
+  "phone": "01025163287",
+  "createdAt": {
+    "$date": "2026-08-29T21:28:59.173Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-29T21:28:59.173Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6a941d9dc772a26904d38dbc"
+  },
+  "firstname": null,
+  "lastname": null,
+  "username": "osama",
+  "email": "osama@mail.com",
+  "password": "$2b$10$WAXGkrquMvC5nv0O9fU7Euk7m0Of0wTh0G41jPLSwgppabgV00WUi",
+  "passwordHistory": [
+    "$2b$10$WAXGkrquMvC5nv0O9fU7Euk7m0Of0wTh0G41jPLSwgppabgV00WUi"
+  ],
+  "isAdmin": false,
+  "gender": null,
+  "phone": "01045678965",
+  "createdAt": {
+    "$date": "2026-08-30T12:10:05.962Z"
+  },
+  "updatedAt": {
+    "$date": "2026-08-30T12:10:05.962Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab59361af6533884828bed9"
+  },
+  "firstname": "Test",
+  "lastname": "Beta",
+  "username": "testbeta1790284641",
+  "email": "testbeta1790284641@example.com",
+  "password": "$2b$10$6.hZsuQgfnmvFOsztZMhyOszGrvesvBO1yHzTg9VPcgAAfOz3Kohm",
+  "passwordHistory": [
+    "$2b$10$6.hZsuQgfnmvFOsztZMhyOszGrvesvBO1yHzTg9VPcgAAfOz3Kohm"
+  ],
+  "isAdmin": false,
+  "gender": null,
+  "phone": "01007305584",
+  "createdAt": {
+    "$date": "2026-09-24T21:17:21.865Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-24T21:17:21.865Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ab5947144504e0f40425fd6"
+  },
+  "firstname": "F",
+  "lastname": "L",
+  "username": "flow1790284912",
+  "email": "flow1790284912@example.com",
+  "password": "$2b$10$gJzE.yKPBPyk94Wazk/6Y.2nvg0EtgkAFnqv1GPPtSZRcaBYCQxmC",
+  "passwordHistory": [
+    "$2b$10$gJzE.yKPBPyk94Wazk/6Y.2nvg0EtgkAFnqv1GPPtSZRcaBYCQxmC"
+  ],
+  "isAdmin": false,
+  "gender": null,
+  "phone": "01039100285",
+  "createdAt": {
+    "$date": "2026-09-24T21:21:53.211Z"
+  },
+  "updatedAt": {
+    "$date": "2026-09-24T21:21:53.211Z"
+  },
+  "__v": 0
+}]

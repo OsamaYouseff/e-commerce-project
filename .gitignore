@@ -3,3 +3,9 @@ node_modules
 .env
 ._*
 Notes
+
+# migration artifacts
+backend/.migration-checkpoint.json
+backend/src/scripts/migration/reports/
+backend/src/scripts/migration/backups/
+backend/src/scripts/migration/exports/
