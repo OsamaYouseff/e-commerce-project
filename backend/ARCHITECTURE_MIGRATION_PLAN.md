@@ -30,7 +30,7 @@ Handlers should not construct SQL or import a database driver. Repositories own 
 
 | Table | Purpose and constraints |
 | --- | --- |
-| `users` | Account fields; unique username, email, and phone; password history stored as a text array. |
+| `users` | Account fields; unique username, email, and phone; password history kept in a normalized `user_password_history` child table (position-ordered, bounded), not a text array. |
 | `products` | Catalog fields; unique title; categories as `TEXT[]`; prices as fixed-precision numeric values. |
 | `addresses` | Address rows reference users; a partial unique index permits at most one default address per user. |
 | `carts`, `cart_items` | One cart per user and one row per product in a cart; item quantities have a positive check. |
@@ -52,9 +52,12 @@ The backend code change does not copy production data by itself. The import must
 ## Test plan
 
 - Unit-test row mapping, ID generation, input normalization, and domain rules without a live database.
-- Unit-test repositories with an injected query double: SQL remains parameterized, updates only accept allowlisted columns, and transaction failures roll back.
+- Unit-test repositories with an injected query double: SQL remains parameterized, updates only accept allowlisted columns, and transaction failures roll back. (`test/unit/repositories.test.js`, run by `npm test`.)
 - Test that an account cannot have two default addresses, a wishlist cannot duplicate a product, and cart quantities/prices are recalculated from catalog data.
-- Add integration tests against an isolated PostgreSQL database for migrations, foreign keys, unique constraints, transactions, and representative endpoint flows.
+- Checkout is server-authoritative: per-line quantities and prices are recomputed from the catalog in the database, the shipping address must belong to the requesting user (by id or by exact stored fields), and the purchased items are removed from the user's cart inside the same transaction. A deterministic idempotency key makes retries return the existing order instead of duplicating it. When the client's preview no longer matches the recomputed total the order is refused (409 with the authoritative `financials`) rather than created at a figure the customer never saw; the retry carries `acceptPricingChange: true`, the reported totals and the same key. That flag is a statement that the customer agreed to a figure, not a waiver of the comparison: the check runs on every attempt, so a price that moves again before the retry is refused again and asked about again, and only a placed order reports success.
+- Product visibility filters out catalog items flagged deleted from every public read path (`/all`, list, search).
+- Prove the per-user advisory locks with parallel requests against a real database, not only with sequential calls (`test/integration/concurrency.test.js`, run by `npm run test:integration`; set `INTEGRATION_DATABASE_URL` to a migrated scratch database, otherwise the file skips).
+- Integration tests against an isolated PostgreSQL database for migrations, foreign keys, unique constraints, transactions, and representative endpoint flows. (`test/integration/schema.test.js` covers the schema half: migrations apply from empty, every CHECK/UNIQUE/FK/NOT NULL rejects bad data by SQLSTATE, deletes cascade as declared, a failed `withTransaction` leaves nothing behind and releases its client, and all migrations roll back and forward again. `test/integration/concurrency.test.js` covers the request half. Run with `npm run test:integration`.)
 - Gate deployment on the backend unit and integration suites, plus the Mongo/PostgreSQL reconciliation report.
 
 ## Follow-up architecture improvements
@@ -63,3 +66,15 @@ The backend code change does not copy production data by itself. The import must
 - Add request schemas, pagination limits, structured logs, health/readiness endpoints, and database pool metrics.
 - Add integration tests for all route permissions and contract tests for both frontends.
 - Keep migrations additive and reversible where practical; review destructive schema changes separately.
+
+## Operational notes
+
+- `engines.node` is `^22.22.0` while development currently runs Node 20; this is
+  intentional and only blocks `yarn` locally (npm installs fine). Align the
+  runtime at deploy time.
+- Both `yarn.lock` and `package-lock.json` are committed; pick one package
+  manager for installs in CI/deploy so the lockfiles cannot drift.
+- The migration tooling (`import-mongo`, `reconcile-import`, `export-mongo`,
+  `inspect-mongo`, `preview-import`) and the `mongoose` dependency are retained
+  for the rollback/retention window and run against the legacy `MONGO_URL`
+  passed per-command — they are not part of the runtime data path.

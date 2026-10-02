@@ -21,7 +21,9 @@ const getByUserId = async (userId, client) => {
 const create = async ({ id, userId }, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(
-    `INSERT INTO wishlists (id, user_id) VALUES ($1, $2) RETURNING ${COLUMNS}`,
+    `INSERT INTO wishlists (id, user_id) VALUES ($1, $2)
+     ON CONFLICT (user_id) DO UPDATE SET updated_at = wishlists.updated_at
+     RETURNING ${COLUMNS}`,
     [id, userId],
   );
   return toDomain(rows[0]);

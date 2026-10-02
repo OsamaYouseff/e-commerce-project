@@ -14,6 +14,7 @@ const isBcrypt = (v) => BCRYPT.test(String(v || ""));
 
 const mapUsers = (users) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const rows = users.map((u) => {
     const id = String(u._id);
     if (!isHex24(id)) failures.push({ table: "users", id, field: "_id", detail: "not 24-hex" });
@@ -22,6 +23,10 @@ const mapUsers = (users) => {
     }
     if (!isBcrypt(u.password)) failures.push({ table: "users", id, field: "password", detail: "hash format" });
     if (typeof u.isAdmin !== "boolean") failures.push({ table: "users", id, field: "isAdmin", detail: `type ${typeof u.isAdmin}` });
+    const missing = [];
+    if (!u.createdAt) missing.push("created_at");
+    if (!u.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "users", id, fields: missing });
     return {
       id,
       firstname: u.firstname ?? null,
@@ -39,11 +44,12 @@ const mapUsers = (users) => {
   const history = rows
     .map((r) => (r ? (users.find((u) => String(u._id) === r.id).passwordHistory || []).map((h, position) => ({ user_id: r.id, position, password_hash: h })) : []))
     .flat();
-  return { rows, history, failures };
+  return { rows, history, failures, defaultedTimestamps };
 };
 
 const mapProducts = (products) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const rows = products.map((p) => {
     const id = String(p._id);
     if (!isHex24(id)) failures.push({ table: "products", id, field: "_id", detail: "not 24-hex" });
@@ -63,6 +69,10 @@ const mapProducts = (products) => {
         });
       }
     }
+    const missing = [];
+    if (!p.createdAt) missing.push("created_at");
+    if (!p.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "products", id, fields: missing });
     return {
       id,
       title: p.title,
@@ -79,11 +89,12 @@ const mapProducts = (products) => {
       updated_at: p.updatedAt ?? null,
     };
   });
-  return { rows, failures };
+  return { rows, failures, defaultedTimestamps };
 };
 
 const mapAddresses = (addresses, userIds) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const rows = addresses.map((a) => {
     const id = String(a._id);
     if (!isHex24(id)) failures.push({ table: "addresses", id, field: "_id", detail: "not 24-hex" });
@@ -94,6 +105,10 @@ const mapAddresses = (addresses, userIds) => {
     if (!a.fullAddress || !a.phoneNumber || !a.firstName || !a.lastName) {
       failures.push({ table: "addresses", id, field: "required", detail: "missing shipping name/address/phone" });
     }
+    const missing = [];
+    if (!a.createdAt) missing.push("created_at");
+    if (!a.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "addresses", id, fields: missing });
     return {
       id,
       user_id: uid,
@@ -107,11 +122,12 @@ const mapAddresses = (addresses, userIds) => {
       updated_at: a.updatedAt ?? null,
     };
   });
-  return { rows, failures };
+  return { rows, failures, defaultedTimestamps };
 };
 
 const mapCarts = (carts, userIds, productIds) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const quarantined = [];
   const rows = carts.map((c) => {
     const id = String(c._id);
@@ -129,13 +145,18 @@ const mapCarts = (carts, userIds, productIds) => {
       }
       items.push({ cart_id: id, product_id: pid, quantity: item.quantity, position });
     }
+    const missing = [];
+    if (!c.createdAt) missing.push("created_at");
+    if (!c.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "carts", id, fields: missing });
     return { cart: { id, user_id: uid, created_at: c.createdAt ?? null, updated_at: c.updatedAt ?? null }, items };
   });
-  return { rows, quarantined, failures };
+  return { rows, quarantined, failures, defaultedTimestamps };
 };
 
 const mapWishlists = (wishlists, userIds, productIds) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const quarantined = [];
   const rows = wishlists.map((w) => {
     const id = String(w._id);
@@ -152,13 +173,18 @@ const mapWishlists = (wishlists, userIds, productIds) => {
       }
       items.push({ wishlist_id: id, product_id: pid, position });
     }
+    const missing = [];
+    if (!w.createdAt) missing.push("created_at");
+    if (!w.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "wishlists", id, fields: missing });
     return { wishlist: { id, user_id: uid, created_at: w.createdAt ?? null, updated_at: w.updatedAt ?? null }, items };
   });
-  return { rows, quarantined, failures };
+  return { rows, quarantined, failures, defaultedTimestamps };
 };
 
 const mapOrders = (orders, userIds, productIds, productsById) => {
   const failures = [];
+  const defaultedTimestamps = [];
   const quarantined = [];
   const rows = orders.map((o) => {
     const id = String(o._id);
@@ -182,6 +208,7 @@ const mapOrders = (orders, userIds, productIds, productsById) => {
       failures.push({ table: "orders", id, field: "shippingAddress", detail: "missing name/address/phone" });
     }
     const currency = typeof f.currency === "string" && f.currency.length === 3 ? f.currency : "USD";
+    const estimatedDeliveryAt = o.estimatedDeliveryAt ?? o.shippingInfo?.estimatedDeliveryDate ?? null;
     const items = [];
     for (const [line_number, item] of (o.items || []).entries()) {
       const pid = String(item.productId || "");
@@ -201,6 +228,10 @@ const mapOrders = (orders, userIds, productIds, productsById) => {
         price_at_order_in_cents: item.priceAtOrderInCents,
       });
     }
+    const missing = [];
+    if (!o.createdAt) missing.push("created_at");
+    if (!o.updatedAt) missing.push("updated_at");
+    if (missing.length) defaultedTimestamps.push({ table: "orders", id, fields: missing });
     return {
       order: {
         id,
@@ -213,7 +244,7 @@ const mapOrders = (orders, userIds, productIds, productsById) => {
         status: o.status ?? "pending",
         payment_method: o.paymentMethod,
         tracking_number: o.trackingNumber ?? null,
-        estimated_delivery_at: o.estimatedDeliveryAt ?? null,
+        estimated_delivery_at: estimatedDeliveryAt,
         ship_to_full_address: sa.fullAddress,
         ship_to_phone_number: sa.phoneNumber,
         ship_to_first_name: sa.firstName,
@@ -225,7 +256,7 @@ const mapOrders = (orders, userIds, productIds, productsById) => {
       items,
     };
   });
-  return { rows, quarantined, failures };
+  return { rows, quarantined, failures, defaultedTimestamps };
 };
 
 module.exports = {

@@ -44,7 +44,7 @@ const createProduct = async (input) => {
 };
 
 const updateProduct = async (id, input) => {
-  const existing = await productsRepository.findById(id);
+  const existing = await productsRepository.findById(id, null, { includeDeleted: true });
   if (!existing) throw ApiError.notFound("Product not found");
 
   let uploaded;
@@ -69,7 +69,11 @@ const updateProduct = async (id, input) => {
   try {
     const updated = await productsRepository.update(id, fields);
     if (uploaded && existing.img) {
-      await cloudinary.destroyImage(cloudinary.extractPublicId(existing.img));
+      try {
+        await cloudinary.destroyImage(cloudinary.extractPublicId(existing.img));
+      } catch (err) {
+        console.error("old product image cleanup failed:", err.message);
+      }
     }
     return updated;
   } catch (err) {
@@ -87,10 +91,14 @@ const updateProduct = async (id, input) => {
 const deleteProduct = async (id) => {
   const existing = await productsRepository.findById(id, null, { includeDeleted: true });
   if (!existing) throw ApiError.notFound("Product not found");
-  if (existing.img) {
-    await cloudinary.destroyImage(cloudinary.extractPublicId(existing.img));
-  }
   await productsRepository.remove(id);
+  if (existing.img) {
+    try {
+      await cloudinary.destroyImage(cloudinary.extractPublicId(existing.img));
+    } catch (err) {
+      console.error("deleted product image cleanup failed:", err.message);
+    }
+  }
   return "Product has been deleted successfully";
 };
 

@@ -1,9 +1,12 @@
 const wishlistsRepository = require("../infrastructure/wishlists.repository");
 const { withTransaction } = require("../../../shared/database/transaction");
-const { generateId } = require("../../../shared/database/ids");
+const { generateId, isObjectId } = require("../../../shared/database/ids");
 const { ApiError } = require("../../../shared/http/api-error");
 
 const PRODUCT_DETAIL_KEYS = ["_id", "title", "desc", "img", "categories", "size", "color", "price", "rating"];
+
+const lockUserWishlist = (client, userId) =>
+  client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`wishlist:${userId}`]);
 
 const pickProductDetails = (details) => {
   const out = {};
@@ -22,13 +25,34 @@ const shapeDetailed = (wishlist, productDetails) => {
   };
 };
 
-const createWishlist = async ({ userId, products = [] }) => {
-  const existing = await wishlistsRepository.getByUserId(userId);
-  if (existing) throw ApiError.badRequest("Wishlist already exists");
+/**
+ * Accepts product ids as plain strings (the shape the route validates) and also
+ * tolerates `[{ productId }]` objects from older callers.
+ *
+ * Previously each entry was read as `p.productId`, so a list of id strings
+ * produced `undefined` for every entry and every requested product was silently
+ * dropped from a non-empty creation.
+ */
+const sanitizeProductIds = (products = []) => {
+  const ids = [];
+  for (const entry of products) {
+    const id = typeof entry === "string" ? entry : entry && entry.productId;
+    if (isObjectId(id) && !ids.includes(id)) ids.push(id);
+  }
+  return ids;
+};
 
+const createWishlist = async ({ userId, products = [] }) => {
   return withTransaction(async (client) => {
+    await lockUserWishlist(client, userId);
+    // Re-check after taking the lock, not before: otherwise a concurrent create
+    // can reach ON CONFLICT DO UPDATE and receive the first request's row,
+    // replacing its items instead of reporting that the wishlist exists.
+    const existing = await wishlistsRepository.getByUserId(userId, client);
+    if (existing) throw ApiError.badRequest("Wishlist already exists");
+
     const wishlist = await wishlistsRepository.create({ id: generateId(), userId }, client);
-    const ids = (products || []).map((p) => p.productId).filter(Boolean);
+    const ids = sanitizeProductIds(products);
     if (ids.length > 0) await wishlistsRepository.replaceItems(wishlist._id, ids, client);
 
     const withItems = await wishlistsRepository.getByUserIdWithItems(userId, client);
@@ -39,6 +63,7 @@ const createWishlist = async ({ userId, products = [] }) => {
 
 const addProduct = async ({ userId, productId }) => {
   return withTransaction(async (client) => {
+    await lockUserWishlist(client, userId);
     let wishlist = await wishlistsRepository.getByUserId(userId, client);
 
     if (!wishlist) {
@@ -60,6 +85,9 @@ const addProduct = async ({ userId, productId }) => {
 
 const removeProduct = async ({ userId, productId }) => {
   return withTransaction(async (client) => {
+    // Same lock as addProduct: without it, a concurrent add/remove interleaves
+    // and one of the writes is lost.
+    await lockUserWishlist(client, userId);
     const wishlist = await wishlistsRepository.getByUserId(userId, client);
     if (!wishlist) throw ApiError.notFound("Wishlist not found");
 
@@ -77,6 +105,7 @@ const removeProduct = async ({ userId, productId }) => {
 
 const clearWishlist = async ({ userId }) => {
   return withTransaction(async (client) => {
+    await lockUserWishlist(client, userId);
     const wishlist = await wishlistsRepository.getByUserId(userId, client);
     if (!wishlist) throw ApiError.notFound("Wishlist not found");
     await wishlistsRepository.clearItems(wishlist._id, client);
@@ -87,6 +116,7 @@ const clearWishlist = async ({ userId }) => {
 
 const deleteWishlist = async ({ userId }) => {
   return withTransaction(async (client) => {
+    await lockUserWishlist(client, userId);
     const deleted = await wishlistsRepository.deleteByUserId(userId, client);
     if (!deleted) throw ApiError.notFound("Wishlist not found");
     return { message: "Wishlist has been deleted successfully" };

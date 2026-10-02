@@ -27,10 +27,57 @@ const getCartById = async (id, client) => {
 const create = async ({ id, userId }, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(
-    `INSERT INTO carts (id, user_id) VALUES ($1, $2) ON CONFLICT (user_id) DO NOTHING RETURNING ${COLUMNS}`,
+    `INSERT INTO carts (id, user_id) VALUES ($1, $2)
+     ON CONFLICT (user_id) DO UPDATE SET updated_at = carts.updated_at
+     RETURNING ${COLUMNS}`,
     [id, userId],
   );
-  return rows[0] ? toDomain(rows[0]) : null;
+  return toDomain(rows[0]);
+};
+
+/**
+ * Removes exactly the quantities a checkout purchased.
+ *
+ * Deleting whole rows (the previous behaviour) silently discarded any remaining
+ * stock the customer still had in the cart, and it left the cart timestamp
+ * untouched even though the cart contents changed. `quantities` is a
+ * Map<productId, number>.
+ */
+const removePurchasedItems = async (userId, quantities, client) => {
+  const c = clientOf(client);
+  const entries = [...(quantities || new Map()).entries()].filter(([productId, qty]) => productId && qty > 0);
+  if (entries.length === 0) return { removed: 0, remaining: 0 };
+  const cart = await getCartByUserId(userId, c);
+  if (!cart) return { removed: 0, remaining: 0 };
+
+  const productIds = entries.map(([productId]) => productId);
+  const { rows } = await c.query(
+    "SELECT product_id, quantity FROM cart_items WHERE cart_id = $1 AND product_id = ANY($2::text[])",
+    [cart._id, productIds],
+  );
+  const current = new Map(rows.map((r) => [String(r.product_id), Number(r.quantity)]));
+
+  let removed = 0;
+  for (const [productId, purchased] of entries) {
+    const key = String(productId);
+    const have = current.get(key);
+    if (have === undefined) continue;
+    const left = have - purchased;
+    if (left > 0) {
+      await c.query("UPDATE cart_items SET quantity = $1 WHERE cart_id = $2 AND product_id = $3", [
+        left,
+        cart._id,
+        productId,
+      ]);
+    } else {
+      await c.query("DELETE FROM cart_items WHERE cart_id = $1 AND product_id = $2", [cart._id, productId]);
+      removed += 1;
+    }
+  }
+  if (removed > 0 || entries.length > 0) {
+    await c.query("UPDATE carts SET updated_at = now() WHERE id = $1", [cart._id]);
+  }
+  return { removed, remaining: current.size - removed };
 };
 
 const getItems = async (cartId, client) => {
@@ -137,4 +184,5 @@ module.exports = {
   getProductDetails,
   getCartByIdWithItems,
   getCartByUserIdWithItems,
+  removePurchasedItems,
 };

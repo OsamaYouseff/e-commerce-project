@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { getCustomerOrdersMinimized, getSpecificOrderForCustomerDetailed, createCustomerOrder, deleteOrder } from '../../API/OrdersAPIFunctions';
-import { clearCart } from '../../API/CartAPIFunctions';
+import { getCustomerCartReducer } from '../CartSlice/ApiCartSlice';
 import toast from 'react-hot-toast';
 
 
@@ -22,18 +22,27 @@ export const getSpecificOrderForCustomerDetailedReducer = createAsyncThunk("getS
     return response;
 })
 
-export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (requestData) => {
+export const createCustomerOrderReducer = createAsyncThunk("createCustomerOrderAPI/sendRequest", async (requestData, thunkApi) => {
 
     const { orderData, clearCartAtEnd } = requestData;
 
     const response = await createCustomerOrder(orderData);
 
+    // The order was refused because the server's authoritative total differs
+    // from the preview. Nothing was created, so this is handed back to the
+    // caller to confirm rather than reported as a success or a plain failure.
+    if (response.needsConfirmation) {
+        return response;
+    }
+
     if (response.status) {
         toast.success(response.message);
 
         if (clearCartAtEnd) {
-            await clearCart()
-            setTimeout(() => { document.location.reload(true) }, 1000)
+            // The API already removed the purchased quantities. Re-reading the
+            // cart keeps anything the customer did not buy, which clearing the
+            // whole cart would have hidden.
+            await thunkApi.dispatch(getCustomerCartReducer());
         }
 
     } else {

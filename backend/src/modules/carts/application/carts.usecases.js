@@ -5,6 +5,16 @@ const { ApiError } = require("../../../shared/http/api-error");
 
 const PRODUCT_DETAIL_KEYS = ["_id", "title", "desc", "img", "categories", "size", "color", "price", "rating"];
 
+const lockUserCart = (client, userId) =>
+  client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`cart:${userId}`]);
+
+const isValidQuantity = (qty) => Number.isInteger(qty) && qty >= 1 && qty <= 999;
+
+const sanitizeEntries = (products = []) =>
+  products
+    .filter((p) => p && p.productId && isValidQuantity(p.quantity ?? 1))
+    .map((p, position) => ({ productId: p.productId, quantity: p.quantity ?? 1, position }));
+
 const shapeDetailed = (cart, productDetails) => {
   const byId = new Map(productDetails.map((p) => [p._id, p]));
   const totalPrice = cart.products.reduce((sum, item) => {
@@ -35,16 +45,16 @@ const pickProductDetails = (details) => {
 };
 
 const createCart = async ({ userId, products = [] }) => {
-  const existing = await cartsRepository.getCartByUserId(userId);
-  if (existing) throw ApiError.badRequest("Cart already exists");
-
   return withTransaction(async (client) => {
+    await lockUserCart(client, userId);
+    // Re-check *after* the lock. Checking only before it left a window where two
+    // concurrent creates both saw "no cart": the second one's ON CONFLICT DO
+    // UPDATE then returned the first request's row and replaced its items.
+    const existing = await cartsRepository.getCartByUserId(userId, client);
+    if (existing) throw ApiError.badRequest("Cart already exists");
+
     const cart = await cartsRepository.create({ id: generateId(), userId }, client);
-    const entries = (products || []).map((p, position) => ({
-      productId: p.productId,
-      quantity: p.quantity ?? 1,
-      position,
-    }));
+    const entries = sanitizeEntries(products);
     if (entries.length > 0) await cartsRepository.replaceItems(cart._id, entries, client);
 
     const withItems = await cartsRepository.getCartByIdWithItems(cart._id, client);
@@ -56,16 +66,13 @@ const createCart = async ({ userId, products = [] }) => {
 
 const updateCart = async ({ userId, body }) => {
   return withTransaction(async (client) => {
+    await lockUserCart(client, userId);
     const cart = await cartsRepository.getCartByUserId(userId, client);
     if (!cart) throw ApiError.notFound("Cart not found");
 
     if (Array.isArray(body.products)) {
-      const valid = body.products.filter((p) => p && p.productId);
-      await cartsRepository.replaceItems(
-        cart._id,
-        valid.map((p, position) => ({ productId: p.productId, quantity: p.quantity ?? 1, position })),
-        client,
-      );
+      const entries = sanitizeEntries(body.products);
+      await cartsRepository.replaceItems(cart._id, entries, client);
     }
 
     const withItems = await cartsRepository.getCartByIdWithItems(cart._id, client);
@@ -74,9 +81,11 @@ const updateCart = async ({ userId, body }) => {
   });
 };
 
-const addOrUpdateProduct = async ({ userId, productId, quantity, price }) => {
+const addOrUpdateProduct = async ({ userId, productId, quantity }) => {
   const qty = quantity ?? 1;
+  if (!isValidQuantity(qty)) throw ApiError.badRequest("Invalid quantity");
   return withTransaction(async (client) => {
+    await lockUserCart(client, userId);
     let cart = await cartsRepository.getCartByUserId(userId, client);
 
     if (!cart) {
@@ -102,6 +111,7 @@ const addOrUpdateProduct = async ({ userId, productId, quantity, price }) => {
 
 const removeProduct = async ({ userId, productId }) => {
   return withTransaction(async (client) => {
+    await lockUserCart(client, userId);
     const cart = await cartsRepository.getCartByUserId(userId, client);
     if (!cart) throw ApiError.notFound("Cart not found");
 
@@ -120,6 +130,7 @@ const removeProduct = async ({ userId, productId }) => {
 
 const clearCart = async ({ userId }) => {
   return withTransaction(async (client) => {
+    await lockUserCart(client, userId);
     let cart = await cartsRepository.getCartByUserId(userId, client);
     if (!cart) {
       cart = await cartsRepository.create({ id: generateId(), userId }, client);
@@ -130,11 +141,25 @@ const clearCart = async ({ userId }) => {
   });
 };
 
-const deleteCart = async ({ id, userId, isAdmin }) => {
-  const removed = isAdmin
-    ? await cartsRepository.deleteById(id)
-    : await cartsRepository.deleteScoped(id, userId);
-  if (!removed) throw ApiError.notFound("Cart not found");
+/**
+ * Deletes a customer's cart. `userId` identifies whose cart to remove, which is
+ * the customer's own id unless an admin is deleting someone else's.
+ *
+ * Deletion cascades to `cart_items`, so it runs inside a transaction that takes
+ * the same per-user advisory lock as every other cart mutation. Without that lock
+ * a concurrent add/update could insert cart items after this statement removed
+ * the parent row and fail on the `cart_items` foreign key.
+ */
+const deleteCart = async ({ userId, isAdmin }) => {
+  const removed = await withTransaction(async (client) => {
+    const cart = await cartsRepository.getCartByUserId(userId, client);
+    if (!cart) return false;
+    await lockUserCart(client, cart.userId);
+    return isAdmin
+      ? await cartsRepository.deleteById(cart._id, client)
+      : await cartsRepository.deleteScoped(cart._id, userId, client);
+  });
+  if (!removed) throw ApiError.notFound("Cart not found for the given user ID");
   return "Cart has been deleted...";
 };
 

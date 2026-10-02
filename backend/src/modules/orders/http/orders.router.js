@@ -2,12 +2,13 @@ const { Router } = require("express");
 const { verifyTokenAndAuthorization, verifyTokenAndAdmin } = require("../../../shared/http/auth-middleware");
 const ordersUsecases = require("../application/orders.usecases");
 const { asyncHandler } = require("../../../shared/http/async-handler");
+const { parsePagination } = require("../../../shared/http/validation");
 
 const router = Router();
 
 router.post("/:id", verifyTokenAndAuthorization, asyncHandler(async (req, res) => {
-  const order = await ordersUsecases.createOrder({ userId: req.user.id, body: req.body });
-  res.status(201).json(order);
+  const { created, order } = await ordersUsecases.createOrder({ userId: req.user.id, body: req.body });
+  res.status(created ? 201 : 200).json(order);
 }));
 
 router.put("/:id", verifyTokenAndAdmin, asyncHandler(async (req, res) => {
@@ -62,8 +63,7 @@ router.get("/detailed/:id/:orderId", verifyTokenAndAuthorization, asyncHandler(a
 }));
 
 router.get("/", verifyTokenAndAdmin, asyncHandler(async (req, res) => {
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 10;
+  const { page, limit } = parsePagination(req.query);
   const result = await ordersUsecases.minimizedAdmin({ page, limit, sorting: req.query.sorting });
   res.json({
     data: result.items,

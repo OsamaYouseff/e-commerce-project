@@ -23,8 +23,13 @@ class ApiError extends Error {
     return new ApiError(404, message);
   }
 
-  static conflict(message) {
-    return new ApiError(409, message);
+  /**
+   * `details` is carried to the response body, so a 409 can tell the caller
+   * what the server's authoritative value is (used by checkout to report the
+   * real total after a stale preview).
+   */
+  static conflict(message, options = {}) {
+    return new ApiError(409, message, options);
   }
 }
 

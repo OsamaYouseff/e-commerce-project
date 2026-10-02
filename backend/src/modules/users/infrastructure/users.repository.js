@@ -50,6 +50,13 @@ const findById = async (id, client) => {
   return mapRow(c, rows[0]);
 };
 
+const findByIdForUpdate = async (id, client) => {
+  const c = clientOf(client);
+  const { rows } = await c.query(`SELECT ${COLUMNS} FROM users WHERE id = $1 FOR UPDATE`, [id]);
+  if (!rows[0]) return null;
+  return mapRow(c, rows[0]);
+};
+
 const findByUsername = async (username, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(`SELECT ${COLUMNS} FROM users WHERE username = $1`, [username]);
@@ -98,22 +105,18 @@ const updateFields = async (id, fields, client) => {
 };
 
 /**
- * Rotates a user's password, pushing the current hash into the bounded
- * password history (keeps PASSWORD_HISTORY_MAX entries). Returns the
- * updated domain user.
+ * Replaces the user's password inside an existing transaction, pushing the
+ * current hash into the bounded password history. The caller must have locked
+ * the user row (findByIdForUpdate) and hold a transaction.
  */
-const updatePassword = async (id, newHash, client) => {
+const rotatePassword = async (id, newHash, current, history, client) => {
   const c = clientOf(client);
-  const current = await findById(id, c);
-  if (!current) return null;
-
-  const history = [current.password, ...current.passwordHistory].slice(0, PASSWORD_HISTORY_MAX);
-
+  const nextHistory = [current, ...history].slice(0, PASSWORD_HISTORY_MAX);
   await c.query("DELETE FROM user_password_history WHERE user_id = $1", [id]);
-  for (let position = 0; position < history.length; position += 1) {
+  for (let position = 0; position < nextHistory.length; position += 1) {
     await c.query(
       "INSERT INTO user_password_history (user_id, position, password_hash) VALUES ($1, $2, $3)",
-      [id, position, history[position]],
+      [id, position, nextHistory[position]],
     );
   }
   await c.query("UPDATE users SET password_hash = $1, updated_at = now() WHERE id = $2", [newHash, id]);
@@ -149,12 +152,13 @@ const checkUsernameExists = async (username, client) => {
 
 module.exports = {
   findById,
+  findByIdForUpdate,
   findByUsername,
   findByEmail,
   findByPhone,
   create,
   updateFields,
-  updatePassword,
+  rotatePassword,
   listAll,
   deleteById,
   countByValue,

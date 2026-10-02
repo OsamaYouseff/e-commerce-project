@@ -59,6 +59,24 @@ export const CustomerMenuItemsVar = [
     },
 ];
 
-export const coupons = [
-    "10OFF", "15OFF", "20OFF", "25OFF", "50OFF"
-]
+/**
+ * Coupon discount rates. Kept in one place with the API's table so the preview
+ * and the charged order agree; the API validates the code and recomputes the
+ * discount from catalog prices.
+ */
+export const couponRates = {
+    "10OFF": 0.1,
+    "15OFF": 0.15,
+    "20OFF": 0.2,
+    "25OFF": 0.25,
+    "50OFF": 0.5,
+};
+
+export const coupons = Object.keys(couponRates);
+
+/** Order of $50 or more ships free, otherwise flat $20. */
+export const FREE_SHIPPING_THRESHOLD = 5000;
+export const FLAT_SHIPPING_COST = 2000;
+
+/** The API only accepts cash on delivery today; card payment is not implemented. */
+export const PAYMENT_METHODS = ["cash_on_delivery"];

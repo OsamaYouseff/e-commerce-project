@@ -5,7 +5,8 @@
   "scripts": {
     "start": "nodemon index.js",
     "start:prod": "node index.js",
-    "test": "node --test test/",
+    "test": "node --test test/unit/",
+    "test:integration": "node --test test/integration/",
     "db:migrate": "node-pg-migrate up -m db/migrations",
     "db:rollback": "node-pg-migrate down -m db/migrations",
     "db:status": "node src/scripts/migration/migration-status.js",

@@ -4,13 +4,14 @@
  * numeric rollups, and on-target referential integrity.
  *
  *   MONGO_URL=<uri> [MONGO_DB=test] DATABASE_URL=<pg> node reconcile-import.js
- *   --strict         Also fail on rows present in PG but absent in Mongo
  *   --report P       Report output path (default <scripts>/reports/reconcile-*.json)
  *
  * Exit codes:
- *   0  all core checks pass (missing sets empty; no PG FK orphans)
- *   2  --strict violated by extra PG rows
- *   1  core data loss (Mongo rows missing from PG) or hard failure
+ *   0  all core checks pass cleanly (missing sets empty, no PG FK orphans,
+ *      all per-row fingerprints match, no warnings)
+ *   1  core data loss / fingerprint mismatch / hard failure
+ *   2  non-zero warnings (extra PG rows, integrity violations, quarantine
+ *      deficits that do not match --quarantine-expect)
  */
 const path = require("path");
 const fs = require("fs");
@@ -18,6 +19,8 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 
 const { getPool } = require("../../shared/database/pool");
+const m = require("./mapping");
+const fg = require("./fingerprint");
 
 const MONGO_URL = process.env.MONGO_URL;
 const MONGO_DB = process.env.MONGO_DB || "test";
@@ -56,24 +59,29 @@ const mSum = (rows, key) => (rows || []).reduce((acc, d) => acc + ((d && d[key])
 /**
  * Row-collection descriptions: where the Mongo rows come from, the PG table/column
  * to diff against, optional numeric rollups, and whether the collection has
- * comparable per-row ids (child tables do not).
+ * comparable per-row ids (child tables do not). `fingerprintTable` enables an
+ * exact per-row fingerprint comparison (ordered children included).
  */
 const collections = [
   {
     name: "users", table: "users",
     mongoRows: (m) => m.users,
+    fingerprintRows: (x) => x.mapped.users.rows,
     rollups: [],
     child: false,
   },
   {
     name: "userPasswordHistory", table: "user_password_history",
     mongoRows: (m) => m.userPasswordHistoryDocs,
+    fingerprintRows: (x) => x.flatRows.userPasswordHistory,
     rollups: [],
+    fingerprintChild: true,
     child: true,
   },
   {
     name: "products", table: "products",
     mongoRows: (m) => m.products,
+    fingerprintRows: (x) => x.mapped.products.rows,
     rollups: [
       { name: "priceSumCents", mongo: (rows) => Math.round(mSum(rows, "price") * 100), pg: "SUM(price::numeric * 100)::bigint AS v" },
       { name: "stockSum", mongo: (rows) => mSum(rows, "amount"), pg: "SUM(stock_quantity)::bigint AS v" },
@@ -83,46 +91,56 @@ const collections = [
   {
     name: "addresses", table: "addresses",
     mongoRows: (m) => m.addresses,
+    fingerprintRows: (x) => x.mapped.addresses.rows,
     rollups: [],
     child: false,
   },
   {
     name: "carts", table: "carts",
     mongoRows: (m) => m.carts,
+    fingerprintRows: (x) => x.mapped.carts.rows.map((c) => c.cart),
     rollups: [],
     child: false,
   },
   {
     name: "cartItems", table: "cart_items",
     mongoRows: (m) => m.cartItemDocs,
+    fingerprintRows: (x) => x.flatRows.cartItems,
     rollups: [{ name: "qtySum", mongo: (rows) => mSum(rows, "quantity"), pg: "SUM(quantity)::bigint AS v" }],
+    fingerprintChild: true,
     child: true,
   },
   {
     name: "wishlists", table: "wishlists",
     mongoRows: (m) => m.wishlists,
+    fingerprintRows: (x) => x.mapped.wishlists.rows.map((w) => w.wishlist),
     rollups: [],
     child: false,
   },
   {
     name: "wishlistItems", table: "wishlist_items",
     mongoRows: (m) => m.wishlistItemDocs,
+    fingerprintRows: (x) => x.flatRows.wishlistItems,
     rollups: [],
+    fingerprintChild: true,
     child: true,
   },
   {
     name: "orders", table: "orders",
     mongoRows: (m) => m.orders,
+    fingerprintRows: (x) => x.mapped.orders.rows.map((o) => o.order),
     rollups: [{ name: "totalCentsSum", mongo: (rows) => rows.reduce((a, o) => a + (((o.financials || {}).totalAmountInCents) || 0), 0), pg: "SUM(total_amount_in_cents)::bigint AS v" }],
     child: false,
   },
   {
     name: "orderItems", table: "order_items",
     mongoRows: (m) => m.orderItemDocs,
+    fingerprintRows: (x) => x.flatRows.orderItems,
     rollups: [
       { name: "qtySum", mongo: (rows) => mSum(rows, "quantity"), pg: "SUM(quantity)::bigint AS v" },
       { name: "priceSumCents", mongo: (rows) => mSum(rows, "priceAtOrderInCents"), pg: "SUM(price_at_order_in_cents)::bigint AS v" },
     ],
+    fingerprintChild: true,
     child: true,
   },
 ];
@@ -160,6 +178,26 @@ async function main() {
   mongoDoc.userPasswordHistoryDocs = Array.from({
     length: mongoDoc.users.reduce((n, u) => n + (u.passwordHistory || []).length, 0),
   });
+
+  const userIds = new Set(mongoDoc.users.map((u) => String(u._id)));
+  const productIds = new Set(mongoDoc.products.map((p) => String(p._id)));
+  const productsById = new Map(mongoDoc.products.map((p) => [String(p._id), p]));
+
+  const mapped = {
+    users: m.mapUsers(mongoDoc.users),
+    products: m.mapProducts(mongoDoc.products),
+    addresses: m.mapAddresses(mongoDoc.addresses, userIds),
+    carts: m.mapCarts(mongoDoc.carts, userIds, productIds),
+    wishlists: m.mapWishlists(mongoDoc.wishlists, userIds, productIds),
+    orders: m.mapOrders(mongoDoc.orders, userIds, productIds, productsById),
+  };
+
+  const flatRows = {
+    userPasswordHistory: mapped.users.history,
+    cartItems: mapped.carts.rows.map((c) => c.items.map((i) => ({ ...i }))).flat(),
+    wishlistItems: mapped.wishlists.rows.map((w) => w.items.map((i) => ({ ...i }))).flat(),
+    orderItems: mapped.orders.rows.map((o) => o.items.map((i) => ({ ...i }))).flat(),
+  };
 
   const report = {
     generatedAt: new Date().toISOString(),
@@ -224,6 +262,26 @@ async function main() {
       entry.rollups.push({ name: r.name, mongo: mVal, pg: pgVal, pass: ok });
     }
 
+    if (c.fingerprintRows && c.fingerprintTable !== false) {
+      const srcRows = c.fingerprintRows({ mapped, flatRows });
+      let mismatched = 0;
+      if (c.fingerprintChild) {
+        const src = fg.childFingerprints(c.table, srcRows);
+        const { rows: pgRows } = await pool.query(`SELECT * FROM ${c.table}`);
+        const pg = fg.childFingerprints(c.table, pgRows);
+        for (const [parentId, fp] of src) if (pg.get(parentId) !== fp) mismatched += 1;
+      } else {
+        const byId = new Map(srcRows.map((r) => [String(r.id), r]));
+        const { rows: pgRows } = await pool.query(`SELECT * FROM ${c.table}`);
+        for (const pgRow of pgRows) {
+          const srcRow = byId.get(String(pgRow.id));
+          if (srcRow && !fg.rowsMatch(c.table, srcRow, pgRow)) mismatched += 1;
+        }
+      }
+      entry.fingerprintMismatch = mismatched;
+      if (mismatched > 0) { entry.pass = false; hardFails += 1; }
+    }
+
     report.collections[c.name] = entry;
   }
 
@@ -254,7 +312,7 @@ async function main() {
 
   if (connection) await connection.close();
   await require("../../shared/database/pool").closePool();
-  process.exit(hardFails > 0 ? 1 : warnings > 0 && STRICT ? 2 : 0);
+  process.exit(hardFails > 0 ? 1 : warnings > 0 ? 2 : 0);
 }
 
 main().catch((err) => {

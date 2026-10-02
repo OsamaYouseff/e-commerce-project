@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
-import { coupons } from "./GeneralVariables.jsx"
+import { couponRates, FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_COST, PAYMENT_METHODS } from "./GeneralVariables.jsx"
 import { GoHome } from "../../../shared_files/General/GeneralFunctions.js";
 
 
@@ -95,27 +95,114 @@ export function GetTokenAndUserId() {
     return { customerId, accessToken };
 }
 
+/**
+ * Mirrors the API's pricing policy so the preview matches the charged order.
+ * The API recomputes these values from catalog prices and is the source of
+ * truth; a mismatch is reported by the order response as `staleCart`.
+ */
 export function CalcTotalCartPrice(subtotalPrice, couponCode = "") {
-    const discount = couponCode ? Number((GetCouponDiscount(couponCode) * subtotalPrice).toFixed(2)) : 0;
-    const shippingCalc = subtotalPrice !== 0 ? (subtotalPrice >= 50 ? 0 : 20) : 0;
-    const shippingCost = shippingCalc === 0 ? "Free" : "$20";
-    const finalPrice = subtotalPrice !== 0 ? (subtotalPrice - discount + shippingCalc).toFixed(2) : 0;
+    const subtotalInCents = Math.round(Number(subtotalPrice || 0) * 100);
+    const rate = GetCouponDiscount(couponCode);
+    const discountInCents = Math.round(subtotalInCents * rate);
+    const shippingInCents = subtotalInCents === 0 || subtotalInCents >= FREE_SHIPPING_THRESHOLD
+        ? 0
+        : FLAT_SHIPPING_COST;
+    const shippingCalc = shippingInCents / 100;
+    const shippingCost = shippingInCents === 0 ? "Free" : `$${(shippingInCents / 100).toFixed(2)}`;
+    const finalPrice = (subtotalInCents - discountInCents + shippingInCents) / 100;
 
-
-    return { finalPrice, shippingCost, discount, shippingCalc };
+    return {
+        finalPrice: finalPrice.toFixed(2),
+        shippingCost,
+        discount: discountInCents / 100,
+        shippingCalc,
+        discountInCents,
+        shippingInCents,
+    };
 }
 
 export function IsDiscountValid(couponCode) {
-    return coupons.includes(couponCode)
+    return Boolean(couponCode) && Object.prototype.hasOwnProperty.call(couponRates, String(couponCode).trim().toUpperCase());
+}
+
+/** Payment methods the API actually accepts, in display order. */
+export function GetAvailablePaymentMethods() {
+    return [...PAYMENT_METHODS];
+}
+
+/**
+ * Creates an idempotency key for one checkout attempt. The caller keeps the
+ * value for the whole attempt so retries reuse it; a new attempt gets a new key.
+ */
+export function newIdempotencyKey() {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+    }
+    if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+        const bytes = crypto.getRandomValues(new Uint8Array(16));
+        return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+    }
+    return `k-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+/**
+ * sessionStorage keeps an in-flight checkout key across a modal unmount or a
+ * page reload, so a retry after a timeout or a lost response resolves to the
+ * order the first request created instead of creating a second one. The entry
+ * is per customer, and is only cleared once an order is confirmed placed.
+ */
+const IDEMPOTENCY_STORAGE_PREFIX = "checkoutIdempotencyKey";
+
+const idempotencyStorageKey = (customerId) =>
+    `${IDEMPOTENCY_STORAGE_PREFIX}:${customerId || "anonymous"}`;
+
+/**
+ * In-memory fallback for browsers where sessionStorage is unavailable (private
+ * mode, blocked cookies, exhausted quota). It is module scope rather than a
+ * `useRef` because the checkout modal is unmounted as soon as a request is sent:
+ * a per-render or per-mount key changed under every retry and could create a
+ * duplicate order. This keeps the key for the whole page session instead.
+ */
+const memoryIdempotencyKeys = new Map();
+
+/** Returns the pending key for this customer, creating one if there is none. */
+export function getCheckoutIdempotencyKey(customerId) {
+    const storageKey = idempotencyStorageKey(customerId);
+    try {
+        const existing = sessionStorage.getItem(storageKey);
+        if (existing) return existing;
+        const created = newIdempotencyKey();
+        sessionStorage.setItem(storageKey, created);
+        return created;
+    } catch {
+        // Private browsing or a full quota: keep the key in memory for the page
+        // session rather than breaking checkout or rotating it on every render.
+        const fallback = memoryIdempotencyKeys.get(storageKey);
+        if (fallback) return fallback;
+        const created = newIdempotencyKey();
+        memoryIdempotencyKeys.set(storageKey, created);
+        return created;
+    }
+}
+
+/**
+ * Drops the pending key after the order is known to exist, so the next
+ * checkout is a genuinely new order. Called only on a confirmed success.
+ */
+export function rotateCheckoutIdempotencyKey(customerId) {
+    const storageKey = idempotencyStorageKey(customerId);
+    memoryIdempotencyKeys.delete(storageKey);
+    try {
+        sessionStorage.removeItem(storageKey);
+    } catch {
+        // Storage was never usable for this customer, so there is nothing to
+        // remove; the in-memory copy above is already gone.
+    }
 }
 
 function GetCouponDiscount(couponCode) {
-    if (coupons.includes(couponCode)) {
-        return Number(couponCode.slice(0, -3) / 100);
-    } else {
-        return 0;
-    }
-
+    if (!couponCode) return 0;
+    return couponRates[String(couponCode).trim().toUpperCase()] ?? 0;
 }
 
 export function GetEstimatedDeliveryDate() {

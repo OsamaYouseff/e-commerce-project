@@ -127,8 +127,8 @@ const listPaginated = async ({ page, limit, ascending }, client) => {
   const order = ascending ? "ASC" : "DESC";
   const offset = (page - 1) * limit;
   const [items, total] = await Promise.all([
-    c.query(`SELECT ${COLUMNS} FROM products ORDER BY created_at ${order}, id LIMIT $1 OFFSET $2`, [limit, offset]),
-    c.query("SELECT count(*)::int AS total FROM products"),
+    c.query(`SELECT ${COLUMNS} FROM products WHERE is_deleted = false ORDER BY created_at ${order}, id LIMIT $1 OFFSET $2`, [limit, offset]),
+    c.query("SELECT count(*)::int AS total FROM products WHERE is_deleted = false"),
   ]);
   return { items: items.rows.map(toDomain), total: total.rows[0].total };
 };

@@ -9,12 +9,15 @@ const normalizeLabel = (label) => {
   return /^(Home|Work)$/.test(trimmed) ? trimmed : label;
 };
 
+const lockUserAddresses = (client, userId) =>
+  client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`address:${userId}`]);
+
 const createAddress = async ({ userId, body }) => {
-  const requestedDefault = body.isDefault === true;
   return withTransaction(async (client) => {
+    await lockUserAddresses(client, userId);
     const addressCount = await addressesRepository.countByUser(userId, client);
-    let isDefault = requestedDefault;
-    if (!requestedDefault && addressCount === 0) isDefault = true;
+    let isDefault = body.isDefault === true;
+    if (!isDefault && addressCount === 0) isDefault = true;
 
     if (isDefault && addressCount > 0) {
       await addressesRepository.setAllDefaultFalse(userId, null, client);
@@ -54,6 +57,7 @@ const findDefaultAddress = async ({ userId, isAdmin, targetUserId }) => {
 
 const updateAddress = async ({ userId, addressId, body }) => {
   return withTransaction(async (client) => {
+    await lockUserAddresses(client, userId);
     const address = await addressesRepository.findForUserById(userId, addressId, client);
     if (!address) throw ApiError.notFound("Address not found");
 
@@ -96,6 +100,7 @@ const updateAddress = async ({ userId, addressId, body }) => {
 
 const deleteAddress = async ({ userId, addressId }) => {
   return withTransaction(async (client) => {
+    await lockUserAddresses(client, userId);
     const removed = await addressesRepository.remove(addressId, client);
     if (!removed) throw ApiError.notFound("Address not found");
     if (removed.userId !== userId) throw ApiError.notFound("Address not found");
@@ -112,6 +117,7 @@ const deleteAddress = async ({ userId, addressId }) => {
 
 const setDefaultAddress = async ({ userId, addressId }) => {
   return withTransaction(async (client) => {
+    await lockUserAddresses(client, userId);
     const address = await addressesRepository.findForUserById(userId, addressId, client);
     if (!address) throw ApiError.notFound("Address not found");
 

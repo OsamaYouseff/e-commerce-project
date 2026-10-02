@@ -12,6 +12,21 @@ from the `backend/` directory.
 | Import (idempotent, uses checkpoints) | `npm run db:import` |
 | Reset schema + migrate + import | `npm run db:import:reset` |
 | Reconcile source vs. target | `npm run db:reconcile` |
+| Unit suite (no database) | `npm test` |
+| Concurrency suite (needs a migrated scratch DB) | `npm run test:integration` |
+
+The concurrency suite seeds its own users, products and addresses with random ids, so it can run repeatedly against the same scratch database without cleanup:
+
+```bash
+export PATH=/usr/lib/postgresql/16/bin:$PATH
+export INTEGRATION_DATABASE_URL="postgresql://postgres@/evo_market_test?host=/tmp/opencode/pgdata&port=55432"
+npm run test:integration
+# expect: 8 tests, 0 failures
+```
+
+Without `INTEGRATION_DATABASE_URL` every case skips, which is why `npm test` still runs on a machine with no PostgreSQL. `npm test` covers `test/unit/` only; `npm run test:integration` covers `test/integration/`.
+
+`schema.test.js` reuses the host and path from `INTEGRATION_DATABASE_URL` but creates its own randomly named database (`schema_it_<random>`), applies `db/migrations` with node-pg-migrate, and drops the database afterwards. It needs an account allowed to `CREATE DATABASE`; `SCHEMA_KEEP_DB=1` keeps the scratch database for inspection. Do not point it at a database whose contents matter.
 
 Environment used by the scripts:
 
@@ -51,7 +66,20 @@ decoder also handles `$numberInt`/`$numberLong`/`$numberDouble` and `$binary`.
   tables), in 200-row batches.
 - **Checkpoints**: per-phase state in `<backend>/.migration-checkpoint.json`.
   A phase is skipped when its checkpoint exists, the expected row count matches,
-  and the table already holds that many rows. `--force` ignores checkpoints.
+  and the table already holds that many rows. The checkpoint is **bound to the
+  source fingerprint** (a checksum of every source `_id`): if the live DB /
+  backup changes identity between runs, the importer refuses to resume and
+  requires `--reset`/`--force` (or the same backup) — this prevents a second
+  import run from silently trusting stale state.
+- **Post-insert verification (fail-closed)**: after every phase the importer
+  re-reads the inserted rows and compares **exact per-row fingerprints**
+  (ordered children included) against the mapped source rows. Any mismatch,
+  including on the `ON CONFLICT`-skipped (already-present) rows, aborts the run
+  with a non-zero exit and a `—report` entry. A DB that silently diverged from
+  the source can never be masked by the checkpoint.
+- **Timestamp defaults**: rows with no `createdAt`/`updatedAt` omit those
+  columns so the schema `DEFAULT now()` applies; each such record is listed in
+  the report under `defaultedTimestamps`.
 - **`--reset`** drops the `public` schema and re-runs all node-pg-migrate
   migrations, then imports. Requires `psql` and the local
   `node_modules/.bin/node-pg-migrate` (both resolved automatically).
@@ -66,17 +94,22 @@ decoder also handles `$numberInt`/`$numberLong`/`$numberDouble` and `$binary`.
 
 ## The reconciler (`reconcile-import.js`)
 
-Compares source vs. target per table:
+Comparisons source vs target per table:
 
 - Counts for all tables; full id-set diffs (missing + extra) plus id-checksums
   for the six row tables.
+- **Exact per-row fingerprints** (ordered children included) for every table —
+  the same fingerprints the importer verifies, recomputed from source and target
+  so a re-derivation cannot hide divergence.
 - Numeric rollups: `priceSumCents` and `stockSum` (products), `qtySum`
   (cart_items, order_items), `priceSumCents` (order_items),
   `totalCentsSum` (orders, from `financials.totalAmountInCents`).
 - Seven PG referential-integrity queries (orphan user / product references).
 
-Exit codes: `0` PASS · `1` core data loss (Mongo rows missing from PG) or hard
-failure · `2` `--strict` violated by extra PG rows.
+Exit codes: `0` PASS · `1` hard failure (core data loss, row/child fingerprint
+mismatch) · `2` any warning (extra PG rows, PG integrity violations, quarantine
+deficits that do not match `--quarantine-expect`). Reconciliation is
+**fail-closed**: a non-zero exit on any warning is required before cutover.
 
 ## Approved quarantines (documented exceptions)
 
@@ -134,17 +167,24 @@ the response shapes those clients depend on. It is destructive against
 rehearsal-only data (registers throwaway users/carts/orders), so it must never
 be pointed at production.
 
+`BASE_URL` and `DATABASE_URL` must name the *same* environment and both must be
+set. `BASE_URL` falls back to `http://localhost:5002` when absent, so a mistyped
+variable is not an error: the suite quietly exercises the wrong server and only
+fails later, at admin elevation, with `Only admins can login` — because the
+throwaway user was created over HTTP on one database while the `UPDATE
+users SET is_admin` ran against the other.
+
 ```bash
 # boot the staging PG-mode server once:
 DATA_MODE=postgres JWT_SEC="phase6-rehearsal-secret" \
 DATABASE_URL="postgresql://postgres@/evo_market_staging?host=/tmp/opencode/pgdata&port=55432" \
 PORT=5002 node index.js &        # ready: {"postgres":true}
 
-# run the 63-check conformance suite:
+# run the 106-check conformance suite:
 BASE_URL=http://localhost:5002 \
 DATABASE_URL="postgresql://postgres@/evo_market_staging?host=/tmp/opencode/pgdata&port=55432" \
 node src/scripts/rehearsal/client-conformance.js
-# expect: 63 checks, 0 failure(s) — REHEARSAL PASS
+# expect: 106 checks, 0 failure(s) — REHEARSAL PASS
 ```
 
 ### Contract discoveries made by the rehearsal (do not regress)
@@ -181,10 +221,39 @@ node src/scripts/rehearsal/client-conformance.js
 - **Stale-total UI**: cart totals are always derived server-side from the live
   catalog on every read/add/update; the client re-fetches on each open, so no
   persisted run-rate drift is user-visible. No client change required.
-- **Transactional cart clearing**: order creation does NOT auto-clear the cart
-  (line snapshots must survive for the order record). The storefront fires
-  `clearCart()` after a successful order create, then reloads. Single-user,
-  single-session flow — documented as the accepted trade-off.
+- **Transactional cart clearing**: checkout removes exactly the purchased
+  quantities inside the order transaction, under the same per-user cart advisory
+  lock the cart endpoints take, and stamps `carts.updated_at`. Items the customer
+  did not buy stay in the cart. The storefront re-reads the cart after a
+  successful order instead of calling `clearCart()`, which used to hide unpurchased
+  items even though they were still stored.
+- **Idempotent checkout**: the client sends one key per checkout attempt; the API
+  derives the order id from `sha256(userId|key)`, looks that order up before
+  revalidating mutable catalog/address state, and compares the stored
+  `orders.request_fingerprint` with the new request. A retry returns the original
+  order (200); the same key with a different cart, address, coupon or payment
+  method is a 409. `orders.coupon_code` records which code produced the discount.
+- **Server-side pricing** (`src/modules/orders/application/checkout-pricing.js`):
+  the API validates the coupon (`10OFF`/`15OFF`/`20OFF`/`25OFF`/`50OFF`), computes
+  the discount from catalog prices, and charges $20 below a $50 subtotal, free at
+  or above it. `financials` sent by the client is treated as a preview only. If it
+  no longer matches the authoritative total, the API creates nothing and answers
+  `409` with `details.staleCart: true` and the real `financials`, so the customer
+  can confirm the amount they will actually be charged. The retry sends
+  `acceptPricingChange: true` with the reported totals and the same idempotency
+  key. That flag records the customer's agreement; it does not waive the
+  comparison, so the check runs on every attempt and a price that moves again
+  before the retry is refused again and asked about again. Only a 2xx means the
+  order exists — a refusal never carries one. Quantities are validated again
+  after duplicate `productId` lines are aggregated, so the per-product limit of
+  999 holds however the lines are split. `GeneralVariables.jsx` mirrors these
+  constants for the storefront preview and must be changed with them.
+- **Cart deletion** (`DELETE /api/carts/:id`): the path id is the *customer's* id,
+  like every sibling cart route. The route looks the cart up by `user_id`, and the
+  delete runs in a transaction that takes the per-user advisory lock, so it cannot
+  cascade away a cart row while a concurrent add is inserting into `cart_items`.
+  There is no cart left to delete afterwards, and a repeat call answers 404.
+
 ## Phase 7 — Production cutover runbook
 
 Objective (plan §Phase 7): switch the sole production writer to PostgreSQL with a
@@ -294,9 +363,9 @@ DATA_MODE=postgres DATABASE_URL="$PROD_DATABASE_URL" JWT_SEC=... CORS_ORIGIN=...
   DB_SSL=false DATABASE_POOL_MAX=10 PORT=5003 node index.js
 # -> /api/ready: {"ready":true,"postgres":true}
 
-# smoke = the 63-check client conformance harness:
+# smoke = the 93-check client conformance harness:
 BASE_URL=http://localhost:5003 node src/scripts/rehearsal/client-conformance.js
-# -> 63 checks, 0 failure(s) — REHEARSAL PASS
+# -> 93 checks, 0 failure(s) — REHEARSAL PASS
 ```
 
 The freeze/announce/cutover-owner steps are **no-ops until a real deployment

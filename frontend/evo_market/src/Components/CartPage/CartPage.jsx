@@ -53,21 +53,24 @@ const CartPage = () => {
 
     const handleSetPreviewedProduct = (newValue) => { setPreviewedProduct(newValue) };
 
-    const handelCheckout = (financialData) => {
+    const handelCheckout = (checkoutData) => {
 
         if (!IsUserLoggedIn()) {
             toast.error("Please log in or sign up with new account🙂");
             return;
         }
 
-        if (customerCart.products.length === 0 || !financialData) {
+        const { financials, couponCode } = checkoutData || {};
+
+        if (customerCart.products.length === 0 || !financials) {
             toast.error("You have to add some products to cart to checkout them.")
             return;
         }
 
         checkoutInfo = {
             products: customerCart.products,
-            financials: financialData,
+            financials: financials,
+            couponCode: couponCode || "",
         };
 
         handleOpenCheckoutModal();

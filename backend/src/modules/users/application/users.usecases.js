@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const usersRepository = require("../infrastructure/users.repository");
+const { withTransaction } = require("../../../shared/database/transaction");
 const { ApiError } = require("../../../shared/http/api-error");
 const { isPasswordStrong, isPasswordReused } = require("../../../../middleware/UserValidation");
 
@@ -20,19 +21,21 @@ const changePassword = async ({ userId, currentPassword, newPassword, confirmNew
     throw ApiError.badRequest("New password cannot be the same as the current password");
   }
 
-  const user = await usersRepository.findById(userId);
-  if (!user) throw ApiError.notFound("Invalid request");
+  return withTransaction(async (client) => {
+    const user = await usersRepository.findByIdForUpdate(userId, client);
+    if (!user) throw ApiError.notFound("Invalid request");
 
-  const isCurrentPasswordValid = await bcrypt.compare(String(currentPassword || ""), user.password);
-  if (!isCurrentPasswordValid) throw ApiError.unauthorized("Wrong password");
+    const isCurrentPasswordValid = await bcrypt.compare(String(currentPassword || ""), user.password);
+    if (!isCurrentPasswordValid) throw ApiError.unauthorized("Wrong password");
 
-  if (await isPasswordReused(user, newPassword)) {
-    throw ApiError.badRequest("Password has been used recently");
-  }
+    if (await isPasswordReused(user, newPassword)) {
+      throw ApiError.badRequest("Password has been used recently");
+    }
 
-  const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-  await usersRepository.updatePassword(user._id, hashedNewPassword);
-  return { message: "Password changed successfully" };
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+    await usersRepository.rotatePassword(user._id, hashedNewPassword, user.password, user.passwordHistory, client);
+    return { message: "Password changed successfully" };
+  });
 };
 
 const checkUsername = async (username) => {

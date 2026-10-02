@@ -32,6 +32,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 
 const m = require("./mapping");
+const fg = require("./fingerprint");
 
 const MONGO_URL = process.env.MONGO_URL;
 const MONGO_DB = process.env.MONGO_DB || "test";
@@ -88,6 +89,8 @@ const report = {
   quarantinedSummary: {},
   failures: [],
   exceptionsUsed: [],
+  defaultedTimestamps: [],
+  mismatches: [],
 };
 
 const applyExceptions = () => {
@@ -121,22 +124,96 @@ const PHASES = [
 
 async function insertTable(client, table, columns, rows, conflict) {
   if (rows.length === 0) return { inserted: 0, skipped: 0 };
-  const colList = columns.join(", ");
+  const groups = new Map();
+  for (const row of rows) {
+    const cols = columns.filter((c) => row[c] !== null && row[c] !== undefined);
+    const key = cols.join(",");
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(row);
+  }
   let inserted = 0;
   let skipped = 0;
-  for (const batch of chunkRows(rows, 200)) {
-    const valueList = batch
-      .map((_, i) => `(${columns.map((c, ci) => `$${i * columns.length + ci + 1}`).join(", ")})`)
-      .join(", ");
-    const values = batch.flatMap((row) => columns.map((c) => row[c]));
-    const result = await client.query(
-      `INSERT INTO ${table} (${colList}) VALUES ${valueList} ON CONFLICT ${conflict} DO NOTHING`,
-      values,
-    );
-    inserted += result.rowCount;
-    skipped += batch.length - result.rowCount;
+  for (const [key, batchRows] of groups) {
+    const cols = key ? key.split(",") : [];
+    if (cols.length === 0) continue;
+    const colList = cols.join(", ");
+    for (const batch of chunkRows(batchRows, 200)) {
+      const valueList = batch
+        .map((_, i) => `(${cols.map((c, ci) => `$${i * cols.length + ci + 1}`).join(", ")})`)
+        .join(", ");
+      const values = batch.flatMap((row) => cols.map((c) => row[c]));
+      const result = await client.query(
+        `INSERT INTO ${table} (${colList}) VALUES ${valueList} ON CONFLICT ${conflict} DO NOTHING`,
+        values,
+      );
+      inserted += result.rowCount;
+      skipped += batch.length - result.rowCount;
+    }
+    // Defaulted timestamps are recorded once, by the mapper, before the insert.
+    // Repeating them here would double every entry in the final report.
   }
   return { inserted, skipped };
+}
+
+async function verifyPhase(client, table, columns, rows, conflict) {
+  if (rows.length === 0) return { mismatched: 0 };
+  const isChild = table.endsWith("_items") || table === "user_password_history";
+  let mismatched = 0;
+  if (isChild) {
+    const src = fg.childFingerprints(table, rows);
+    if (src.size === 0) return { mismatched: 0 };
+    const { rows: pgRows } = await client.query(`SELECT * FROM ${table}`);
+    const pg = fg.childFingerprints(table, pgRows);
+    // Compare the parent id sets explicitly: a missing parent must fail even if
+    // unrelated target rows keep the table count high enough to look complete.
+    const ids = fg.diffIdSets([...src.keys()], [...pg.keys()]);
+    for (const id of ids.missing) {
+      mismatched += 1;
+      report.mismatches.push({ table, id, detail: "no target rows for source parent" });
+    }
+    for (const id of ids.unexpected) {
+      mismatched += 1;
+      report.mismatches.push({ table, id, detail: "target rows for unknown parent" });
+    }
+    for (const [parentId, fp] of src) {
+      if (ids.missing.includes(parentId)) continue;
+      if (pg.get(parentId) !== fp) {
+        mismatched += 1;
+        report.mismatches.push({ table, id: parentId, detail: "child fingerprint" });
+      }
+    }
+    return { mismatched };
+  }
+  const ids = rows.map((r) => r.id).filter(Boolean);
+  if (ids.length === 0) return { mismatched: 0 };
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  const fetched = [];
+  for (const batch of chunkRows(ids, 200)) {
+    const { rows: pgRows } = await client.query(`SELECT * FROM ${table} WHERE id = ANY($1)`, [batch]);
+    fetched.push(...pgRows);
+    for (const pgRow of pgRows) {
+      const srcRow = byId.get(String(pgRow.id));
+      if (!srcRow) continue;
+      if (!fg.rowsMatch(table, srcRow, pgRow)) {
+        mismatched += 1;
+        const diff = fg.rowDiff ? fg.rowDiff(table, srcRow, pgRow) : [];
+        report.mismatches.push({
+          table,
+          id: String(pgRow.id),
+          detail: diff.length ? `row fingerprint (${diff.join(", ")})` : "row fingerprint",
+        });
+      }
+    }
+  }
+  // A source row that was never inserted must fail the phase. Comparing only the
+  // returned rows (or the row count) would let a missing id pass unnoticed when
+  // unrelated target rows make up the total.
+  const idDiff = fg.diffIdSets(ids, fetched.map((r) => String(r.id)));
+  for (const id of idDiff.missing) {
+    mismatched += 1;
+    report.mismatches.push({ table, id, detail: "expected row missing in target" });
+  }
+  return { mismatched };
 }
 
 const resetTarget = () => {
@@ -211,6 +288,9 @@ async function main() {
 
   Object.values(data).forEach(({ failures }) => report.failures.push(...failures));
   for (const key of ["carts", "wishlists", "orders"]) report.quarantined.push(...data[key].quarantined);
+  for (const [key, value] of Object.entries(data)) {
+    if (Array.isArray(value.defaultedTimestamps)) report.defaultedTimestamps.push(...value.defaultedTimestamps);
+  }
 
   const dup = (vals) => {
     const by = new Map();
@@ -274,6 +354,20 @@ async function main() {
   return DATABASE_URL.split("@").pop().split("/").pop();
 })();
 console.log(`Importing into ${dbLabel}...`);
+
+  if (checkpoint.source && Object.keys(checkpoint.source).length > 0) {
+    const drift = [];
+    for (const [coll, meta] of Object.entries(report.source)) {
+      if (checkpoint.source[coll] && checkpoint.source[coll] !== meta.idChecksum) drift.push(coll);
+    }
+    if (drift.length > 0) {
+      console.error(`Checkpoint is stale: source fingerprint changed for ${drift.join(", ")}.`);
+      console.error("Re-run against the same backup, or remove the checkpoint / use --force only after verifying source identity.");
+      if (connection) await connection.close();
+      process.exit(1);
+    }
+  }
+
   const client = await pool.connect();
   let phaseCount = 0;
   try {
@@ -287,7 +381,13 @@ console.log(`Importing into ${dbLabel}...`);
           await client.query(`SELECT count(*)::int AS n FROM ${phase.table}`)
         ).rows[0].n;
         if (existing >= expected) {
-          console.log(`[${phase.name}] checkpoint hit (${expected} rows already present)`);
+          const { mismatched } = await verifyPhase(client, phase.table, phase.columns, rows);
+          if (mismatched > 0) {
+            console.error(`[${phase.name}] checkpoint hit but ${mismatched} fingerprint mismatch(es) against source; aborting.`);
+            report.result = "FAIL";
+            break;
+          }
+          console.log(`[${phase.name}] checkpoint hit (${expected} rows verified)`);
           continue;
         }
       }
@@ -296,7 +396,15 @@ console.log(`Importing into ${dbLabel}...`);
       phaseCount += 1;
       console.log(`[${phase.name}] ${inserted} inserted, ${skipped} skipped`);
 
+      const { mismatched } = await verifyPhase(client, phase.table, phase.columns, rows);
+      if (mismatched > 0) {
+        console.error(`[${phase.name}] ${mismatched} fingerprint mismatch(es) against source; aborting.`);
+        report.result = "FAIL";
+        break;
+      }
+
       checkpoint[phase.name] = { done: true, expected, at: new Date().toISOString() };
+      checkpoint.source = report.source;
       fs.writeFileSync(CHECKPOINT_PATH, JSON.stringify(checkpoint, null, 2));
     }
   } finally {
@@ -305,7 +413,15 @@ console.log(`Importing into ${dbLabel}...`);
 
   report.phasesRun = phaseCount;
   report.durationMs = Date.now() - startedAt;
+  report.result = report.mismatches.length > 0 ? "FAIL" : "PASS";
   writeReport();
+
+  if (report.mismatches.length > 0) {
+    console.error(`Import aborted: ${report.mismatches.length} fingerprint mismatch(es) recorded.`);
+    if (connection) await connection.close();
+    if (pool) await require("../../shared/database/pool").closePool();
+    process.exit(1);
+  }
   console.log(`Import complete in ${report.durationMs}ms (${phaseCount} phases).`);
 
   if (connection) await connection.close();

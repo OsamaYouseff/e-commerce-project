@@ -6,10 +6,7 @@ import { useEffect, useState } from "react";
 import { ColorModeContext } from "../../../../../shared_files/Theme/theme.jsx";
 import { useTheme } from "@emotion/react";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import MonetizationOnRoundedIcon from "@mui/icons-material/MonetizationOnRounded";
-import AddCardRoundedIcon from "@mui/icons-material/AddCardRounded";
 
 
 /// custom component
@@ -21,7 +18,7 @@ import toast from 'react-hot-toast';
 
 //// General Vars & Functions
 import { convertCentsToDollars } from "../../../../../shared_files/General/GeneralFunctions.js";
-import { GetTokenAndUserId, IsUserLoggedIn, GetEstimatedDeliveryDate } from "../../../General/GeneralFunctions.js";
+import { GetTokenAndUserId, IsUserLoggedIn, GetEstimatedDeliveryDate, newIdempotencyKey, getCheckoutIdempotencyKey, rotateCheckoutIdempotencyKey } from "../../../General/GeneralFunctions.js";
 import { isOrderInfoValid, getErrorsMessage } from "./orderRelatedFunctions"
 
 import { Link } from "react-router-dom";
@@ -37,10 +34,39 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
     const theme = useTheme(ColorModeContext);
     const productsCount = checkoutInfo?.products?.length || 0;
     const estimatedDeliveryDate = GetEstimatedDeliveryDate();
-    const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+
+    /**
+     * The API accepts only `cash_on_delivery`: offering a card option produced a
+     * 400 from the server on the only supported path. Card payments are not
+     * implemented end to end yet, so the storefront must not offer them.
+     */
+    const paymentMethod = "cash_on_delivery";
+
+    /**
+     * One key per checkout attempt, kept in sessionStorage rather than in a
+     * component ref. A ref is destroyed when this modal unmounts, and it is
+     * unmounted as soon as the request is sent, so a retry after a timeout or a
+     * page reload used to arrive with a fresh key and could create a second
+     * order. The stored key survives unmounts and reloads and is rotated only
+     * once an order is confirmed to exist.
+     */
+    const { customerId } = GetTokenAndUserId();
+    const idempotencyKey = getCheckoutIdempotencyKey(customerId);
+
+    /**
+     * Set when the API refused the order because its authoritative total differs
+     * from the preview shown here. No order was created, so the customer is
+     * asked to confirm the real total and the attempt is retried with the same
+     * key.
+     */
+    const [pendingPricingChange, setPendingPricingChange] = useState(null);
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
     const currency = checkoutInfo?.financials?.currency === "USD" ? "$" : checkoutInfo?.financials?.currency;
-    const shippingCost = checkoutInfo?.financials.shippingCostInCents === 0 ? "Free" : `${currency}${checkoutInfo?.financials.shippingCostInCents}`;
+    const shippingCostInCents = Number(checkoutInfo?.financials?.shippingCostInCents ?? 0);
+    const shippingCost = shippingCostInCents === 0
+        ? "Free"
+        : `${currency}${convertCentsToDollars(shippingCostInCents)}`;
 
     const dispatch = useDispatch();
     const selectedAddress = useSelector((state) => state.AddressesApiRequest.singleAddressResponse);
@@ -50,13 +76,12 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
 
     // console.log(checkoutInfo)
 
-    const handelPaymentMethod = (event, newValue) => {
-        if (newValue === null) return;
-        setPaymentMethod(newValue);
-    };
-    const handelPlaceOrder = () => {
-        const { customerId } = GetTokenAndUserId();
-
+    /**
+     * @param {boolean} acceptPricingChange set only when the customer has just
+     * confirmed a total the API computed after the cart moved. It is what lets
+     * the retry past the pricing check; the totals still come from the server.
+     */
+    const handelPlaceOrder = async (acceptPricingChange = false, confirmedFinancials = null) => {
         const filteredProducts = checkoutInfo.products.map((product) => {
             return {
                 productId: product.productId,
@@ -80,8 +105,16 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
 
         const orderData = {
             userId: customerId,
+            idempotencyKey: idempotencyKey,
             items: filteredProducts,
-            financials: checkoutInfo.financials,
+            // Only the coupon travels; totals are recomputed by the API from
+            // authoritative catalog prices, so this is a preview, not an order
+            // amount the server trusts. A preview that no longer matches is
+            // refused with the real totals rather than silently charged. Once the
+            // customer confirms, the preview is the figure they agreed to.
+            financials: confirmedFinancials || checkoutInfo.financials,
+            ...(acceptPricingChange ? { acceptPricingChange: true } : {}),
+            couponCode: checkoutInfo?.couponCode || "",
             shippingAddress: filteredShippingAddress,
             paymentMethod: paymentMethod,
             shippingInfo: {
@@ -89,21 +122,58 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
             },
         };
 
-
-
-
         const orderValidationRes = isOrderInfoValid(orderData)
 
-        if (orderValidationRes.length === 0) {
-            IsUserLoggedIn()
-                ? dispatch(createCustomerOrderReducer({ orderData, clearCartAtEnd }))
-                : toast.error("Please log in or sign up with new account🙂");
-
-        } else {
-            toast.error(getErrorsMessage(orderValidationRes))
+        if (orderValidationRes.length !== 0) {
+            toast.error(getErrorsMessage(orderValidationRes));
+            return;
         }
 
-        handleCloseCheckoutModal()
+        if (!IsUserLoggedIn()) {
+            toast.error("Please log in or sign up with new account🙂");
+            return;
+        }
+
+        setIsPlacingOrder(true);
+
+        // The modal stays open until the outcome is known: closing it here used
+        // to unmount this component while the request was in flight.
+        const result = await dispatch(createCustomerOrderReducer({ orderData, clearCartAtEnd }));
+
+        setIsPlacingOrder(false);
+
+        if (createCustomerOrderReducer.fulfilled.match(result)) {
+            const response = result.payload;
+
+            if (response.needsConfirmation) {
+                // No order was created. Ask before spending the attempt, and
+                // keep the key so the retry is the same order.
+                setPendingPricingChange({
+                    financials: response.financials,
+                    previewedTotalInCents: Number(checkoutInfo?.financials?.totalAmountInCents ?? 0),
+                });
+                return;
+            }
+
+            if (response.status) {
+                // The order exists, so the next attempt is genuinely new.
+                rotateCheckoutIdempotencyKey(customerId);
+                handleCloseCheckoutModal();
+                return;
+            }
+        }
+    };
+
+    /** Retry the same attempt with the confirmed, server-computed total. */
+    const confirmPricingChange = async () => {
+        const confirmed = pendingPricingChange.financials;
+        setPendingPricingChange(null);
+        await handelPlaceOrder(true, confirmed);
+    };
+
+    const cancelPricingChange = () => {
+        setPendingPricingChange(null);
+        toast("Order not placed. Nothing was charged.");
     };
 
 
@@ -309,66 +379,95 @@ export default function CompleteCheckoutModal({ openCheckoutModal, handleCloseCh
                             <Typography variant="h6" mb={1}>
                                 Payment
                             </Typography>
-                            <ToggleButtonGroup
+                            <Stack
                                 className="flex-center"
-                                value={paymentMethod}
-                                exclusive
-                                onChange={handelPaymentMethod}
-                                aria-label="gender"
-                                size="small"
                                 sx={{
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    alignItems: "center",
-                                    ".MuiToggleButtonGroup-grouped.Mui-selected":
-                                    {
-                                        color: `${theme.palette.primary.main} !important`,
-                                        borderColor: `${theme.palette.primary.main} !important`,
-                                    },
+                                    fontSize: "13px",
+                                    p: 1,
+                                    borderRadius: "1.5625rem",
+                                    border: `.0625rem solid ${theme.palette.primary.main}`,
+                                    color: `${theme.palette.primary.main}`,
+                                    gap: 1,
                                 }}
                             >
-                                <ToggleButton
-                                    value="cash_on_delivery"
-                                    aria-label="male-gender"
-                                >
-                                    <Stack
-                                        sx={{ fontSize: "13px" }}
-                                        alignItems={"center"}
-                                    >
-                                        <MonetizationOnRoundedIcon
-                                            sx={{ fontSize: "30px" }}
-                                        />
-                                        Cash on Delivery
-                                    </Stack>
-                                </ToggleButton>
-                                <ToggleButton
-                                    value="credit_card"
-                                    aria-label="female-gender"
-                                >
-                                    <Stack
-                                        sx={{ fontSize: "13px" }}
-                                        alignItems={"center"}
-                                    >
-                                        <AddCardRoundedIcon
-                                            sx={{ fontSize: "30px" }}
-                                        />
-                                        Credit/Debit Card
-                                    </Stack>
-                                </ToggleButton>
-                            </ToggleButtonGroup>
+                                <MonetizationOnRoundedIcon sx={{ fontSize: "30px" }} />
+                                Cash on Delivery
+                            </Stack>
+                            <Typography fontSize={12} sx={{ mt: 1, opacity: 0.7 }}>
+                                Card payment is not available yet, so only cash on delivery can be selected.
+                            </Typography>
                         </Box>
                         {/*== payment ==*/}
                         <Button
                             onClick={handelPlaceOrder}
                             variant="contained"
+                            disabled={isPlacingOrder}
                             sx={{ width: "100%", fontWeight: "bolder" }}
                         >
-                            place Order
+                            {isPlacingOrder ? "Placing your order..." : "place Order"}
                         </Button>
                     </Stack>
                     {/*== order invoice & payment ==*/}
                 </Stack>
                 {/*== order summary ==*/}
+
+                {/*
+                 The API refused this order because the authoritative total no
+                 longer matches the preview above. Nothing was created, so this
+                 states both figures before the attempt is spent, and the retry
+                 reuses the same idempotency key.
+                 */}
+                {pendingPricingChange && (
+                    <Box
+                        role="alertdialog"
+                        aria-label="Price changed"
+                        sx={{
+                            mt: 2,
+                            p: 2,
+                            borderRadius: "6px",
+                            bgcolor: "sectionBgColor.main",
+                            border: `.0625rem solid ${theme.palette.primary.main}`,
+                        }}
+                    >
+                        <Typography sx={{ fontWeight: "bolder", mb: 1 }}>
+                            The price changed before your order was placed
+                        </Typography>
+                        <Typography fontSize={13} sx={{ mb: 1 }}>
+                            You reviewed a total of{" "}
+                            <strong>
+                                {currency}
+                                {convertCentsToDollars(pendingPricingChange.previewedTotalInCents)}
+                            </strong>
+                            . The current price of this order is{" "}
+                            <strong>
+                                {pendingPricingChange.financials?.currency === "USD" ? "$" : pendingPricingChange.financials?.currency}
+                                {convertCentsToDollars(pendingPricingChange.financials?.totalAmountInCents ?? 0)}
+                            </strong>
+                            , which is what the store will charge on delivery.
+                        </Typography>
+                        <Typography fontSize={13} sx={{ mb: 2, opacity: 0.75 }}>
+                            Subtotal {convertCentsToDollars(pendingPricingChange.financials?.subtotalInCents ?? 0)}, discount{" "}
+                            {convertCentsToDollars(pendingPricingChange.financials?.discount ?? 0)}, shipping{" "}
+                            {Number(pendingPricingChange.financials?.shippingCostInCents ?? 0) === 0
+                                ? "Free"
+                                : convertCentsToDollars(pendingPricingChange.financials?.shippingCostInCents ?? 0)}
+                            .
+                        </Typography>
+                        <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+                            <Button
+                                onClick={confirmPricingChange}
+                                variant="contained"
+                                disabled={isPlacingOrder}
+                                sx={{ fontWeight: "bolder", flexGrow: 1 }}
+                            >
+                                Place order at the new total
+                            </Button>
+                            <Button onClick={cancelPricingChange} variant="outlined" sx={{ fontWeight: "bolder", flexGrow: 1 }}>
+                                Cancel
+                            </Button>
+                        </Stack>
+                    </Box>
+                )}
             </Container>
         </Modal>
     );

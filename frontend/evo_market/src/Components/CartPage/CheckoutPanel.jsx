@@ -33,11 +33,16 @@ const CheckoutPanel = ({ totalPrice, handelCheckout }) => {
 
     const handleCheckoutCart = () => {
         handelCheckout({
-            subtotalInCents: Math.round(totalPrice * 100),
-            discount: Math.round(discount * 100),
-            shippingCostInCents: Math.round(shippingCalc * 100),
-            totalAmountInCents: Math.round(finalPrice * 100),
-            currency: "USD",
+            // Totals here are a preview; the API recomputes them from catalog
+            // prices. `couponCode` is what the API validates.
+            financials: {
+                subtotalInCents: Math.round(totalPrice * 100),
+                discount: Math.round(discount * 100),
+                shippingCostInCents: Math.round(shippingCalc * 100),
+                totalAmountInCents: Math.round(Number(finalPrice) * 100),
+                currency: "USD",
+            },
+            couponCode: IsDiscountValid(discountCode) ? String(discountCode).trim().toUpperCase() : "",
         });
     };
 

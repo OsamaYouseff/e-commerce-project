@@ -21,6 +21,45 @@ import toast from 'react-hot-toast';
 
 const mainBorderColor = "#7a7a7acc"
 
+/**
+ * The number inputs hand back strings, and the API expects numbers for price,
+ * stock and rating. Submitting the raw form state sent `"12.5"` for price and
+ * was rejected with 400, so numeric fields are converted here (the API also
+ * normalizes numeric strings server-side).
+ */
+const toNumber = (value, { integer = false } = {}) => {
+    if (typeof value === "number") return integer && !Number.isInteger(value) ? null : value;
+    if (typeof value !== "string" || value.trim() === "") return null;
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return null;
+    return integer && !Number.isInteger(parsed) ? null : parsed;
+};
+
+const numericFormData = (data) => {
+    const price = toNumber(data.price);
+    const amount = toNumber(data.amount, { integer: true });
+    // A cleared rating is the form's empty state, not a value to send. Sending
+    // "" made the API reject an otherwise valid new product with a database
+    // error, so it becomes the same 0 default the API and column use.
+    const rating = data.rating === "" || data.rating === null || data.rating === undefined
+        ? 0
+        : toNumber(data.rating);
+
+    if (price === null || price < 0) {
+        toast.error("Price must be a non-negative number");
+        return null;
+    }
+    if (amount === null || amount < 0) {
+        toast.error("Amount must be a non-negative whole number");
+        return null;
+    }
+    if (rating !== null && rating !== undefined && (rating < 0 || rating > 5)) {
+        toast.error("Rating must be between 0 and 5");
+        return null;
+    }
+    return { ...data, price, amount, rating };
+};
+
 const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, handelSubmitForm }) => {
     const theme = useTheme(ColorModeContext);
     const isLoading = useSelector((state) => state.ProductsApiRequest.isLoading);
@@ -34,6 +73,11 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
         };
         setFormData(updatedFormData);
     };
+
+    const submitForm = () => {
+        const payload = numericFormData(formData);
+        if (payload) handelSubmitForm(payload);
+    };
     const resetOperation = () => {
 
         if (cancelBtnName === "reset") {
@@ -45,7 +89,10 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                 size: "",
                 color: "",
                 price: 1,
-                rating: "",
+                // The reset must produce a submittable form. A blank rating
+                // used to be sent through as "" and rejected by the numeric
+                // column, so the default is the same 0 the API applies.
+                rating: 0,
                 amount: 1,
                 isDeleted: false,
             });
@@ -242,7 +289,7 @@ const ProductForm = ({ productFrom, handelBtnName, cancelBtnName, mainTitle, han
                                     {cancelBtnName}
                                 </Button>
                                 <Button
-                                    onClick={() => handelSubmitForm(formData)}
+                                    onClick={submitForm}
                                     type="submit"
                                     fullWidth
                                     color="success"

@@ -2,16 +2,19 @@ const { getPool } = require("../../../shared/database/pool");
 const { toIso } = require("../../../shared/database/mapper");
 
 const ORDER_COLUMNS =
-  "id, user_id, subtotal_in_cents, discount_in_cents, shipping_cost_in_cents, total_amount_in_cents, currency, status, payment_method, tracking_number, estimated_delivery_at, ship_to_full_address, ship_to_phone_number, ship_to_first_name, ship_to_last_name, ship_to_label, created_at, updated_at";
+  "id, user_id, subtotal_in_cents, discount_in_cents, shipping_cost_in_cents, total_amount_in_cents, currency, coupon_code, status, payment_method, tracking_number, estimated_delivery_at, ship_to_full_address, ship_to_phone_number, ship_to_first_name, ship_to_last_name, ship_to_label, request_fingerprint, created_at, updated_at";
 
 const resultColumn =
-  "o.id, o.user_id, o.subtotal_in_cents, o.discount_in_cents, o.shipping_cost_in_cents, o.total_amount_in_cents, o.currency, o.status, o.payment_method, o.tracking_number, o.estimated_delivery_at, o.ship_to_full_address, o.ship_to_phone_number, o.ship_to_first_name, o.ship_to_last_name, o.ship_to_label, o.created_at, o.updated_at";
+  "o.id, o.user_id, o.subtotal_in_cents, o.discount_in_cents, o.shipping_cost_in_cents, o.total_amount_in_cents, o.currency, o.coupon_code, o.status, o.payment_method, o.tracking_number, o.estimated_delivery_at, o.ship_to_full_address, o.ship_to_phone_number, o.ship_to_first_name, o.ship_to_last_name, o.ship_to_label, o.request_fingerprint, o.created_at, o.updated_at";
 
 const clientOf = (client) => client || getPool();
 
 const toDomain = (row) => ({
   _id: row.id,
   userId: row.user_id,
+  // Digest of the client payload that produced this order; used to reject an
+  // idempotency key reused with a different cart/address.
+  requestFingerprint: row.request_fingerprint ?? null,
   financials: {
     subtotalInCents: Number(row.subtotal_in_cents),
     discount: Number(row.discount_in_cents),
@@ -19,6 +22,7 @@ const toDomain = (row) => ({
     totalAmountInCents: Number(row.total_amount_in_cents),
     currency: String(row.currency || "").trim(),
   },
+  couponCode: row.coupon_code ?? null,
   shippingAddress: {
     fullAddress: row.ship_to_full_address,
     phoneNumber: row.ship_to_phone_number,
@@ -64,6 +68,20 @@ const getProductSnapshots = async (productIds, client) => {
   return new Map(rows.map((r) => [r.id, { title: r.title, img: r.image_url }]));
 };
 
+const getProductsForCheckout = async (productIds, client) => {
+  const c = clientOf(client);
+  const { rows } = await c.query(
+    "SELECT id, title, image_url, price, is_deleted FROM products WHERE id = ANY($1::text[])",
+    [productIds],
+  );
+  return new Map(rows.map((r) => [r.id, {
+    title: r.title,
+    img: r.image_url,
+    price: Number(r.price),
+    isDeleted: r.is_deleted,
+  }]));
+};
+
 const findById = async (id, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(`SELECT ${ORDER_COLUMNS} FROM orders WHERE id = $1`, [id]);
@@ -71,16 +89,17 @@ const findById = async (id, client) => {
   return rowWithItems(rows[0], await getItemRows(id, c));
 };
 
-const create = async ({ id, userId, body, itemRows }, client) => {
+const create = async ({ id, userId, body, itemRows, requestFingerprint }, client) => {
   const c = clientOf(client);
   const f = body.financials || {};
   const sa = body.shippingAddress || {};
   const si = body.shippingInfo || {};
   const { rows } = await c.query(
     `INSERT INTO orders
-       (id, user_id, subtotal_in_cents, discount_in_cents, shipping_cost_in_cents, total_amount_in_cents, currency, status, payment_method,
-        tracking_number, estimated_delivery_at, ship_to_full_address, ship_to_phone_number, ship_to_first_name, ship_to_last_name, ship_to_label)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
+       (id, user_id, subtotal_in_cents, discount_in_cents, shipping_cost_in_cents, total_amount_in_cents, currency, coupon_code, status, payment_method,
+        tracking_number, estimated_delivery_at, ship_to_full_address, ship_to_phone_number, ship_to_first_name, ship_to_last_name, ship_to_label, request_fingerprint)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)
+     ON CONFLICT (id) DO NOTHING
      RETURNING ${ORDER_COLUMNS}`,
     [
       id,
@@ -90,6 +109,7 @@ const create = async ({ id, userId, body, itemRows }, client) => {
       f.shippingCostInCents ?? 0,
       f.totalAmountInCents,
       f.currency ?? "USD",
+      body.couponCode ?? null,
       body.status ?? "pending",
       body.paymentMethod,
       si.trackingNumber ?? null,
@@ -99,8 +119,11 @@ const create = async ({ id, userId, body, itemRows }, client) => {
       sa.firstName,
       sa.lastName,
       sa.label ?? null,
+      requestFingerprint ?? null,
     ],
   );
+  const orderRow = rows[0];
+  if (!orderRow) return null;
   for (const [index, item] of itemRows.entries()) {
     await c.query(
       `INSERT INTO order_items (order_id, line_number, product_id, product_title_snapshot, product_image_snapshot, quantity, price_at_order_in_cents)
@@ -108,7 +131,7 @@ const create = async ({ id, userId, body, itemRows }, client) => {
       [id, index, item.productId, item.title ?? null, item.img ?? null, item.quantity, item.priceAtOrderInCents],
     );
   }
-  return rowWithItems(rows[0], itemRows.map((it, index) => ({
+  return rowWithItems(orderRow, itemRows.map((it, index) => ({
     product_id: it.productId,
     quantity: it.quantity,
     price_at_order_in_cents: it.priceAtOrderInCents,
@@ -324,4 +347,5 @@ module.exports = {
   detailedById,
   minimizedForUser,
   getProductSnapshots,
+  getProductsForCheckout,
 };
