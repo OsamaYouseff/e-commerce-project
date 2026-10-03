@@ -79,3 +79,43 @@ The initial replay lookup compares `requestFingerprint` and returns 409 when the
 When `sessionStorage` is unavailable, the checkout key is kept only in the module-scoped `memoryIdempotencyKeys` map ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L159)). That preserves retries across renders and modal unmounts, but a full page reload clears the map. If the order committed and the response was lost, reopening checkout in this storage-restricted case generates a new key and can create a duplicate order.
 
 **Suggested fix:** Preserve a durable retry identity when storage is available; when no durable client storage can be used, avoid claiming reload-safe idempotency or use a server-managed checkout attempt that can be recovered after reload.
+
+## Fourth re-review — 2026-10-02
+
+The concurrent idempotency conflict path now checks the request fingerprint, and the unused checkout import is gone. The storage fallback now tries `sessionStorage`, `localStorage`, then memory. I found two remaining checkout risks in that fallback:
+
+### P2 — Accessing a storage property can throw before the fallback handler
+
+`getCheckoutIdempotencyKey` builds `[sessionStorage, localStorage]` before entering either `try` block, and `rotateCheckoutIdempotencyKey` does the same. In browser contexts where reading a storage property itself throws (for example, a restricted or opaque origin), the exception escapes before the code can try the next storage tier. Checkout can then fail during render, and a successful order response can throw while rotating its key.
+
+**Suggested fix:** Resolve each browser storage object inside its own guarded access, then fall through when either property lookup or its storage operation throws.
+
+### P2 — The last-resort key still cannot recover an attempt after reload
+
+If both `sessionStorage` and `localStorage` are unavailable, the helper stores the pending key only in `memoryIdempotencyKeys`. A reload clears that map. If an order committed but its response was lost, the next checkout can generate a new key and create a duplicate. The code documents this limitation, but the duplicate-order risk remains in that environment.
+
+**Suggested fix:** Use a server-managed checkout attempt that can be recovered after reload when no durable browser storage is available, or explicitly accept this residual limitation.
+
+## Fifth re-review — 2026-10-02
+
+Each storage area is now resolved inside its own guarded access, and the last-resort limitation is documented in place. Two defects remain in how the tiers are searched, both of which can end in a duplicate order.
+
+### P2 — A higher-priority tier can replace an existing idempotency key
+
+`getCheckoutIdempotencyKey` walks the available stores in order and returns as soon as it finds one that yields a value ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L216)). When the first available store is empty it mints a key, writes it there, and returns immediately — it never consults the lower-priority stores. A key is therefore only ever recorded in one tier, and a higher-priority tier that becomes writable later discards whatever copy a lower tier is still holding. Concretely: an attempt that ran while `sessionStorage` was unavailable stored its key in `localStorage`; if `sessionStorage` becomes writable before the retry (a quota error clearing, a private-browsing session ending, or a storage policy changing mid-session), the retry reads an empty `sessionStorage`, mints a fresh key, and submits it. `sessionStorage` is consulted first because it is the more durable and more private of the two, so the more likely store is also the one that silently wins.
+
+Impact: the retry carries a key the first attempt never used, so the server treats it as a new checkout. If the original request committed and its response was lost, a second order is created. This is the same duplicate-order outcome the multi-tier fallback was added to prevent, reached by a different route. Note that rotation is not the mitigation: `rotateCheckoutIdempotencyKey` clears every tier ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L242)), so this only occurs while an attempt is genuinely pending.
+
+**Suggested fix:** Read across all available tiers before minting a key, and promote an existing lower-tier key into the higher tier rather than replacing it — search first, create only after every tier has come back empty. The same read-then-create ordering must apply to the memory tier so all three are consulted consistently.
+
+### P2 — Concurrent tabs can mint different keys from the same store
+
+The tier loop performs a non-atomic read-modify-write: it reads with `getItem` and, on an empty result, mints a key and writes it with `setItem` ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L218-L221)). Web Storage offers no atomic compare-and-set, and `localStorage` is shared process-wide across a customer's tabs. Two tabs that reach this code before either writes both read an empty value, both call `newIdempotencyKey()` — a fresh `crypto.randomUUID()` each time ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L137)) — and both `setItem` calls succeed with the second overwriting the first. Each tab returns the value it generated locally, so the shared store ends up holding one key while the two in-flight checkouts carry two different ones, and the server has no basis to recognise them as one attempt.
+
+This contradicts the documented behaviour directly above it: the doc comment states that two tabs checking out at the same time "contend for one pending key and the server refuses the loser with 409" ([`GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L207-L210)). That outcome holds only when one tab's write lands before the other's read. The comment describes a guarantee the code does not provide, and it is the reasoning used to accept cross-tab key sharing in place of the reload risk.
+
+Impact: both requests carry distinct keys, so both create orders and the customer is charged twice. The window is narrow — it requires both tabs to reach checkout before either writes — but it is exactly the window a customer duplicating a tab would produce.
+
+**Suggested fix:** Either make the claim true by having the writer re-read after `setItem` and return the stored value when another tab won the race, or correct the comment to state that concurrent tabs may mint independent keys and that the residual exposure is accepted. If the guarantee is to be made real rather than documented, the authoritative pending key has to live on the server, which is the same server-managed checkout attempt raised in the previous review.
+
+No source code was changed, and no tests or builds were run during this review.

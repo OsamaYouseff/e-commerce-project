@@ -167,6 +167,19 @@ the response shapes those clients depend on. It is destructive against
 rehearsal-only data (registers throwaway users/carts/orders), so it must never
 be pointed at production.
 
+The cluster under `/tmp/opencode` is disposable runtime and does not survive a
+wipe. Restore it from the repo dumps before running any of this:
+
+```bash
+PATH=/usr/lib/postgresql/16/bin:$PATH npm run db:reinit:local
+```
+
+The dumps in `src/scripts/migration/backups/` were taken on 2026-09-25, before
+`1700000000003_order_checkout_metadata`, so run `db:migrate` against each restored
+database afterwards — without it, `POST /api/orders` fails with a 500 on
+`orders.coupon_code` and the conformance run dies partway through instead of
+reporting which check broke.
+
 `BASE_URL` and `DATABASE_URL` must name the *same* environment and both must be
 set. `BASE_URL` falls back to `http://localhost:5002` when absent, so a mistyped
 variable is not an error: the suite quietly exercises the wrong server and only
@@ -232,7 +245,10 @@ node src/scripts/rehearsal/client-conformance.js
   revalidating mutable catalog/address state, and compares the stored
   `orders.request_fingerprint` with the new request. A retry returns the original
   order (200); the same key with a different cart, address, coupon or payment
-  method is a 409. `orders.coupon_code` records which code produced the discount.
+  method is a 409 — including when two requests race and the loser discovers the
+  collision on insert rather than on the replay lookup, which is why the
+  fingerprint is compared on both paths. `orders.coupon_code` records which code
+  produced the discount.
 - **Server-side pricing** (`src/modules/orders/application/checkout-pricing.js`):
   the API validates the coupon (`10OFF`/`15OFF`/`20OFF`/`25OFF`/`50OFF`), computes
   the discount from catalog prices, and charges $20 below a $50 subtotal, free at

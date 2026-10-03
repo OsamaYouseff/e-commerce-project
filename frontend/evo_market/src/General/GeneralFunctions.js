@@ -157,32 +157,79 @@ const idempotencyStorageKey = (customerId) =>
     `${IDEMPOTENCY_STORAGE_PREFIX}:${customerId || "anonymous"}`;
 
 /**
- * In-memory fallback for browsers where sessionStorage is unavailable (private
- * mode, blocked cookies, exhausted quota). It is module scope rather than a
- * `useRef` because the checkout modal is unmounted as soon as a request is sent:
- * a per-render or per-mount key changed under every retry and could create a
- * duplicate order. This keeps the key for the whole page session instead.
+ * Resolves the browser storage areas, skipping any whose *property access*
+ * throws. Reading `sessionStorage` or `localStorage` is itself a guarded
+ * operation in browsers: on an opaque origin, or where a policy blocks storage,
+ * the accessor throws `SecurityError`. Building `[sessionStorage, localStorage]`
+ * inline evaluated both accessors before any `try` could catch them, so one
+ * blocked area took the whole function down — checkout then failed during
+ * render, and rotating the key of a successfully placed order could throw too.
+ * Each area is therefore resolved inside its own guarded access.
+ */
+const availableStorages = () => {
+    const stores = [];
+    for (const name of ["sessionStorage", "localStorage"]) {
+        try {
+            const store = globalThis[name];
+            // A context may expose the name with no usable value at all.
+            if (store && typeof store.getItem === "function") stores.push(store);
+        } catch {
+            // The accessor threw: this area is unavailable, try the next one.
+        }
+    }
+    return stores;
+};
+
+/**
+ * Last-resort tier, used only when neither `sessionStorage` nor `localStorage`
+ * can be used (some private modes and opaque origins block both). It is module
+ * scope rather than a `useRef` because the checkout modal is unmounted as soon
+ * as a request is sent: a per-render or per-mount key changed under every
+ * retry and could create a duplicate order. This keeps the key for the whole
+ * page session instead.
+ *
+ * It is deliberately *not* reload-durable, and callers should not treat it as
+ * such: if the order committed and the response was lost, a reload starts a new
+ * attempt with a new key. No client-side code can close that gap without durable
+ * storage, so it is documented rather than papered over.
  */
 const memoryIdempotencyKeys = new Map();
 
-/** Returns the pending key for this customer, creating one if there is none. */
+/** Reads a pending key from a Web Storage area, returning null when absent. */
+const readStoredKey = (store, storageKey) => store.getItem(storageKey) || null;
+
+/**
+ * Returns the pending key for this customer, creating one if there is none.
+ *
+ * Three tiers, most durable first:
+ *  1. `sessionStorage` — survives a reload and stays private to this tab.
+ *  2. `localStorage` — also survives a reload, and is reachable when only
+ *     `sessionStorage` is blocked. It is shared with this customer's other tabs,
+ *     so two tabs checking out different carts at the same time contend for one
+ *     pending key and the server refuses the loser with 409. That is the
+ *     preferable failure: a visible error rather than a second order.
+ *  3. memory — stable for the page session, lost on reload.
+ */
 export function getCheckoutIdempotencyKey(customerId) {
     const storageKey = idempotencyStorageKey(customerId);
-    try {
-        const existing = sessionStorage.getItem(storageKey);
-        if (existing) return existing;
-        const created = newIdempotencyKey();
-        sessionStorage.setItem(storageKey, created);
-        return created;
-    } catch {
-        // Private browsing or a full quota: keep the key in memory for the page
-        // session rather than breaking checkout or rotating it on every render.
-        const fallback = memoryIdempotencyKeys.get(storageKey);
-        if (fallback) return fallback;
-        const created = newIdempotencyKey();
-        memoryIdempotencyKeys.set(storageKey, created);
-        return created;
+
+    for (const store of availableStorages()) {
+        try {
+            const existing = readStoredKey(store, storageKey);
+            if (existing) return existing;
+            const created = newIdempotencyKey();
+            store.setItem(storageKey, created);
+            return created;
+        } catch {
+            // Blocked or over quota: try the next tier.
+        }
     }
+
+    const fallback = memoryIdempotencyKeys.get(storageKey);
+    if (fallback) return fallback;
+    const created = newIdempotencyKey();
+    memoryIdempotencyKeys.set(storageKey, created);
+    return created;
 }
 
 /**
@@ -192,11 +239,13 @@ export function getCheckoutIdempotencyKey(customerId) {
 export function rotateCheckoutIdempotencyKey(customerId) {
     const storageKey = idempotencyStorageKey(customerId);
     memoryIdempotencyKeys.delete(storageKey);
-    try {
-        sessionStorage.removeItem(storageKey);
-    } catch {
-        // Storage was never usable for this customer, so there is nothing to
-        // remove; the in-memory copy above is already gone.
+    for (const store of availableStorages()) {
+        try {
+            store.removeItem(storageKey);
+        } catch {
+            // Never usable for this customer, so there is nothing to remove; the
+            // in-memory copy above is already gone.
+        }
     }
 }
 

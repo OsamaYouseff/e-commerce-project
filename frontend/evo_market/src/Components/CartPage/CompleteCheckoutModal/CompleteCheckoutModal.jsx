@@ -18,7 +18,7 @@ import toast from 'react-hot-toast';
 
 //// General Vars & Functions
 import { convertCentsToDollars } from "../../../../../shared_files/General/GeneralFunctions.js";
-import { GetTokenAndUserId, IsUserLoggedIn, GetEstimatedDeliveryDate, newIdempotencyKey, getCheckoutIdempotencyKey, rotateCheckoutIdempotencyKey } from "../../../General/GeneralFunctions.js";
+import { GetTokenAndUserId, IsUserLoggedIn, GetEstimatedDeliveryDate, getCheckoutIdempotencyKey, rotateCheckoutIdempotencyKey } from "../../../General/GeneralFunctions.js";
 import { isOrderInfoValid, getErrorsMessage } from "./orderRelatedFunctions"
 
 import { Link } from "react-router-dom";

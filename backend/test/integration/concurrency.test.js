@@ -630,6 +630,45 @@ test("one key reused with a different payload is rejected as a conflict", { skip
   assert.equal(rows[0].n, 1);
 });
 
+test("parallel requests sharing a key but not a payload cannot both succeed", { skip: SKIP }, async () => {
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const [first, second] = await Promise.all([seedProduct(90), seedProduct(91)]);
+
+  // The sequential case above is caught by the lookup at the top of the
+  // transaction. Here both requests are in flight together, so either can pass
+  // that lookup before the other commits and then discover the conflict on
+  // insert instead. Repeated because that interleaving is timing dependent, and
+  // the insert path is the one with nothing guarding it.
+  const ROUNDS = 8;
+  for (let round = 0; round < ROUNDS; round++) {
+    const idempotencyKey = `race-${crypto.randomUUID()}`;
+    const results = await Promise.all([
+      send("POST", `/api/orders/${user.id}`, {
+        token: user.token,
+        body: orderPayload({ userId: user.id, idempotencyKey, items: [{ productId: first.id, quantity: 1 }] }),
+      }),
+      send("POST", `/api/orders/${user.id}`, {
+        token: user.token,
+        body: orderPayload({ userId: user.id, idempotencyKey, items: [{ productId: second.id, quantity: 1 }] }),
+      }),
+    ]);
+
+    const created = results.filter((r) => r.status === 201);
+    const refused = results.filter((r) => r.status === 409);
+    assert.equal(created.length, 1, `round ${round}: expected one 201, got ${JSON.stringify(results.map((r) => r.status))}`);
+    // Whoever loses the insert must be refused, not handed the winner's order.
+    assert.equal(
+      refused.length,
+      1,
+      `round ${round}: the losing payload must be refused, got ${JSON.stringify(results.map((r) => ({ status: r.status, message: r.body && r.body.message, product: r.body && r.body.items && r.body.items[0] && r.body.items[0].productId })))}`,
+    );
+
+    const { rows } = await pool.query("SELECT COUNT(*)::int AS n FROM orders WHERE user_id = $1", [user.id]);
+    assert.equal(rows[0].n, round + 1, `round ${round}: a contested key must leave exactly one order`);
+  }
+});
+
 test("parallel default-address creation still leaves exactly one default", { skip: SKIP }, async () => {
   const user = await seedUser();
 

@@ -180,6 +180,13 @@ const createOrder = async ({ userId, body }) => {
     if (!created) {
       const existing = await ordersRepository.findById(id, client);
       if (!existing || existing.userId !== userId) throw ApiError.conflict("Order already exists");
+      // Two requests sharing a key can both pass the lookup above before either
+      // inserts, so the loser lands here with an order it never created. It has
+      // to be compared exactly like the lookup does: returning it unconditionally
+      // would hand a 200 for a different cart, address, coupon or payment method.
+      if (existing.requestFingerprint && existing.requestFingerprint !== fingerprint) {
+        throw ApiError.conflict("Idempotency key was already used with a different order payload");
+      }
       return { created: false, order: existing };
     }
 
