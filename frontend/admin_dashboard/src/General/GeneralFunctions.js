@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import axios from "axios";
 import { GoHome } from '../../../shared_files/General/GeneralFunctions';
+import { isLoggedIn } from '../../../shared_files/General/session.mjs';
 ////// admin used functions
 export function ValidateProductInfoForm(formData) {
     const errors = {};
@@ -130,10 +131,10 @@ export function GetUserInfo() {
     };
 }
 export function IsUserLoggedIn() {
-
-    if ((localStorage.getItem("adminInfo") || (sessionStorage.getItem("adminInfo")) && Cookies.get('admin-token')))
-        return true;
-    else
-        return false;
+    return isLoggedIn({
+        localInfo: localStorage.getItem("adminInfo"),
+        sessionInfo: sessionStorage.getItem("adminInfo"),
+        token: Cookies.get('admin-token'),
+    });
 }
 

@@ -314,134 +314,6 @@ test("wishlist replaceItems rewrites the list in position order", async () => {
 
 // ----------------------------------------------------------------- orders
 
-test("orders update only writes allowlisted columns and binds every value", async () => {
-  const client = recorder(() => ({ rows: [orderRow()] }));
-
-  await ordersRepository.update(
-    "order-000000000001",
-    {
-      userId: "user-000000000001",
-      status: "shipped",
-      paymentMethod: "cash_on_delivery",
-      financials: {
-        subtotalInCents: 5000,
-        discount: 500,
-        shippingCostInCents: 0,
-        totalAmountInCents: 4500,
-        currency: "USD",
-        ignoredField: "nope",
-      },
-      shippingAddress: {
-        fullAddress: "2 Test Street",
-        phoneNumber: "+201111111111",
-        firstName: "Test",
-        lastName: "User",
-        label: "Work",
-        ignoredField: "nope",
-      },
-      shippingInfo: { trackingNumber: "TRACK-1", estimatedDeliveryDate: null, ignoredField: "nope" },
-      // Hostile keys: none of these may reach the SET clause.
-      id: "attacker-controlled-id",
-      user_id: "attacker-column",
-      total_amount_in_cents: 999999,
-      deleted_at: "yesterday",
-    },
-    client,
-  );
-
-  const expectedSets = [
-    "subtotal_in_cents = $1",
-    "discount_in_cents = $2",
-    "shipping_cost_in_cents = $3",
-    "total_amount_in_cents = $4",
-    "currency = $5",
-    "ship_to_full_address = $6",
-    "ship_to_phone_number = $7",
-    "ship_to_first_name = $8",
-    "ship_to_last_name = $9",
-    "ship_to_label = $10",
-    "tracking_number = $11",
-    "estimated_delivery_at = $12",
-    "user_id = $13",
-    "status = $14",
-    "payment_method = $15",
-  ].join(", ");
-
-  const [call] = client.calls;
-  const [setClause, returning] = call.text.split(" RETURNING ");
-  assert.equal(
-    setClause,
-    `UPDATE orders SET ${expectedSets}, updated_at = now() WHERE id = $16`,
-  );
-  assert.match(returning, /^id, user_id, subtotal_in_cents/);
-  assert.ok(returning.includes("coupon_code") && returning.includes("request_fingerprint"));
-  assert.deepEqual(call.values, [
-    5000,
-    500,
-    0,
-    4500,
-    "USD",
-    "2 Test Street",
-    "+201111111111",
-    "Test",
-    "User",
-    "Work",
-    "TRACK-1",
-    null,
-    "user-000000000001",
-    "shipped",
-    "cash_on_delivery",
-    "order-000000000001",
-  ]);
-  assert.ok(!call.text.includes("attacker-controlled-id"));
-  assert.ok(!call.text.includes("deleted_at"), "unknown columns must not be written");
-  assert.ok(!call.text.includes("ignoredField"));
-  const ALLOWED = new Set([
-    "subtotal_in_cents",
-    "discount_in_cents",
-    "shipping_cost_in_cents",
-    "total_amount_in_cents",
-    "currency",
-    "ship_to_full_address",
-    "ship_to_phone_number",
-    "ship_to_first_name",
-    "ship_to_last_name",
-    "ship_to_label",
-    "tracking_number",
-    "estimated_delivery_at",
-    "user_id",
-    "status",
-    "payment_method",
-  ]);
-  const assigned = setClause
-    .slice(setClause.indexOf("SET ") + 4, setClause.indexOf(", updated_at"))
-    .split(", ")
-    .map((pair) => pair.split(" = ")[0]);
-  assert.equal(assigned.length, 15);
-  assert.equal(new Set(assigned).size, 15, "no column may be assigned twice");
-  for (const column of assigned) {
-    assert.ok(ALLOWED.has(column), `${column} is not an allowlisted order column`);
-  }
-  assertParameterized(call);
-});
-
-test("orders update reads instead of writing when nothing is allowlisted", async () => {
-  const client = recorder(() => ({ rows: [orderRow()] }));
-  const order = await ordersRepository.update("order-000000000001", { unknown: "x", user_id: "attacker" }, client);
-
-  assert.match(flat(client)[0], /^SELECT id, user_id, subtotal_in_cents/);
-  assert.deepEqual(client.calls[0].values, ["order-000000000001"]);
-  assert.equal(order._id, "order-000000000001");
-  assert.equal(order.requestFingerprint, "fp-1");
-  assert.equal(order.financials.totalAmountInCents, 1000);
-  assertAllParameterized(client);
-});
-
-test("orders update returns null when the row is gone", async () => {
-  const client = recorder(() => ({ rows: [], rowCount: 0 }));
-  assert.equal(await ordersRepository.update("order-000000000001", { status: "cancelled" }, client), null);
-});
-
 test("orders setStatus binds status and id", async () => {
   const client = recorder((text) =>
     text.startsWith("UPDATE orders")
@@ -461,4 +333,98 @@ test("orders setStatus binds status and id", async () => {
 test("orders setStatus returns null when nothing matched", async () => {
   const client = recorder(() => ({ rows: [], rowCount: 0 }));
   assert.equal(await ordersRepository.setStatus("order-000000000001", "delivered", client), null);
+});
+
+test("orders decrementStock guards availability in the UPDATE and orders lines by id", async () => {
+  const touched = [];
+  const client = recorder((text, values) => {
+    touched.push(values[1]);
+    // Only the second product is short; the others reserve successfully.
+    return { rows: [], rowCount: values[1] === "product-0000000002" ? 0 : 1 };
+  });
+
+  const insufficient = await ordersRepository.decrementStock(
+    [
+      { productId: "product-0000000003", quantity: 2 },
+      { productId: "product-0000000001", quantity: 1 },
+      { productId: "product-0000000002", quantity: 5 },
+    ],
+    client,
+  );
+
+  assert.deepEqual(insufficient, ["product-0000000002"]);
+  // Lines are locked in ascending product-id order, not request order, so two
+  // multi-line checkouts cannot deadlock on the same set of products.
+  assert.deepEqual(touched, ["product-0000000001", "product-0000000002", "product-0000000003"]);
+  assert.equal(
+    flat(client)[0],
+    "UPDATE products SET stock_quantity = stock_quantity - $1, updated_at = now() WHERE id = $2 AND stock_quantity >= $1 AND is_deleted = false",
+  );
+  assert.deepEqual(client.calls[1].values, [5, "product-0000000002"]);
+  assertAllParameterized(client);
+});
+
+test("orders decrementStock reports an empty list when every line is reserved", async () => {
+  const client = recorder(() => ({ rows: [], rowCount: 1 }));
+  const insufficient = await ordersRepository.decrementStock(
+    [{ productId: "product-0000000001", quantity: 1 }],
+    client,
+  );
+  assert.deepEqual(insufficient, []);
+  assertAllParameterized(client);
+});
+
+test("orders restoreStock credits each line in ascending product-id order", async () => {
+  const client = recorder(() => ({ rows: [], rowCount: 1 }));
+
+  await ordersRepository.restoreStock(
+    [
+      { productId: "product-0000000003", quantity: 2 },
+      { productId: null, quantity: 9 },
+      { productId: "product-0000000001", quantity: 1 },
+    ],
+    client,
+  );
+
+  // The null product (hard-deleted after the order) is skipped, and the rest are
+  // applied in ascending id order so a restore cannot deadlock a checkout.
+  assert.deepEqual(
+    client.calls.map((c) => c.values),
+    [
+      [1, "product-0000000001"],
+      [2, "product-0000000003"],
+    ],
+  );
+  assert.equal(
+    flat(client)[0],
+    "UPDATE products SET stock_quantity = stock_quantity + $1, updated_at = now() WHERE id = $2",
+  );
+  assertAllParameterized(client);
+});
+
+test("orders findByIdForUpdate locks the row before returning its items", async () => {
+  const client = recorder((text) =>
+    text.startsWith("SELECT id, user_id")
+      ? { rows: [orderRow()] }
+      : { rows: [{ product_id: "p1", quantity: 2, price_at_order_in_cents: 500 }] },
+  );
+
+  const order = await ordersRepository.findByIdForUpdate("order-000000000001", client);
+
+  assert.match(flat(client)[0], /FOR UPDATE$/);
+  assert.deepEqual(client.calls[0].values, ["order-000000000001"]);
+  assert.deepEqual(order.items, [{ productId: "p1", quantity: 2, priceAtOrderInCents: 500 }]);
+  assertAllParameterized(client);
+});
+
+test("orders findScopedForUpdate locks the row for its owner", async () => {
+  const client = recorder((text) =>
+    text.startsWith("SELECT id, user_id") ? { rows: [orderRow()] } : { rows: [] },
+  );
+
+  await ordersRepository.findScopedForUpdate("order-000000000001", "user-000000000001", client);
+
+  assert.match(flat(client)[0], /WHERE id = \$1 AND user_id = \$2 FOR UPDATE$/);
+  assert.deepEqual(client.calls[0].values, ["order-000000000001", "user-000000000001"]);
+  assertAllParameterized(client);
 });

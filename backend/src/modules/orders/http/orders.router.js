@@ -11,11 +11,6 @@ router.post("/:id", verifyTokenAndAuthorization, asyncHandler(async (req, res) =
   res.status(created ? 201 : 200).json(order);
 }));
 
-router.put("/:id", verifyTokenAndAdmin, asyncHandler(async (req, res) => {
-  const order = await ordersUsecases.updateOrder({ orderId: req.params.id, body: req.body });
-  res.status(200).json(order);
-}));
-
 router.patch("/:orderId/:status", verifyTokenAndAdmin, asyncHandler(async (req, res) => {
   const order = await ordersUsecases.setOrderStatus({
     orderId: req.params.orderId,

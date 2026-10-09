@@ -7,8 +7,8 @@ class ApiError extends Error {
     this.details = options.details || undefined;
   }
 
-  static badRequest(message) {
-    return new ApiError(400, message);
+  static badRequest(message, options = {}) {
+    return new ApiError(400, message, options);
   }
 
   static unauthorized(message = "You are not authenticated!") {

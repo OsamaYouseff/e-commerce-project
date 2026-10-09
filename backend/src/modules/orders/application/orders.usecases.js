@@ -8,6 +8,13 @@ const { ApiError } = require("../../../shared/http/api-error");
 const { computeTotals, requestFingerprint } = require("./checkout-pricing");
 
 const VALID_STATUSES = ["pending", "processing", "delivered", "canceled"];
+// Orders in these states still hold reserved inventory. Cancelling one returns
+// its units to stock; a delivered order has consumed them and is not eligible.
+const STOCK_HOLDING_STATUSES = ["pending", "processing"];
+// Reopening a canceled order into any of these states — including a direct move
+// to delivered — must take its units back, or the order would be fulfilled with
+// inventory that cancellation already returned.
+const STOCK_CONSUMING_STATUSES = ["pending", "processing", "delivered"];
 const PAYMENT_METHODS = ["cash_on_delivery"];
 const MAX_CHECKOUT_ITEMS = 100;
 const MAX_QUANTITY = 999;
@@ -190,6 +197,25 @@ const createOrder = async ({ userId, body }) => {
       return { created: false, order: existing };
     }
 
+    // Reserve inventory now that this request is known to be the creator. A
+    // request sharing the idempotency key took the `!created` path above and
+    // must not decrement a second time, so the reservation is placed after the
+    // insert rather than before the lookup.
+    //
+    // The decrement is conditional inside a single UPDATE, so concurrent
+    // checkouts for the last unit serialize on the product row rather than both
+    // reading the same remaining count. A failure rolls the order back with it,
+    // because throwing here aborts the transaction.
+    const outOfStock = await ordersRepository.decrementStock(
+      itemRows.map((item) => ({ productId: item.productId, quantity: item.quantity })),
+      client,
+    );
+    if (outOfStock.length > 0) {
+      throw ApiError.badRequest("Some items do not have enough stock", {
+        details: { outOfStock },
+      });
+    }
+
     // Removing purchased items touches the same cart as the add/update requests,
     // so take the per-user cart lock first to keep the two from interleaving.
     await lockUserCart(client, userId);
@@ -205,46 +231,59 @@ const createOrder = async ({ userId, body }) => {
   });
 };
 
-const updateOrder = async ({ orderId, body }) => {
-  return withTransaction(async (client) => {
-    const order = await ordersRepository.findById(orderId, client);
-    if (!order) return null;
-    const items = Array.isArray(body.items) ? body.items : null;
-    if (items) {
-      const snapshots = await ordersRepository.getProductSnapshots(
-        items.map((i) => i.productId).filter(Boolean),
-        client,
-      );
-      body.items = items.map((item) => {
-        const snapshot = snapshots.get(item.productId);
-        return {
-          productId: item.productId,
-          title: snapshot ? snapshot.title : null,
-          img: snapshot ? snapshot.img : null,
-          quantity: item.quantity,
-          priceAtOrderInCents: item.priceAtOrderInCents,
-        };
-      });
-    }
-    return ordersRepository.update(orderId, body, client);
-  });
-};
-
 const setOrderStatus = async ({ orderId, status }) => {
   if (!VALID_STATUSES.includes(status)) {
     throw ApiError.badRequest("Invalid order status");
   }
-  const order = await ordersRepository.setStatus(orderId, status);
-  if (!order) throw ApiError.notFound("Order not found");
-  return order;
+  return withTransaction(async (client) => {
+    // Lock the row so two concurrent status changes for this order serialize;
+    // that locked read is what lets the second cancel see the status the first
+    // already wrote and avoid returning the same units twice.
+    const order = await ordersRepository.findByIdForUpdate(orderId, client);
+    if (!order) throw ApiError.notFound("Order not found");
+
+    const heldStock = STOCK_HOLDING_STATUSES.includes(order.status);
+    const willConsumeStock = STOCK_CONSUMING_STATUSES.includes(status);
+    if (heldStock && status === "canceled") {
+      // Leaving a stock-holding state for canceled returns its reservation.
+      await ordersRepository.restoreStock(order.items, client);
+    } else if (order.status === "canceled" && willConsumeStock) {
+      // Reopening a canceled order — to pending, processing or straight to
+      // delivered — must take its units back, or the order would be fulfilled
+      // with inventory cancellation already returned. Refuse if they are gone.
+      const outOfStock = await ordersRepository.decrementStock(order.items, client);
+      if (outOfStock.length > 0) {
+        throw ApiError.badRequest("Some items do not have enough stock", { details: { outOfStock } });
+      }
+    }
+
+    const updated = await ordersRepository.setStatus(orderId, status, client);
+    if (!updated) throw ApiError.notFound("Order not found");
+    return updated;
+  });
 };
 
 const deleteOrder = async ({ orderId, userId, isAdmin, strict = true }) => {
-  const removed = isAdmin
-    ? await ordersRepository.deleteById(orderId)
-    : await ordersRepository.deleteScoped(orderId, userId);
-  if (strict && !removed) throw ApiError.notFound("Order not found");
-  return "Order has been deleted successfully.";
+  return withTransaction(async (client) => {
+    // Lock before reading the status so a delete cannot race a cancel — or
+    // another delete — and return the same units twice.
+    const order = isAdmin
+      ? await ordersRepository.findByIdForUpdate(orderId, client)
+      : await ordersRepository.findScopedForUpdate(orderId, userId, client);
+    if (!order) {
+      if (strict) throw ApiError.notFound("Order not found");
+      return "Order has been deleted successfully.";
+    }
+    // Deleting an order that still holds stock is a cancellation by another
+    // name. A canceled order has already been returned, and a delivered one was
+    // fulfilled, so neither is restocked here.
+    if (STOCK_HOLDING_STATUSES.includes(order.status)) {
+      await ordersRepository.restoreStock(order.items, client);
+    }
+    if (isAdmin) await ordersRepository.deleteById(orderId, client);
+    else await ordersRepository.deleteScoped(orderId, userId, client);
+    return "Order has been deleted successfully.";
+  });
 };
 
 const findUserOrders = async (userId) => ordersRepository.findByUser(userId);
@@ -272,7 +311,6 @@ const searchOrder = async (orderId) => {
 
 module.exports = {
   createOrder,
-  updateOrder,
   setOrderStatus,
   deleteOrder,
   findUserOrders,

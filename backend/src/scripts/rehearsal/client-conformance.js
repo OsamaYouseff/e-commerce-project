@@ -85,6 +85,7 @@ async function storefrontFlow(u) {
   const add = await send("POST", `/api/carts/add_update-product/${u.id}`, { productId: prodId, quantity: 2, price: 0.01 }, u.token);
   assert("add_update 200", add.status === 200, `status=${add.status}`);
   assert("cart item has _id/productId/productDetails", add.body.products[0] && add.body.products[0]._id === prodId && add.body.products[0].productId === prodId && add.body.products[0].productDetails && add.body.products[0].productDetails.price !== undefined, JSON.stringify(add.body).slice(0, 200));
+  assert("cart item productDetails exposes stock (amount) so the quantity can be bounded", typeof add.body.products[0].productDetails.amount === "number", `amount=${add.body.products[0].productDetails.amount}`);
   assert("detailed cart totalPrice is catalog-derived (not 0.02)", add.body.totalPrice === Number((p0.price * 2).toFixed(2)), `totalPrice=${add.body.totalPrice} expected=${(p0.price * 2).toFixed(2)}`);
 
   const detailed = await get(`/api/carts/cart_detailed_products/${u.id}`, u.token);

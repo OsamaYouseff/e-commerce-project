@@ -172,6 +172,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                 setFieldQuantity={setFieldQuantity}
                                 handleClickIncreaseDecrease={handleClickIncreaseDecrease}
                                 quantity={quantity}
+                                maxRange={item.amount ?? 999}
                             />
 
                         </Box>
@@ -302,6 +303,7 @@ const ItemComponent = ({ item, quantity, withDetails = false, handelOpenModal, h
                                     setFieldQuantity={setFieldQuantity}
                                     handleClickIncreaseDecrease={handleClickIncreaseDecrease}
                                     quantity={quantity}
+                                    maxRange={item.amount ?? 999}
                                 />
 
                                 <DeleteBtn sx={{ flex: 1 }} handleDeleteProduct={handleDeleteProduct} />

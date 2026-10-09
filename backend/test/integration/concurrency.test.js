@@ -57,14 +57,31 @@ const seedUser = async (over = {}) => {
   return { id, token };
 };
 
-const seedProduct = async (price, title) => {
+const seedAdmin = async () => {
+  const id = hexId();
+  const suffix = `${uniq}-${id.slice(0, 6)}`;
+  await pool.query(
+    `INSERT INTO users (id, username, email, phone, password_hash, firstname, lastname, is_admin)
+     VALUES ($1, $2, $3, $4, $5, 'Admin', 'Tester', true)`,
+    [id, `race_admin_${suffix}`, `race_admin_${suffix}@example.test`, `+2012${id}`, "x"],
+  );
+  const token = jwt.sign({ id, isAdmin: true }, process.env.JWT_SEC, { expiresIn: "10m" });
+  return { id, token };
+};
+
+const seedProduct = async (price, title, stock = 500) => {
   const id = hexId();
   await pool.query(
     `INSERT INTO products (id, title, description, image_url, price, rating, stock_quantity, is_deleted)
-     VALUES ($1, $2, 'concurrency fixture', 'http://example.test/p.jpg', $3, 4, 500, false)`,
-    [id, title || `race-product-${id}`, price],
+     VALUES ($1, $2, 'concurrency fixture', 'http://example.test/p.jpg', $3, 4, $4, false)`,
+    [id, title || `race-product-${id}`, price, stock],
   );
   return { id, priceCents: Math.round(Number(price) * 100) };
+};
+
+const stockOf = async (productId) => {
+  const { rows } = await pool.query("SELECT stock_quantity FROM products WHERE id = $1", [productId]);
+  return rows[0] ? Number(rows[0].stock_quantity) : null;
 };
 
 const seedAddress = async (userId) => {
@@ -468,7 +485,9 @@ test("a price that changes again after confirmation is refused again", { skip: S
 test("duplicate lines cannot exceed the per-product quantity limit", { skip: SKIP }, async () => {
   const user = await seedUser();
   await seedAddress(user.id);
-  const product = await seedProduct(30);
+  // Stock is deliberately above the 999 quantity cap: this case is about the
+  // quantity limit, and stock has its own tests below.
+  const product = await seedProduct(30, null, 1000);
 
   // Each line is individually valid at the 999 limit; summed they are not.
   const tooMany = await send("POST", `/api/orders/${user.id}`, {
@@ -688,4 +707,277 @@ test("parallel default-address creation still leaves exactly one default", { ski
 
   const view = await send("GET", `/api/addresses/${user.id}`, { token: user.token });
   assert.equal(view.body.filter((a) => a.isDefault).length, 1, "the API must report a single default");
+});
+
+test("a successful checkout decrements the purchased stock", { skip: SKIP }, async () => {
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 5);
+
+  const res = await send("POST", `/api/orders/${user.id}`, {
+    token: user.token,
+    body: orderPayload({
+      userId: user.id,
+      idempotencyKey: `stock-${crypto.randomUUID()}`,
+      items: [{ productId: product.id, quantity: 3 }],
+    }),
+  });
+
+  assert.equal(res.status, 201, `expected 201, got ${res.status}: ${JSON.stringify(res.body)}`);
+  assert.equal(await stockOf(product.id), 2, "stock must fall by the purchased quantity");
+});
+
+test("a checkout larger than stock is refused and reserves nothing", { skip: SKIP }, async () => {
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(25, null, 2);
+
+  // Seed the cart too, so the refusal can be shown to leave it untouched.
+  const seeded = await send("POST", `/api/carts/add_update-product/${user.id}`, {
+    token: user.token,
+    body: { productId: product.id, quantity: 3 },
+  });
+  assert.equal(seeded.status, 200);
+
+  const res = await send("POST", `/api/orders/${user.id}`, {
+    token: user.token,
+    body: orderPayload({
+      userId: user.id,
+      idempotencyKey: `stock-${crypto.randomUUID()}`,
+      items: [{ productId: product.id, quantity: 3 }],
+    }),
+  });
+
+  assert.equal(res.status, 400, `expected 400, got ${res.status}: ${JSON.stringify(res.body)}`);
+  assert.match(res.body.message, /stock/i);
+  assert.ok(
+    Array.isArray(res.body.details && res.body.details.outOfStock) && res.body.details.outOfStock.includes(product.id),
+    `the refusal must name the short product: ${JSON.stringify(res.body.details)}`,
+  );
+
+  const { rows } = await pool.query("SELECT COUNT(*)::int AS n FROM orders WHERE user_id = $1", [user.id]);
+  assert.equal(rows[0].n, 0, "a refused checkout must not create an order");
+  assert.equal(await stockOf(product.id), 2, "a refused checkout must not change stock");
+  assert.deepEqual(
+    await cartItems(user.id),
+    [{ productId: product.id, quantity: 3 }],
+    "a refused checkout must not remove the items from the cart",
+  );
+});
+
+test("two checkouts racing for the last unit leave one order and one refusal", { skip: SKIP }, async () => {
+  const [buyerA, buyerB] = await Promise.all([seedUser(), seedUser()]);
+  await Promise.all([seedAddress(buyerA.id), seedAddress(buyerB.id)]);
+  const product = await seedProduct(55, null, 1);
+
+  // Both buyers want the single remaining unit at the same time. The conditional
+  // decrement must serialize them on the product row: the first reserves it, the
+  // second finds it gone and is refused, and the order it had already inserted is
+  // rolled back.
+  const results = await Promise.all([
+    send("POST", `/api/orders/${buyerA.id}`, {
+      token: buyerA.token,
+      body: orderPayload({
+        userId: buyerA.id,
+        idempotencyKey: `race-${crypto.randomUUID()}`,
+        items: [{ productId: product.id, quantity: 1 }],
+      }),
+    }),
+    send("POST", `/api/orders/${buyerB.id}`, {
+      token: buyerB.token,
+      body: orderPayload({
+        userId: buyerB.id,
+        idempotencyKey: `race-${crypto.randomUUID()}`,
+        items: [{ productId: product.id, quantity: 1 }],
+      }),
+    }),
+  ]);
+
+  assert.deepEqual(
+    statuses(results),
+    [201, 400],
+    `exactly one checkout may win: ${JSON.stringify(results.map((r) => ({ status: r.status, message: r.body && r.body.message })))}`,
+  );
+  assert.equal(results.filter((r) => r.status === 500).length, 0, "the loser must be refused, not error");
+
+  // The loser must be turned away by the stock guard, not by the table's
+  // non-negative CHECK constraint. Both stop the oversell, but only the guard
+  // carries the structured `outOfStock` detail the client can act on, and
+  // reaching the constraint would mean the transaction overshot to a negative
+  // count first. This is what makes the case sensitive to the guard rather than
+  // to the database backstop.
+  const loser = results.find((r) => r.status === 400);
+  assert.ok(
+    loser && loser.body && loser.body.details && Array.isArray(loser.body.details.outOfStock) && loser.body.details.outOfStock.includes(product.id),
+    `the refusal must be the stock guard, not a raw constraint error: ${JSON.stringify(loser && loser.body)}`,
+  );
+
+  const { rows } = await pool.query(
+    "SELECT COUNT(*)::int AS n FROM orders WHERE user_id = ANY($1::text[])",
+    [[buyerA.id, buyerB.id]],
+  );
+  assert.equal(rows[0].n, 1, "only the winning checkout may create an order");
+  assert.equal(
+    await stockOf(product.id),
+    0,
+    "the last unit must be sold once, leaving stock at zero rather than negative",
+  );
+});
+
+// ------------------------------------------------------ cancellation restock
+
+const placeOrder = async (user, items) => {
+  const res = await send("POST", `/api/orders/${user.id}`, {
+    token: user.token,
+    body: orderPayload({ userId: user.id, idempotencyKey: `race-${crypto.randomUUID()}`, items }),
+  });
+  assert.equal(res.status, 201, `checkout failed: ${JSON.stringify(res.body)}`);
+  return res.body;
+};
+
+test("cancelling a pending order returns its reserved stock exactly once", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 10);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 3 }]);
+  assert.equal(await stockOf(product.id), 7, "checkout reserves three units");
+
+  const first = await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(first.status, 200, `cancel failed: ${JSON.stringify(first.body)}`);
+  assert.equal(first.body.status, "canceled");
+  assert.equal(await stockOf(product.id), 10, "cancelling returns the reserved units");
+
+  // Idempotent: the order is already canceled, so a repeated request must not
+  // credit the units a second time.
+  const second = await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(second.status, 200, `repeat cancel failed: ${JSON.stringify(second.body)}`);
+  assert.equal(await stockOf(product.id), 10, "repeated cancel must not return the units twice");
+});
+
+test("two concurrent cancels return the reserved stock once", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 10);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 4 }]);
+  assert.equal(await stockOf(product.id), 6);
+
+  const results = await Promise.all([
+    send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token }),
+    send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token }),
+  ]);
+  assert.deepEqual(statuses(results), [200, 200]);
+  assert.equal(await stockOf(product.id), 10, "only one concurrent cancel may return the units");
+});
+
+test("the customer cancel (delete) returns the reserved stock", { skip: SKIP }, async () => {
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 8);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 2 }]);
+  assert.equal(await stockOf(product.id), 6);
+
+  const removed = await send("DELETE", `/api/orders/${user.id}/${order._id}`, { token: user.token });
+  assert.equal(removed.status, 200, `delete failed: ${JSON.stringify(removed.body)}`);
+  assert.equal(await stockOf(product.id), 8, "deleting a pending order returns its units");
+  const { rows } = await pool.query("SELECT COUNT(*)::int AS n FROM orders WHERE id = $1", [order._id]);
+  assert.equal(rows[0].n, 0, "the order is gone");
+});
+
+test("deleting an already-canceled order does not return its stock again", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 5);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 2 }]);
+  assert.equal(await stockOf(product.id), 3);
+
+  await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(await stockOf(product.id), 5, "cancel returned the units");
+
+  const removed = await send("DELETE", `/api/orders/${user.id}/${order._id}`, { token: user.token });
+  assert.equal(removed.status, 200, `delete failed: ${JSON.stringify(removed.body)}`);
+  assert.equal(await stockOf(product.id), 5, "delete of a canceled order must not credit it twice");
+});
+
+test("a delivered order keeps its stock when it is canceled", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 4);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 2 }]);
+  assert.equal(await stockOf(product.id), 2);
+
+  await send("PATCH", `/api/orders/${order._id}/delivered`, { token: admin.token });
+  const cancelled = await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(cancelled.status, 200, JSON.stringify(cancelled.body));
+  assert.equal(await stockOf(product.id), 2, "a fulfilled order's stock stays consumed");
+});
+
+test("reopening a canceled order re-reserves its units, and refuses when they are gone", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 4);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 2 }]);
+  await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(await stockOf(product.id), 4, "cancel returned the units");
+
+  // Another buyer takes everything before the order is reopened.
+  await pool.query("UPDATE products SET stock_quantity = 0 WHERE id = $1", [product.id]);
+  const refused = await send("PATCH", `/api/orders/${order._id}/processing`, { token: admin.token });
+  assert.equal(refused.status, 400, `expected a stock refusal: ${JSON.stringify(refused.body)}`);
+  assert.equal(refused.body.details.outOfStock[0], product.id);
+  assert.equal(await stockOf(product.id), 0, "a refused reopen reserves nothing");
+
+  await pool.query("UPDATE products SET stock_quantity = 5 WHERE id = $1", [product.id]);
+  const reopened = await send("PATCH", `/api/orders/${order._id}/processing`, { token: admin.token });
+  assert.equal(reopened.status, 200, JSON.stringify(reopened.body));
+  assert.equal(reopened.body.status, "processing");
+  assert.equal(await stockOf(product.id), 3, "reopening re-reserves the units");
+});
+
+test("a canceled order cannot jump straight to delivered without reacquiring stock", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  const user = await seedUser();
+  await seedAddress(user.id);
+  const product = await seedProduct(40, null, 4);
+
+  const order = await placeOrder(user, [{ productId: product.id, quantity: 2 }]);
+  await send("PATCH", `/api/orders/${order._id}/canceled`, { token: admin.token });
+  assert.equal(await stockOf(product.id), 4, "cancel returned the units");
+
+  // The units are gone before the order is marked fulfilled. A direct
+  // canceled -> delivered move must not be allowed to skip the reservation.
+  await pool.query("UPDATE products SET stock_quantity = 0 WHERE id = $1", [product.id]);
+  const refused = await send("PATCH", `/api/orders/${order._id}/delivered`, { token: admin.token });
+  assert.equal(refused.status, 400, `canceled -> delivered must reacquire stock: ${JSON.stringify(refused.body)}`);
+  assert.equal(refused.body.details.outOfStock[0], product.id);
+  assert.equal(await stockOf(product.id), 0, "a refused delivery reserves nothing");
+  const { rows } = await pool.query("SELECT status FROM orders WHERE id = $1", [order._id]);
+  assert.equal(rows[0].status, "canceled", "the status must not change on refusal");
+
+  await pool.query("UPDATE products SET stock_quantity = 3 WHERE id = $1", [product.id]);
+  const delivered = await send("PATCH", `/api/orders/${order._id}/delivered`, { token: admin.token });
+  assert.equal(delivered.status, 200, JSON.stringify(delivered.body));
+  assert.equal(delivered.body.status, "delivered");
+  assert.equal(await stockOf(product.id), 1, "delivering a reopened order consumes its units");
+});
+
+test("the admin order update route is not available", { skip: SKIP }, async () => {
+  const admin = await seedAdmin();
+  // `PUT /api/orders/:id` used to rewrite items and status without reconciling
+  // stock. It is removed, so the path must not resolve to any handler.
+  const res = await send("PUT", "/api/orders/order-000000000001", {
+    token: admin.token,
+    body: { status: "canceled" },
+  });
+  assert.equal(res.status, 404, `PUT /api/orders/:id must be gone: ${JSON.stringify(res.body)}`);
 });

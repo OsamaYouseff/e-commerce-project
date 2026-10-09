@@ -2,6 +2,7 @@ import toast from 'react-hot-toast';
 import Cookies from 'js-cookie';
 import { couponRates, FREE_SHIPPING_THRESHOLD, FLAT_SHIPPING_COST, PAYMENT_METHODS } from "./GeneralVariables.jsx"
 import { GoHome } from "../../../shared_files/General/GeneralFunctions.js";
+import { isLoggedIn } from "../../../shared_files/General/session.mjs";
 
 
 export function GetUserInfo() {
@@ -195,39 +196,88 @@ const availableStorages = () => {
  */
 const memoryIdempotencyKeys = new Map();
 
-/** Reads a pending key from a Web Storage area, returning null when absent. */
-const readStoredKey = (store, storageKey) => store.getItem(storageKey) || null;
+/**
+ * Reads a pending key from one tier, treating an unreadable store as empty.
+ */
+const readStoredKey = (store, storageKey) => {
+    try {
+        return store.getItem(storageKey) || null;
+    } catch {
+        // Blocked or over quota: this tier simply has nothing for us.
+        return null;
+    }
+};
 
 /**
- * Returns the pending key for this customer, creating one if there is none.
+ * Writes a pending key to one tier, reporting whether the store accepted it.
+ */
+const writeStoredKey = (store, storageKey, value) => {
+    try {
+        store.setItem(storageKey, value);
+        return true;
+    } catch {
+        // Blocked or over quota: the caller falls through to the next tier.
+        return false;
+    }
+};
+
+/**
+ * Returns the pending key for this customer, minting one only when no tier
+ * holds one.
  *
- * Three tiers, most durable first:
+ * Tiers, most durable first:
  *  1. `sessionStorage` — survives a reload and stays private to this tab.
  *  2. `localStorage` — also survives a reload, and is reachable when only
- *     `sessionStorage` is blocked. It is shared with this customer's other tabs,
- *     so two tabs checking out different carts at the same time contend for one
- *     pending key and the server refuses the loser with 409. That is the
- *     preferable failure: a visible error rather than a second order.
+ *     `sessionStorage` is blocked. It is shared with this customer's other tabs.
  *  3. memory — stable for the page session, lost on reload.
+ *
+ * Every tier is searched before anything is minted, and a key found in a lower
+ * tier is promoted into the tiers above it. Returning from the first tier that
+ * merely *answered* would be wrong: a key recorded in `localStorage` while
+ * `sessionStorage` was blocked would be replaced by a freshly minted one as soon
+ * as `sessionStorage` became writable, and the retry would carry a key the
+ * original attempt never used and create a duplicate order.
+ *
+ * When a shared tier is the one in use, two tabs can still both read empty
+ * before either writes, because Web Storage offers no atomic compare-and-set.
+ * The writer therefore re-reads after writing and adopts whatever value is
+ * actually stored, so a tab that lost that race uses the winner's key rather
+ * than its own. That narrows the window; it does not close it, since a competing
+ * write landing after the re-read is still invisible to this tab.
  */
 export function getCheckoutIdempotencyKey(customerId) {
     const storageKey = idempotencyStorageKey(customerId);
+    const stores = availableStorages();
 
-    for (const store of availableStorages()) {
-        try {
-            const existing = readStoredKey(store, storageKey);
-            if (existing) return existing;
-            const created = newIdempotencyKey();
-            store.setItem(storageKey, created);
-            return created;
-        } catch {
-            // Blocked or over quota: try the next tier.
+    // Search every tier before minting, promoting a lower-tier key upwards so
+    // the tiers agree and none is left holding a value the others cannot see.
+    for (let i = 0; i < stores.length; i++) {
+        const existing = readStoredKey(stores[i], storageKey);
+        if (existing) {
+            for (let higher = 0; higher < i; higher++) {
+                writeStoredKey(stores[higher], storageKey, existing);
+            }
+            return existing;
         }
     }
 
-    const fallback = memoryIdempotencyKeys.get(storageKey);
-    if (fallback) return fallback;
+    // Memory is the lowest tier: promote it into every store that will take it.
+    const remembered = memoryIdempotencyKeys.get(storageKey);
+    if (remembered) {
+        for (const store of stores) writeStoredKey(store, storageKey, remembered);
+        return remembered;
+    }
+
+    // Nothing anywhere: mint once, then hand it to the first tier that accepts
+    // it. Only that tier needs to hold it — a later call falls through to this
+    // tier if the higher ones are still unusable.
     const created = newIdempotencyKey();
+    for (const store of stores) {
+        if (!writeStoredKey(store, storageKey, created)) continue;
+        // Another tab may have written between our read and our write.
+        return readStoredKey(store, storageKey) || created;
+    }
+
     memoryIdempotencyKeys.set(storageKey, created);
     return created;
 }
@@ -300,10 +350,11 @@ export function ValidateSignUpForm(formData, confirmPassword) {
 }
 
 export function IsUserLoggedIn() {
-    if ((localStorage.getItem("customerInfo") || (sessionStorage.getItem("customerInfo")) && Cookies.get('token')))
-        return true;
-    else
-        return false;
+    return isLoggedIn({
+        localInfo: localStorage.getItem("customerInfo"),
+        sessionInfo: sessionStorage.getItem("customerInfo"),
+        token: Cookies.get('token'),
+    });
 }
 
 

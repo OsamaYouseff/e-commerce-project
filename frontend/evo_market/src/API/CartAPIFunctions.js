@@ -54,8 +54,9 @@ export const addUpdateProductInCart = async (addedProduct) => {
         return { status: true, response: response.data, message: "This item has been added/updated successfully to your cart" };
 
     } catch (error) {
-        console.log('Error Updating Product To Cart : ', error.data.response.message);
-        return { status: false, message: error.data.response.message };
+        const message = error.response?.data?.message || "Failed to add this item to your cart😢";
+        console.log('Error Updating Product To Cart : ', message);
+        return { status: false, message };
     }
 
 

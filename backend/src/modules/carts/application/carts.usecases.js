@@ -3,7 +3,7 @@ const { withTransaction } = require("../../../shared/database/transaction");
 const { generateId } = require("../../../shared/database/ids");
 const { ApiError } = require("../../../shared/http/api-error");
 
-const PRODUCT_DETAIL_KEYS = ["_id", "title", "desc", "img", "categories", "size", "color", "price", "rating"];
+const PRODUCT_DETAIL_KEYS = ["_id", "title", "desc", "img", "categories", "size", "color", "price", "rating", "amount"];
 
 const lockUserCart = (client, userId) =>
   client.query("SELECT pg_advisory_xact_lock(hashtext($1))", [`cart:${userId}`]);

@@ -58,16 +58,6 @@ const getItemRows = async (orderId, client) => {
   return rows;
 };
 
-const getProductSnapshots = async (productIds, client) => {
-  const c = clientOf(client);
-  if (productIds.length === 0) return new Map();
-  const { rows } = await c.query(
-    "SELECT id, title, image_url FROM products WHERE id = ANY($1::text[])",
-    [productIds],
-  );
-  return new Map(rows.map((r) => [r.id, { title: r.title, img: r.image_url }]));
-};
-
 const getProductsForCheckout = async (productIds, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(
@@ -82,9 +72,86 @@ const getProductsForCheckout = async (productIds, client) => {
   }]));
 };
 
+/**
+ * Atomically decrements stock for a checkout, returning the product ids it could
+ * not reserve (empty array when every line succeeded).
+ *
+ * The guard lives in the UPDATE, not in a prior SELECT: `stock_quantity >= $1`
+ * is evaluated by PostgreSQL while the row is locked, so two concurrent
+ * checkouts for the last unit cannot both pass. Reading stock and then writing
+ * would leave exactly the window this closes — both readers see one unit, both
+ * write, and stock goes negative. `is_deleted` is rechecked here too, because a
+ * product can be disabled between the checkout read and this write.
+ *
+ * Lines are locked in product-id order so two multi-line checkouts holding the
+ * same products in different orders cannot deadlock. Any failed line aborts the
+ * caller's transaction, which rolls back the successful lines as well.
+ */
+const decrementStock = async (items, client) => {
+  const c = clientOf(client);
+  const ordered = [...items].sort((a, b) => (a.productId < b.productId ? -1 : a.productId > b.productId ? 1 : 0));
+  const insufficient = [];
+  for (const { productId, quantity } of ordered) {
+    const { rowCount } = await c.query(
+      `UPDATE products SET stock_quantity = stock_quantity - $1, updated_at = now()
+       WHERE id = $2 AND stock_quantity >= $1 AND is_deleted = false`,
+      [quantity, productId],
+    );
+    if (rowCount === 0) insufficient.push(productId);
+  }
+  return insufficient;
+};
+
+/**
+ * Returns reserved quantities to stock, the inverse of `decrementStock`.
+ *
+ * Used when an order is canceled or deleted while it still holds inventory. The
+ * increment needs no availability guard — it cannot oversell — but lines are
+ * still applied in ascending product-id order so a restore cannot deadlock
+ * against a concurrent checkout holding the same products. A product that was
+ * hard-deleted after the order was placed matches no row and is skipped, which
+ * is correct: there is no catalog row left to restock.
+ */
+const restoreStock = async (items, client) => {
+  const c = clientOf(client);
+  const ordered = [...items]
+    .filter((item) => item.productId)
+    .sort((a, b) => (a.productId < b.productId ? -1 : a.productId > b.productId ? 1 : 0));
+  for (const { productId, quantity } of ordered) {
+    await c.query(
+      `UPDATE products SET stock_quantity = stock_quantity + $1, updated_at = now()
+       WHERE id = $2`,
+      [quantity, productId],
+    );
+  }
+};
+
 const findById = async (id, client) => {
   const c = clientOf(client);
   const { rows } = await c.query(`SELECT ${ORDER_COLUMNS} FROM orders WHERE id = $1`, [id]);
+  if (!rows[0]) return null;
+  return rowWithItems(rows[0], await getItemRows(id, c));
+};
+
+/**
+ * Same as `findById` but takes a row lock, so two concurrent status changes or
+ * deletes for one order serialize. That locked read is what makes restock
+ * idempotent: the second caller sees the status the first already wrote and does
+ * not return the same units twice.
+ */
+const findByIdForUpdate = async (id, client) => {
+  const c = clientOf(client);
+  const { rows } = await c.query(`SELECT ${ORDER_COLUMNS} FROM orders WHERE id = $1 FOR UPDATE`, [id]);
+  if (!rows[0]) return null;
+  return rowWithItems(rows[0], await getItemRows(id, c));
+};
+
+const findScopedForUpdate = async (id, userId, client) => {
+  const c = clientOf(client);
+  const { rows } = await c.query(
+    `SELECT ${ORDER_COLUMNS} FROM orders WHERE id = $1 AND user_id = $2 FOR UPDATE`,
+    [id, userId],
+  );
   if (!rows[0]) return null;
   return rowWithItems(rows[0], await getItemRows(id, c));
 };
@@ -136,69 +203,6 @@ const create = async ({ id, userId, body, itemRows, requestFingerprint }, client
     quantity: it.quantity,
     price_at_order_in_cents: it.priceAtOrderInCents,
   })));
-};
-
-const update = async (id, body, client) => {
-  const c = clientOf(client);
-  const fields = {};
-  if (body.financials) {
-    const f = body.financials;
-    if (f.subtotalInCents !== undefined) fields.subtotal_in_cents = f.subtotalInCents;
-    if (f.discount !== undefined) fields.discount_in_cents = f.discount;
-    if (f.shippingCostInCents !== undefined) fields.shipping_cost_in_cents = f.shippingCostInCents;
-    if (f.totalAmountInCents !== undefined) fields.total_amount_in_cents = f.totalAmountInCents;
-    if (f.currency !== undefined) fields.currency = f.currency;
-  }
-  if (body.shippingAddress) {
-    const sa = body.shippingAddress;
-    if (sa.fullAddress !== undefined) fields.ship_to_full_address = sa.fullAddress;
-    if (sa.phoneNumber !== undefined) fields.ship_to_phone_number = sa.phoneNumber;
-    if (sa.firstName !== undefined) fields.ship_to_first_name = sa.firstName;
-    if (sa.lastName !== undefined) fields.ship_to_last_name = sa.lastName;
-    if (sa.label !== undefined) fields.ship_to_label = sa.label;
-  }
-  if (body.shippingInfo) {
-    const si = body.shippingInfo;
-    if (si.trackingNumber !== undefined) fields.tracking_number = si.trackingNumber;
-    if (si.estimatedDeliveryDate !== undefined) fields.estimated_delivery_at = si.estimatedDeliveryDate;
-  }
-  for (const key of ["userId", "status", "paymentMethod"]) {
-    if (body[key] !== undefined) fields[mapField(key)] = body[key];
-  }
-
-  const entries = Object.entries(fields);
-  let orderRow = null;
-  if (entries.length > 0) {
-    const sets = entries.map(([k], i) => `${k} = $${i + 1}`).join(", ");
-    const values = entries.map(([, v]) => v);
-    values.push(id);
-    const { rows } = await c.query(
-      `UPDATE orders SET ${sets}, updated_at = now() WHERE id = $${values.length} RETURNING ${ORDER_COLUMNS}`,
-      values,
-    );
-    orderRow = rows[0] ?? null;
-  } else {
-    const { rows } = await c.query(`SELECT ${ORDER_COLUMNS} FROM orders WHERE id = $1`, [id]);
-    orderRow = rows[0] ?? null;
-  }
-  if (!orderRow) return null;
-
-  if (Array.isArray(body.items)) {
-    await c.query("DELETE FROM order_items WHERE order_id = $1", [id]);
-    for (const [index, item] of body.items.entries()) {
-      await c.query(
-        `INSERT INTO order_items (order_id, line_number, product_id, product_title_snapshot, product_image_snapshot, quantity, price_at_order_in_cents)
-         VALUES ($1,$2,$3,$4,$5,$6,$7)`,
-        [id, index, item.productId ?? null, item.title ?? null, item.img ?? null, item.quantity, item.priceAtOrderInCents],
-      );
-    }
-  }
-  return rowWithItems(orderRow, await getItemRows(id, c));
-};
-
-const mapField = (key) => {
-  const map = { userId: "user_id", status: "status", paymentMethod: "payment_method" };
-  return map[key];
 };
 
 const setStatus = async (id, status, client) => {
@@ -336,8 +340,9 @@ const minimizedForUser = async (userId, client) => {
 
 module.exports = {
   findById,
+  findByIdForUpdate,
+  findScopedForUpdate,
   create,
-  update,
   setStatus,
   deleteById,
   deleteScoped,
@@ -346,6 +351,7 @@ module.exports = {
   searchById,
   detailedById,
   minimizedForUser,
-  getProductSnapshots,
   getProductsForCheckout,
+  decrementStock,
+  restoreStock,
 };

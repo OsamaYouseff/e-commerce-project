@@ -133,13 +133,13 @@ const listAll = async (client) => {
 
 /**
  * Returns catalog rows for the requested product ids: { _id, title, desc,
- * img, categories, size, color, price, rating } in input order.
+ * img, categories, size, color, price, rating, amount } in input order.
  */
 const getProductDetails = async (productIds, client) => {
   const c = clientOf(client);
   if (productIds.length === 0) return [];
   const { rows } = await c.query(
-    `SELECT id, title, description, image_url, categories, size, color, price, rating
+    `SELECT id, title, description, image_url, categories, size, color, price, rating, stock_quantity
      FROM products WHERE id = ANY($1::text[])
      ORDER BY array_position($1::text[], id)`,
     [productIds],
@@ -154,6 +154,9 @@ const getProductDetails = async (productIds, client) => {
     color: r.color,
     price: Number(r.price),
     rating: Number(r.rating),
+    // Exposed as `amount` to match the products API, so the cart can bound the
+    // quantity selector the way the product page already does.
+    amount: Number(r.stock_quantity),
   }));
 };
 

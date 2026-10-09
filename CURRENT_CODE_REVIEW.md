@@ -119,3 +119,190 @@ Impact: both requests carry distinct keys, so both create orders and the custome
 **Suggested fix:** Either make the claim true by having the writer re-read after `setItem` and return the stored value when another tab won the race, or correct the comment to state that concurrent tabs may mint independent keys and that the residual exposure is accepted. If the guarantee is to be made real rather than documented, the authoritative pending key has to live on the server, which is the same server-managed checkout attempt raised in the previous review.
 
 No source code was changed, and no tests or builds were run during this review.
+
+## Sixth pass — 2026-10-03 — both Fifth findings fixed
+
+Both defects from the Fifth re-review are resolved in `frontend/evo_market/src/General/GeneralFunctions.js`.
+
+### Higher-priority tier replacing an existing key — fixed
+
+`getCheckoutIdempotencyKey` no longer returns from the first tier that answers. It now walks every available tier first and mints only once all of them have come back empty. A key found in a lower tier is written into each tier above it, so the tiers converge instead of diverging — `sessionStorage` becoming writable after an attempt parked its key in `localStorage` now recovers that key and promotes it, rather than minting a replacement. The memory tier participates on the same footing: it is consulted after both stores and, when it holds the key, promoted into every store that accepts one. So all three tiers are treated uniformly, which is what the suggested fix asked for and what the previous loop failed to do.
+
+The doc comment now explains why search-then-create is the required order, not an optimisation.
+
+### Concurrent tabs minting different keys — narrowed, and documented honestly
+
+The writer now re-reads the store after `setItem` and returns the value actually stored, so a tab that loses the write race adopts the winner's key instead of its own. This resolves the interleaving where the competing write lands between our read and our write.
+
+It does **not** close the window, and the code no longer claims it does. Web Storage provides no atomic compare-and-set, so a competing write that lands after the re-read remains invisible to that tab. The doc comment previously promised that two simultaneous checkouts "contend for one pending key and the server refuses the loser with 409"; that guarantee was false and is replaced with a statement of what the code actually does and where the residual exposure sits. Eliminating it entirely requires the authoritative key to live server-side — the server-managed checkout attempt already discussed under accepted residual risk — which was out of scope here.
+
+### Verification
+
+Both behaviours were tested against the real module, with the two storage tiers backed by genuinely independent maps. An earlier draft of the harness gave both tiers a single shared map, which allowed either tier to answer for the other and silently masked the first defect; the independent backing is what makes the promotion check meaningful.
+
+- Restoring the old first-answering-tier behaviour fails 7 checks.
+- Removing only the post-write re-read fails the 3 cross-tab checks, and nothing else.
+- The clean implementation passes all 15 checks, plus the earlier tier/accessor suite unchanged: stability across 500 re-renders, survival of a reload via a fresh module instance, rotation clearing every tier, and tolerance of null/`undefined` storage values and throwing property accessors.
+
+Regression: backend unit 84/84; integration 32/32 against PostgreSQL and a clean 32-test skip without it; conformance 106/106 on both `:5002` and `:5003`; both frontend builds succeed.
+
+Still open after this pass: the Node engine and package-manager authority decision, and the storefront ESLint plugin resolution. Neither is a checkout defect.
+
+## Seventh pass — 2026-10-09
+
+Static review of the current working tree. I made no application-code changes and did not run tests or builds.
+
+### P1 — Checkout does not validate or reserve product stock
+
+The product model stores `stock_quantity`, and both the admin dashboard and storefront display it as the number of items in stock ([`1700000000001_initial-commerce-schema.cjs`](backend/db/migrations/1700000000001_initial-commerce-schema.cjs#L45), [`ProductPage.jsx`](frontend/evo_market/src/Components/ProductPage/ProductPage.jsx#L319)). But the checkout query reads only product title, image, price, and deletion state ([`orders.repository.js`](backend/src/modules/orders/infrastructure/orders.repository.js#L71)), and order creation never checks or updates stock ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L92)). The cart page also permits quantities beyond available stock because its product details omit the stock field.
+
+As a result, a customer can place an order for more items than exist, and repeated or concurrent checkouts can all succeed against the same inventory. The displayed stock count never falls after a sale.
+
+**Suggested fix:** In the order transaction, atomically decrement each product only when `stock_quantity >= requested quantity`; reject and roll back the order if any item is unavailable. Add coverage for insufficient stock and concurrent checkouts competing for the final units.
+
+### P3 — Cart-add error handling reads the wrong Axios error fields
+
+On a failed cart-add request, [`CartAPIFunctions.js`](frontend/evo_market/src/API/CartAPIFunctions.js#L56) reads `error.data.response.message`. Axios exposes the response body as `error.response.data`, so this access normally throws a second `TypeError` before the wrapper can return its intended error result. The Redux thunk then takes its generic rejected path, and the backend's actual error message is lost.
+
+**Suggested fix:** Read the message from `error.response?.data?.message` and use a fallback for network errors without a response.
+
+## Eighth pass — 2026-10-09 — both Seventh findings fixed
+
+### P1 — checkout now validates and reserves stock
+
+Order creation reserves inventory inside the same transaction that inserts the order. `decrementStock` ([`orders.repository.js`](backend/src/modules/orders/infrastructure/orders.repository.js#L86)) issues one conditional `UPDATE products SET stock_quantity = stock_quantity - $1 ... WHERE id = $2 AND stock_quantity >= $1 AND is_deleted = false` per line, so the availability test and the write are atomic: PostgreSQL evaluates the guard while the row is locked, and two concurrent checkouts for the last unit serialize instead of both reading one. The lines are locked in ascending product-id order so two multi-line checkouts holding the same products in a different order cannot deadlock. When any line matches no row, the product ids are returned and [`createOrder`](backend/src/modules/orders/application/orders.usecases.js#L202) throws a `400` carrying `details.outOfStock`; throwing aborts the transaction, so the already-inserted order and any lines that *did* reserve are rolled back together. `ApiError.badRequest` gained the `options` argument it needed to carry those details ([`api-error.js`](backend/src/shared/http/api-error.js#L10)).
+
+The reservation runs after the idempotency insert and only on the `created` path, so a retried request that replays the original order does not decrement a second time.
+
+The storefront can now bound the quantity it offers: `getProductDetails` exposes `stock_quantity` as `amount` ([`carts.repository.js`](backend/src/modules/carts/infrastructure/carts.repository.js#L157)), `PRODUCT_DETAIL_KEYS` passes it through ([`carts.usecases.js`](backend/src/modules/carts/application/carts.usecases.js#L6)), and both cart quantity controls pass `maxRange` ([`ItemComponent.jsx`](frontend/evo_market/src/Components/CartDrawer/ItemComponent/ItemComponent.jsx#L175)). The UI bound is advisory; the transaction is what enforces it.
+
+### P3 — cart-add error text now reads the Axios fields
+
+[`CartAPIFunctions.js`](frontend/evo_market/src/API/CartAPIFunctions.js#L57) reads `error.response?.data?.message` with a fallback, instead of the previous `error.data.response.message`, which threw a second `TypeError` before the wrapper could return its intended result.
+
+### The database backstop, and why the guard still matters
+
+The schema already carries a `stock_quantity >= 0` CHECK constraint (migration `1700000000001`), exercised by [`schema.test.js`](backend/test/integration/schema.test.js). That constraint alone would stop the oversell even without the guard, but it does so by rejecting the row PostgreSQL was writing as a *negative* value (`23514`, surfaced as the generic "Value does not satisfy the required format"). The explicit guard is the intended business path — it never attempts the negative write and returns a structured `outOfStock` the client can act on. The tests assert the structured refusal specifically, which is what makes them sensitive to the guard rather than to the constraint: with the guard removed, the losing concurrent request is still refused, but by the constraint and with no `details.outOfStock`, and the test fails.
+
+### Coverage
+
+- [`repositories.test.js`](backend/test/unit/repositories.test.js): two `decrementStock` tests through the query double — availability guard and `is_deleted` in the predicate, one bound value per placeholder, parameterized `[quantity, productId]`, ascending lock order for out-of-order input, and an empty result when every line succeeds.
+- [`concurrency.test.js`](backend/test/integration/concurrency.test.js): a successful checkout decrements stock; a checkout larger than stock is refused with `400`/`details.outOfStock`, leaves no order, and touches neither stock nor cart; two concurrent checkouts for the last unit yield exactly `[201, 400]`, one order, one structured refusal and stock `0`. The existing duplicate-lines test now seeds stock above the `999` quantity cap, because that case governs the per-product quantity limit and stock has its own tests.
+
+### Verification
+
+- Backend unit: 86/86 (was 84; +2).
+- Backend integration against the rebuilt scratch cluster: 35/35 (was 32; +3), and a clean 35-test skip without `INTEGRATION_DATABASE_URL`.
+- Conformance: 107/107 on both `:5002` and `:5003` (was 106; +1 assertion that a cart item's `productDetails.amount` is a number).
+- Both frontend builds succeed; `GeneralFunctions.js` remains CRLF.
+- Mutation: removing `AND stock_quantity >= $1` from the decrement fails both new stock tests; each was verified to fail for the right reason (the insufficient case against `/stock/i`, the race case against the missing `details.outOfStock`).
+
+### Deferred
+
+Restock on order cancel or delete is **not** implemented. `decrementStock` is a one-way reservation, and `setStatus` has no idempotency guard, so adding restock now would risk double-crediting a cancellation. It is recorded as a follow-up rather than approximated.
+
+## Ninth pass — 2026-10-09
+
+Static re-review of the latest working tree. The Seventh-pass stock reservation and cart-add error handling findings are addressed in the current source. I found one remaining inventory issue; no application code was changed and no tests or builds were run.
+
+### P2 — Canceling or deleting an order does not restore its reserved stock
+
+Checkout now decrements inventory when it creates an order ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L202)). But the admin status path only updates the order status ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L252), [`orders.repository.js`](backend/src/modules/orders/infrastructure/orders.repository.js#L234)), and the customer-facing “Cancel order” action calls the delete path ([`OrderCard.jsx`](frontend/evo_market/src/Components/UserInfoPage/OrdersComponent/OrderCard.jsx#L33), [`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L261)). Neither path restores the quantities. Cancelled or deleted orders therefore leave stock permanently reduced, and products can appear out of stock after their orders are canceled.
+
+**Suggested fix:** Restore quantities transactionally when an eligible order transitions to canceled, and make that transition idempotent so repeated requests cannot add stock twice. Apply the same rule to deletion or prevent deleting orders until their inventory has been reconciled. Cover cancellation, deletion, and repeated cancellation in integration coverage.
+
+## Tenth pass — 2026-10-09 — reserved stock is returned on cancel and delete
+
+The reservation added in the Eighth pass was one-way: canceling or deleting an order left its units permanently deducted. Both paths now reconcile inventory.
+
+### What changed
+
+`restoreStock` is the inverse of `decrementStock` ([`orders.repository.js`](backend/src/modules/orders/infrastructure/orders.repository.js#L115)). It credits each line with an unconditional `stock_quantity = stock_quantity + $1`, applies lines in ascending product-id order so a restore cannot deadlock a concurrent checkout on the same products, and skips a line whose product was hard-deleted after the order (its row is gone, so there is nothing to restock). It is exported alongside two locking reads, `findByIdForUpdate` and `findScopedForUpdate`, which select the order `FOR UPDATE`.
+
+[`setOrderStatus`](backend/src/modules/orders/application/orders.usecases.js#L266) now runs in a transaction. It takes the locked read first, then decides from the transition using `RESTOCKABLE_STATUSES = ["pending", "processing"]`:
+
+- a stock-holding state (`pending`/`processing`) → `canceled` restores the reservation;
+- `canceled` → a stock-holding state re-reserves it, so reopening an order cannot leak inventory, and refuses with a `400`/`details.outOfStock` if the units are no longer available;
+- every other transition leaves stock alone. In particular `delivered` is not restocked, because a fulfilled order has consumed its units, and `canceled` is not restocked again.
+
+[`deleteOrder`](backend/src/modules/orders/application/orders.usecases.js#L293) also runs in a transaction and takes the same locked read (scoped to the owner for a customer, unscoped for an admin). Deleting an order whose status is still `pending`/`processing` is a cancellation by another name, so it restores first; a `canceled` order has already been returned and a `delivered` one was fulfilled, so neither is touched. This covers the storefront “Cancel order” action, which deletes the order.
+
+### Idempotency
+
+No new column was needed. The order row lock taken by the locked read serializes two concurrent cancels, a repeated cancel, and a cancel racing a delete; each reads the status the previous writer committed and does not return the same units twice. The status is the single source of truth for whether stock is currently held.
+
+### Coverage and verification
+
+- [`concurrency.test.js`](backend/test/integration/concurrency.test.js): canceling returns the units and a repeated cancel does not return them again; two concurrent cancels return them once; the customer delete path returns them; deleting an already-canceled order does not credit twice; a delivered order keeps its stock when canceled; and reopening a canceled order re-reserves, refuses when the units are gone, then succeeds after they are replenished. A `seedAdmin` fixture was added for the status route.
+- [`repositories.test.js`](backend/test/unit/repositories.test.js): `restoreStock` credits in ascending id order and skips a null product id, with one bound value per placeholder; `findByIdForUpdate` and `findScopedForUpdate` assert the `FOR UPDATE` clause and their bindings.
+- Backend unit 89/89 (was 86; +3); integration 41/41 (was 35; +6); conformance 107/107 on both `:5002` and `:5003`; no frontend change this pass.
+- Mutation: dropping the cancel restock fails four tests, restocking on *every* cancel (no status check) fails three, dropping the delete restock fails one, and removing the `FOR UPDATE` lock fails the concurrent-cancel test — the lock is what makes the restore idempotent.
+
+### Deferred
+
+`PUT /api/orders/:id` can still rewrite an order's items or status without reconciling stock. No client calls it — the admin dashboard changes status with `PATCH /api/orders/:orderId/:status` and deletes with `DELETE /api/orders/:orderId` — so it is left as-is rather than given a third stock code path. A deliberate return/restock of a delivered order is likewise not modelled; `delivered` is treated as terminal for inventory.
+
+## Eleventh pass — 2026-10-09
+
+The Tenth-pass cancellation/deletion restock is present in the current source. This pass found three remaining issues; no application code was changed and no tests or builds were run.
+
+### P2 — An order can move from canceled directly to delivered without reserving stock
+
+`setOrderStatus` accepts every status in `VALID_STATUSES`, including `delivered`, from any current status. The stock re-reservation branch only runs when a canceled order moves to `pending` or `processing` ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L256)). A direct admin request to mark a canceled order `delivered` therefore skips `decrementStock`, even though cancellation already returned those units. The order can be marked fulfilled after its stock has been sold or allocated elsewhere.
+
+**Suggested fix:** Reject a direct `canceled` → `delivered` transition, or reacquire the order's inventory before allowing it. Add a status-transition case that proves unavailable stock prevents delivery.
+
+### P2 — The admin order update endpoint bypasses stock reconciliation
+
+The admin-only `PUT /api/orders/:id` route calls `updateOrder` ([`orders.router.js`](backend/src/modules/orders/http/orders.router.js#L14)). That use case accepts replacement items and status fields and sends them to the repository without locking the order or adjusting stock ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L231), [`orders.repository.js`](backend/src/modules/orders/infrastructure/orders.repository.js#L218)). Replacing a pending order's items leaves the original quantities deducted and never reserves the new items; changing its status to canceled also skips the stock return. The dashboard currently uses the separate `PATCH` status route, but this `PUT` endpoint remains reachable to any authenticated admin.
+
+**Suggested fix:** Remove or restrict the unused mutation route, or make it reconcile inventory under the same order lock and transaction as cancellation/status changes. Validate replacement items before writing them.
+
+### P2 — Persistent profile data makes an expired session appear logged in
+
+Both storefront and admin `IsUserLoggedIn` helpers test `localStorage` profile data without requiring the token cookie because `||` binds outside the `&&` check ([storefront `GeneralFunctions.js`](frontend/evo_market/src/General/GeneralFunctions.js#L351), [admin `GeneralFunctions.js`](frontend/admin_dashboard/src/General/GeneralFunctions.js#L132)). “Remember me” keeps the profile in `localStorage`, while the token cookie expires after seven days. After that expiry, these helpers still report the user as logged in. API calls then fail because `GetTokenAndUserId` requires the token cookie, leaving the UI in a stale authenticated state until its delayed cleanup runs.
+
+**Suggested fix:** Require both saved profile data and the corresponding token cookie in each login check. Cover the local-storage-without-token and session-storage-without-token cases.
+
+## Twelfth pass — 2026-10-09 — all three Eleventh findings fixed
+
+All three were reproduced before being fixed: a canceled order was marked `delivered` with its stock already sold elsewhere ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L256)), `PUT /api/orders/:id` returned `200` and rewrote an order without touching stock, and `IsUserLoggedIn()` returned `true` with a `localStorage` profile and no token cookie in both apps.
+
+### P2 — stock is reacquired when a canceled order leaves canceled
+
+The status change now keys off two named sets instead of one. `STOCK_HOLDING_STATUSES` is `pending`/`processing` — the states whose stock is currently deducted — and drives the restock on the way *into* `canceled`. `STOCK_CONSUMING_STATUSES` is `pending`/`processing`/`delivered` and drives re-reservation on the way *out* of `canceled`, so a direct canceled → delivered jump reserves the units exactly like a reopen to `processing`. Both run inside the locked transaction, so an unavailable line refuses with `400`/`details.outOfStock`, changes no status, and reserves nothing. `deleteOrder` keeps using `STOCK_HOLDING_STATUSES`, since a delivered order has consumed its units and must not be credited on deletion.
+
+### P2 — the unused admin order update route is gone
+
+`PUT /api/orders/:id` and its `updateOrder` use case were removed, together with the repository `update`, `getProductSnapshots` and `mapField` helpers they were the only callers of, and the three `orders update` unit tests that pinned the allowlisted-column write. No client called the route; the admin dashboard uses `PATCH /api/orders/:orderId/:status` and `DELETE /api/orders/:orderId`. A regression test asserts `PUT /api/orders/:id` now resolves to no handler (`404`).
+
+### P2 — the login check requires the token and the profile
+
+The predicate now lives once in [`frontend/shared_files/General/session.mjs`](frontend/shared_files/General/session.mjs) as `isLoggedIn({ localInfo, sessionInfo, token })` returning `Boolean((localInfo || sessionInfo) && token)`. Both `IsUserLoggedIn` helpers delegate to it — the storefront reading `Cookies.get('token')` and `customerInfo`, the admin reading `Cookies.get('admin-token')` and `adminInfo` — so an expired token cookie can no longer be masked by a remembered profile in either app.
+
+### Coverage and verification
+
+- [`orders.usecases` tests](backend/test/unit/repositories.test.js): the three `orders update` tests were removed with the dead code; unit 86/86 (was 89).
+- [`concurrency.test.js`](backend/test/integration/concurrency.test.js): a canceled order cannot jump to `delivered` without reacquiring its units (refused with `details.outOfStock` and unchanged status when they are gone, then delivered and consumed once they are replenished), and `PUT /api/orders/:id` answers `404`. Integration 43/43 (was 41; +2).
+- [`session.test.mjs`](frontend/shared_files/General/session.test.mjs): five cases pin the predicate (local profile without token, session profile without token, token without profile, profile plus token, missing arguments).
+- Both real functions were also bundled with stubbed browser dependencies and exercised against the built module: a remembered profile with no cookie is `false` in both apps, and profile plus token is `true`.
+- Conformance 107/107 on both `:5002` and `:5003`; both frontend builds green. Mutation: dropping `delivered` from `STOCK_CONSUMING_STATUSES` fails the canceled → delivered test, and restoring the `||`/`&&` precedence fails the no-token predicate case.
+
+### Still open
+
+`PUT` removal means an admin who genuinely needs to edit an order's items has no route; that was already true in practice because no client used it, and a correct editor would need the same lock-and-reconcile treatment as the status route rather than the old blind write.
+
+## Thirteenth pass — 2026-10-09
+
+`PATCH /api/orders/:orderId/:status` ([`orders.router.js`](backend/src/modules/orders/http/orders.router.js#L14)) lets an admin move an order from any valid status to any other. This pass found one remaining inventory issue in those transitions. The review was read-only: no application code was changed and no tests or builds were run.
+
+### P2 — status reversals reconcile stock inconsistently and can double-decrement
+
+The use case validates only that the requested status is one of `VALID_STATUSES` ([`orders.usecases.js`](backend/src/modules/orders/application/orders.usecases.js#L10)), then reconciles stock for exactly two cases ([`setOrderStatus`](backend/src/modules/orders/application/orders.usecases.js#L234)): a `pending`/`processing` order becoming `canceled` restores its units, and a `canceled` order moving to a stock-consuming status re-reserves them. Every other transition just calls `setStatus`, so leaving `delivered` — whose units were permanently consumed at checkout — is never modelled even though the target status may be read as holding or not holding stock.
+
+- **delivered → pending → canceled inflates inventory.** Delivery consumes the units and nothing returns them, but the order is now `pending`, which `STOCK_HOLDING_STATUSES` ([line 13](backend/src/modules/orders/application/orders.usecases.js#L13)) treats as holding stock. A following cancel matches the restock branch and credits those already-sold units back to the catalog, making fulfilled inventory available to buy again.
+- **delivered → canceled → processing double-decrements.** `delivered → canceled` is a stock no-op under the current branches, so the order sits `canceled` while its units stay consumed. Moving it on to `processing` matches the reconnect branch and calls `decrementStock` a second time for the same order, removing units that its original checkout already took.
+
+Both paths expose the same gap: `delivered` is terminal for the holding set but not for the transition graph, so it can be left and re-entered while inventory only tracks `pending`/`processing` versus `canceled`.
+
+**Suggested fix:** Define the allowed transition graph and reject anything outside it with a `400` instead of performing an implicit reversal, then derive the stock delta from the `(from, to)` pair rather than from two independent membership tests, so a reversal reserves exactly once or restores exactly once. At minimum, treat `delivered` as terminal, or make leaving it re-reserve its units the way leaving `canceled` does, and make entering `canceled` restore only when the order currently holds stock. Add integration scenarios for `delivered → pending → canceled` (the catalog must not regain already-sold units) and `delivered → canceled → processing` (the units must not be removed twice), plus one for a transition the graph forbids.
